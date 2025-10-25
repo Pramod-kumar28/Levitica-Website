@@ -6,7 +6,7 @@ import { useCourseHandlers } from './courseshooks.js';
 import { X } from 'lucide-react';
 
 const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
-  const { categories, isSuccess } = useCoursesCategory();
+ 
   const {
     handleAddCourseSubmit,
     handleUpdateCourseSubmit,
@@ -91,11 +91,13 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, actions) => {
+               
                   try {
                     await onSubmitFn(values);
                     if (!isEdit) actions.resetForm();
                     onSuccess();
-                  } catch (error) {
+                  }
+                   catch (error) {
                     console.error(`${isEdit ? 'Update' : 'Add'} failed:`, error);
                     alert(`❌ Failed to ${isEdit ? 'update' : 'add'} course.`);
                   }
@@ -144,23 +146,18 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                       <ErrorMessage name="thumbnail" component="div" className="text-error fs-sm mt-1" />
                     </div>
 
-                    {/* Category Dropdown */}
-                    {isSuccess && (
+                    {/* Category*/}
+                    {(
                       <div className="form-group mb-3">
                         <label htmlFor="category" className="form-label fw-medium text-dark mb-2">
                           Category
                         </label>
                         <Field 
-                          as="select" 
+                         
                           name="category" 
                           className="form-select rounded-lg p-3 border"
                         >
-                          <option value="">Select a category</option>
-                          {categories?.map((cat) => (
-                            <option key={cat} value={cat}>
-                              {cat}
-                            </option>
-                          ))}
+                          
                         </Field>
                         <ErrorMessage name="category" component="div" className="text-error fs-sm mt-1" />
                       </div>

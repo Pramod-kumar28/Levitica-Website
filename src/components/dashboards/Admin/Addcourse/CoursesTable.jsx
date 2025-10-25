@@ -262,7 +262,11 @@ const CourseTableView = ({ courses, onEdit, onDelete, onViewBatches }) => (
                                     <div className="d-flex justify-content-between gap-2">
 
                                         <Edit className='text-accent' onClick={() => onEdit(course)} />
-                                        <Trash2 className='text-danger' onClick={() => onDelete(course._id)} />
+                                        <Trash2 className='text-danger' onClick={() => {
+                                            if (window.confirm('Are you sure you want to delete this course? This action cannot be undone.')) {
+                                                onDelete(course._id);
+                                            }
+                                        }} />
                                         <Users className='text-info' onClick={() => onViewBatches(course._id)} />
 
                                     </div>

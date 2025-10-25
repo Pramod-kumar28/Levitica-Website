@@ -274,7 +274,7 @@ const Topbar = ({ isSidebarOpen, toggleSidebar, currentPath }) => {
                     </div>
                   </div>
 
-                  <div className="dropdown-items">
+                  <div className="dropdown-items ">
                     <button onClick={handleClick}>
                       <User size={16} />
                       <span>Profile</span>

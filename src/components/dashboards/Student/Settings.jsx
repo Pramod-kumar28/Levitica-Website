@@ -184,14 +184,14 @@ const AccountTab = ({ user }) => {
             <div className="danger-action">
               <h4>Deactivate Account</h4>
               <p>Temporarily disable your account. You can reactivate it later.</p>
-              <button className="btn-warning">Deactivate Account</button>
+              <button className="btn-warning btn">Deactivate Account</button>
             </div>
             
             <div className="danger-action">
               <h4>Delete Account</h4>
               <p>Permanently delete your account and all associated data. This action cannot be undone.</p>
               <button 
-                className="btn-danger"
+                className="btn-danger btn"
                 onClick={handleAccountDeletion}
                 disabled={isDeleting}
               >

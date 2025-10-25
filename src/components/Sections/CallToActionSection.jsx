@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 
 
 const ConsultingCTA = () => {
@@ -15,9 +17,9 @@ const ConsultingCTA = () => {
           </div>
           <div className="col-md-4">
             <div className="action-btn text-lg-right text-sm-left">
-              <a href="mailto:hr@designcareermetrics.com" className="btn secondary-solid-btn">
+              <Link to="/contact-us" className="btn secondary-solid-btn">
                 Contact With Us
-              </a>
+              </Link>
             </div>
           </div>
         </div>

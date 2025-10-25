@@ -4,12 +4,14 @@ import * as Yup from 'yup';
 import { useLoginMutation } from '../Services/authService';
 import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
+import { Eye, EyeOff, LucideEye, MonitorCheck } from "lucide-react";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
   const [triggerLogin, { isLoading }] = useLoginMutation();
 
   const handleSubmit = useCallback(async (values) => {
@@ -85,20 +87,27 @@ const LoginForm = () => {
             </Link>
           </div>
         </div>
-        <div className="input-group input-group-merge">
-          <div className="input-icon">
-            <span className="ti-lock color-primary"></span>
-          </div>
-          <input
-            type="password"
-            name="password"
-            className="form-control"
-            placeholder="Enter your password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-        </div>
+          <div className="input-group input-group-merge">
+  <div className="input-icon">
+    <span className="ti-lock color-primary"></span>
+  </div>
+  <input
+    type={showPassword ? 'text' : 'password'}
+    name="password"
+    className="form-control"
+    placeholder="Enter your password"
+    value={formik.values.password}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+  
+  />
+  <span className="toggle-eye w-100 " onClick={() => setShowPassword(!showPassword)}>
+    
+     <div className="form-text small text-muted text-right">
+              {showPassword? "Hide password":"Show password"}
+            </div>
+  </span>
+</div>
         {formik.touched.password && formik.errors.password && (
           <small className="text-danger d-block mt-1">{formik.errors.password}</small>
         )}

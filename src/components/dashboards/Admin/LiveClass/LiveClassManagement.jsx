@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGetMeetingsQuery, useDeleteMeetingMutation } from '../../../../Services/admin/zoomService';
 import toast from 'react-hot-toast';
+ import { LayoutList, LayoutGrid } from "lucide-react"; // Lucide icons
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
@@ -143,8 +144,8 @@ const AdminLiveClasses = () => {
           <div className="row g-3 align-items-end">
             <div className="col-md-4">
               <label className="form-label fw-medium text-dark mb-2">Search</label>
-              <div className="position-relative">
-                <Search size={18} className="position-absolute top-50 start-3 translate-middle-y text-muted" />
+              <div >
+          
                 <input
                   type="text"
                   className="form-control ps-5"
@@ -158,7 +159,7 @@ const AdminLiveClasses = () => {
             <div className="col-md-3">
               <label className="form-label fw-medium text-dark mb-2">Status</label>
               <select 
-                className="form-select"
+                className="form-control"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -197,34 +198,37 @@ const AdminLiveClasses = () => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-body p-0">
-          <div className="d-flex border-bottom">
-            <button
-              className={`tab-btn ${activeTab === "cards" ? "active" : ""} btn`}
-              onClick={() => setActiveTab("cards")}
-            >
-              <div className="d-flex align-items-center gap-2">
-                <div className="nav-icon">
-                  <BookOpen size={16} />
-                </div>
-                Card View
-              </div>
-            </button>
-            <button
-              className={`tab-btn ${activeTab === "table" ? "active" : ""} btn`}
-              onClick={() => setActiveTab("table")}
-            >
-              <div className="d-flex align-items-center gap-2">
-                <div className="nav-icon">
-                  <Calendar size={16} />
-                </div>
-                Table View
-              </div>
-            </button>
-          </div>
-        </div>
+  
+
+<div>
+  <div className="d-flex flex-wrap align-items-center justify-content-between w-100 mb-3">
+  <h5 className="text-dark mb-2 mb-md-0">View Options</h5>
+  <div
+    className="btn-group ms-auto text-nowrap"
+    role="group"
+    aria-label="View Toggle"
+  >
+    <button
+      className={`tab-btn ${activeTab === "cards" ? "active" : ""} btn`}
+      onClick={() => setActiveTab("cards")}
+    >
+      <div className="d-flex align-items-center gap-1">
+        <LayoutGrid size={16} />
+        <span className="d-none d-sm-inline">Card</span>
       </div>
+    </button>
+    <button
+      className={`tab-btn ${activeTab === "table" ? "active" : ""} btn`}
+      onClick={() => setActiveTab("table")}
+    >
+      <div className="d-flex align-items-center gap-1">
+        <LayoutList size={16} />
+        <span className="d-none d-sm-inline">Table</span>
+      </div>
+    </button>
+  </div>
+</div>
+</div>
 
       {/* Results Count */}
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -311,9 +315,9 @@ const AdminLiveClasses = () => {
 const CardsView = ({ meetings, onStartClass, onDelete, deletingId, formatTime, formatDate, getStatusBadge }) => (
   <div className="row g-4">
     {meetings.map((meeting) => (
-      <div key={meeting._id} className="col-xl-4 col-lg-6 col-md-6">
+      <div key={meeting._id} className='col-md-4 my-4' >
         <motion.div
-          className="card shadow-sm h-100 border-0"
+          className="card  shadow-lg h-100 border-1 rounded-lg"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
@@ -331,52 +335,52 @@ const CardsView = ({ meetings, onStartClass, onDelete, deletingId, formatTime, f
             {/* Meeting Details */}
             <div className="mb-3 flex-grow-1">
               <div className="d-flex align-items-center gap-2 mb-2">
-                <BookOpen size={16} className="text-muted" />
+                <BookOpen size={16} className="text-muted mx-3" />
                 <span className="text-dark fw-medium">{meeting.course?.name || 'No Course'}</span>
               </div>
               
               {meeting.batch?.batchName && (
                 <div className="d-flex align-items-center gap-2 mb-2">
-                  <Users size={16} className="text-muted" />
+                  <Users size={16} className="text-muted mx-3" />
                   <span className="text-muted">{meeting.batch.batchName}</span>
                 </div>
               )}
               
               <div className="d-flex align-items-center gap-2 mb-2">
-                <Calendar size={16} className="text-muted" />
+                <Calendar size={16} className="text-muted mx-3" />
                 <span className="text-muted">{formatDate(meeting.startTime)}</span>
               </div>
               
               <div className="d-flex align-items-center gap-2 mb-2">
-                <Clock size={16} className="text-muted" />
+                <Clock size={16} className="text-muted mx-3" />
                 <span className="text-muted">{formatTime(meeting.startTime)} • {meeting.duration} mins</span>
               </div>
               
-              <div className="text-muted small">
+              <div className="text-muted mx-3 small">
                 Host: {meeting.hostEmail}
               </div>
             </div>
 
             {/* Action Buttons */}
             <div className="mt-auto">
-              <div className="d-flex gap-2 flex-wrap">
+              <div className="d-flex g-3 flex-wrap">
                 {(meeting.status === 'scheduled' || meeting.status === 'ongoing') && (
                   <button
                     className="btn btn-primary btn-sm d-flex align-items-center gap-1"
                     onClick={() => onStartClass(meeting._id)}
                   >
-                    <Play size={14} />
+                    
                     {meeting.status === 'ongoing' ? 'Join' : 'Start'}
                   </button>
                 )}
                 
-                <button className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1">
+                <button className="btn btn-outline-primary btn-sm mx-2">
                   <Edit size={14} />
                   Edit
                 </button>
                 
                 <button
-                  className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1"
+                  className="btn btn-outline-danger btn-sm "
                   onClick={() => onDelete(meeting._id)}
                   disabled={deletingId === meeting._id}
                 >
@@ -384,10 +388,7 @@ const CardsView = ({ meetings, onStartClass, onDelete, deletingId, formatTime, f
                   {deletingId === meeting._id ? 'Deleting...' : 'Delete'}
                 </button>
                 
-                <button className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-1">
-                  <Eye size={14} />
-                  View
-                </button>
+               
               </div>
             </div>
           </div>

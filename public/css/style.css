@@ -716,7 +716,10 @@ select.form-control.has-value{
     margin: 0;
     padding: 0;
 }
-
+.logo-img {
+        height: 55px       !important; /* Adjust the height as needed */
+   /* width: 100px!important; */
+  }
 .menu ul li a {
     text-transform: inherit;
     font-weight: normal;
@@ -791,7 +794,25 @@ select.form-control.has-value{
     color: #fff;
     text-decoration: none;
 }
-
+@media (min-width: 993px) and (max-width: 1136px) {
+    
+ .logo-img {
+        height: 50px       !important; /* Adjust the height as needed */
+   
+  }
+   .menu li a{
+   
+    padding: 0%;
+    padding-left: 12px;
+    padding-right: 12px;
+   }
+   .menu li a button{
+    padding: 8px 10px;
+   }
+   
+  
+ 
+}
 @media (min-width: 320px) and (max-width: 992px) {
     .navbar.bg-transparent {
         background: linear-gradient(75deg, #1351a8 5%, #162e66) !important;
@@ -801,6 +822,7 @@ select.form-control.has-value{
         background: #ffffff;
     } 
       .logo-img {
+        height: 50px       !important; /* Adjust the height as needed */
    
   }
     .navbar.custom-nav .navbar-toggler{
@@ -817,6 +839,14 @@ select.form-control.has-value{
         margin-bottom: 0.5rem; 
      
     }
+    .navbar-brand {
+    display: flex;
+   
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+   
+  }
  
     .white-bg.affix, .custom-nav.affix, .navbar.white-bg {
         background: #ffffff !important;
@@ -855,11 +885,14 @@ select.form-control.has-value{
     }
 }
 
-@media (min-width: 768px) and (max-width: 979px) {
+@media (min-width: 768px) and (max-width: 980px) {
     .mainWrap {
         width: 768px;
     }
-
+ .logo-img {
+        height: 55px       !important; /* Adjust the height as needed */
+   
+  }
     .menu ul {
         top: 37px;
     }
@@ -878,13 +911,13 @@ select.form-control.has-value{
    
   .logo-img {
     padding-top: 5px  !important;
-    height: 120px !important; /* Smaller height for tablets */
+    height: 55px !important; /* Smaller height for tablets */
   }
   
   .navbar-brand {
 
     display: flex;
-    height: 90px;
+    
     align-items: center;
     justify-content: space-between;
     width: 100%;

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import LoginForm from "./LoginForm";
 
 
@@ -9,7 +10,7 @@ const LoginPage = () => {
                 <div className="row align-items-center justify-content-between pt-5 pt-sm-5 pt-md-5 pt-lg-0">
                     {/* Left Side */}
                     <div className="col-md-7 col-lg-6">
-                        <div className="hero-content-left text-white">
+                        <div className="hero-content-left text-white my-5">
                             <h1 className="text-white">Welcome Back!</h1>
                             <p className="lead">
                                 Keep your face always toward the sunshine — and shadows will fall behind you.
@@ -32,10 +33,10 @@ const LoginPage = () => {
                             {/* Footer */}
                             <div className="card-footer bg-transparent border-top px-md-5">
                                 <small>Not registered?</small>
-                                <a href="sign-up.html" className="small">
+                                <Link to="/sign-up" className="small">
                                     {" "}
                                     Create account
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

@@ -209,14 +209,14 @@ const CardsView = ({ batches, expandedBatch, selectedBatchName, onViewStudents, 
                   className="btn btn-outline-primary btn-sm d-flex align-items-center gap-1"
                   onClick={() => onEdit(batch)}
                 >
-                  <i className="fas fa-edit"></i>
+                  
                   Edit
                 </button>
                 <button
                   className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1"
                   onClick={() => onDelete(batch._id, batch.batchName)}
                 >
-                  <i className="fas fa-trash"></i>
+                  
                   Delete
                 </button>
                 <button
@@ -225,7 +225,7 @@ const CardsView = ({ batches, expandedBatch, selectedBatchName, onViewStudents, 
                   }`}
                   onClick={() => onViewStudents(batch._id, batch.batchName)}
                 >
-                  <i className="fas fa-eye"></i>
+                 
                   {expandedBatch === batch._id ? "Hide Students" : "View Students"}
                 </button>
               </div>

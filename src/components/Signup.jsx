@@ -1,4 +1,5 @@
-import OtpPage from "./Otppage";
+import { Link } from "react-router-dom";
+
 import SignupForm from "./SignupForm";
 
 
@@ -9,7 +10,7 @@ const SignupPage = () => {
         <div className="row align-items-center justify-content-between pt-5 pt-sm-5 pt-md-5 pt-lg-0">
           {/* Left Side Content */}
           <div className="col-md-7 col-lg-6">
-            <div className="hero-content-left text-white">
+            <div className="hero-content-left text-white my-5">
               <h1 className="text-white">Create Your Account</h1>
               <p className="lead">
                 Keep your face always toward the sunshine — and shadows will fall behind you.
@@ -34,7 +35,7 @@ const SignupPage = () => {
               {/* Footer Link */}
               <div className="card-footer px-md-5 bg-transparent border-top">
                 <small>Already have an account?</small>
-                <a href="login.html" className="small">Sign in</a>
+                <Link to={"/login"} className="small">Sign in</Link>
               </div>
             </div>
           </div>

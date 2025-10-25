@@ -23,8 +23,11 @@ const AdminPaymentsTable = () => {
   const { data: payments, isLoading } = useGetTransactionQuery();
   console.log(payments,"payments")
 
-  if (isLoading || !payments?.transactions?.length) {
+  if (isLoading) {
     return <div className="text-center py-4">Loading payments...</div>;
+  }
+  if(payments?.transactions.length === 0){
+    return <div className="text-center py-4">No payments found.</div>;
   }
 
   return (
@@ -49,13 +52,13 @@ const AdminPaymentsTable = () => {
               _id,
               orderId,
               paymentId,
-              amountInRupees,
+              amount,
               status,
               createdAt,
               paymentMode,
               appUsed,
-              userId = {},
-              courseIds = []
+              user = {},
+              courses = []
             } = payment;
 
             const badgeColor = statusColors[status] || "dark";
@@ -71,12 +74,12 @@ const AdminPaymentsTable = () => {
                 <td className="fw-bold text-primary">{orderId}</td>
                 <td>{paymentId || "—"}</td>
                 <td>
-                  <div>{userId.name || "Unknown"}</div>
-                  <small className="text-muted">{userId.email || "—"}</small>
+                  <div>{user.name || "Unknown"}</div>
+                  <small className="text-muted">{user.email || "—"}</small>
                 </td>
                 <td>
-                  {courseIds.length > 0 ? (
-                    courseIds.map((course, i) => (
+                  {courses.length > 0 ? (
+                    courses.map((course, i) => (
                       <div key={course._id || i}>
                         <span className="fw-semibold">{course.name}</span>
                         <small className="text-muted ms-1">
@@ -88,7 +91,7 @@ const AdminPaymentsTable = () => {
                     <span className="text-muted">No courses</span>
                   )}
                 </td>
-                <td>₹{amountInRupees?.toLocaleString() || "—"}</td>
+                <td>₹{amount?.toLocaleString() || "—"}</td>
                 <td>{paymentMode?.toUpperCase() || "—"}</td>
                 <td>{appUsed || "—"}</td>
                 <td>

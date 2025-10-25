@@ -306,6 +306,16 @@
   background: var(--primary-color);
   color: white;
 }
+.dashboard-app-container .btn-outline-danger {
+  background: transparent;
+  border: 2px solid var(--error-color);
+  color: var(--error-color);
+}
+
+.dashboard-app-container .btn-outline-danger:hover {
+  background: var(--error-color);
+  color: white;
+}
 
 .dashboard-app-container .btn-sm {
   padding: 0.5rem 1rem;

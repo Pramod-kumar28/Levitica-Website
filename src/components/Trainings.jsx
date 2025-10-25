@@ -48,6 +48,16 @@ const Trainings = () => {
             </div>
 
             <div className="row">
+              <div className="col-lg-4 col-md-6 col-sm-6 d-flex" >
+                  <div className="services-single animated-hover text-center p-5 my-md-3 my-lg-3 my-sm-0 shadow-sm white-bg rounded w-100">
+                    <img src="/img/internshipcard.svg" alt="" width="80" className="mb-3" />
+                    <h5>Internships</h5>
+                    <p className="mb-2">Step into the world of innovation and growth. Our internships offer hands-on experience, and a chance to work on impactful projects. Whether you're exploring design, development, marketing, or research, there's a role tailored to your passion.</p>
+                    <Link to="/internships" className="detail-link mt-4">
+                      Get More Info <span className="ti-arrow-right"></span>
+                    </Link>
+                  </div>
+                </div>
               {data.courses.map((course, index) => (
                 <div className="col-lg-4 col-md-6 col-sm-6 d-flex" key={index}>
                   <div className="services-single animated-hover text-center p-5 my-md-3 my-lg-3 my-sm-0 shadow-sm white-bg rounded w-100">

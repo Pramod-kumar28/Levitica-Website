@@ -59,6 +59,8 @@ import ScrollToTop from './utils/ScrollToTop';
 import StudentsTable from './components/dashboards/Admin/UserCreation/AllStudentTable';
 import { Privacy, Refund, Terms, KnowledgeBase ,Forums,SystemStatus, AffiliatesProgram } from './components/Sections/AllTermsPolicy';
 import AdminPaymentsTable from './components/dashboards/Admin/Payments/TransactionTable';
+import Internship from './components/Sections/Internship/Internship';
+import PaymentSuccess from './components/Sections/Internship/PaymentSuccessPage';
 
 // Create a layout component for pages that need the full App structure
 
@@ -78,6 +80,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       { path: 'trainings', element: <Trainings /> },
+     
       { path: 'trainings/:category/:courseId?', element: <CourseDetail /> },
       { path: 'services', element: <Services /> },
       { path: 'services/:serviceName', element: <ServiceDetails /> },
@@ -108,6 +111,8 @@ const router = createBrowserRouter([
     element: <AuthLayout />, // No navbar, no chat - just toast
     children: [
       { path: 'password-reset', element: <ForgotPassword /> },
+       { path: 'internships', element: <Internship /> },
+       { path: 'internships/payment-success', element: <PaymentSuccess /> },
       { path: 'reset-password', element: <ChangePassword /> },
       { path: 'verify-email', element: <EmailVerification /> },
     ]
