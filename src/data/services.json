@@ -1,5 +1,12 @@
 {
   "services": [
+   {
+  "title": "IT Services & Solutions",
+  "img": "/img/svg/429-error.svg",
+  "description": "Comprehensive IT services including software development, cloud solutions, infrastructure management, cybersecurity, and ongoing technical support.",
+  "path": "/services/it-services"
+}
+,
     {
       "title": "Manpower & Staffing Solutions",
       "img": "/img/Manpower-Support.webp",

@@ -1,9 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { allServices, contactInfo, servicesData } from '../data/servicesData';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import Footer from './Footer';
+  import {
+  Code,
+  Smartphone,
+  Cloud,
+  ServerCog,
+  ShieldCheck,
+  Bug,
+  Brain,
+} from "lucide-react";
 
 const ServiceDetails = () => {
+
+
+const iconMap = {
+  Code,
+  Smartphone,
+  Cloud,
+  ServerCog,
+  ShieldCheck,
+  Bug,
+  Brain,
+};
+
   const { serviceName } = useParams();
   const [service, setService] = useState(null);
   const navigate = useNavigate();
@@ -20,8 +40,8 @@ const ServiceDetails = () => {
         // Find service by slug (URL parameter)
         const serviceData = servicesData[serviceName]
         console.log(serviceData)
-      
-        
+
+
         if (serviceData) {
           setService(serviceData);
         } else {
@@ -39,14 +59,14 @@ const ServiceDetails = () => {
 
   const handleServiceChange = (title) => {
     // Find the service object to get the correct slug
-  const selectedService=   title
+    const selectedService = title
       ?.toLowerCase()
       .replace(/\([^)]*\)/g, '')           // Remove anything in parentheses
       .replace(/&/g, 'and')                // Replace ampersand with 'and'
       .replace(/[^a-z0-9\s]/g, '')         // Remove special characters
       .trim()
-      .replace(/\s+/g, '-')  
-    
+      .replace(/\s+/g, '-')
+
     if (selectedService) {
       navigate(`/services/${selectedService}`);
       window.scrollTo(0, 0); // Scroll to top after navigation
@@ -88,21 +108,37 @@ const ServiceDetails = () => {
                 <div className="services-detail-content mt-4">
                   <h4>{service?.title}</h4>
                   <p className="lead">{service.description}</p>
-                  
+
                   <h5 className="mt-5">Our Service Offerings</h5>
                   <div className="row mt-4">
-                    {service.serviceTypes.map((type, index) => (
-                      <div key={index} className="col-md-6 mb-4">
-                        <div className="card h-100">
-                          <div className="card-body">
-                            <h6 className="card-title text-primary">{type.name}</h6>
-                            <p className="card-text">{type.description}</p>
+                    {service.serviceTypes.map((type, index) => {
+                      const Icon = iconMap[type.icon];
+
+                      return (
+                        <div key={index} className="col-md-6 mb-4">
+                          <div className="card h-100 border-0 shadow-sm it-service-card">
+                            <div className="card-body">
+                              <div className="d-flex align-items-start">
+                                <div className="it-icon-box mr-3">
+                                  {Icon && <Icon size={28} />}
+                                </div>
+                                <div>
+                                  <h6 className="card-title text-primary mb-1">
+                                    {type.name}
+                                  </h6>
+                                  <p className="card-text mb-0">
+                                    {type.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
-                  
+
+
                   <div className="row mt-5">
                     <div className="col-md-6">
                       <div className="benefits-wrap">
@@ -131,44 +167,44 @@ const ServiceDetails = () => {
                       </div>
                     </div>
                   </div>
-    <>
-      <h5 className="mt-5">Frequently Asked Questions</h5>
-      <div id="accordion-1" className="accordion accordion-faq mt-4">
-        {service.faqs.map((faq, index) => (
-          <div key={index} className="card">
-            <div 
-              className={`card-header py-3 ${openIndex === index ? '' : 'collapsed'}`}
-              id={`heading-1-${index+1}`}
-              onClick={() => toggleFAQ(index)}
-              style={{ cursor: "pointer" }}
-              role="button"
-              aria-expanded={openIndex === index}
-              aria-controls={`collapse-1-${index+1}`}
-            >
-              <h6 className="mb-0">
-                <span className={`ti-${index === 0 ? 'help-alt' : index === 1 ? 'search' : index === 2 ? 'time' : 'shield'} mr-3`}></span>
-                {faq.question}
-              </h6>
-            </div>
-            <div 
-              id={`collapse-1-${index+1}`} 
-              className={`collapse ${openIndex === index ? 'show' : ''}`}
-              aria-labelledby={`heading-1-${index+1}`}
-              data-parent="#accordion-1"
-            >
-              <div className="card-body">
-                <p>{faq.answer}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
+                  <>
+                    <h5 className="mt-5">Frequently Asked Questions</h5>
+                    <div id="accordion-1" className="accordion accordion-faq mt-4">
+                      {service.faqs.map((faq, index) => (
+                        <div key={index} className="card">
+                          <div
+                            className={`card-header py-3 ${openIndex === index ? '' : 'collapsed'}`}
+                            id={`heading-1-${index + 1}`}
+                            onClick={() => toggleFAQ(index)}
+                            style={{ cursor: "pointer" }}
+                            role="button"
+                            aria-expanded={openIndex === index}
+                            aria-controls={`collapse-1-${index + 1}`}
+                          >
+                            <h6 className="mb-0">
+                              <span className={`ti-${index === 0 ? 'help-alt' : index === 1 ? 'search' : index === 2 ? 'time' : 'shield'} mr-3`}></span>
+                              {faq.question}
+                            </h6>
+                          </div>
+                          <div
+                            id={`collapse-1-${index + 1}`}
+                            className={`collapse ${openIndex === index ? 'show' : ''}`}
+                            aria-labelledby={`heading-1-${index + 1}`}
+                            data-parent="#accordion-1"
+                          >
+                            <div className="card-body">
+                              <p>{faq.answer}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
 
                 </div>
               </div>
             </div>
-            
+
             {/* Sidebar */}
             <div className="col-lg-4 col-md-4">
               <div className="sidebar-right pl-4">
@@ -226,15 +262,15 @@ const ServiceDetails = () => {
             </div>
             <div className="col-md-4">
               <div className="action-btn text-lg-right text-sm-left">
-                <Link  to={"/contact-us"} className="btn secondary-solid-btn">Request a Consultation</Link>
+                <Link to={"/contact-us"} className="btn secondary-solid-btn">Request a Consultation</Link>
               </div>
             </div>
           </div>
         </div>
       </section>
     </div>
-    <Footer/>
-    </>
+
+  </>
   );
 };
 

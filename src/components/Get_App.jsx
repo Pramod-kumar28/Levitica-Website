@@ -168,7 +168,7 @@ const GetApp=()=>{
 
 
 </div>
-<Footer/>
+
     </>
 }
 export default GetApp

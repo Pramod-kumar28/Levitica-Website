@@ -1,0 +1,150 @@
+.hero-it-slide {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  color: white;
+}
+
+/* Dark overlay */
+.hero-it-slide .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.55) 30%, rgba(0,0,0,0.4));
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
+}
+
+/* Title */
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+.hero-title span {
+  color: #00d4ff;
+}
+
+/* Service Tags */
+.services-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.services-tags span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: white;
+}
+
+.services-tags svg {
+  color: #00d4ff;
+  font-size: 16px;
+}
+
+/* Animations */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-80px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes upIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide {
+  animation: slideIn 1s ease forwards;
+}
+
+.animate-fade {
+  animation: fadeIn 1.2s ease forwards;
+}
+
+.animate-fade-delay {
+  animation: fadeIn 1.6s ease forwards;
+}
+
+.animate-up {
+  animation: upIn 1.4s ease forwards;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-it-slide {
+    height: auto;
+    padding: 120px 0 80px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .services-tags {
+    justify-content: center;
+  }
+
+  .hero-it-slide {
+    height: auto;
+    padding: 100px 0 60px;
+  }
+
+  .hero-text .btn {
+    width: 100%;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 1.7rem;
+  }
+
+  .services-tags span {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  .hero-it-slide .overlay {
+    background: rgba(0,0,0,0.7);
+  }
+}
+
+/* Hide tags on tiny screens (optional clean UI) */
+@media (max-width: 420px) {
+  .services-tags {
+    display: none;
+  }
+}

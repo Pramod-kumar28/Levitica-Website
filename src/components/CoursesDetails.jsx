@@ -110,7 +110,7 @@ const CourseDetail = () => {
                 )}
             </div>
 
-            <Footer />
+      
         </>
     );
 }

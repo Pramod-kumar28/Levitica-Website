@@ -33,7 +33,7 @@ const ManPower=()=>{
        <ManpowerSection/> 
       </div>
 
-      <Footer />
+      
     </>
 }
 

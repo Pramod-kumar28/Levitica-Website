@@ -1340,8 +1340,9 @@ export const Forums = () => {
 };
 export const KnowledgeBase = () => {
     return (
-        <section className="py-5 bg-light">
-            <div className="container">
+        <section className="pt-100 bg-light">
+           <div className="py-5">
+             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-lg-10">
                         <div className="text-center mb-5">
@@ -1538,6 +1539,7 @@ export const KnowledgeBase = () => {
                     </div>
                 </div>
             </div>
+           </div>
         </section>
     );
 };

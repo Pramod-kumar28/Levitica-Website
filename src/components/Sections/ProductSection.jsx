@@ -1,79 +1,135 @@
+import "./productsecion.css";
+import { motion } from "framer-motion";
+import {
+  FaUsersCog,
+  FaBuilding,
+  FaBrain,
+  FaHospital,
+  FaGraduationCap,
+  FaCheckCircle
+} from "react-icons/fa";
 
-import './productsecion.css';
+const products = [
+  {
+    id: 1,
+    title: "HRMS",
+    subtitle: "Human Resource Management System",
+    description: "A complete HR digital solution for modern businesses.",
+    features: [
+      "End-to-end HR lifecycle management",
+      "Payroll, attendance & performance tracking"
+    ],
+    icon: FaUsersCog,
+    accentColor: "#4a6fff"
+  },
+  {
+    id: 2,
+    title: "Hostel & PG System",
+    subtitle: "Maintenance & Booking Platform",
+    description: "Smart booking & management platform for hostels and PGs.",
+    features: [
+      "Room allocation & booking management",
+      "Payments & maintenance tracking"
+    ],
+    icon: FaBuilding,
+    accentColor: "#ff6b6b"
+  },
+  {
+    id: 3,
+    title: "AI-Powered HR + CRM",
+    subtitle: "Next-gen Business Solutions",
+    description: "AI-driven tools to automate HR and business workflows.",
+    features: [
+      "Automated resume screening",
+      "CRM & productivity automation"
+    ],
+    icon: FaBrain,
+    accentColor: "#2ed573"
+  },
+  {
+    id: 4,
+    title: "DVSkillHub",
+    subtitle: "EdTech Learning Platform",
+    description: "A modern e-learning platform for students and professionals.",
+    features: [
+      "Courses, quizzes & certifications",
+      "Instructor & student dashboards"
+    ],
+    icon: FaGraduationCap,
+    accentColor: "#f59e0b"
+  },
+  {
+    id: 5,
+    title: "HMS",
+    subtitle: "Hospital Management System",
+    description: "Complete hospital automation for clinics & hospitals.",
+    features: [
+      "Patient records & appointment scheduling",
+      "Billing, pharmacy & lab management"
+    ],
+    icon: FaHospital,
+    accentColor: "#06b6d4"
+  }
+];
 
 const ProductsShowcase = () => {
-  const products = [
-    {
-      id: 1,
-      title: "HRMS",
-      subtitle: "Human Resource Management System",
-      description: "A complete HR digital solution for modern businesses.",
-      features: [
-        "End-to-end HR lifecycle management",
-        "Payroll, attendance & performance tracking"
-      ],
-      icon: "📊",
-      accentColor: "#4a6fff"
-    },
-    {
-      id: 2,
-      title: "Hostel & PG System",
-      subtitle: "Maintenance & Booking Platform",
-      description: "A modern booking + management system designed for hostels, PGs, and co-living spaces.",
-      features: [
-        "Room allocation & booking management",
-        "Payments & maintenance tracking"
-      ],
-      icon: "🏨",
-      accentColor: "#ff6b6b"
-    },
-    {
-      id: 3,
-      title: "AI-Powered HR + CRM",
-      subtitle: "Next-gen Business Solutions",
-      description: "AI-driven HR tools and productivity boosters for scaling businesses.",
-      features: [
-        "Automated resume screening & analytics",
-        "CRM & productivity tools (Upcoming)"
-      ],
-      icon: "🤖",
-      accentColor: "#2ed573"
-    }
-  ];
-
   return (
-    <section className="products-showcase">
+    <section className="products-modern">
       <div className="container">
+
         <div className="section-header">
-          <h2>Our Products</h2>
-          <p className="lead">
-            We build and deliver innovative digital products for businesses, colleges, and individuals.
+          <span className="badge">Products</span>
+          <h2>Digital Products We Build</h2>
+          <p>
+            Scalable enterprise-grade software products designed for businesses,
+            institutions, and growing teams.
           </p>
         </div>
-        
+
         <div className="products-grid">
-          {products.map(product => (
-            <div 
-              key={product.id} 
-              className="product-card"
-              style={{ '--accent-color': product.accentColor }}
-            >
-              <div className="card-icon m-0 p-0">{product.icon}</div>
-              <h3 className='p-0 m-0'>{product.title}</h3>
-              <p className="product-subtitle">{product.subtitle}</p>
-              
-              <ul className="features-list m-0">
-                {product.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
-              
-              <p className="product-description">{product.description}</p>
-              
-              <button className="cta-button">Learn More</button>
-            </div>
-          ))}
+          {products.map((product, i) => {
+            const Icon = product.icon;
+
+            return (
+              <motion.div
+                key={product.id}
+                className="product-card-modern"
+                style={{ "--accent": product.accentColor }}
+                initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.6, delay: i * 0.12 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -12, scale: 1.02 }}
+              >
+                <div className="product-header">
+                  <div className="icon-box">
+                    <Icon size={28} />
+                  </div>
+                  <div>
+                    <h3>{product.title}</h3>
+                    <span>{product.subtitle}</span>
+                  </div>
+                </div>
+
+                <p className="product-description">
+                  {product.description}
+                </p>
+
+                <ul className="features">
+                  {product.features.map((feature, index) => (
+                    <li key={index}>
+                      <FaCheckCircle size={14} />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                
+              </motion.div>
+            );
+          })}
         </div>
+
       </div>
     </section>
   );

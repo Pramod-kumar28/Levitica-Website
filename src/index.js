@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css'; // Tailwind here
+import './index.css'; 
 
 
 import reportWebVitals from './reportWebVitals';
@@ -61,6 +61,9 @@ import { Privacy, Refund, Terms, KnowledgeBase ,Forums,SystemStatus, AffiliatesP
 import AdminPaymentsTable from './components/dashboards/Admin/Payments/TransactionTable';
 import Internship from './components/Sections/Internship/Internship';
 import PaymentSuccess from './components/Sections/Internship/PaymentSuccessPage';
+import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+import ITServices from './components/ItService';
 
 // Create a layout component for pages that need the full App structure
 
@@ -70,8 +73,17 @@ const AuthLayout = () => (
   <>
     <ScrollToTop />
     <Outlet />
+  
   </>
 );
+
+const NoFooterLayout=()=>(
+  <>
+  <Navbar/>
+  <ScrollToTop/>
+  <Outlet/>
+  </>
+)
 
 const router = createBrowserRouter([
   {
@@ -83,13 +95,13 @@ const router = createBrowserRouter([
      
       { path: 'trainings/:category/:courseId?', element: <CourseDetail /> },
       { path: 'services', element: <Services /> },
+      // { path: 'services/it-services', element: <ITServices /> },
       { path: 'services/:serviceName', element: <ServiceDetails /> },
       { path: 'contact-us', element: <ContactUs /> },
       { path: 'about-us', element: <AboutUs /> },
       { path: 'man-power', element: <ManPower /> },
       { path: 'Consultancy', element: <Consultancy /> },
-      { path: 'login', element: <Login /> },
-      { path: 'sign-up', element: <Signup /> },
+      
       { path: 'dcm-app', element: <GetApp /> },
       { path: 'privacy', element: <Privacy /> },
       { path: 'refund', element: <Refund /> },
@@ -107,9 +119,18 @@ const router = createBrowserRouter([
     ]
   },
   {
+    path:"/",
+    element:<NoFooterLayout/>,
+    children:[
+       { path: 'login', element: <Login /> },
+      { path: 'sign-up', element: <Signup /> },
+    ]
+  },
+  {
     path: '/',
     element: <AuthLayout />, // No navbar, no chat - just toast
     children: [
+     
       { path: 'password-reset', element: <ForgotPassword /> },
        { path: 'internships', element: <Internship /> },
        { path: 'internships/payment-success', element: <PaymentSuccess /> },

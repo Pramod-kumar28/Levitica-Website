@@ -62,9 +62,11 @@ export const servicesData = {
       }
     ]
   },
+
   "corporate-trainings": {
     id: 2,
     title: "Corporate Trainings",
+
     slug: "corporate-trainings",
     image: "/img/Corporate Trainings.svg",
     description: "Helping employees adapt, upskill, and perform in dynamic business environments.",
@@ -645,6 +647,140 @@ export const servicesData = {
         answer: "Absolutely. We have experience delivering synchronized training to distributed teams using our virtual training platform. We can also train train-the-trainer programs to build internal capability within your organization."
       }
     ]
+  },
+  "it-services": {
+  id: 11,
+  title: "IT Services & Solutions",
+  slug: "it-services",
+  image: "/img/svg/429-error.svg",
+  description:
+    `End-to-end IT services designed to help organizations build, modernize, secure, and scale digital systems efficiently.
+We combine technology expertise, industry best practices, and agile delivery to create reliable, future-ready solutions.
+Our focus is on driving business value through scalable architecture, performance optimization, and long-term support`,
+
+  serviceTypes: [
+    {
+      name: "Web Development",
+      description:
+        "Scalable, secure, and responsive web applications using modern frameworks.",
+      icon: "Code",
+    },
+    {
+      name: "Mobile App Development",
+      description:
+        "High-performance Android and iOS apps built for scalability and user experience.",
+      icon: "Smartphone",
+    },
+    {
+      name: "Cloud Services",
+      description:
+        "Cloud migration, optimization, and managed services across AWS, Azure, and GCP.",
+      icon: "Cloud",
+    },
+    {
+      name: "DevOps & Infrastructure",
+      description:
+        "CI/CD pipelines, automation, monitoring, and infrastructure reliability.",
+      icon: "ServerCog",
+    },
+    {
+      name: "Cybersecurity",
+      description:
+        "Security audits, compliance, threat monitoring, and risk mitigation solutions.",
+      icon: "ShieldCheck",
+    },
+    {
+      name: "Software Testing & QA",
+      description:
+        "Manual and automated testing to ensure quality, stability, and performance.",
+      icon: "Bug",
+    },
+    {
+      name: "Machine Learning & AI",
+      description:
+        "AI-driven solutions for automation, analytics, and smarter decision-making.",
+      icon: "Brain",
+    },
+  ],
+
+  keyHighlights: [
+    "Business-focused IT consulting approach",
+    "Modern, scalable, and secure architectures",
+    "Experienced engineers and domain experts",
+    "Agile and transparent delivery process",
+  ],
+
+  engagementModels: [
+    "Fixed-price project delivery",
+    "Dedicated development teams",
+    "Time & material engagement",
+    "Long-term support & maintenance",
+  ],
+
+  benefits: [
+    "Future-ready and scalable IT solutions",
+    "Improved system performance and security",
+    "Faster time-to-market",
+    "Reduced operational and infrastructure costs",
+    "Reliable post-deployment support",
+  ],
+
+  industries: [
+    "Information Technology",
+    "Healthcare",
+    "Finance & Banking",
+    "E-commerce",
+    "Manufacturing",
+    "Education",
+    "Startups & SaaS",
+  ],
+
+  process: [
+    {
+      step: "Discover",
+      description:
+        "Understand business goals, technical requirements, and challenges.",
+    },
+    {
+      step: "Design & Build",
+      description:
+        "Architect, develop, and test scalable IT solutions.",
+    },
+    {
+      step: "Deploy & Support",
+      description:
+        "Secure deployment, monitoring, and ongoing optimization.",
+    },
+  ],
+
+  faqs: [
+    {
+      question: "What technologies do you work with?",
+      answer:
+        "We work with modern technologies including React, Node.js, Java, Python, AWS, Azure, Docker, Kubernetes, and AI/ML frameworks.",
+    },
+    {
+      question: "Do you provide ongoing support and maintenance?",
+      answer:
+        "Yes, we offer long-term support, maintenance, monitoring, and continuous optimization services.",
+    },
+    {
+      question: "Can you scale teams based on project needs?",
+      answer:
+        "Absolutely. Our engagement models allow flexible team scaling based on project requirements.",
+    },
+    {
+      question: "How do you ensure security and quality?",
+      answer:
+        "We follow industry best practices, security standards, and rigorous QA processes throughout the project lifecycle.",
+    },
+    {
+      question: "Do you support startups and enterprises?",
+      answer:
+        "Yes, we work with startups, SMEs, and large enterprises across multiple industries.",
+    },
+  ],
+
   }
 }
 

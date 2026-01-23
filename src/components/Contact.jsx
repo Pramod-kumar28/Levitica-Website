@@ -2,28 +2,28 @@ import ContactUsForm from "./ContactForm"
 import Footer from "./Footer"
 
 const ContactUs = () => {
-    const contactMethods = [
-        {
-            icon: 'ti-mobile',
-            title: 'Call Us',
-            detail: '+91 7337572543',
-        },
-        {
-            icon: 'ti-location-pin',
-            title: 'Visit Us',
-            detail: ' Office #407, 4th Floor, Jain Sadguru Image Ayyappa Society, Madhapur, Hyderabad, Telangana 500081'
-      },
-        {
-            icon: 'ti-email',
-            title: 'Mail Us',
-            detail: 'hr@designcareermetrics.com',
-        },
-        {
-            icon: 'ti-headphone-alt',
-            title: 'Live Chat',
-            detail: 'Chat with Us 24/7',
-        },
-    ];
+    // const contactMethods = [
+    //     {
+    //         icon: 'ti-mobile',
+    //         title: 'Call Us',
+    //         detail: '+91 7337572543',
+    //     },
+    //     {
+    //         icon: 'ti-location-pin',
+    //         title: 'Visit Us',
+    //         detail: ' Office #407, 4th Floor, Jain Sadguru Image Ayyappa Society, Madhapur, Hyderabad, Telangana 500081'
+    //   },
+    //     {
+    //         icon: 'ti-email',
+    //         title: 'Mail Us',
+    //         detail: 'hr@designcareermetrics.com',
+    //     },
+    //     {
+    //         icon: 'ti-headphone-alt',
+    //         title: 'Live Chat',
+    //         detail: 'Chat with Us 24/7',
+    //     },
+    // ];
     return <>
         <div className="main pt-100">
 
@@ -45,7 +45,7 @@ const ContactUs = () => {
             {/* <!--header section end--> */}
 
             {/* <!--contact us promo start--> */}
-            <section className="contact-us-promo pt-100">
+            {/* <section className="contact-us-promo pt-100">
                 <div className="container">
                     <div className="row">
                         {contactMethods.map((method, index) => (
@@ -65,7 +65,7 @@ const ContactUs = () => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section> */}
             {/* <!--contact us promo end--> */}
 
             {/* <!--contact us section start--> */}
@@ -121,7 +121,7 @@ const ContactUs = () => {
 
 
         </div>
-        <Footer />
+        
 
 
     </>

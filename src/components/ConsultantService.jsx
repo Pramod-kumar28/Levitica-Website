@@ -33,7 +33,7 @@ const Consultancy=()=>{
       
       </div>
 
-      <Footer />
+      
     </>
 }
 

@@ -176,10 +176,10 @@ const CoursesCarouselInHome = () => {
           </div>
         </div>
       </div>
-        <div className="view-all-container">
+        <div className="text-center pt-5">
           <Link to={'/trainings'}>
           
-            <button className="view-all-btn">View All  Our Courses</button>
+            <button className="btn accent-solid-btn">View All  Our Courses</button>
           </Link>
           </div>
     </section>

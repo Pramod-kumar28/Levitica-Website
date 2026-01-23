@@ -33,7 +33,7 @@ const promoBlocks = [
 ];
 
 const AboutUsSection = () => (
-  <section className="about-us-section ptb-100">
+  <section className="about-us-section  mb-5">
     <div className="container">
       <div className="row justify-content-around align-items-center">
         <div className="col-md-12 col-lg-5">

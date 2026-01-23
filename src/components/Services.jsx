@@ -72,7 +72,7 @@ const Services=()=>{
         
       </div>
 
-      <Footer />
+
     
     </>
 }
