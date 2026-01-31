@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
+import {
+  Video,
+  Clock,
+  Calendar,
+  User,
+  PlayCircle,
+  CheckCircle,
+  AlertCircle,
+  BookOpen
+} from 'lucide-react';
+
 import { useGetLiveClassesQuery } from '../../../Services/student/liveClassServices';
 import { useJoinLiveClass } from '../../../hooks/useJoinLiveClass';
 
@@ -8,233 +19,274 @@ const LiveClasses = () => {
   const [selectedCourse, setSelectedCourse] = useState('all');
   const [selectedBatch, setSelectedBatch] = useState('all');
   const [currentTime, setCurrentTime] = useState(new Date());
-  
-  const { data: liveClassesData, isLoading, error, refetch } = useGetLiveClassesQuery(undefined,{refetchOnMountOrArgChange:true});
+
+  const {
+    data: liveClassesData,
+    isLoading,
+    error,
+    refetch,
+  } = useGetLiveClassesQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+  });
+
   const { joinClass } = useJoinLiveClass();
 
-  // Update time every 30 seconds for real-time button changes
+  /* 🔄 Update time every 30s */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
     }, 30000);
-    
     return () => clearInterval(interval);
   }, []);
 
-  // Process and filter classes
+  /* 🔍 Filtering */
   useEffect(() => {
-    if (liveClassesData?.liveClasses) {
-      let filtered = liveClassesData.liveClasses;
-      
-      if (selectedCourse !== 'all') {
-        filtered = filtered.filter(cls => cls.course?._id === selectedCourse);
-      }
-      
-      if (selectedBatch !== 'all') {
-        filtered = filtered.filter(cls => cls.batch?._id === selectedBatch);
-      }
-      
-      setFilteredClasses(filtered);
+    if (!liveClassesData?.liveClasses) return;
+
+    let filtered = liveClassesData.liveClasses;
+
+    if (selectedCourse !== 'all') {
+      filtered = filtered.filter(
+        cls => cls.course?._id === selectedCourse
+      );
     }
+
+    if (selectedBatch !== 'all') {
+      filtered = filtered.filter(
+        cls => cls.batch?._id === selectedBatch
+      );
+    }
+
+    setFilteredClasses(filtered);
   }, [liveClassesData, selectedCourse, selectedBatch]);
 
-  // Get unique courses and batches for filters
-  const courses = [...new Set(liveClassesData?.liveClasses
-    ?.map(cls => cls.course)
-    .filter(Boolean)
-    .map(course => ({ id: course._id, name: course.name })) || [])];
-
-  const batches = [...new Set(liveClassesData?.liveClasses
-    ?.map(cls => cls.batch)
-    .filter(Boolean)
-    .map(batch => ({ id: batch._id, name: batch.batchName })) || [])];
-
-  const handleJoinClick = (classId) => {
-    joinClass(classId);
-  };
-
-  // Format time only (HH:MM AM/PM)
-  const formatTime = (date) => {
-    return new Date(date).toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+  /* 🧠 Helpers */
+  const formatTime = date =>
+    new Date(date).toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: true 
+      hour12: true,
     });
-  };
 
-  // Check if class should be joinable based on daily time
   const shouldShowJoinButton = (startTime, duration) => {
     const classTime = new Date(startTime);
-    const nowTotalMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
-    const classStartMinutes = classTime.getHours() * 60 + classTime.getMinutes();
-    const classEndMinutes = classStartMinutes + duration;
-    
-    return nowTotalMinutes >= classStartMinutes && nowTotalMinutes <= classEndMinutes;
+    const nowMinutes =
+      currentTime.getHours() * 60 + currentTime.getMinutes();
+    const startMinutes =
+      classTime.getHours() * 60 + classTime.getMinutes();
+    const endMinutes = startMinutes + duration;
+
+    return nowMinutes >= startMinutes && nowMinutes <= endMinutes;
   };
 
-  // Check if class is upcoming today
-  const isUpcomingToday = (startTime) => {
+  const isUpcomingToday = startTime => {
     const classTime = new Date(startTime);
-    const nowTotalMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
-    const classStartMinutes = classTime.getHours() * 60 + classTime.getMinutes();
-    
-    return nowTotalMinutes < classStartMinutes;
+    const nowMinutes =
+      currentTime.getHours() * 60 + currentTime.getMinutes();
+    const startMinutes =
+      classTime.getHours() * 60 + classTime.getMinutes();
+    return nowMinutes < startMinutes;
   };
 
-  // Get daily status for display
   const getDailyStatus = (startTime, duration) => {
     if (shouldShowJoinButton(startTime, duration)) return 'live';
     if (isUpcomingToday(startTime)) return 'upcoming';
     return 'completed';
   };
 
+  /* ⏳ Loading */
   if (isLoading) {
     return (
-      <div className="live-classes-container">
-        <div className="live-classes-loading">
-          <div className="live-classes-spinner"></div>
-          <p>Loading live classes...</p>
-        </div>
+      <div className="tw-flex tw-items-center tw-justify-center tw-h-64">
+        <p className="tw-text-gray-500">Loading live classes...</p>
       </div>
     );
   }
 
+  /* ❌ Error */
   if (error) {
     return (
-      <div className="live-classes-container">
-        <div className="live-classes-error">
-          <h3>Error Loading Classes</h3>
-          <p>{error.data?.error || 'Failed to load live classes'}</p>
-          <button onClick={refetch}>Try Again</button>
-        </div>
+      <div className="tw-text-center tw-py-16">
+        <AlertCircle size={40} className="tw-mx-auto tw-text-red-500" />
+        <h3 className="tw-mt-4 tw-font-semibold">
+          Failed to load classes
+        </h3>
+        <button
+          onClick={refetch}
+          className="tw-mt-4 tw-bg-blue-600 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="live-classes-container">
-      <div className="live-classes-header">
-        <div className="header-content">
-          <h1>Live Classes</h1>
-          <p>Join your scheduled live sessions</p>
-        </div>
-        
-        {(courses.length > 0 || batches.length > 0) && (
-          <div className="live-classes-filters">
-            <div className="filter-group">
-              <select 
-                value={selectedCourse} 
-                onChange={(e) => setSelectedCourse(e.target.value)}
-              >
-                <option value="all">All Courses</option>
-                {courses.map(course => (
-                  <option key={course.id} value={course.id}>
-                    {course.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <select 
-                value={selectedBatch} 
-                onChange={(e) => setSelectedBatch(e.target.value)}
-              >
-                <option value="all">All Batches</option>
-                {batches.map(batch => (
-                  <option key={batch.id} value={batch.id}>
-                    {batch.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        )}
+    <div className="tw-space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="tw-text-2xl tw-font-bold">Live Classes</h1>
+        <p className="tw-text-sm tw-text-gray-500">
+          Join your scheduled live sessions
+        </p>
       </div>
 
-      <div className="live-classes-grid">
+      {/* Grid */}
+      <div className="
+        tw-grid
+        tw-grid-cols-1
+        sm:tw-grid-cols-2
+        lg:tw-grid-cols-3
+        tw-gap-6
+      ">
         {filteredClasses.length > 0 ? (
           filteredClasses.map(liveClass => {
-            const status = getDailyStatus(liveClass.startTime, liveClass.duration);
-            const canJoin = shouldShowJoinButton(liveClass.startTime, liveClass.duration);
-            
+            const status = getDailyStatus(
+              liveClass.startTime,
+              liveClass.duration
+            );
+            const canJoin = shouldShowJoinButton(
+              liveClass.startTime,
+              liveClass.duration
+            );
+
             return (
-              <div key={liveClass._id} className="live-class-card">
-                <div className="live-class-header">
-                  <h3>{liveClass.title}</h3>
-                  <span className={`status ${status}`}>
-                    {status === 'live' ? '🔴 LIVE' : status === 'upcoming' ? '⏰ UPCOMING' : '✅ COMPLETED'}
-                  </span>
+              <motion.div
+                key={liveClass._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="tw-bg-white tw-border tw-rounded-xl tw-p-5 tw-flex tw-flex-col"
+              >
+                {/* Header */}
+                <div className="tw-flex tw-items-center tw-justify-between">
+                  <h3 className="tw-font-semibold tw-text-sm">
+                    {liveClass.title}
+                  </h3>
+
+                  {status === 'live' && (
+                    <span className="tw-text-xs tw-font-semibold tw-text-red-600 tw-flex tw-items-center tw-gap-1">
+                      🔴 LIVE
+                    </span>
+                  )}
+                  {status === 'upcoming' && (
+                    <span className="tw-text-xs tw-font-medium tw-text-yellow-600">
+                      ⏰ UPCOMING
+                    </span>
+                  )}
+                  {status === 'completed' && (
+                    <span className="tw-text-xs tw-font-medium tw-text-green-600">
+                      ✅ COMPLETED
+                    </span>
+                  )}
                 </div>
-                
-                <div className="live-class-body">
-                  <div className="info-row">
-                    <span className="label">Course:</span>
-                    <span className="value">{liveClass.course?.name || 'N/A'}</span>
+
+                {/* Info */}
+                <div className="tw-mt-4 tw-space-y-2 tw-text-sm tw-text-gray-600">
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <BookIcon />
+                    <span>{liveClass.course?.name || 'N/A'}</span>
                   </div>
-                  
+
                   {liveClass.batch?.batchName && (
-                    <div className="info-row">
-                      <span className="label">Batch:</span>
-                      <span className="value">{liveClass.batch.batchName}</span>
+                    <div className="tw-flex tw-items-center tw-gap-2">
+                      <Calendar size={14} />
+                      <span>{liveClass.batch.batchName}</span>
                     </div>
                   )}
-                  
-                  <div className="info-row">
-                    <span className="label">Time:</span>
-                    <span className="value">Daily at {formatTime(liveClass.startTime)}</span>
+
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <Clock size={14} />
+                    <span>
+                      Daily at {formatTime(liveClass.startTime)}
+                    </span>
                   </div>
-                  
-                  <div className="info-row">
-                    <span className="label">Duration:</span>
-                    <span className="value">{liveClass.duration} minutes</span>
+
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <Video size={14} />
+                    <span>{liveClass.duration} minutes</span>
                   </div>
-                  
+
                   {liveClass.instructor?.name && (
-                    <div className="info-row">
-                      <span className="label">Instructor:</span>
-                      <span className="value">{liveClass.instructor.name}</span>
+                    <div className="tw-flex tw-items-center tw-gap-2">
+                      <User size={14} />
+                      <span>{liveClass.instructor.name}</span>
                     </div>
                   )}
                 </div>
-                
-                <div className="live-class-footer">
+
+                {/* Action */}
+                <div className="tw-mt-5">
                   {canJoin ? (
-                    <button 
-                      className="btn-join"
-                      onClick={() => handleJoinClick(liveClass._id)}
+                    <button
+                      onClick={() => joinClass(liveClass._id)}
+                      className="
+                        tw-w-full
+                        tw-flex
+                        tw-items-center
+                        tw-justify-center
+                        tw-gap-2
+                        tw-bg-red-600
+                        hover:tw-bg-red-700
+                        tw-text-white
+                        tw-py-2.5
+                        tw-rounded-lg
+                        tw-font-medium
+                      "
                     >
+                      <PlayCircle size={18} />
                       Join Live Class
                     </button>
                   ) : status === 'upcoming' ? (
-                    <button className="btn-upcoming" disabled>
+                    <button
+                      disabled
+                      className="
+                        tw-w-full
+                        tw-bg-yellow-100
+                        tw-text-yellow-700
+                        tw-py-2.5
+                        tw-rounded-lg
+                        tw-text-sm
+                      "
+                    >
                       Starts at {formatTime(liveClass.startTime)}
                     </button>
                   ) : (
-                    <button className="btn-completed" disabled>
+                    <button
+                      disabled
+                      className="
+                        tw-w-full
+                        tw-bg-gray-100
+                        tw-text-gray-500
+                        tw-py-2.5
+                        tw-rounded-lg
+                        tw-text-sm
+                      "
+                    >
                       Completed for Today
                     </button>
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })
-        ) : liveClassesData?.liveClasses?.length === 0 ? (
-          <div className="live-classes-empty">
-            <div className="live-classes-empty-icon">📅</div>
-            <h3>No Live Classes Scheduled</h3>
-            <p>Check back later for upcoming sessions</p>
-          </div>
         ) : (
-          <div className="live-classes-empty">
-            <div className="live-classes-empty-icon">🔍</div>
-            <h3>No Classes Found</h3>
-            <p>Try adjusting your filters</p>
+          <div className="tw-col-span-full tw-text-center tw-py-16">
+            <Calendar size={48} className="tw-mx-auto tw-text-gray-400" />
+            <h3 className="tw-mt-4 tw-font-semibold">
+              No Live Classes
+            </h3>
+            <p className="tw-text-gray-500">
+              Check back later for upcoming sessions
+            </p>
           </div>
         )}
       </div>
     </div>
   );
 };
+
+/* Small icon helper */
+const BookIcon = () => <BookOpen size={14} />;
 
 export default LiveClasses;

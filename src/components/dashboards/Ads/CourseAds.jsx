@@ -1,141 +1,195 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
 import { coursesAds } from '../../../data/coursesAds';
-import styles from './CourseAds.module.css';
 
 const CourseAdsCarousel = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-
-  // Create extended slides array for seamless looping
-  const extendedSlides = [...coursesAds, coursesAds[0]]; // Add first slide at the end
-  const totalSlides = coursesAds.length;
-  const extendedTotal = extendedSlides.length;
-
-  // Auto-rotate carousel with true infinite loop
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => {
-        if (prev >= extendedTotal - 1) {
-          // Jump to first slide (clone) without animation
-          setIsTransitioning(false);
-          return 0;
-        }
-        setIsTransitioning(true);
-        return prev + 1;
-      });
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [extendedTotal]);
-
-  // Handle transition end
-  const handleTransitionEnd = () => {
-    if (activeIndex === totalSlides) {
-      // When we reach the clone slide, instantly jump back to first real slide
-      setIsTransitioning(false);
-      setActiveIndex(0);
-    }
-  };
-
   const calculateDiscount = (original, current) => {
     const orig = parseInt(original);
     const curr = parseInt(current);
-    return (orig - curr) + "rs";
+    return `${orig - curr} rs`;
   };
 
   return (
-    <div className={styles['course-ads-carousel-container']}>
-      <div className={styles['course-carousel-wrapper']}>
-        <div className={styles['course-carousel']}>
-          <div 
-            className={styles['carousel-track']}
-            style={{ 
-              transform: `translateX(-${activeIndex * 100}%)`,
-              transition: isTransitioning ? 'transform 0.5s ease-in-out' : 'none'
-            }}
-            onTransitionEnd={handleTransitionEnd}
-          >
-            {extendedSlides.map((course, index) => (
-              <div key={`${course.id}-${index}`} className={styles['carousel-slide']}>
-                <div 
-                  className={styles['slide-background']}
-                  style={{ background: course.gradient }}
-                ></div>
-                
-                <div className={styles['slide-overlay']}>
-                  <div className={`container-fluid h-100 ${styles.container}`}>
-                    <div className={`row align-items-center h-100 ${styles.row}`}>
-                      <div className={`col-lg-8 col-md-7 ${styles['content-column']}`}>
-                        <div className={styles['course-content']}>
-                          <h3 className={`text-white ${styles['course-title']}`}>{course.title}</h3>
-                          
-                          <p className={styles['course-description']}>{course.description}</p>
-                          
-                          <div className={`mb-3 ${styles['course-features']}`}>
-                            <div className={styles['features-list']}>
-                              {course.features.map((feature, idx) => (
-                                <span key={idx} className={styles['feature-tag']}>
-                                  <i className="fas fa-check"></i> {feature}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          
-                          <div className={`mb-3 ${styles['course-meta']}`}>
-                            <span className={styles['meta-item']}>
-                              <i className="fas fa-clock"></i> {course.duration}
-                            </span>
-                            <span className={styles['meta-item']}>
-                              <i className="fas fa-users"></i> {course.students}
-                            </span>
-                          </div>
-                          
-                          <div className={styles['course-footer']}>
-                            <div className={styles['price-section']}>
-                              <span className={styles['current-price']}>{course.price}</span>
-                              <span className={styles['original-price']}>{course.originalPrice}</span>
-                              <span className={styles.discount}>
-                                Save {calculateDiscount(course.originalPrice, course.price)}
-                              </span>
-                            </div>
-                            
-                            <div className={styles['action-buttons']}>
-                              <button className={`btn btn-primary ${styles['btn-enroll']}`}>
-                                Enroll Now
-                              </button>
-                              <button className={`btn btn-outline-light ${styles['btn-details']}`}>
-                                View Details
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+    <div className="tw-w-full tw-rounded-xl tw-overflow-hidden">
+      <Swiper
+        modules={[Autoplay, Pagination, Navigation]}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        loop
+        pagination={{ clickable: true }}
+        navigation
+        className="tw-h-[380px] sm:tw-h-[420px] md:tw-h-[460px]"
+      >
+        {coursesAds.map(course => (
+          <SwiperSlide key={course.id}>
+            <div
+              className="tw-h-full tw-w-full tw-flex tw-items-center"
+              style={{ background: course.gradient }}
+            >
+              {/* Overlay for contrast */}
+              <div className="tw-w-full tw-h-full tw-bg-black/30">
+                <div className="tw-max-w-7xl tw-mx-auto tw-h-full tw-px-4 sm:tw-px-6 tw-flex tw-items-center">
+                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-6 md:tw-gap-10 tw-items-center tw-w-full">
+
+                    {/* LEFT CONTENT */}
+                    <div className="tw-text-white">
+                      <h2 className="
+                        tw-text-xl
+                        sm:tw-text-2xl
+                        md:tw-text-3xl
+                        lg:tw-text-4xl
+                        tw-font-bold
+                        tw-leading-tight
+                      ">
+                        {course.title}
+                      </h2>
+
+                      <p className="
+                        tw-mt-2
+                        sm:tw-mt-3
+                        tw-text-sm
+                        sm:tw-text-base
+                        tw-text-white/90
+                        tw-max-w-xl
+                      ">
+                        {course.description}
+                      </p>
+
+                      {/* FEATURES */}
+                      <div className="tw-flex tw-flex-wrap tw-gap-2 tw-mt-3 sm:tw-mt-4">
+                        {course.features.map((feature, idx) => (
+                          <span
+                            key={idx}
+                            className="
+                              tw-bg-white/15
+                              tw-backdrop-blur
+                              tw-text-xs
+                              sm:tw-text-sm
+                              tw-px-3
+                              tw-py-1
+                              tw-rounded-full
+                            "
+                          >
+                            ✓ {feature}
+                          </span>
+                        ))}
                       </div>
-                      
-                      <div className={`col-lg-4 col-md-5 d-none d-md-block ${styles['visual-column']}`}>
-                        <div className={styles['course-visual']}>
-                          <div className={styles['tech-stack']}>
-                            {course.features.map((feature, idx) => (
-                              <div key={idx} className={styles['tech-item']}>
-                                {feature.split(' ')[0]}
-                              </div>
-                            ))}
-                          </div>
+
+                      {/* META */}
+                      <div className="
+                        tw-flex
+                        tw-gap-4
+                        sm:tw-gap-6
+                        tw-mt-3
+                        sm:tw-mt-4
+                        tw-text-xs
+                        sm:tw-text-sm
+                        tw-text-white/80
+                      ">
+                        <span>⏱ {course.duration}</span>
+                        <span>👥 {course.students}</span>
+                      </div>
+
+                      {/* FOOTER */}
+                      <div className="
+                        tw-mt-5
+                        sm:tw-mt-6
+                        tw-flex
+                        tw-flex-col
+                        sm:tw-flex-row
+                        sm:tw-items-center
+                        tw-gap-4
+                        sm:tw-gap-6
+                      ">
+                        {/* PRICE */}
+                        <div>
+                          <span className="
+                            tw-text-xl
+                            sm:tw-text-2xl
+                            tw-font-bold
+                          ">
+                            ₹{course.price}
+                          </span>
+                          <span className="tw-ml-2 tw-line-through tw-text-white/70 tw-text-sm">
+                            ₹{course.originalPrice}
+                          </span>
+                          <span className="
+                            tw-ml-2
+                            tw-text-green-300
+                            tw-text-xs
+                            sm:tw-text-sm
+                            tw-font-medium
+                          ">
+                            Save {calculateDiscount(course.originalPrice, course.price)}
+                          </span>
+                        </div>
+
+                        {/* BUTTONS */}
+                        <div className="tw-flex tw-gap-3">
+                          <button className="
+                            tw-bg-white
+                            tw-text-black
+                            tw-font-medium
+                            tw-px-4 sm:tw-px-5
+                            tw-py-2
+                            tw-rounded-lg
+                            tw-text-sm sm:tw-text-base
+                            hover:tw-bg-gray-100
+                          ">
+                            Enroll Now
+                          </button>
+                          <button className="
+                            tw-border
+                            tw-border-white
+                            tw-text-white
+                            tw-px-4 sm:tw-px-5
+                            tw-py-2
+                            tw-rounded-lg
+                            tw-text-sm sm:tw-text-base
+                            hover:tw-bg-white/10
+                          ">
+                            View Details
+                          </button>
                         </div>
                       </div>
                     </div>
+
+                    {/* RIGHT VISUAL (hidden on mobile) */}
+                    <div className="tw-hidden md:tw-flex tw-justify-center">
+                      <div className="tw-grid tw-grid-cols-2 tw-gap-4">
+                        {course.features.map((feature, idx) => (
+                          <div
+                            key={idx}
+                            className="
+                              tw-bg-white/15
+                              tw-backdrop-blur
+                              tw-text-white
+                              tw-px-4
+                              tw-py-3
+                              tw-rounded-xl
+                              tw-text-sm
+                              tw-text-center
+                            "
+                          >
+                            {feature.split(' ')[0]}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-       
-
-     
-      </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };
 
-export default CourseAdsCarousel; 
+export default CourseAdsCarousel;

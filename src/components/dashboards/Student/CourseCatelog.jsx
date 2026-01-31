@@ -1,81 +1,116 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useGetCoursesCategoryQuery } from '../../../Services/admin/coursesCategoryServices';
-import { useGetStudentEnrolledCoursesQuery } from '../../../Services/student/enrollFormServices';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { useGetStudentEnrolledCoursesQuery } from '../../../Services/student/enrollFormServices';
 import { useAddItemMutation } from '../../../Services/student/cartServices';
 import { useUnenrolledCourses } from '../../../hooks/useUnenrolledcourses';
-import { 
-  Clock, 
-  BookOpen, 
-  ShoppingCart, 
-  Search 
-} from 'lucide-react';
-
-
-// Icon Components
-const ClockIcon = () => <Clock size={14} />;
-const BookIcon = () => <BookOpen size={14} />;
-const ShoppingCartIcon = () => <ShoppingCart size={16} />;
-const SearchIcon = () => <Search size={18} />;
+import { Clock, BookOpen, ShoppingCart, Search } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CourseCard = ({ course, handleAdd, isAdded }) => {
   const navigate = useNavigate();
+
   const instructorInitials = course.instructor
     .split(' ')
-    .map(name => name[0])
+    .map(n => n[0])
     .join('')
     .toUpperCase();
 
   return (
-    <div className="course-card">
-      <div className="card-image">
-        <img src={course.thumbnail} alt={course.name} />
-        <div className="category-badge">{course.category}</div>
-        <div className="live-badge">LIVE</div>
+    <div className="tw-bg-white tw-border tw-rounded-xl tw-overflow-hidden tw-flex tw-flex-col hover:tw-shadow-lg tw-transition">
+      {/* Image */}
+      <div className="tw-relative tw-h-40">
+        <img
+          src={course.thumbnail}
+          alt={course.name}
+          className="tw-w-full tw-h-full tw-object-cover"
+        />
+
+        <span className="tw-absolute tw-top-2 tw-left-2 tw-bg-black/70 tw-text-white tw-text-xs tw-px-2 tw-py-1 tw-rounded">
+          {course.category}
+        </span>
+
+        <span className="tw-absolute tw-top-2 tw-right-2 tw-bg-red-600 tw-text-white tw-text-xs tw-font-semibold tw-px-2 tw-py-1 tw-rounded">
+          LIVE
+        </span>
       </div>
-      
-      <div className="card-content m-0 px-4 pt-2">
-        <h3 className="course-title">{course.name}</h3>
-        <p className="course-description">{course.description}</p>
-        
-        <div className="course-meta">
-          <div className="meta-item">
-            <ClockIcon />
-            <span>{course.duration}</span>
-          </div>
-          <div className="meta-item">
-            <BookIcon />
-            <span>{course.totalLessons} lessons</span>
-          </div>
+
+      {/* Content */}
+      <div className="tw-p-4 tw-flex-1">
+        <h3 className="tw-font-semibold tw-text-sm tw-line-clamp-2">
+          {course.name}
+        </h3>
+
+        <p className="tw-text-xs tw-text-gray-500 tw-mt-1 tw-line-clamp-2">
+          {course.description}
+        </p>
+
+        {/* Meta */}
+        <div className="tw-flex tw-gap-4 tw-text-xs tw-text-gray-500 tw-mt-3">
+          <span className="tw-flex tw-items-center tw-gap-1">
+            <Clock size={14} /> {course.duration}
+          </span>
+          <span className="tw-flex tw-items-center tw-gap-1">
+            <BookOpen size={14} /> {course.totalLessons} lessons
+          </span>
         </div>
-        
-        <div className="instructor">
-          <div className="instructor-avatar">
+
+        {/* Instructor */}
+        <div className="tw-flex tw-items-center tw-gap-2 tw-mt-3">
+          <div className="tw-w-8 tw-h-8 tw-rounded-full tw-bg-blue-600 tw-text-white tw-text-xs tw-font-semibold tw-flex tw-items-center tw-justify-center">
             {instructorInitials}
           </div>
-          <span className="instructor-name">{course.instructor}</span>
+          <span className="tw-text-xs tw-text-gray-600">
+            {course.instructor}
+          </span>
         </div>
       </div>
-      
-      <div className="card-footer">
-        <div className="course-price">₹{course.price}</div>
-        
-        <div className="card-actions">
-          <button 
-            className="btn-outline btn btn-sm"
+
+      {/* Footer */}
+      <div className="tw-border-t tw-p-4">
+        <div className="tw-flex tw-items-center tw-justify-between">
+          <span className="tw-font-semibold tw-text-sm">
+            ₹{course.price}
+          </span>
+        </div>
+
+        <div className="tw-flex tw-gap-2 tw-mt-3">
+          <button
             onClick={() => navigate(`/dashboard/course/details`)}
+            className="
+              tw-flex-1
+              tw-border
+              tw-text-sm
+              tw-py-2
+              tw-rounded-lg
+              hover:tw-bg-gray-100
+            "
           >
             View Details
           </button>
-          <button 
-            className={`btn-primary btn  btn-sm ${isAdded ? 'added' : ''}`}
+
+          <button
             onClick={() => handleAdd(course._id)}
             disabled={isAdded}
+            className={`
+              tw-flex-1
+              tw-flex
+              tw-items-center
+              tw-justify-center
+              tw-gap-1
+              tw-text-sm
+              tw-py-2
+              tw-rounded-lg
+              tw-font-medium
+              ${
+                isAdded
+                  ? 'tw-bg-green-600 tw-text-white'
+                  : 'tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white'
+              }
+            `}
           >
-            {isAdded ? 'Added to Cart!' : 'Add to Cart'}
-            {!isAdded && <ShoppingCartIcon />}
+            {isAdded ? 'Added' : 'Add to Cart'}
+            {!isAdded && <ShoppingCart size={14} />}
           </button>
         </div>
       </div>
@@ -83,146 +118,122 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
   );
 };
 
+
 const CourseCatalog = () => {
-  const navigate = useNavigate();
-  const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  const { user } = useSelector(state => state.auth);
-  
-  // Get enrolled courses
-  const { 
-    data: enrolledCourses, 
-    isLoading: enrolledLoading, 
-    error: enrolledError 
-  } = useGetStudentEnrolledCoursesQuery(user?.id, {
-    skip: !user
-  });
+  const userId = useSelector(state => state.auth.user?.id);
+
+  const { data: enrolledCourses, isLoading: enrolledLoading, error: enrolledError } =
+    useGetStudentEnrolledCoursesQuery(userId, { skip: !userId });
 
   const enrolledIds = enrolledCourses?.data?.map(c => c.course?._id) || [];
-  
-  // Get unenrolled courses
-  const { 
-    courses, 
-    isLoading: coursesLoading, 
-    error: coursesError 
-  } = useUnenrolledCourses(enrolledIds);
-  
-  // Add to cart mutation
-  const [addItem, { isLoading: addingToCart }] = useAddItemMutation();
-  
-  
 
-  // Handle adding to cart
+  const { courses, isLoading: coursesLoading, error: coursesError } =
+    useUnenrolledCourses(enrolledIds);
+
+  const [addItem] = useAddItemMutation();
+
   const handleAdd = async (courseId) => {
-    if (!user) {
+    if (!userId) {
       toast.error('Please login to add items to cart');
       return;
     }
     try {
-      await addItem({ userId: user.id, courseId }).unwrap();
+      await addItem({ userId, courseId }).unwrap();
       toast.success('Added to cart!');
-    } catch (error) {
-      console.error('Add to cart error:', error);
+    } catch (error){
       toast.error('Failed to add to cart');
     }
   };
-  
-  // Filter courses based on category and search query
-  const filteredCourses = courses?.filter(course => {
-    const matchesCategory = activeFilter === 'All' || course.category === activeFilter;
-    const matchesSearch = course.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          course.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
 
-  // Loading state
+  const filteredCourses = courses?.filter(course =>
+    [course.name, course.description, course.instructor]
+      .join(' ')
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
   if (enrolledLoading || coursesLoading) {
     return (
-      <div className="course-catalog">
-        <div className="loading-container">
-          <div className="loading-spinner"></div>
-          <p>Loading courses...</p>
-        </div>
+      <div className="tw-flex tw-items-center tw-justify-center tw-h-64">
+        <p className="tw-text-gray-500">Loading courses...</p>
       </div>
     );
   }
 
-  // Error states
-  if (enrolledError || coursesError ) {
+  if (enrolledError || coursesError) {
     return (
-      <div className="course-catalog">
-        <div className="error-container">
-          <h3>Something went wrong</h3>
-          <p>Unable to load courses. Please try again later.</p>
-          <button onClick={() => window.location.reload()}>Retry</button>
-        </div>
+      <div className="tw-text-center tw-py-16">
+        <h3 className="tw-font-semibold">Something went wrong</h3>
+        <p className="tw-text-gray-500">Please try again later</p>
       </div>
     );
   }
 
   return (
-    <div className="course-catalog">
-      <div className="catalog-header">
-        <div className="header-content">
-          <h1>Live Course Catalog</h1>
-          <p>Browse and enroll in our interactive live classes</p>
+    <div className="tw-w-full tw-space-y-8">
+      {/* Header */}
+      <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-4">
+        <div>
+          <h1 className="tw-text-2xl tw-font-bold">Live Course Catalog</h1>
+          <p className="tw-text-sm tw-text-gray-500">
+            Browse and enroll in interactive live classes
+          </p>
         </div>
-        
-        <div className="header-actions">
-          <div className="search-bar">
-            <input 
-              type="text" 
-              placeholder="Search courses, instructors, or topics..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <SearchIcon />
-          </div>
+
+        {/* Search */}
+        <div className="tw-relative tw-w-full md:tw-w-80">
+          <input
+            type="text"
+            placeholder="Search courses or instructors..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="
+              tw-w-full
+              tw-border
+              tw-rounded-lg
+              tw-py-2
+              tw-pl-10
+              tw-text-sm
+              focus:tw-outline-none
+              focus:tw-ring-2
+              focus:tw-ring-blue-500
+            "
+          />
+          <Search
+            size={18}
+            className="tw-absolute tw-left-3 tw-top-2.5 tw-text-gray-400"
+          />
         </div>
       </div>
 
-      {/* <div className="catalog-filters">
-        <div className="filter-buttons">
-          <button 
-            key="All"
-            className={`filter-btn ${activeFilter === 'All' ? 'active' : ''}`}
-            onClick={() => setActiveFilter('All')}
-          >
-            All
-          </button>
-          {categories?.map(category => (
-            <button 
-              key={category._id || category}
-              className={`filter-btn ${activeFilter === category.name ? 'active' : ''}`}
-              onClick={() => setActiveFilter(category.name)}
-            >
-              {category.name || category}
-            </button>
-          ))}
-        </div>
-        
-        <div className="results-count">
-          {filteredCourses?.length || 0} {filteredCourses?.length === 1 ? 'course' : 'courses'} found
-        </div>
-      </div> */}
-
-      <div className="courses-grid">
+      {/* Grid */}
+      <div className="
+        tw-grid
+        tw-grid-cols-1
+        sm:tw-grid-cols-2
+        lg:tw-grid-cols-3
+        xl:tw-grid-cols-4
+        tw-gap-6
+      ">
         {filteredCourses?.map(course => (
-          <CourseCard 
-            key={course._id} 
-            course={course} 
+          <CourseCard
+            key={course._id}
+            course={course}
             handleAdd={handleAdd}
             isAdded={false}
           />
         ))}
       </div>
 
+      {/* Empty */}
       {filteredCourses?.length === 0 && (
-        <div className="no-results">
-          <SearchIcon size={48} />
-          <h3>No courses found</h3>
-          <p>Try adjusting your search or filter criteria</p>
+        <div className="tw-text-center tw-py-16">
+          <Search size={48} className="tw-mx-auto tw-text-gray-400" />
+          <h3 className="tw-mt-4 tw-font-semibold">No courses found</h3>
+          <p className="tw-text-gray-500">
+            Try adjusting your search
+          </p>
         </div>
       )}
     </div>

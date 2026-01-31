@@ -14,17 +14,17 @@ const UnenrolledCoursesGrid = ({ enrolledCourseIds = [] }) => {
   const { courses, isLoading } = useUnenrolledCourses(enrolledCourseIds);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [addItem, { isLoading: addingToCart }] = useAddItemMutation();
-  const { user } = useSelector(state => state.auth);
+  const userId = useSelector(state => state.auth.user?.id);
 
   const handleAdd = async (course) => {
-    if (!user) {
+    if (!userId) {
       toast.error('Please login to add items to cart');
       return;
     }
     try {
-      await addItem({ userId: user.id, courseId: course._id }).unwrap();
+      await addItem({ userId, courseId: course._id }).unwrap();
       toast.success('Added to cart!');
-    } catch {
+    } catch (error) {
       toast.error('Failed to add to cart');
     }
   };

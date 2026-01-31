@@ -5,7 +5,8 @@ import Loader from "./common/Loader";
 
 
 const Maindashboard = () => {
-   const{user,loading}= useSelector(state=>state.auth)
+   const role = useSelector(state=>state.auth.user?.role)
+   const loading = useSelector(state=>state.auth.loading)
     
     
 
@@ -20,7 +21,7 @@ return (
                       <Loader message={"checking details"}/>
                     </div>
                 ) : (
-                    user?.role === 'student' ? (
+                    role === 'student' ? (
                         <StudentDashboard />
                     ) : (
                         <AdminDashboard />

@@ -13,59 +13,106 @@ const ProfileSidebar = ({ user, activeTab, onTabChange }) => {
 
   const getIconComponent = (iconName) => {
     switch (iconName) {
-      case 'user': return <User size={18} />;
-      case 'settings': return <Settings size={18} />;
-      case 'shield': return <ShieldAlert size={18} />;
-      default: return <User size={18} />;
+      case 'user':
+        return <User size={18} />;
+      case 'settings':
+        return <Settings size={18} />;
+      case 'shield':
+        return <ShieldAlert size={18} />;
+      default:
+        return <User size={18} />;
     }
   };
 
   return (
-    <div className="profile-sidebar">
-      <div className="sidebar-header">
-        <div className="user-profile">
-          <div className="avatar-large">
+    <aside className="tw-w-full md:tw-w-64 tw-bg-white tw-border tw-rounded-xl tw-flex tw-flex-col">
+      {/* Header */}
+      <div className="tw-p-5 tw-border-b">
+        <div className="tw-flex tw-items-center tw-gap-4">
+          <div className="tw-w-14 tw-h-14 tw-rounded-full tw-bg-blue-600 tw-text-white tw-flex tw-items-center tw-justify-center tw-text-xl tw-font-semibold">
             {user?.avatar ? (
-              <img src={user.avatar} alt={user.name} />
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="tw-w-full tw-h-full tw-object-cover tw-rounded-full"
+              />
             ) : (
-              <span>{user?.name?.charAt(0)?.toUpperCase()}</span>
+              user?.name?.charAt(0)?.toUpperCase() || 'U'
             )}
           </div>
-          <div className="user-info">
-            <h3>{user?.name || 'User Name'}</h3>
-            <p>{user?.email || 'user@example.com'}</p>
-            <span className="user-role">{user?.role || 'Student'}</span>
+
+          <div>
+            <h3 className="tw-font-semibold tw-text-sm">
+              {user?.name || 'User Name'}
+            </h3>
+            <p className="tw-text-xs tw-text-gray-500">
+              {user?.email || 'user@example.com'}
+            </p>
+            <span className="tw-inline-block tw-mt-1 tw-text-xs tw-font-medium tw-text-blue-600">
+              {user?.role || 'Student'}
+            </span>
           </div>
         </div>
       </div>
 
-      <nav className="sidebar-nav">
-        {menuItems.map(item => (
-          <button
-            key={item.id}
-            className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-            onClick={() => onTabChange(item.id)}
-            aria-current={activeTab === item.id ? 'page' : undefined}
-          >
-            <div className="nav-icon">
-              {getIconComponent(item.icon)}
-            </div>
-            <span>{item.label}</span>
-          </button>
-        ))}
+      {/* Navigation */}
+      <nav className="tw-flex-1 tw-p-2 tw-space-y-1">
+        {menuItems.map(item => {
+          const isActive = activeTab === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onTabChange(item.id)}
+              aria-current={isActive ? 'page' : undefined}
+              className={`
+                tw-w-full
+                tw-flex
+                tw-items-center
+                tw-gap-3
+                tw-px-4
+                tw-py-2.5
+                tw-rounded-lg
+                tw-text-sm
+                tw-transition
+                ${
+                  isActive
+                    ? 'tw-bg-blue-100 tw-text-blue-700'
+                    : 'tw-text-gray-600 hover:tw-bg-gray-100'
+                }
+              `}
+            >
+              <span className="tw-flex-shrink-0">
+                {getIconComponent(item.icon)}
+              </span>
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
       </nav>
 
-      <div className="sidebar-footer">
-        <button 
-          className="logout-btn" 
+      {/* Footer */}
+      <div className="tw-p-4 tw-border-t">
+        <button
           onClick={() => navigate('/logout')}
-          aria-label="Log out"
+          className="
+            tw-w-full
+            tw-flex
+            tw-items-center
+            tw-justify-center
+            tw-gap-2
+            tw-text-sm
+            tw-font-medium
+            tw-text-red-600
+            hover:tw-bg-red-50
+            tw-py-2.5
+            tw-rounded-lg
+          "
         >
           <LogOut size={18} />
           <span>Log Out</span>
         </button>
       </div>
-    </div>
+    </aside>
   );
 };
 

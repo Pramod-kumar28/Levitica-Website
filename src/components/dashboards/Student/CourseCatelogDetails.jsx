@@ -1,6 +1,5 @@
-import { Check, Clock, Play } from 'lucide-react';
+import { Check, Clock, Download, Play } from 'lucide-react';
 import  { useState } from 'react';
-import { Download } from 'react-feather';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const CourseDetails = () => {

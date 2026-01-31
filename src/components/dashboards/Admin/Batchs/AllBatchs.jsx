@@ -6,7 +6,7 @@ import {
 } from "../../../../Services/admin/batchdetailsService";
 import { useModal, MODAL_TYPES } from "../Modals/ModalContext";
 import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import * as XLSX from 'xlsx';
 
 const BatchList = () => {

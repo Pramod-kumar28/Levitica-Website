@@ -7,12 +7,12 @@ import { useGetCartQuery } from '../../../Services/student/cartServices';
 
 const CartIcon = memo(function CartIcon() {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useSelector(state => state.auth);
+  const { userId } = useSelector(state => state.auth.user?.id);
 
-  const { data: cartData } = useGetCartQuery(user?.id, {
-    skip: !user,
+  const { data: cartData } = useGetCartQuery(userId, {
+    skip: !userId,
   });
-
+  
   const itemCount = cartData?.items?.length || 0;
 
   const badgeVariants = {

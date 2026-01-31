@@ -1,11 +1,13 @@
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 
 const rtkLogger = (store) => (next) => (action) => {
   if (action.type.endsWith('/rejected')) {
-    toast.error(`API Error: ${action.error?.data || action.error?.message}`);
+    const message =
+      action.error?.data ||
+      action.error?.message ||
+      'Unknown API error';
 
-  }
-   if (action.type.endsWith('/rejected')) {
+    toast.error(`API Error: ${message}`);
     console.error('❌ RTK Query Rejected:', {
       type: action.type,
       error: action.error,
