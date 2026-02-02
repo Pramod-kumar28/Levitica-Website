@@ -1,14 +1,13 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { 
-  Video, 
-  Calendar, 
-  PlayCircle, 
-  UserCheck, 
-  FileText, 
-  MessageSquare, 
-  Award, 
-  ArrowRight 
+import {
+  Video,
+  Calendar,
+  UserCheck,
+  FileText,
+  MessageSquare,
+  Award,
+  ArrowRight,
 } from "lucide-react";
 
 const QuickActionCards = () => {
@@ -16,142 +15,116 @@ const QuickActionCards = () => {
 
   const quickActions = [
     {
-      id: 1,
       title: "Join Live Class",
-      description: "Attend your scheduled live sessions",
-      icon: "video",
-      buttonText: "Join Now",
-      onClick: () => navigate("live-session")
+      desc: "Attend your scheduled live sessions instantly",
+      icon: Video,
+      action: () => navigate("live-session"),
+      color: "tw-bg-blue-500",
     },
     {
-      id: 2,
       title: "Upcoming Classes",
-      description: "View your class schedule",
-      icon: "calendar",
-      buttonText: "View Schedule",
-      onClick: () => navigate("live-session")
+      desc: "Check your upcoming class schedule",
+      icon: Calendar,
+      action: () => navigate("live-session"),
+      color: "tw-bg-indigo-500",
     },
     {
-      id: 4,
-      title: "Book 1-on-1 Session",
-      description: "Get personalized attention",
-      icon: "user-check",
-      buttonText: "Book Now",
-      onClick: () => navigate("book-session")
+      title: "1-on-1 Session",
+      desc: "Book personalized mentor sessions",
+      icon: UserCheck,
+      action: () => navigate("book-session"),
+      color: "tw-bg-purple-500",
     },
     {
-      id: 5,
       title: "Class Resources",
-      description: "Download materials & assignments",
-      icon: "file-text",
-      buttonText: "Access Resources",
-      onClick: () => navigate("/resources")
+      desc: "Access notes, recordings & assignments",
+      icon: FileText,
+      action: () => navigate("class-resources"),
+      color: "tw-bg-emerald-500",
     },
     {
-      id: 6,
       title: "Ask Questions",
-      description: "Get help from instructors",
-      icon: "message-square",
-      buttonText: "Ask Now",
-      onClick: () => navigate("/questions")
+      desc: "Clear your doubts with instructors",
+      icon: MessageSquare,
+      action: () => navigate("ask-questions"),
+      color: "tw-bg-orange-500",
     },
     {
-      id: 7,
-      title: "My Certificates",
-      description: "View your completed course certificates",
-      icon: "award", 
-      buttonText: "View Certificates",
-      onClick: () => navigate("/certificates")
-    }
+      title: "Certificates",
+      desc: "View & download your certificates",
+      icon: Award,
+      action: () => navigate("my-certificates"),
+      color: "tw-bg-pink-500",
+    },
   ];
 
   return (
-    <div className="quick-actions-section">
-      <h3 className="section-title ">Quick Actions</h3>
-      <p className="section-subtitle">Manage your live class experience</p>
-      
-      <div className="quick-actions-grid">
-        {quickActions.map((action, index) => (
-          <QuickActionCard 
-            key={action.id} 
-            action={action} 
-            index={index} 
-          />
-        ))}
+    <div className="tw-py-12  ">
+      <div className="tw-bg-white tw-rounded-xl tw-border tw-shadow-sm">
+        {/* Header */}
+        <div className="tw-p-5 tw-border-b">
+          <h3 className="tw-text-lg tw-font-semibold tw-text-gray-900">
+            Quick Actions
+          </h3>
+          <p className="tw-text-sm tw-text-gray-500">
+            Manage your learning activities faster
+          </p>
+        </div>
+
+        {/* Grid */}
+        <div className="tw-p-5">
+          <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-5">
+            {quickActions.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ y: 30, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: index * 0.08, duration: 0.4 }}
+                className="tw-group tw-border tw-rounded-xl tw-p-4 hover:tw-shadow-md tw-transition"
+              >
+                {/* Icon */}
+                <div
+                  className={`
+                  tw-w-12 tw-h-12
+                  tw-rounded-lg
+                  tw-flex tw-items-center tw-justify-center
+                  tw-text-white
+                  ${item.color}
+                `}
+                >
+                  <item.icon size={22} />
+                </div>
+
+                {/* Content */}
+                <div className="tw-mt-4">
+                  <h4 className="tw-font-semibold tw-text-gray-900">
+                    {item.title}
+                  </h4>
+                  <p className="tw-text-sm tw-text-gray-500 tw-mt-1">
+                    {item.desc}
+                  </p>
+                </div>
+
+                {/* CTA */}
+                <button
+                  onClick={item.action}
+                  className="
+                  tw-mt-4
+                  tw-flex tw-items-center tw-gap-2
+                  tw-text-sm tw-font-medium
+                  tw-text-blue-600
+                  hover:tw-text-blue-700
+                "
+                >
+                  Take Action
+                  <ArrowRight size={16} />
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
-  );
-};
-
-// Quick Action Card Component
-const QuickActionCard = ({ action, index }) => {
-  const renderIcon = () => {
-    const iconProps = { size: 24 };
-    
-    switch(action.icon) {
-      case "video":
-        return <Video {...iconProps} />;
-      case "calendar":
-        return <Calendar {...iconProps} />;
-      case "play-circle":
-        return <PlayCircle {...iconProps} />;
-      case "user-check":
-        return <UserCheck {...iconProps} />;
-      case "file-text":
-        return <FileText {...iconProps} />;
-      case "message-square":
-        return <MessageSquare {...iconProps} />;
-      case "award":
-        return <Award {...iconProps} />;
-      default:
-        return <Video {...iconProps} />;
-    }
-  };
-
-  const getIconClass = () => {
-    switch(action.icon) {
-      case "video":
-        return "live-class";
-      case "calendar":
-        return "schedule";
-      case "play-circle":
-        return "recordings";
-      case "user-check":
-        return "one-on-one";
-      case "file-text":
-        return "resources";
-      case "message-square":
-        return "questions";
-      case "award":
-        return "certificates";
-      default:
-        return "live-class";
-    }
-  };
-
-  return (
-    <motion.div
-      initial={{ y: 50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-    >
-      <div className="action-card">
-        <div className={`card-icon ${getIconClass()}`}>
-          {renderIcon()}
-        </div>
-        <div className="card-content">
-          <h4>{action.title}</h4>
-          <p>{action.description}</p>
-        </div>
-        <button 
-          className="action-btn"
-          onClick={action.onClick}
-        >
-          {action.buttonText}
-          <ArrowRight size={16} />
-        </button>
-      </div>
-    </motion.div>
   );
 };
 

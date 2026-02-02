@@ -1,59 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './PaymentSuccessPage.css';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaUserGraduate,
+  FaUniversity,
+  FaLaptopCode,
+  FaCalendarAlt,
+  FaDownload,
+  FaHome,
+  FaClock
+} from "react-icons/fa";
 
 const PaymentSuccess = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const [paymentData, setPaymentData] = useState(null);
   const [countdown, setCountdown] = useState(10);
   const [isValidAccess, setIsValidAccess] = useState(true);
 
+  /* ---------------- VALIDATION ---------------- */
   useEffect(() => {
-    // Check if this is a valid payment success access
     const data = location.state?.paymentData;
-    const localStorageData = JSON.parse(localStorage.getItem('lastPayment') || 'null');
-    
+    const stored = JSON.parse(localStorage.getItem("lastPayment") || "null");
+
     if (data) {
-      // Direct navigation with state - valid access
       setPaymentData(data);
-      localStorage.setItem('lastPayment', JSON.stringify({
-        ...data,
-        accessTime: Date.now()
-      }));
-      setIsValidAccess(true);
-    } else if (localStorageData && localStorageData.accessTime) {
-      // Check if localStorage data is not too old (e.g., 30 minutes)
-      const isDataFresh = (Date.now() - localStorageData.accessTime) < 30 * 60 * 1000; // 30 minutes
-      
-      if (isDataFresh) {
-        setPaymentData(localStorageData);
-        setIsValidAccess(true);
-      } else {
-        // Data is too old, clear it and redirect
-        localStorage.removeItem('lastPayment');
-        setIsValidAccess(false);
-        setTimeout(() => navigate('/'), 2000);
-      }
+      localStorage.setItem(
+        "lastPayment",
+        JSON.stringify({ ...data, accessTime: Date.now() })
+      );
+    } else if (stored && Date.now() - stored.accessTime < 30 * 60 * 1000) {
+      setPaymentData(stored);
     } else {
-      // No valid data found
       setIsValidAccess(false);
-      setTimeout(() => navigate('/'), 2000);
+      setTimeout(() => navigate("/"), 2000);
     }
   }, [location, navigate]);
 
+  /* ---------------- COUNTDOWN ---------------- */
   useEffect(() => {
     if (!isValidAccess) return;
 
-    // Countdown for automatic redirect
     const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
+      setCountdown((c) => {
+        if (c <= 1) {
           clearPaymentData();
-          navigate('/');
+          navigate("/");
           return 0;
         }
-        return prev - 1;
+        return c - 1;
       });
     }, 1000);
 
@@ -61,106 +58,61 @@ const PaymentSuccess = () => {
   }, [navigate, isValidAccess]);
 
   const clearPaymentData = () => {
-    localStorage.removeItem('lastPayment');
+    localStorage.removeItem("lastPayment");
     setPaymentData(null);
   };
 
+  /* ---------------- HELPERS ---------------- */
+  const getDomainName = (id) => ({
+    "java-fullstack": "Java Full Stack Development",
+    "python-ai": "Python Full Stack + AI",
+    "dotnet-cloud": ".NET Full Stack + Cloud",
+    "flutter-mobile": "Flutter Mobile Development",
+    "software-testing": "Software Testing",
+    "data-science-ai": "Data Science & AI"
+  }[id] || id);
+
+  const getProgramName = (id) =>
+    id === "5days" ? "5 Days Program" : "15 Days Program";
+
+  /* ---------------- RECEIPT ---------------- */
   const handleDownloadReceipt = () => {
-    if (!paymentData) return;
-
-    const receiptContent = `
-      INTERNSHIP PAYMENT RECEIPT
-      ==========================
-      
-      Payment ID: ${paymentData?.paymentId}
-      Order ID: ${paymentData?.orderId}
-      Date: ${new Date().toLocaleDateString()}
-      Time: ${new Date().toLocaleTimeString()}
-      
-      STUDENT DETAILS:
-      ----------------
-      Name: ${paymentData?.student?.name}
-      Email: ${paymentData?.student?.email}
-      Roll Number: ${paymentData?.student?.rollNumber}
-      College: ${paymentData?.collegeName}
-      Department: ${paymentData?.department}
-      Semester: ${paymentData?.semester}
-      
-      PROGRAM DETAILS:
-      ----------------
-      Domain: ${getDomainName(paymentData?.domain)}
-      Program: ${getProgramName(paymentData?.program)}
-      Duration: ${paymentData?.program === '5days' ? '5 Days' : '15 Days'}
-      Amount: ₹${paymentData?.amount}
-      
-      Status: PAID ✅
-      
-      Thank you for your payment!
-      Design Career Metrics
+    const text = `
+PAYMENT RECEIPT
+------------------------
+Payment ID: ${paymentData.paymentId}
+Order ID: ${paymentData.orderId}
+Name: ${paymentData.student.name}
+Email: ${paymentData.student.email}
+Program: ${getDomainName(paymentData.domain)}
+Amount: ₹${paymentData.amount}
+Status: PAID
     `;
-
-    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const blob = new Blob([text], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `receipt-${paymentData?.paymentId}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `receipt-${paymentData.paymentId}.txt`;
+    a.click();
     URL.revokeObjectURL(url);
   };
 
- 
-  const handleManualRedirect = () => {
-    clearPaymentData();
-    navigate('/');
-  };
-
-  const getDomainName = (domainId) => {
-    const domains = {
-      'java-fullstack': 'Java Full Stack Development',
-      'python-ai': 'Python Full Stack + Generative AI',
-      'dotnet-cloud': '.NET Full Stack + Cloud AI',
-      'flutter-mobile': 'Flutter Mobile App Development',
-      'software-testing': 'Software Testing & Automation',
-      'data-science-ai': 'Data Science & AI'
-    };
-    return domains[domainId] || domainId;
-  };
-
-  const getProgramName = (programId) => {
-    const programs = {
-      '5days': '5 Days Program',
-      '15days': '15 Days Program'
-    };
-    return programs[programId] || programId;
-  };
-
-  // Show unauthorized access message
+  /* ---------------- UNAUTHORIZED ---------------- */
   if (!isValidAccess) {
     return (
-      <div className="payment-success-container">
-        <div className="payment-success-card">
-          <div className="payment-success-header" style={{ background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' }}>
-            <div className="payment-success-icon-container">
-              <div className="payment-success-icon" style={{ color: '#ef4444' }}>⚠️</div>
-            </div>
-            <h1 className="payment-success-title">Access Denied</h1>
-            <p className="payment-success-subtitle">
-              This page is only accessible after successful payment
-            </p>
-          </div>
-          <div className="payment-success-content" style={{ textAlign: 'center', padding: '40px' }}>
-            <p style={{ color: '#6b7280', fontSize: '16px', marginBottom: '20px' }}>
-              Redirecting you to the homepage...
-            </p>
-            <button 
-              onClick={handleManualRedirect}
-              className="payment-success-btn payment-success-btn-primary"
-            >
-              Go to Homepage Now
-            </button>
-          </div>
+      <div className="tw-min-h-screen tw-flex tw-items-center tw-justify-center tw-bg-slate-100">
+        <div className="tw-bg-white tw-rounded-xl tw-shadow-lg tw-p-8 tw-text-center tw-max-w-md">
+          <FaExclamationTriangle className="tw-text-red-500 tw-text-5xl tw-mx-auto" />
+          <h2 className="tw-text-xl tw-font-bold tw-mt-4">Access Denied</h2>
+          <p className="tw-text-slate-500 tw-mt-2">
+            This page is accessible only after successful payment.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="tw-mt-6 tw-bg-red-600 tw-text-white tw-px-6 tw-py-3 tw-rounded-lg"
+          >
+            Go Home
+          </button>
         </div>
       </div>
     );
@@ -168,141 +120,110 @@ const PaymentSuccess = () => {
 
   if (!paymentData) {
     return (
-      <div className="payment-success-loading">
-        <div className="payment-success-loading-spinner"></div>
-        <p>Loading payment details...</p>
+      <div className="tw-min-h-screen tw-flex tw-items-center tw-justify-center">
+        <p className="tw-text-slate-500">Loading payment details...</p>
       </div>
     );
   }
 
+  /* ---------------- SUCCESS UI ---------------- */
   return (
-    <div className="payment-success-container">
-      <div className="payment-success-card">
-        {/* Header */}
-        <div className="payment-success-header">
-          <div className="payment-success-icon-container">
-            <div className="payment-success-icon">✓</div>
-          </div>
-          <h1 className="payment-success-title">Payment Successful!</h1>
-          <p className="payment-success-subtitle">
-            Your internship program registration is confirmed
+    <div className="tw-min-h-screen tw-bg-slate-100 tw-p-6">
+      <div className="tw-max-w-6xl tw-mx-auto tw-bg-white tw-rounded-2xl tw-shadow-xl tw-overflow-hidden">
+
+        {/* HEADER */}
+        <div className="tw-bg-emerald-600 tw-text-white tw-text-center tw-py-10">
+          <FaCheckCircle className="tw-text-6xl tw-mx-auto" />
+          <h1 className="tw-text-3xl tw-font-bold tw-mt-4">
+            Payment Successful!
+          </h1>
+          <p className="tw-text-emerald-100">
+            Your internship registration is confirmed
           </p>
         </div>
 
-        {/* Content */}
-        <div className="payment-success-content">
-          <div className="payment-success-details-grid">
-            {/* Student Details */}
-            <div className="payment-success-details-section">
-              <h2 className="payment-success-section-title">
-                <span className="payment-success-section-icon">👤</span>
-                Student Information
-              </h2>
-              
-              <div className="payment-success-details-list">
-                <PaymentSuccessDetailItem label="Full Name" value={paymentData.student?.name} />
-                <PaymentSuccessDetailItem label="Email" value={paymentData.student?.email} />
-                <PaymentSuccessDetailItem label="Roll Number" value={paymentData.student?.rollNumber} />
-                <PaymentSuccessDetailItem label="Phone" value={paymentData.phone} />
-              </div>
+        {/* DETAILS */}
+        <div className="tw-p-8 tw-grid md:tw-grid-cols-2 tw-gap-8">
 
-              <div className="payment-success-college-section">
-                <h3 className="payment-success-section-subtitle">
-                  <span className="payment-success-section-icon">🏫</span>
-                  College Details
-                </h3>
-                <PaymentSuccessDetailItem label="College" value={paymentData.collegeName} />
-                <PaymentSuccessDetailItem label="College Code" value={paymentData.collegeCode} />
-                <PaymentSuccessDetailItem label="Department" value={paymentData.department} />
-                <PaymentSuccessDetailItem label="Semester" value={paymentData.semester} />
-              </div>
-            </div>
+          {/* STUDENT */}
+          <div className="tw-border tw-rounded-xl tw-p-6">
+            <h3 className="tw-font-bold tw-text-lg tw-flex tw-items-center tw-gap-2">
+              <FaUserGraduate /> Student Information
+            </h3>
+            <Detail label="Name" value={paymentData.student.name} />
+            <Detail label="Email" value={paymentData.student.email} />
+            <Detail label="Roll No" value={paymentData.student.rollNumber} />
 
-            {/* Program Details */}
-            <div className="payment-success-details-section">
-              <h2 className="payment-success-section-title">
-                <span className="payment-success-section-icon">💻</span>
-                Program Details
-              </h2>
+            <h4 className="tw-font-semibold tw-mt-4 tw-flex tw-items-center tw-gap-2">
+              <FaUniversity /> College
+            </h4>
+            <Detail label="College" value={paymentData.collegeName} />
+            <Detail label="Department" value={paymentData.department} />
+            <Detail label="Semester" value={paymentData.semester} />
+          </div>
 
-              <div className="payment-success-program-card">
-                <div className="payment-success-program-details">
-                  <PaymentSuccessDetailItem label="Internship Domain" value={getDomainName(paymentData.domain)} highlight />
-                  <PaymentSuccessDetailItem label="Program" value={getProgramName(paymentData.program)} />
-                  <PaymentSuccessDetailItem label="Duration" value={paymentData.program === '5days' ? '5 Days' : '15 Days'} />
-                  <div className="payment-success-amount-section">
-                    <span className="payment-success-amount-label">Amount Paid</span>
-                    <span className="payment-success-amount-value">₹{paymentData.amount}</span>
-                  </div>
-                </div>
-              </div>
+          {/* PROGRAM */}
+          <div className="tw-border tw-rounded-xl tw-p-6">
+            <h3 className="tw-font-bold tw-text-lg tw-flex tw-items-center tw-gap-2">
+              <FaLaptopCode /> Program Details
+            </h3>
+            <Detail label="Domain" value={getDomainName(paymentData.domain)} highlight />
+            <Detail label="Program" value={getProgramName(paymentData.program)} />
+            <Detail label="Duration" value={paymentData.program === "5days" ? "5 Days" : "15 Days"} />
 
-              {/* Payment Information */}
-              <div className="payment-success-payment-info-card">
-                <h3 className="payment-success-section-subtitle">
-                  <span className="payment-success-section-icon">📅</span>
-                  Payment Information
-                </h3>
-                <PaymentSuccessDetailItem label="Payment ID" value={paymentData.paymentId} small />
-                <PaymentSuccessDetailItem label="Order ID" value={paymentData.orderId} small />
-                <PaymentSuccessDetailItem label="Date" value={new Date().toLocaleDateString()} />
-                <PaymentSuccessDetailItem label="Time" value={new Date().toLocaleTimeString()} />
-                <div className="payment-success-status-badge">
-                  <span className="payment-success-status-text">Status: Paid</span>
-                </div>
+            <div className="tw-mt-4 tw-bg-slate-100 tw-p-4 tw-rounded-lg">
+              <span className="tw-text-slate-500">Amount Paid</span>
+              <div className="tw-text-2xl tw-font-bold tw-text-emerald-600">
+                ₹{paymentData.amount}
               </div>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="payment-success-action-buttons">
-            <button
-              onClick={handleDownloadReceipt}
-              className="payment-success-btn payment-success-btn-primary"
-            >
-              <span className="payment-success-btn-icon">📥</span>
-              Download Receipt
-            </button>
-            
-         
-            
-            <button
-              onClick={handleManualRedirect}
-              className="payment-success-btn payment-success-btn-secondary"
-            >
-              Back to Home
-            </button>
+            <h4 className="tw-font-semibold tw-mt-6 tw-flex tw-items-center tw-gap-2">
+              <FaCalendarAlt /> Payment Info
+            </h4>
+            <Detail label="Payment ID" value={paymentData.paymentId} small />
+            <Detail label="Order ID" value={paymentData.orderId} small />
           </div>
+        </div>
 
-          {/* Next Steps */}
-          <div className="payment-success-next-steps">
-            <h3 className="payment-success-next-steps-title">What's Next?</h3>
-            <ul className="payment-success-next-steps-list">
-              <li>You will receive a confirmation email within 24 hours</li>
-              <li>Our team will contact you with program schedule details</li>
-              <li>Join our WhatsApp group for updates and support</li>
-              <li>Prepare your development environment as per program requirements</li>
-            </ul>
-          </div>
+        {/* ACTIONS */}
+        <div className="tw-flex tw-flex-col md:tw-flex-row tw-gap-4 tw-justify-center tw-p-6">
+          <button
+            onClick={handleDownloadReceipt}
+            className="tw-bg-emerald-600 tw-text-white tw-px-6 tw-py-3 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
+          >
+            <FaDownload /> Download Receipt
+          </button>
+          <button
+            onClick={() => navigate("/")}
+            className="tw-border tw-border-slate-300 tw-px-6 tw-py-3 tw-rounded-lg tw-flex tw-items-center tw-gap-2"
+          >
+            <FaHome /> Back Home
+          </button>
+        </div>
 
-          {/* Countdown */}
-          <div className="payment-success-countdown-section">
-            <p>Redirecting to home page in <span className="payment-success-countdown-number">{countdown}</span> seconds...</p>
-          </div>
+        {/* COUNTDOWN */}
+        <div className="tw-text-center tw-text-slate-500 tw-pb-6">
+          <FaClock className="tw-inline tw-mr-2" />
+          Redirecting in <b>{countdown}</b> seconds
         </div>
       </div>
     </div>
   );
 };
 
-// Detail Item Component
-const PaymentSuccessDetailItem = ({ label, value, highlight, small }) => {
-  return (
-    <div className={`payment-success-detail-item ${highlight ? 'payment-success-detail-item-highlight' : ''}`}>
-      <span className="payment-success-detail-label">{label}</span>
-      <span className={`payment-success-detail-value ${small ? 'payment-success-detail-value-small' : ''}`}>{value}</span>
-    </div>
-  );
-};
+/* ---------- SMALL COMPONENT ---------- */
+const Detail = ({ label, value, highlight, small }) => (
+  <div className="tw-flex tw-justify-between tw-mt-2">
+    <span className="tw-text-slate-500">{label}</span>
+    <span
+      className={`tw-font-medium ${
+        highlight ? "tw-text-emerald-600" : ""
+      } ${small ? "tw-text-sm" : ""}`}
+    >
+      {value}
+    </span>
+  </div>
+);
 
 export default PaymentSuccess;

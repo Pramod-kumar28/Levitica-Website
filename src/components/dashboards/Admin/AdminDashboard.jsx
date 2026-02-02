@@ -6,7 +6,7 @@ import UserCreationForm from "./UserCreation/UserCreationForm";
 import CourseAdsCarousel from "../Ads/CourseAds";
 import WelcomeScreen from "../Student/WelcomeScreen";
 import UserTable from "./UserCreation/UserManagement";
-import StudentsTable from "./UserCreation/AllStudentTable";
+import StudentsTable from "./StudentManagement/AllStudentTable";
 
 const AdminDashboard = () => {
   const { data: stats, isLoading, error } = useGetStatsQuery();

@@ -1,484 +1,370 @@
-import React, { useState } from 'react';
-import { useGetMeetingsQuery, useDeleteMeetingMutation } from '../../../../Services/admin/zoomService';
-import toast from 'react-hot-toast';
- import { LayoutList, LayoutGrid } from "lucide-react"; // Lucide icons
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Search, 
-  Filter, 
-  Calendar, 
-  Clock, 
-  Users, 
-  BookOpen, 
-  Play, 
-  Edit, 
-  Trash2, 
-  Eye,
-  Download,
-  Plus,
-  RefreshCw
-} from 'lucide-react';
+import React, { useState } from "react";
+import { useGetMeetingsQuery, useDeleteMeetingMutation } from "../../../../Services/admin/zoomService";
+import toast from "react-hot-toast";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiGrid,
+  FiList,
+  FiSearch,
+  FiFilter,
+  FiCalendar,
+  FiClock,
+  FiUsers,
+  FiBookOpen,
+  FiPlay,
+  FiEdit,
+  FiTrash2,
+  FiDownload,
+  FiPlus,
+  FiRefreshCw,
+} from "react-icons/fi";
+
 
 const AdminLiveClasses = () => {
-  const { data: meetingsData, isLoading, error, refetch } = useGetMeetingsQuery();
+  const { data, isLoading, error, refetch } = useGetMeetingsQuery();
   const [deleteMeeting] = useDeleteMeetingMutation();
-  const [deletingId, setDeletingId] = useState(null);
+
+  const [starting, setStarting] = useState(false);
   const [activeTab, setActiveTab] = useState("cards");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("");
+  const [deletingId, setDeletingId] = useState(null);
 
-  const handleStartClass = async (meetingId) => {
-    try {
-      window.location.href = `http://localhost:7777/api/zoom/start/${meetingId}`;
-    } catch (err) {
-      toast.error('Unable to join class. Please check your enrollment.');
-    }
-  };
+  const meetings = data?.liveClasses || [];
 
-  const handleDelete = async (meetingId) => {
-    if (!window.confirm('Are you sure you want to delete this live class? This action cannot be undone.')) {
-      return;
-    }
+  /* ---------------- helpers ---------------- */
+const handleStartClass = async (id) => {
+  try {
+    setStarting(true);
+    window.location.href = `${process.env.REACT_APP_LOCAL_API_URL}/api/zoom/start/${id}`;
+  } finally {
+    setStarting(false);
+  }
+};
 
-    try {
-      setDeletingId(meetingId);
-      await deleteMeeting(meetingId).unwrap();
-      toast.success('Live class deleted successfully');
-      refetch();
-    } catch (error) {
-      console.error('Failed to delete meeting:', error);
-      toast.error('Failed to delete the live class. Please try again.');
-    } finally {
-      setDeletingId(null);
-    }
-  };
 
-  // Filter meetings based on search and filters
-  const filteredMeetings = meetingsData?.liveClasses?.filter(meeting => {
-    const matchesSearch = searchTerm === "" || 
-      meeting.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      meeting.course?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      meeting.batch?.batchName?.toLowerCase().includes(searchTerm.toLowerCase());
+const handleDelete = (meetingId) => {
+  toast((t) => (
+    <div className="tw-flex tw-flex-col tw-gap-3">
+      <p className="tw-font-medium">
+        Are you sure you want to delete this live class?
+      </p>
 
-    const matchesStatus = statusFilter === "all" || meeting.status === statusFilter;
-    
-    const matchesDate = dateFilter === "" || 
-      new Date(meeting.startTime).toDateString() === new Date(dateFilter).toDateString();
+      <div className="tw-flex tw-justify-end tw-gap-2">
+        <button
+          onClick={() => toast.dismiss(t.id)}
+          className="tw-px-3 tw-py-1 tw-rounded tw-bg-gray-200"
+        >
+          Cancel
+        </button>
 
-    return matchesSearch && matchesStatus && matchesDate;
-  }) || [];
+        <button
+          onClick={async () => {
+            toast.dismiss(t.id);
+            await deleteMeeting(meetingId);
+          }}
+          className="tw-px-3 tw-py-1 tw-rounded tw-bg-red-600 tw-text-white"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  ), { duration: 6000 });
+};
 
-  const formatTime = (date) => {
-    return new Date(date).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
+
+  const filteredMeetings = meetings.filter((m) => {
+    const matchSearch =
+      !searchTerm ||
+      m.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      m.course?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      m.batch?.batchName?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchStatus =
+      statusFilter === "all" || m.status === statusFilter;
+
+    const matchDate =
+      !dateFilter ||
+      new Date(m.startTime).toDateString() ===
+        new Date(dateFilter).toDateString();
+
+    return matchSearch && matchStatus && matchDate;
+  });
+
+  const formatDate = (d) =>
+    new Date(d).toLocaleDateString("en-IN", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
     });
-  };
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString([], {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+  const formatTime = (d) =>
+    new Date(d).toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
+
+  const StatusBadge = ({ status }) => {
+    const map = {
+      ongoing: "tw-bg-red-500",
+      completed: "tw-bg-green-500",
+      scheduled: "tw-bg-yellow-500",
+    };
+    return (
+      <span className={`tw-text-white tw-text-xs tw-font-semibold tw-px-3 tw-py-1 tw-rounded-full ${map[status]}`}>
+        {status.toUpperCase()}
+      </span>
+    );
   };
 
-  const getStatusBadge = (status) => {
-    switch (status) {
-      case 'ongoing':
-        return <span className="badge bg-error text-white">LIVE</span>;
-      case 'completed':
-        return <span className="badge bg-success text-white">COMPLETED</span>;
-      default:
-        return <span className="badge bg-warning text-white">UPCOMING</span>;
-    }
-  };
+  /* ---------------- loading / error ---------------- */
 
   if (isLoading) {
     return (
-      <div className="dashboard-app-container d-flex justify-content-center align-items-center py-5">
-        <div className="spinner-border text-primary" role="status"></div>
-        <span className="ms-2 text-muted">Loading live classes...</span>
+      <div className="tw-flex tw-justify-center tw-items-center tw-py-20 tw-text-gray-500">
+        Loading live classes…
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="dashboard-app-container text-center py-5">
-        <div className="text-error fs-lg">Failed to load live classes</div>
-        <p className="text-muted mb-3">{error.data?.error || 'Please try again later'}</p>
-        <button className="btn btn-primary" onClick={refetch}>
-          <RefreshCw size={16} className="me-2" />
-          Try Again
+      <div className="tw-text-center tw-py-20">
+        <p className="tw-text-red-600">Failed to load live classes</p>
+        <button
+          onClick={refetch}
+          className="tw-mt-4 tw-inline-flex tw-items-center tw-gap-2 tw-bg-blue-600 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg"
+        >
+          <FiRefreshCw /> Retry
         </button>
       </div>
     );
   }
 
+  /* ---------------- UI ---------------- */
+
   return (
-    <div className="dashboard-app-container p-4">
-      {/* Header Section */}
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h2 className="fw-bold text-dark mb-1">Live Classes Management</h2>
-          <p className="text-muted">Create and manage all live classes</p>
-        </div>
-        <div className="d-flex gap-2">
-          <button className="btn btn-outline-primary d-flex align-items-center gap-2">
-            <Download size={18} />
-            Export
-          </button>
-          <button className="btn btn-primary d-flex align-items-center gap-2">
-            <Plus size={18} />
-            Create Meeting
-          </button>
-        </div>
-      </div>
+   <div className="tw-p-6 tw-space-y-6">
 
-      {/* Search and Filters */}
-      <div className="card shadow-sm mb-4">
-        <div className="card-body">
-          <div className="row g-3 align-items-end">
-            <div className="col-md-4">
-              <label className="form-label fw-medium text-dark mb-2">Search</label>
-              <div >
-          
-                <input
-                  type="text"
-                  className="form-control ps-5"
-                  placeholder="Search by title, course, or batch..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            </div>
-            
-            <div className="col-md-3">
-              <label className="form-label fw-medium text-dark mb-2">Status</label>
-              <select 
-                className="form-control"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">All Status</option>
-                <option value="scheduled">Upcoming</option>
-                <option value="ongoing">Live</option>
-                <option value="completed">Completed</option>
-              </select>
-            </div>
-            
-            <div className="col-md-3">
-              <label className="form-label fw-medium text-dark mb-2">Date</label>
-              <input
-                type="date"
-                className="form-control"
-                value={dateFilter}
-                onChange={(e) => setDateFilter(e.target.value)}
-              />
-            </div>
-            
-            <div className="col-md-2">
-              <button 
-                className="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center gap-2"
-                onClick={() => {
-                  setSearchTerm("");
-                  setStatusFilter("all");
-                  setDateFilter("");
-                }}
-              >
-                <Filter size={16} />
-                Clear
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tab Navigation */}
-  
-
-<div>
-  <div className="d-flex flex-wrap align-items-center justify-content-between w-100 mb-3">
-  <h5 className="text-dark mb-2 mb-md-0">View Options</h5>
-  <div
-    className="btn-group ms-auto text-nowrap"
-    role="group"
-    aria-label="View Toggle"
-  >
-    <button
-      className={`tab-btn ${activeTab === "cards" ? "active" : ""} btn`}
-      onClick={() => setActiveTab("cards")}
-    >
-      <div className="d-flex align-items-center gap-1">
-        <LayoutGrid size={16} />
-        <span className="d-none d-sm-inline">Card</span>
-      </div>
-    </button>
-    <button
-      className={`tab-btn ${activeTab === "table" ? "active" : ""} btn`}
-      onClick={() => setActiveTab("table")}
-    >
-      <div className="d-flex align-items-center gap-1">
-        <LayoutList size={16} />
-        <span className="d-none d-sm-inline">Table</span>
-      </div>
-    </button>
-  </div>
-</div>
-</div>
-
-      {/* Results Count */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <div className="text-muted">
-          Showing {filteredMeetings.length} of {meetingsData?.liveClasses?.length || 0} classes
-        </div>
-        <button 
-          className="btn btn-outline-primary btn-sm d-flex align-items-center gap-2"
-          onClick={refetch}
-        >
-          <RefreshCw size={14} />
-          Refresh
-        </button>
-      </div>
-
-      {/* Content based on active tab */}
-      <AnimatePresence mode="wait">
-        {activeTab === "cards" ? (
-          <motion.div
-            key="cards"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <CardsView
-              meetings={filteredMeetings}
-              onStartClass={handleStartClass}
-              onDelete={handleDelete}
-              deletingId={deletingId}
-              formatTime={formatTime}
-              formatDate={formatDate}
-              getStatusBadge={getStatusBadge}
-            />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="table"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <TableView
-              meetings={filteredMeetings}
-              onStartClass={handleStartClass}
-              onDelete={handleDelete}
-              deletingId={deletingId}
-              formatTime={formatTime}
-              formatDate={formatDate}
-              getStatusBadge={getStatusBadge}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Empty State */}
-      {filteredMeetings.length === 0 && (
-        <div className="card shadow-sm text-center py-5">
-          <div className="card-body">
-            <div className="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
-                 style={{ width: '80px', height: '80px' }}>
-              <Calendar size={32} className="text-muted" />
-            </div>
-            <h4 className="text-dark mb-2">No live classes found</h4>
-            <p className="text-muted mb-4">
-              {meetingsData?.liveClasses?.length === 0 
-                ? "Get started by creating your first live class" 
-                : "Try adjusting your search filters"}
-            </p>
-            <button className="btn btn-primary">
-              <Plus size={18} className="me-2" />
-              Create First Class
-            </button>
-          </div>
-        </div>
-      )}
-
+  {/* ===== Page Header ===== */}
+  <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-4">
+    <div>
+      <h1 className="tw-text-3xl tw-font-bold tw-text-gray-900">
+        Live Classes
+      </h1>
+      <p className="tw-mt-1 tw-text-sm tw-text-gray-500">
+        Manage, schedule and monitor all Zoom live sessions
+      </p>
     </div>
+
+    <div className="tw-flex tw-gap-2">
+      <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium hover:tw-bg-gray-50">
+        <FiDownload />
+        Export
+      </button>
+
+      <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-blue-600 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-700">
+        <FiPlus />
+        Create Class
+      </button>
+    </div>
+  </div>
+
+  {/* ===== Filters Card ===== */}
+  <div className="tw-rounded-xl tw-border tw-border-gray-200 tw-bg-white tw-p-4 tw-shadow-sm">
+    <div className="tw-grid tw-gap-4 md:tw-grid-cols-4">
+
+      {/* Search */}
+      <div className="tw-relative">
+        <FiSearch className="tw-absolute tw-left-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-gray-400" />
+        <input
+          className="tw-w-full tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-pl-10 tw-pr-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
+          placeholder="Search class, course, or batch"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* Status */}
+      <select
+        className="tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-px-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+      >
+        <option value="all">All Status</option>
+        <option value="scheduled">Upcoming</option>
+        <option value="ongoing">Live</option>
+        <option value="completed">Completed</option>
+      </select>
+
+      {/* Date */}
+      <input
+        type="date"
+        className="tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-px-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
+        value={dateFilter}
+        onChange={(e) => setDateFilter(e.target.value)}
+      />
+
+      {/* Clear */}
+      <button
+        onClick={() => {
+          setSearchTerm("");
+          setStatusFilter("all");
+          setDateFilter("");
+        }}
+        className="tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded-lg tw-border tw-border-gray-300 tw-bg-gray-50 tw-py-2 tw-text-sm tw-font-medium hover:tw-bg-gray-100"
+      >
+        <FiFilter />
+        Clear
+      </button>
+    </div>
+  </div>
+
+  {/* ===== View Toggle & Count ===== */}
+  <div className="tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-center sm:tw-justify-between tw-gap-3">
+    <p className="tw-text-sm tw-text-gray-500">
+      Showing <span className="tw-font-medium tw-text-gray-900">{filteredMeetings.length}</span> of{" "}
+      <span className="tw-font-medium tw-text-gray-900">{meetings.length}</span> classes
+    </p>
+
+    <div className="tw-inline-flex tw-rounded-lg tw-border tw-border-gray-300 tw-bg-gray-50 tw-p-1">
+      <button
+        onClick={() => setActiveTab("cards")}
+        className={`tw-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-3 tw-py-1.5 tw-text-sm tw-font-medium ${
+          activeTab === "cards"
+            ? "tw-bg-white tw-shadow tw-text-blue-600"
+            : "tw-text-gray-500 hover:tw-text-gray-700"
+        }`}
+      >
+        <FiGrid />
+        Cards
+      </button>
+
+      <button
+        onClick={() => setActiveTab("table")}
+        className={`tw-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-3 tw-py-1.5 tw-text-sm tw-font-medium ${
+          activeTab === "table"
+            ? "tw-bg-white tw-shadow tw-text-blue-600"
+            : "tw-text-gray-500 hover:tw-text-gray-700"
+        }`}
+      >
+        <FiList />
+        Table
+      </button>
+    </div>
+  </div>
+
+  {/* ===== Content ===== */}
+  <AnimatePresence mode="wait">
+    {activeTab === "cards" ? (
+      <CardsView
+        filteredMeetings={filteredMeetings}
+        handleStartClass={handleStartClass}
+        handleDelete={handleDelete}
+        deletingId={deletingId}
+        formatDate={formatDate}
+        formatTime={formatTime}
+        StatusBadge={StatusBadge}
+      />
+    ) : (
+      <TableView
+        filteredMeetings={filteredMeetings}
+        handleStartClass={handleStartClass}
+        handleDelete={handleDelete}
+        deletingId={deletingId}
+        formatDate={formatDate}
+        formatTime={formatTime}
+        StatusBadge={StatusBadge}
+      />
+    )}
+  </AnimatePresence>
+
+</div>
+
   );
 };
 
-// Cards View Component
-const CardsView = ({ meetings, onStartClass, onDelete, deletingId, formatTime, formatDate, getStatusBadge }) => (
-  <div className="row g-4">
-    {meetings.map((meeting) => (
-      <div key={meeting._id} className='col-md-4 my-4' >
-        <motion.div
-          className="card  shadow-lg h-100 border-1 rounded-lg"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
-          whileHover={{ y: -5, transition: { duration: 0.2 } }}
-        >
-          <div className="card-body d-flex flex-column p-4">
-            {/* Header with Status */}
-            <div className="d-flex justify-content-between align-items-start mb-3">
-              <div className="flex-grow-1">
-                <h5 className="card-title fw-bold text-dark mb-2">{meeting.title}</h5>
-                {getStatusBadge(meeting.status)}
-              </div>
-            </div>
+/* ---------------- CARDS VIEW ---------------- */
 
-            {/* Meeting Details */}
-            <div className="mb-3 flex-grow-1">
-              <div className="d-flex align-items-center gap-2 mb-2">
-                <BookOpen size={16} className="text-muted mx-3" />
-                <span className="text-dark fw-medium">{meeting.course?.name || 'No Course'}</span>
-              </div>
-              
-              {meeting.batch?.batchName && (
-                <div className="d-flex align-items-center gap-2 mb-2">
-                  <Users size={16} className="text-muted mx-3" />
-                  <span className="text-muted">{meeting.batch.batchName}</span>
-                </div>
-              )}
-              
-              <div className="d-flex align-items-center gap-2 mb-2">
-                <Calendar size={16} className="text-muted mx-3" />
-                <span className="text-muted">{formatDate(meeting.startTime)}</span>
-              </div>
-              
-              <div className="d-flex align-items-center gap-2 mb-2">
-                <Clock size={16} className="text-muted mx-3" />
-                <span className="text-muted">{formatTime(meeting.startTime)} • {meeting.duration} mins</span>
-              </div>
-              
-              <div className="text-muted mx-3 small">
-                Host: {meeting.hostEmail}
-              </div>
-            </div>
+const CardsView = ({ filteredMeetings, handleStartClass, handleDelete, deletingId, formatDate, formatTime, StatusBadge }) => (
+  <div className="tw-grid md:tw-grid-cols-3 tw-gap-6">
+    {filteredMeetings.map((m) => (
+      <motion.div
+        key={m._id}
+        whileHover={{ y: -4 }}
+        className="tw-bg-white tw-rounded-xl tw-border tw-p-5 tw-flex tw-flex-col"
+      >
+        <div className="tw-flex tw-justify-between">
+          <h3 className="tw-font-semibold">{m.title}</h3>
+          <StatusBadge status={m.status} />
+        </div>
 
-            {/* Action Buttons */}
-            <div className="mt-auto">
-              <div className="d-flex g-3 flex-wrap">
-                {(meeting.status === 'scheduled' || meeting.status === 'ongoing') && (
-                  <button
-                    className="btn btn-primary btn-sm d-flex align-items-center gap-1"
-                    onClick={() => onStartClass(meeting._id)}
-                  >
-                    
-                    {meeting.status === 'ongoing' ? 'Join' : 'Start'}
-                  </button>
-                )}
-                
-                <button className="btn btn-outline-primary btn-sm mx-2">
-                  <Edit size={14} />
-                  Edit
-                </button>
-                
-                <button
-                  className="btn btn-outline-danger btn-sm "
-                  onClick={() => onDelete(meeting._id)}
-                  disabled={deletingId === meeting._id}
-                >
-                  <Trash2 size={14} />
-                  {deletingId === meeting._id ? 'Deleting...' : 'Delete'}
-                </button>
-                
-               
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
+        <div className="tw-mt-3 tw-space-y-2 tw-text-sm tw-text-gray-600">
+          <p className="tw-flex tw-items-center tw-gap-2"><FiBookOpen /> {m.course?.name}</p>
+          <p className="tw-flex tw-items-center tw-gap-2"><FiUsers /> {m.batch?.batchName || "—"}</p>
+          <p className="tw-flex tw-items-center tw-gap-2"><FiCalendar /> {formatDate(m.startTime)}</p>
+          <p className="tw-flex tw-items-center tw-gap-2"><FiClock /> {formatTime(m.startTime)} • {m.duration} mins</p>
+        </div>
+
+        <div className="tw-mt-4 tw-flex tw-gap-2">
+          {(m.status === "scheduled" || m.status === "ongoing") && (
+            <button className="tw-btn-primary" onClick={() => handleStartClass(m._id)}>
+              <FiPlay /> {m.status === "ongoing" ? "Join" : "Start"}
+            </button>
+          )}
+          <button className="tw-btn-outline"><FiEdit /></button>
+          <button
+            disabled={deletingId === m._id}
+            onClick={() => handleDelete(m._id)}
+            className="tw-btn-danger"
+          >
+            <FiTrash2 />
+          </button>
+        </div>
+      </motion.div>
     ))}
   </div>
 );
 
-// Table View Component
-const TableView = ({ meetings, onStartClass, onDelete, deletingId, formatTime, formatDate, getStatusBadge }) => (
-  <div className="card shadow-sm">
-    <div className="card-body p-0">
-      <div className="table-responsive">
-        <table className="table table-hover mb-0">
-          <thead className="table-light">
-            <tr>
-              <th scope="col" className="ps-4">Class Title</th>
-              <th scope="col">Course</th>
-              <th scope="col">Batch</th>
-              <th scope="col">Date & Time</th>
-              <th scope="col">Duration</th>
-              <th scope="col">Status</th>
-              <th scope="col" className="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {meetings.map((meeting, index) => (
-              <motion.tr
-                key={meeting._id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2, delay: index * 0.1 }}
-              >
-                <td className="ps-4">
-                  <div className="fw-semibold text-dark">{meeting.title}</div>
-                  <small className="text-muted">{meeting.hostEmail}</small>
-                </td>
-                <td className="fw-medium">{meeting.course?.name || 'N/A'}</td>
-                <td>
-                  {meeting.batch?.batchName ? (
-                    <span className="badge bg-light text-dark">{meeting.batch.batchName}</span>
-                  ) : (
-                    <span className="text-muted">—</span>
-                  )}
-                </td>
-                <td>
-                  <div className="text-dark fw-medium">{formatDate(meeting.startTime)}</div>
-                  <small className="text-muted">{formatTime(meeting.startTime)}</small>
-                </td>
-                <td className="text-muted">{meeting.duration} mins</td>
-                <td>{getStatusBadge(meeting.status)}</td>
-                <td>
-                  <div className="d-flex justify-content-center gap-1">
-                    {(meeting.status === 'scheduled' || meeting.status === 'ongoing') && (
-                      <button
-                        className="btn btn-primary btn-sm d-flex align-items-center gap-1"
-                        onClick={() => onStartClass(meeting._id)}
-                        title={meeting.status === 'ongoing' ? 'Join Class' : 'Start Class'}
-                      >
-                        <Play size={14} />
-                      </button>
-                    )}
-                    
-                    <button 
-                      className="btn btn-outline-primary btn-sm"
-                      title="Edit Class"
-                    >
-                      <Edit size={14} />
-                    </button>
-                    
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => onDelete(meeting._id)}
-                      disabled={deletingId === meeting._id}
-                      title="Delete Class"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+/* ---------------- TABLE VIEW ---------------- */
+
+const TableView = ({ filteredMeetings, handleStartClass, handleDelete, deletingId, formatDate, formatTime, StatusBadge }) => (
+  <div className="tw-bg-white tw-border tw-rounded-xl tw-overflow-x-auto">
+    <table className="tw-w-full tw-text-sm">
+      <thead className="tw-bg-gray-50">
+        <tr>
+          <th className="tw-p-3 tw-text-left">Title</th>
+          <th className="tw-p-3">Course</th>
+          <th className="tw-p-3">Batch</th>
+          <th className="tw-p-3">Date</th>
+          <th className="tw-p-3">Duration</th>
+          <th className="tw-p-3">Status</th>
+          <th className="tw-p-3 tw-text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredMeetings.map((m) => (
+          <tr key={m._id} className="tw-border-t">
+            <td className="tw-p-3 tw-font-medium">{m.title}</td>
+            <td className="tw-p-3">{m.course?.name}</td>
+            <td className="tw-p-3">{m.batch?.batchName || "—"}</td>
+            <td className="tw-p-3">{formatDate(m.startTime)}<br /><span className="tw-text-xs tw-text-gray-500">{formatTime(m.startTime)}</span></td>
+            <td className="tw-p-3">{m.duration} mins</td>
+            <td className="tw-p-3"><StatusBadge status={m.status} /></td>
+            <td className="tw-p-3 tw-text-center tw-flex tw-gap-2 tw-justify-center">
+              {(m.status === "scheduled" || m.status === "ongoing") && (
+                <button onClick={() => handleStartClass(m._id)} className="tw-btn-primary"><FiPlay /></button>
+              )}
+              <button className="tw-btn-outline"><FiEdit /></button>
+              <button disabled={deletingId === m._id} onClick={() => handleDelete(m._id)} className="tw-btn-danger"><FiTrash2 /></button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
 );
 
 export default AdminLiveClasses;
-
-     

@@ -1,187 +1,138 @@
-import React, { useState, useEffect } from 'react';
-import './CoursesCarouselInHome.css';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+const getPosition = (index, current, total) => {
+  if (index === current) return "center";
+  if (index === (current - 1 + total) % total) return "left";
+  if (index === (current + 1) % total) return "right";
+  return "hidden";
+};
 
 const CoursesCarouselInHome = () => {
-  // Sample dynamic blog data
- const [CoursesData, setBlogData] = useState([
-  {
-    id: 1,
-    category: "Web Development",
-    categoryClass: "primary",
-    image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80",
-    title: "MERN Stack Development",
-    excerpt: "Master the complete MERN stack (MongoDB, Express.js, React, Node.js) with modern JavaScript technologies.",
-    link: "/trainings/web-development/mern-stack-development"
-  },
-  {
-    id: 2,
-    category: "AI & ML",
-    categoryClass: "danger",
-    image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    title: "Machine Learning Fundamentals",
-    excerpt: "Learn the core concepts of machine learning including supervised, unsupervised learning, neural networks",
-    link: "/trainings/data-science/machine-learning"
-  },
-  {
-    id: 3,
-    category: "AI",
-    categoryClass: "info",
-    image: "/img/ai-cloud-with-robot-head.jpg",
-    title: "Advanced AI & Deep Learning",
-    excerpt: "Dive deep into artificial intelligence, neural networks, natural language processing, and computer vision techniques.",
-    link: "/trainings/data-science/artificial-intelligence"
-  },
-  {
-    id: 4,
-    category: "Web Development",
-    categoryClass: "primary",
-    image: "https://images.unsplash.com/photo-1581276879432-15e50529f34b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    title: "Java Full Stack Mastery",
-    excerpt: "Comprehensive Java full-stack development covering Spring Boot, Hibernate, REST APIs, and modern frontend integration.",
-    link: "/trainings/web-development/java-full-stack"
-  },
-  {
-    id: 5,
-    category: "Testing",
-    categoryClass: "warning",
-    image: "https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    title: "Selenium WebDriver Automation",
-    excerpt: "Master automated testing with Selenium WebDriver, TestNG, build robust test automation frameworks.",
-    link: "/trainings/testing/selenium-automation"
-  },
-  {
-    id: 6,
-    category: "Generative AI",
-    categoryClass: "success",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-    title: "Data Science with Python",
-    excerpt: "Learn data analysis, visualization, and statistical modeling using Python, Pandas, NumPy, and Scikit-learn libraries.",
-    link: "/trainings/data-science/generative-ai"
-  }
-]);
+  const courses = [
+    {
+      id: 1,
+      title: "MERN Stack Development",
+      image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479",
+      excerpt: "Master MongoDB, Express, React, and Node.js.",
+      link: "/trainings/web-development/mern-stack-development",
+    },
+    {
+      id: 2,
+      title: "Machine Learning Fundamentals",
+      image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
+      excerpt: "Supervised, unsupervised learning & neural networks.",
+      link: "/trainings/data-science/machine-learning",
+    },
+    {
+      id: 3,
+      title: "Advanced AI & Deep Learning",
+      image: "/img/ai-cloud-with-robot-head.jpg",
+      excerpt: "NLP, Computer Vision, Deep Learning.",
+      link: "/trainings/data-science/artificial-intelligence",
+    },
+    {
+      id: 4,
+      title: "Java Full Stack Mastery",
+      image: "https://images.unsplash.com/photo-1581276879432-15e50529f34b",
+      excerpt: "Spring Boot, Hibernate, REST APIs.",
+      link: "/trainings/web-development/java-full-stack",
+    },
+  ];
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [current, setCurrent] = useState(0);
 
-  // Function to go to next slide
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === CoursesData.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  // Function to go to previous slide
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? CoursesData.length - 1 : prevIndex - 1
-    );
-  };
-
-  // Auto-play carousel
   useEffect(() => {
-    let interval;
-    if (isAutoPlaying) {
-      interval = setInterval(() => {
-        nextSlide();
-      }, 4000);
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isAutoPlaying, currentIndex]);
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % courses.length);
+    }, 4000);
 
-  // Function to handle manual slide selection
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-    setIsAutoPlaying(false);
-    // Resume auto-play after a delay
-    setTimeout(() => setIsAutoPlaying(true), 8000);
-  };
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <section className="blog-carousel-section  ">
-      <div className="container pt-5">
-        <div className="row">
-          <div className="col-md-12">
-            <div className="section-heading mb-5">
-              <h2>Our Courses</h2>
-              <p className="lead">
-                Enthusiastically drive revolutionary opportunities before emerging leadership. 
-                Phosfluorescently cultivate emerging alignments time methods of empowerment.
-              </p>
-            </div>
-          </div>
+    <section className="tw-bg-slate-50 tw-py-12 tw-overflow-x-hidden">
+      <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
+        {/* Header */}
+        <div className="tw-text-center tw-mb-8">
+          <h2 className="tw-text-3xl sm:tw-text-4xl md:tw-text-5xl tw-font-bold">
+            Explore Our Popular Courses
+          </h2>
+          <p className="tw-mt-4 tw-text-gray-600">
+            Enhance your skills with expert-led programs
+          </p>
         </div>
-        
-        <div className="carousel-container w-100">
-          <div className="carousel-wrapper">
-            <button className="carousel-control prev" onClick={prevSlide}>
-              <span className="ti-angle-left"></span>
-            </button>
-            
-            <div className="carousel">
-              {CoursesData.map((blog, index) => {
-                // Calculate position class for each card
-                let position = 'right';
-                if (index === currentIndex) {
-                  position = 'center';
-                } else if (
-                  index === currentIndex - 1 || 
-                  (currentIndex === 0 && index === CoursesData.length - 1)
-                ) {
-                  position = 'left';
-                }
-                
-                return (
-                  <div 
-                    key={blog.id} 
-                    className={`carousel-card ${position}`}
-                    onClick={() => goToSlide(index)}
-                  >
-                    <div className="single-blog-card card border-0 shadow-sm">
-                      <span className={`category position-absolute badge badge-pill badge-${blog.categoryClass}`}>
-                        {blog.category}
-                      </span>
-                      <img src={blog.image} className="card-img-top position-relative" alt={blog.title} />
-                      <div className="card-body">
-                        <h3 className="h5 mb-2 card-title">
-                          <a href={blog.link}>{blog.title}</a>
-                        </h3>
-                       
-                        <p className="card-text">{blog.excerpt}</p>
-                        <a href={blog.link} className="detail-link">
-                          Read more <span className="ti-arrow-right"></span>
-                        </a>
-                      </div>
-                    </div>
+
+        {/* Carousel */}
+        <div className="tw-relative tw-h-[420px] tw-flex tw-items-center tw-justify-center tw-overflow-x-hidden">
+          {courses.map((course, index) => {
+            const position = getPosition(index, current, courses.length);
+
+            return (
+              <div
+                key={course.id}
+                className={`
+                  tw-absolute tw-transition-all tw-duration-700 tw-ease-in-out
+                  ${
+                    position === "center" &&
+                    "tw-z-20 tw-scale-100 sm:tw-scale-110 tw-opacity-100"
+                  }
+                  ${
+                    position === "left" &&
+                    "tw-z-10 -tw-translate-x-[90%] sm:-tw-translate-x-[120%] tw-scale-95 sm:tw-scale-90 tw-opacity-60 tw-blur-sm"
+                  }
+                  ${
+                    position === "right" &&
+                    "tw-z-10 tw-translate-x-[90%] sm:tw-translate-x-[120%] tw-scale-95 sm:tw-scale-90 tw-opacity-60 tw-blur-sm"
+                  }
+                  ${
+                    position === "hidden" &&
+                    "tw-opacity-0 tw-pointer-events-none"
+                  }
+                `}
+              >
+                <div
+                  className="
+                    tw-bg-white tw-rounded-xl tw-shadow-xl
+                    tw-w-[280px] sm:tw-w-[320px]
+                    tw-overflow-hidden
+                  "
+                >
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    className="tw-h-44 tw-w-full tw-object-cover"
+                  />
+                  <div className="tw-p-6">
+                    <h3 className="tw-font-semibold tw-text-lg">
+                      {course.title}
+                    </h3>
+                    <p className="tw-mt-2 tw-text-sm tw-text-gray-600">
+                      {course.excerpt}
+                    </p>
+                    <Link
+                      to={course.link}
+                      className="tw-inline-block tw-mt-4 tw-text-blue-600 tw-font-medium hover:tw-underline"
+                    >
+                      Read more →
+                    </Link>
                   </div>
-                );
-              })}
-            </div>
-            
-            <button className="carousel-control next" onClick={nextSlide}>
-              <span className="ti-angle-right"></span>
-            </button>
-          </div>
-          
-          <div className="carousel-indicators ">
-            {CoursesData.map((_, index) => (
-              <button
-                key={index}
-                className={`indicator ${index === currentIndex ? 'active' : ''}`}
-                onClick={() => goToSlide(index)}
-              />
-            ))}
-          </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CTA */}
+        <div className="tw-text-center tw-mt-16">
+          <Link
+            to="/trainings"
+            className="tw-inline-block tw-rounded-full tw-border tw-border-blue-600 tw-px-6 tw-py-3 tw-font-medium tw-text-blue-600 hover:tw-bg-blue-600 hover:tw-text-white tw-transition"
+          >
+            View All Our Courses
+          </Link>
         </div>
       </div>
-        <div className="text-center pt-5">
-          <Link to={'/trainings'}>
-          
-            <button className="btn accent-solid-btn">View All  Our Courses</button>
-          </Link>
-          </div>
     </section>
   );
 };

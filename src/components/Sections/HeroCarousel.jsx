@@ -22,7 +22,9 @@ const HeroCarousel = () => {
       </SwiperSlide>
 
       <SwiperSlide>
-        <HeroSlideIT/>
+        
+        <HeroSection />
+        
       </SwiperSlide>
     </Swiper>
   );

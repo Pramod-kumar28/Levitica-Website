@@ -1,8 +1,7 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useVerifyEmailQuery } from '../Services/authService.js';
 import { useEffect, useState } from 'react';
-import { Card, Spinner, Button, Container } from 'react-bootstrap';
-import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 export default function EmailVerification() {
   const [params] = useSearchParams();
@@ -15,7 +14,7 @@ export default function EmailVerification() {
     { ivfm, id },
     { skip: !ivfm || !id }
   );
-console.log(data)
+
   useEffect(() => {
     if (isSuccess) {
       const timer = setInterval(() => {
@@ -32,73 +31,86 @@ console.log(data)
           return prev - 1;
         });
       }, 1000);
+
+      return () => clearInterval(timer);
     }
   }, [isSuccess, data, navigate]);
 
-  const renderCard = ({ icon, title, message, variant, buttonText, buttonLink }) => (
-    <Container className="d-flex justify-content-center align-items-center vh-100 bg-light">
-      <Card className={`shadow-lg text-center border-${variant}`} style={{ maxWidth: '500px', width: '100%' }}>
-        <Card.Body>
-          <div className={`text-${variant} mb-3`} style={{ fontSize: '3rem' }}>
+  const Card = ({ icon, title, message, variant }) => {
+    const variants = {
+      success: 'tw-text-green-600 tw-border-green-300',
+      danger: 'tw-text-red-600 tw-border-red-300',
+      info: 'tw-text-blue-600 tw-border-blue-300',
+    };
+
+    return (
+      <div className="tw-min-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-100 tw-px-4">
+        <div
+          className={`tw-bg-white tw-border tw-rounded-xl tw-shadow-lg tw-max-w-md tw-w-full tw-p-6 tw-text-center ${variants[variant]}`}
+        >
+          <div className="tw-flex tw-justify-center tw-mb-4">
             {icon}
           </div>
-          <Card.Title className={`text-${variant}`}>{title}</Card.Title>
-          <Card.Text className="mt-2">{message}</Card.Text>
-          {buttonText && (
-            <Button variant={variant} href={buttonLink} className="mt-3">
-              {buttonText}
-            </Button>
-          )}
-        </Card.Body>
-      </Card>
-    </Container>
-  );
+          <h2 className="tw-text-xl tw-font-semibold tw-mb-2">
+            {title}
+          </h2>
+          <p className="tw-text-gray-600">
+            {message}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+  /* ------------------ Edge cases ------------------ */
 
   if (!ivfm || !id) {
-    return renderCard({
-      icon: <FaTimesCircle />,
-      title: 'Verification Failed',
-      message: 'Missing verification details.',
-      variant: 'danger',
-      buttonText: 'Try Again',
-      buttonLink: '/sign-up',
-    });
+    return (
+      <Card
+        variant="danger"
+        icon={<XCircle size={56} />}
+        title="Verification Failed"
+        message="Missing verification details."
+      />
+    );
   }
 
   if (isLoading) {
     return (
-      <Container className="d-flex justify-content-center align-items-center vh-100 bg-light">
-        <Card className="shadow-sm text-center" style={{ maxWidth: '400px', width: '100%' }}>
-          <Card.Body>
-            <Spinner animation="border" variant="primary" className="mb-3" />
-            <Card.Title>Verifying your email...</Card.Title>
-            <Card.Text className="text-muted">Please wait while we confirm your account.</Card.Text>
-          </Card.Body>
-        </Card>
-      </Container>
+      <div className="tw-min-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-100">
+        <div className="tw-bg-white tw-rounded-xl tw-shadow-md tw-p-6 tw-text-center tw-max-w-sm tw-w-full">
+          <Loader2 className="tw-animate-spin tw-mx-auto tw-mb-4 tw-text-blue-600" size={40} />
+          <h2 className="tw-text-lg tw-font-semibold">
+            Verifying your email…
+          </h2>
+          <p className="tw-text-gray-500 tw-mt-1">
+            Please wait while we confirm your account.
+          </p>
+        </div>
+      </div>
     );
   }
 
   if (error) {
-    return renderCard({
-      icon: <FaTimesCircle />,
-      title: 'Verification Failed',
-      message: error?.data?.message || 'The link is invalid or expired.',
-      variant: 'danger',
-      buttonText: 'Try Again',
-      buttonLink: '/sign-up',
-    });
+    return (
+      <Card
+        variant="danger"
+        icon={<XCircle size={56} />}
+        title="Verification Failed"
+        message={error?.data?.message || 'The link is invalid or expired.'}
+      />
+    );
   }
 
   if (isSuccess) {
-    return renderCard({
-      icon: <FaCheckCircle />,
-      title: 'Email Verified!',
-      message: `Your email has been verified successfully! Redirecting in ${countdown}s...`,
-      variant: 'success',
-      buttonText: null,
-      buttonLink: null,
-    });
+    return (
+      <Card
+        variant="success"
+        icon={<CheckCircle size={56} />}
+        title="Email Verified!"
+        message={`Your email has been verified successfully. Redirecting in ${countdown}s…`}
+      />
+    );
   }
 
   return null;

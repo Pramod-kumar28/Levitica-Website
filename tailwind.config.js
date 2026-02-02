@@ -1,6 +1,9 @@
 module.exports = {
   prefix: "tw-",
-  content: ["./src/components/dashboards/**/*.{js,jsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: { extend: {
     fontFamily: {
       poppins: ['Poppins', 'sans-serif'],

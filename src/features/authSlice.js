@@ -18,6 +18,7 @@ const authSlice = createSlice({
       console.log('Login action payload:', action.payload);
       const { user } = action.payload;
       state.user = user;
+      state.isAuthenticated=true
       state.loading = false;
       state.error = null;
       state.lastRefreshed = Date.now();

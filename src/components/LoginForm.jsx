@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useLoginMutation } from '../Services/authService';
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useLoginMutation } from "../Services/authService";
 import { useDispatch } from "react-redux";
 import { login } from "../features/authSlice";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
-import { Eye, EyeOff, LucideEye, MonitorCheck } from "lucide-react";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -14,112 +14,110 @@ const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [triggerLogin, { isLoading }] = useLoginMutation();
 
-  const handleSubmit = useCallback(async (values) => {
-    try {
-      const response = await triggerLogin(values);
-      
-      if (response.error) {
-        toast.error(response.error.data?.message || 'Login failed');
-        return;
+  const handleSubmit = useCallback(
+    async (values) => {
+      try {
+        const response = await triggerLogin(values);
+
+        if (response.error) {
+          toast.error(response.error.data?.message || "Login failed");
+          return;
+        }
+
+        dispatch(
+          login({
+            user: response.data.user,
+            stats: response.data.stats,
+          })
+        );
+
+        toast.success("Login successful!");
+        setTimeout(() => navigate("/dashboard"), 1200);
+      } catch {
+        toast.error("Something went wrong");
       }
-
-      dispatch(login({
-        user: response.data.user,
-        stats: response.data.stats
-      }));
-
-      toast.success('Login successful! Redirecting...');
-      setTimeout(() => navigate('/dashboard'), 1500);
-    } catch (error) {
-      toast.error('An unexpected error occurred');
-    }
-  }, [triggerLogin, dispatch, navigate]);
+    },
+    [triggerLogin, dispatch, navigate]
+  );
 
   const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-    },
+    initialValues: { email: "", password: "" },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email('Invalid email format')
-        .required('Email is required'),
-      password: Yup.string()
-        .min(6, 'Minimum 6 characters required')
-        .required('Password is required'),
+      email: Yup.string().email("Invalid email").required("Email is required"),
+      password: Yup.string().min(6, "Minimum 6 characters").required("Password is required"),
     }),
     onSubmit: handleSubmit,
   });
 
   return (
-    <form className="login-signup-form" onSubmit={formik.handleSubmit}>
-      {/* 📧 Email Field */}
-      <div className="form-group">
-        <label className="pb-1">Email Address</label>
-        <div className="input-group input-group-merge">
-          <div className="input-icon">
-            <span className="ti-email color-primary"></span>
-          </div>
+    <form onSubmit={formik.handleSubmit} className="tw-space-y-5 login-signup-form">
+
+      {/* EMAIL */}
+      <div>
+        <label className="tw-block tw-text-sm tw-font-medium tw-mb-1">
+          Email Address
+        </label>
+        <div className="tw-relative">
+          <FaEnvelope className="tw-absolute tw-left-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-slate-400" />
           <input
             type="email"
             name="email"
-            className="form-control"
-            placeholder="name@yourdomain.com"
+            className="tw-w-full tw-pl-10 tw-pr-4 tw-py-2 tw-border tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500"
+            placeholder="name@domain.com"
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
         </div>
         {formik.touched.email && formik.errors.email && (
-          <small className="text-danger d-block mt-1">{formik.errors.email}</small>
+          <p className="tw-text-red-500 tw-text-sm">{formik.errors.email}</p>
         )}
       </div>
 
-      {/* 🔐 Password Field */}
-      <div className="form-group">
-        <div className="row">
-          <div className="col">
-            <label className="pb-1">Password</label>
-          </div>
-          <div className="col-auto">
-            <Link to="/password-reset" className="form-text small text-muted">
-              Forgot password?
-            </Link>
-          </div>
+      {/* PASSWORD */}
+      <div>
+        <div className="tw-flex tw-justify-between tw-items-center tw-mb-1">
+          <label className="tw-text-sm tw-font-medium">Password</label>
+          <Link
+            to="/password-reset"
+            className="tw-text-sm tw-text-blue-600 hover:tw-underline"
+          >
+            Forgot password?
+          </Link>
         </div>
-          <div className="input-group input-group-merge">
-  <div className="input-icon">
-    <span className="ti-lock color-primary"></span>
-  </div>
-  <input
-    type={showPassword ? 'text' : 'password'}
-    name="password"
-    className="form-control"
-    placeholder="Enter your password"
-    value={formik.values.password}
-    onChange={formik.handleChange}
-    onBlur={formik.handleBlur}
-  
-  />
-  <span className="toggle-eye w-100 " onClick={() => setShowPassword(!showPassword)}>
-    
-     <div className="form-text small text-muted text-right">
-              {showPassword? "Hide password":"Show password"}
-            </div>
-  </span>
-</div>
+
+        <div className="tw-relative">
+          <FaLock className="tw-absolute tw-left-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-slate-400" />
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            className="tw-w-full tw-pl-10 tw-pr-10 tw-py-2 tw-border tw-rounded-lg focus:tw-ring-2 focus:tw-ring-blue-500"
+            placeholder="Enter your password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="tw-absolute tw-right-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-slate-500"
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+
         {formik.touched.password && formik.errors.password && (
-          <small className="text-danger d-block mt-1">{formik.errors.password}</small>
+          <p className="tw-text-red-500 tw-text-sm">{formik.errors.password}</p>
         )}
       </div>
 
-      {/* 🚀 Submit Button */}
-      <button 
-        type="submit" 
-        className="btn-block secondary-solid-btn border-radius mt-4 mb-3"
+      {/* SUBMIT */}
+      <button
+        type="submit"
         disabled={isLoading}
+        className="btn secondary-solid-btn tw-w-full tw-mt-4"
       >
-        {isLoading ? 'Signing in...' : 'Sign in'}
+        {isLoading ? "Signing in..." : "Sign In"}
       </button>
     </form>
   );

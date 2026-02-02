@@ -1,79 +1,93 @@
-import Footer from "./Footer" 
-import data from '../data/services.json'
-import { Link, useParams } from "react-router-dom"
-import ServiceDetails from "./ServicesDetails"
- 
+import data from "../data/services.json";
+import { Link } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
 
+const Services = () => {
+  return (
+    <div className="tw-bg-white tw-pt-20">
 
-const Services=()=>{
-  const {serviceName}=useParams()
-  console.log(serviceName,"iam")
-  
-
-    return <>
-     <div className="main pt-100">
-        {/* Header Section */}
-        <section
-          className="hero-section ptb-100 gradient-overlay"
-          style={{
-            background: "url('img/header-bg-5.jpg') no-repeat center center / cover",
-          }}
-        >
-          <div
+      {/* HERO */}
+      <section
+        className="hero-section ptb-100 gradient-overlay"
+        style={{
+          background: "url('/img/header-bg-5.jpg') center / cover no-repeat",
+        }}
+      >
+         <div
             className="hero-bottom-shape-two"
             style={{
               background: "url('img/hero-bottom-shape.svg') no-repeat bottom center",
             }}
           ></div>
-          <div className="container mt-5">
-            <div className="row justify-content-center">
-              <div className="col-md-8 col-lg-7">
-                <div className="page-header-content text-white text-center pt-sm-5 pt-md-5 pt-lg-0">
-                  <h1 className="text-white mb-0">Our Services</h1>
-                </div>
-              </div>
-            </div>
+      
+        <div className="tw-relative  tw-max-w-4xl tw-mx-auto tw-px-4 tw-text-center tw-py-5 tw-border">
+          <h1 className="tw-text-4xl md:tw-text-5xl tw-font-bold tw-text-white">
+            Our Services
+          </h1>
+        </div>
+      </section>
+
+      {/* SERVICES LIST */}
+      <section className="tw-bg-slate-50 tw-py-24">
+        <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
+
+          {/* Section header */}
+          <div className="tw-text-center tw-max-w-2xl tw-mx-auto tw-mb-16">
+            <h2 className="tw-text-3xl md:tw-text-4xl tw-font-bold tw-text-slate-900">
+              We Provide Best Services
+            </h2>
+            <p className="tw-mt-4 tw-text-slate-600">
+              Efficiently aggregate end-to-end core competencies without
+              maintainable ideas. Dynamically foster tactical solutions without
+              enabled value.
+            </p>
           </div>
-        </section>
 
-        {/* Top-level Courses (Communication, Cybersecurity, etc.) */}
-        <section className="services-section ptb-100 gray-light-bg">
-          <div className="container ">
-            <div className="row justify-content-center">
-              <div className="col-md-8">
-                <div className="section-heading text-center mb-5">
-                  <h2>We Provide Best Services</h2>
-                  <p className="lead">
-                    Efficiently aggregate end-to-end core competencies without maintainable ideas. Dynamically
-                    foster tactical solutions without enabled value.
-                  </p>
-                </div>
+          {/* Grid */}
+          <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-8">
+            {data?.services.map((service, index) => (
+              <div
+                key={index}
+                className="
+                  tw-group tw-bg-white tw-rounded-2xl tw-p-8
+                  tw-shadow-sm hover:tw-shadow-xl
+                  tw-transition tw-flex tw-flex-col
+                "
+              >
+                <img
+                  src={service.img}
+                  alt={service.title}
+                  className="tw-w-20 tw-h-20 tw-object-contain tw-mb-6"
+                />
+
+                <h5 className="tw-text-lg tw-font-semibold tw-text-slate-900">
+                  {service.title}
+                </h5>
+
+                <p className="tw-mt-3 tw-text-slate-600 tw-flex-grow">
+                  {service.description}
+                </p>
+
+                <Link
+                  to={service.path}
+                  className="
+                    tw-mt-6 tw-inline-flex tw-items-center tw-gap-2
+                    tw-text-indigo-600 tw-font-medium
+                    hover:tw-text-indigo-700
+                    tw-transition
+                  "
+                >
+                  Get More Info
+                  <FaArrowRight className="tw-text-sm group-hover:tw-translate-x-1 tw-transition" />
+                </Link>
               </div>
-            </div>
-
-            <div className="row">
-              {data?.services.map((course, index) => (
-                <div className="col-lg-4 col-md-6 col-sm-6 d-flex" key={index}>
-                  <div className="services-single animated-hover text-center p-5 my-md-3 my-lg-3 my-sm-0 shadow-sm white-bg rounded w-100">
-                    <img src={course.img} alt={course.title} width="80" className="mb-3" />
-                    <h5>{course.title}</h5>
-                    <p className="mb-2">{course.description}</p>
-                    <Link to={course.path} className="detail-link mt-4">
-                      Get More Info <span className="ti-arrow-right"></span>
-                    </Link>
-                  </div>
-                </div>
-              ))} 
-            </div>
+            ))}
           </div>
-        </section>
-       
 
-        
-      </div>
+        </div>
+      </section>
+    </div>
+  );
+};
 
-
-    
-    </>
-}
-export default Services
+export default Services;

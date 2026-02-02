@@ -1,6 +1,10 @@
-
-import { FaLightbulb, FaBezierCurve, FaLifeRing, FaBrain } from "react-icons/fa";
-
+import {
+  FaLightbulb,
+  FaBezierCurve,
+  FaLifeRing,
+  FaBrain,
+  FaCheckCircle,
+} from "react-icons/fa";
 
 const features = [
   "Cost Accounting Fundamentals",
@@ -11,71 +15,98 @@ const features = [
 
 const promoBlocks = [
   {
-    icon: <FaLightbulb className="icon-lg accent-color  " /> ,
+    icon: FaLightbulb,
     title: "Business Consulting",
-    description: "Enthusiastically scale mission-critical imperatives rather than array.",
+    description:
+      "Scale mission-critical imperatives with data-driven consulting strategies.",
   },
   {
-    icon: <FaBezierCurve className="icon-lg accent-color" />,
+    icon: FaBezierCurve,
     title: "Creative Design",
-    description: "Compellingly promote collaborative products without synergistic schemas.",
+    description:
+      "Craft visually compelling designs that elevate your brand identity.",
   },
   {
-    icon: <FaLifeRing className="icon-lg accent-color" />,
+    icon: FaLifeRing,
     title: "Market Strategy",
-    description: "Rapidiously create cooperative resources rather than client-based leadership.",
+    description:
+      "Create high-impact go-to-market strategies for sustainable growth.",
   },
   {
-    icon: <FaBrain className="icon-lg accent-color" />,
-    title: "Valuable Idea",
-    description: "Enthusiastically scale mission-critical imperatives rather than array.",
+    icon: FaBrain,
+    title: "Valuable Ideas",
+    description:
+      "Transform innovative ideas into real-world business solutions.",
   },
 ];
 
-const AboutUsSection = () => (
-  <section className="about-us-section  mb-5">
-    <div className="container">
-      <div className="row justify-content-around align-items-center">
-        <div className="col-md-12 col-lg-5">
-          <div className="about-content-right mb-md-4 mb-lg-0">
-            <h2>From Learning to Leading — We’re With You.</h2>
-            <p>
-              Objectively productivate installed base technology whereas user friendly ROI.
-              Phosfluorescently innovate functionalized potentialities through.
+const AboutUsSection = () => {
+  return (
+    <section className="tw-bg-gradient-to-b tw-from-white tw-to-slate-50 tw-py-24">
+      <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
+
+        <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-16 tw-items-center">
+
+          {/* LEFT CONTENT */}
+          <div>
+            <h2 className="tw-text-3xl md:tw-text-4xl tw-font-bold tw-text-slate-900">
+              From Learning to Leading — We’re With You.
+            </h2>
+
+            <p className="tw-mt-4 tw-text-slate-600">
+              We help individuals and organizations move from foundational learning
+              to leadership through innovative, scalable solutions.
             </p>
-            <p>
-              Proactively synergize prospective resources after interoperable e-commerce.
-              Interactively strategize multimedia based vis-a-vis customer directed scenarios proactively enable value.
+
+            <p className="tw-mt-3 tw-text-slate-600">
+              Our approach blends strategy, technology, and creativity to unlock
+              sustainable growth and long-term value.
             </p>
-            <ul className="list-unstyled tech-feature-list">
+
+            {/* Feature list */}
+            <ul className="tw-mt-8 tw-space-y-3">
               {features.map((feature, idx) => (
-                <li key={idx} className="py-1">
-                  <span className="ti-check-box mr-2 color-secondary"></span>
-                  <strong>{feature}</strong>
+                <li
+                  key={idx}
+                  className="tw-flex tw-items-center tw-gap-3 tw-text-slate-800"
+                >
+                  <FaCheckCircle className="tw-text-emerald-500" />
+                  <span className="tw-font-medium">{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
 
-        <div className="col-md-12 col-lg-6">
-          <div className="row">
-            {promoBlocks.map((block, idx) => (
-              <div key={idx} className="col-12 col-md-6 col-lg-6">
-                <div className="single-promo-block p-4 text-center rounded border my-md-3 my-lg-3 my-sm-0">
-                  <div className="promo-block-icon mb-3 ">{block.icon}</div>
-                  <div className="promo-block-content">
-                    <h5>{block.title}</h5>
-                    <p>{block.description}</p>
+          {/* RIGHT PROMO BLOCKS */}
+          <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-6">
+            {promoBlocks.map((block, idx) => {
+              const Icon = block.icon;
+
+              return (
+                <div
+                  key={idx}
+                  className="tw-group tw-bg-white tw-rounded-2xl tw-border tw-border-slate-200 tw-p-6 tw-shadow-sm hover:tw-shadow-xl tw-transition"
+                >
+                  <div className="tw-w-12 tw-h-12 tw-rounded-xl tw-bg-indigo-50 tw-text-indigo-600 tw-flex tw-items-center tw-justify-center group-hover:tw-scale-110 tw-transition">
+                    <Icon size={22} />
                   </div>
+
+                  <h5 className="tw-mt-4 tw-font-semibold tw-text-slate-900">
+                    {block.title}
+                  </h5>
+
+                  <p className="tw-mt-2 tw-text-sm tw-text-slate-600">
+                    {block.description}
+                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
+
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default AboutUsSection;

@@ -1,28 +1,32 @@
 import { Link } from "react-router-dom";
 
-
-
 const ConsultingCTA = () => {
   return (
-    <section className="call-to-action py-5">
-      <div className="container">
-        <div className="row justify-content-around align-items-center">
-          <div className="col-md-7">
-            <div className="subscribe-content">
-              <h3 className="mb-1">Consulting Services To Empower  Your Business</h3>
-              <p>
-                Rapidiously engage fully tested e-commerce with progressive architectures.
-              </p>
-            </div>
+    <section className="tw-bg-slate-100 tw-py-20">
+      <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
+
+        <div className="tw-flex tw-flex-col md:tw-flex-row tw-items-start md:tw-items-center tw-justify-between tw-gap-8">
+
+          {/* Content */}
+          <div className="tw-max-w-2xl">
+            <h3 className="tw-text-2xl md:tw-text-3xl tw-font-semibold tw-text-slate-900">
+              Consulting Services To Empower Your Business
+            </h3>
+            <p className="tw-mt-3 tw-text-slate-600">
+              Rapidiously engage fully tested e-commerce with progressive
+              architectures.
+            </p>
           </div>
-          <div className="col-md-4">
-            <div className="action-btn text-lg-right text-sm-left">
-              <Link to="/contact-us" className="btn secondary-solid-btn">
-                Contact With Us
-              </Link>
-            </div>
+
+          {/* CTA */}
+          <div>
+            <Link to="/contact-us" className="btn secondary-solid-btn">
+              Contact With Us
+            </Link>
           </div>
+
         </div>
+
       </div>
     </section>
   );

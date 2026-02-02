@@ -1,5 +1,4 @@
 import React from "react";
-import "./Services.css";
 import { Link } from "react-router-dom";
 import {
   Users,
@@ -17,8 +16,7 @@ const ServicesSection = () => {
       description:
         "Enterprise-grade IT services including software development, cloud, cybersecurity, and infrastructure management.",
       icon: <MonitorCog size={28} />,
-      gradient:
-        "linear-gradient(135deg, #507788ff 0%, #1287adff 50%, #2c5364 100%)",
+      gradient: "from-[#507788] via-[#1287ad] to-[#2c5364]",
       path: "/services/it-services",
     },
     {
@@ -27,8 +25,7 @@ const ServicesSection = () => {
       description:
         "Comprehensive staffing solutions to ensure you get the right talent at the right time.",
       icon: <Users size={28} />,
-      gradient:
-        "linear-gradient(135deg, #505688ff 0%, #1243adff 50%, #2c5364 100%)",
+      gradient: "from-[#505688] via-[#1243ad] to-[#2c5364]",
       path: "/services/manpower-and-staffing-solutions",
     },
     {
@@ -37,8 +34,7 @@ const ServicesSection = () => {
       description:
         "Industry-ready training programs focused on aptitude, technical, and soft skills.",
       icon: <GraduationCap size={28} />,
-      gradient:
-        "linear-gradient(135deg, #773c6dff 0%, #ad1293ff 50%, #642c61ff 100%)",
+      gradient: "from-[#773c6d] via-[#ad1293] to-[#642c61]",
       path: "/services/campus-recruitment-training",
     },
     {
@@ -47,74 +43,93 @@ const ServicesSection = () => {
       description:
         "Strategic consulting services to accelerate growth and improve performance.",
       icon: <TrendingUp size={28} />,
-      gradient:
-        "linear-gradient(135deg, #367d92ff 0%, #306074ff 50%, #0d46c2ff 100%)",
+      gradient: "from-[#367d92] via-[#306074] to-[#0d46c2]",
       path: "/services/business-development-and-consulting",
     },
   ];
 
   return (
     <>
-      <section className="services-section mt-5" id="services">
-        <div className="w-full px-3">
-<motion.div
-  className="section-header"
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.6 }}
-  viewport={{ once: true }}
->
-  <h2>Our Services</h2>
-  <p>Comprehensive solutions to meet your business and talent needs</p>
-</motion.div>
+      <section className="tw-py-16 tw-bg-slate-50">
+        <div className="tw-max-w-7xl tw-mx-auto tw-px-4 tw-mb-8 md:tw-mb-12
+">
 
+          {/* Section header */}
+          <motion.div
+            className="tw-text-center tw-max-w-2xl tw-mx-auto tw-mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="tw-text-3xl md:tw-text-4xl tw-font-bold">
+              Our Services
+            </h2>
+            <p className="tw-mt-4 tw-text-gray-600">
+              Comprehensive solutions to meet your business and talent needs
+            </p>
+          </motion.div>
 
-         <div className="services-grid">
-  {services.map((service, index) => (
-    <motion.div
-      key={service.id}
-      className="service-card clean-card"
-      style={{ "--hover-gradient": service.gradient }}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -12 }}
-    >
-      <div className="card-content">
-        <motion.div 
-          className="icon-box"
-          whileHover={{ rotate: 8, scale: 1.1 }}
-        >
-          {service.icon}
-        </motion.div>
+          {/* Services grid */}
+          <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.id}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -10 }}
+                className="tw-relative tw-group"
+              >
+                {/* Glow */}
+                <div
+                  className={`tw-absolute tw-inset-0 tw-rounded-2xl tw-bg-gradient-to-br ${service.gradient} tw-opacity-0 group-hover:tw-opacity-100 tw-blur-xl tw-transition`}
+                />
 
-        <h3>{service.title}</h3>
-        <p>{service.description}</p>
-      </div>
+                {/* Card */}
+                <div className="tw-relative tw-h-full tw-bg-white tw-rounded-2xl tw-shadow-md tw-p-6 tw-flex tw-flex-col tw-justify-between tw-transition group-hover:tw-shadow-xl">
+                  <div>
+                    <div
+                      className={`tw-inline-flex tw-items-center tw-justify-center tw-w-12 tw-h-12 tw-rounded-xl tw-bg-gradient-to-br ${service.gradient} tw-text-white`}
+                    >
+                      {service.icon}
+                    </div>
 
-      <div className="card-hover">
-        <Link to={service.path}>
-          <button className="service-btn">Learn More</button>
-        </Link>
-      </div>
-    </motion.div>
-  ))}
-</div>
+                    <h3 className="tw-mt-6 tw-text-lg tw-font-semibold">
+                      {service.title}
+                    </h3>
 
+                    <p className="tw-mt-3 tw-text-sm tw-text-gray-600">
+                      {service.description}
+                    </p>
+                  </div>
+
+                  {/* Hover CTA */}
+                  <div className="tw-mt-6">
+                    <Link to={service.path}>
+                      <button className="tw-text-sm tw-font-medium tw-text-blue-600 hover:tw-underline">
+                        Learn More →
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        <div className="tw-text-center ">
+          <Link to="/services" className="btn accent-outline-btn tw-rounded-full">
+
+            View All Our Services
+          </Link>
         </div>
       </section>
 
-      <div className="services-section-btn text-center">
-        <Link to="/services">
-          <button className="accent-outline-btn btn rounded-5">
-            View All Our Services
-          </button>
-        </Link>
-      </div>
+      {/* Bottom CTA */}
+
     </>
   );
 };
 
 export default ServicesSection;
-    

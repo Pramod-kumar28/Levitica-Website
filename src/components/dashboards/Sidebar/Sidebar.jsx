@@ -1,7 +1,7 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useModal } from '../Admin/Modals/ModalContext';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useModal } from "../Admin/Modals/ModalContext";
 import {
   Home,
   BookOpen,
@@ -10,110 +10,76 @@ import {
   Users,
   Layers,
   UserPlus,
-  FileText,
-  Award
-} from 'lucide-react';
+  Award,
+  CreditCard,
+  Settings,
+  X,
+} from "lucide-react";
 
-const Sidebar = ({ isOpen, currentPath }) => {
-  const navigate = useNavigate();
-  const userRole = useSelector(state => state.auth.user?.role);
+const Sidebar = ({ isOpen, onClose }) => {
+  const role = useSelector((state) => state.auth.user?.role);
   const { modalType } = useModal();
-
 
   if (modalType) return null;
 
-  const commonMenuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: 'home', path: '/dashboard', roles: ['student', 'admin', 'instructor'] }
-  ];
+  const menu = [
+    { label: "Dashboard", icon: <Home size={20} />, path: "/dashboard", roles: ["student", "admin"] },
 
-  const studentMenuItems = [
-    { id: 'courses', label: 'Courses', icon: 'book', path: '/dashboard/browsercourses', roles: ['student'] },
-    { id: 'live-sessions', label: 'Live Sessions', icon: 'video', path: '/dashboard/live-session', roles: ['student'] },
-    { id: 'certificates', label: 'My Certificates', icon: 'award', path: '/dashboard/my-certificates', roles: ['student'] },
-    { id: 'questions', label: 'Feedback', icon: 'message', path: '/dashboard/ask-questions', roles: ['student'] }
-  ];
+    { label: "Browse Courses", icon: <BookOpen size={20} />, path: "/dashboard/student/browsercourses", roles: ["student"] },
+    { label: "My Courses", icon: <BookOpen size={20} />, path: "/dashboard/student/mycourses", roles: ["student"] },
+    { label: "Live Sessions", icon: <Video size={20} />, path: "/dashboard/student/live-session", roles: ["student"] },
+    { label: "Ask Questions", icon: <MessageSquare size={20} />, path: "/dashboard/student/ask-questions", roles: ["student"] },
+    { label: "Settings", icon: <Settings size={20} />, path: "/dashboard/student/settings", roles: ["student"] },
 
-  const adminMenuItems = [
-    { id: 'students', label: 'Student Management', icon: 'users', path: '/dashboard/students', roles: ['admin'] },
-    { id: 'courses-admin', label: 'Course Management', icon: 'book', path: '/dashboard/courses', roles: ['admin'] },
-    { id: 'live-admin', label: 'Live Sessions', icon: 'video', path: '/dashboard/zoom', roles: ['admin'] },
-    { id: 'batches', label: 'Batch Management', icon: 'layers', path: '/dashboard/batchs', roles: ['admin'] },
-    { id: 'add-admin', label: 'Add Admin', icon: 'user-plus', path: '/dashboard/addadmin', roles: ['admin'] }
-  ];
-
-  const instructorMenuItems = [
-    { id: 'instructor-courses', label: 'My Courses', icon: 'book', path: '/dashboard/instructor-courses', roles: ['instructor'] },
-    { id: 'instructor-sessions', label: 'My Sessions', icon: 'video', path: '/dashboard/instructor-sessions', roles: ['instructor'] }
-  ];
-
-  const menuItems = [
-    ...commonMenuItems,
-    ...studentMenuItems,
-    ...adminMenuItems,
-    ...instructorMenuItems
-  ].filter(item => item.roles.includes(userRole));
-
-  const isActive = path => currentPath === path;
-
-  const getIcon = (name) => {
-    const props = { size: 20 };
-    switch (name) {
-      case 'award': return <Award {...props} />;
-      case 'book': return <BookOpen {...props} />;
-      case 'video': return <Video {...props} />;
-      case 'message': return <MessageSquare {...props} />;
-      case 'users': return <Users {...props} />;
-      case 'layers': return <Layers {...props} />;
-      case 'user-plus': return <UserPlus {...props} />;
-      case 'file': return <FileText {...props} />;
-      default: return <Home {...props} />;
-    }
-  };
+    { label: "Students", icon: <Users size={20} />, path: "/dashboard/admin/students", roles: ["admin"] },
+    { label: "Courses", icon: <BookOpen size={20} />, path: "/dashboard/admin/courses", roles: ["admin"] },
+    { label: "Payments", icon: <CreditCard size={20} />, path: "/dashboard/admin/payments", roles: ["admin"] },
+    { label: "Live Classes", icon: <Video size={20} />, path: "/dashboard/admin/zoom", roles: ["admin"] },
+    { label: "Batches", icon: <Layers size={20} />, path: "/dashboard/admin/batchs", roles: ["admin"] },
+    { label: "Add Admin", icon: <UserPlus size={20} />, path: "/dashboard/admin/addadmin", roles: ["admin"] },
+  ].filter((item) => item.roles.includes(role));
 
   return (
     <aside
       className={`
-        tw-h-screen
-        tw-bg-white
-        tw-border-r
-        tw-transition-all
-        tw-duration-300
-        ${isOpen ? 'tw-w-64' : 'tw-w-16'}
-      `}
+    tw-fixed lg:tw-static
+    tw-top-20 tw-left-0
+    tw-z-40
+    tw-h-[calc(100vh-4rem)]
+    tw-bg-white
+    tw-border-r
+    tw-transition-all
+    tw-duration-300
+    ${isOpen ? "tw-w-64" : "tw-w-0"}
+  `}
     >
-      <nav className="tw-flex tw-flex-col tw-gap-1 tw-p-2">
-        {menuItems.map(item => (
-          <button
-            key={item.id}
-            onClick={() => navigate(item.path)}
-            className={`
-              tw-flex
-              tw-items-center
-              tw-gap-3
-              tw-rounded-lg
-              tw-px-3
-              tw-py-2
-              tw-text-sm
-              tw-font-medium
-              tw-transition
-              tw-whitespace-nowrap
-              ${
-                isActive(item.path)
-                  ? 'tw-bg-blue-100 tw-text-blue-600'
-                  : 'tw-text-gray-600 hover:tw-bg-gray-100'
-              }
-            `}
-          >
-            <span className="tw-flex-shrink-0">
-              {getIcon(item.icon)}
-            </span>
 
-            {isOpen && (
-              <span className="tw-truncate">
-                {item.label}
-              </span>
-            )}
-          </button>
+
+
+
+      {/* MENU */}
+      <nav className="tw-p-2 tw-space-y-1">
+        {menu.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            end={item.path === "/dashboard"}   // 👈 IMPORTANT
+            className={({ isActive }) =>
+              `
+      tw-flex tw-items-center tw-gap-3
+      tw-rounded-lg tw-px-3 tw-py-2
+      tw-text-sm tw-font-medium
+      ${isActive
+                ? "tw-bg-blue-100 tw-text-blue-600"
+                : "tw-text-gray-600 hover:tw-bg-gray-100"
+              }
+    `
+            }
+          >
+            {item.icon}
+            {isOpen && <span>{item.label}</span>}
+          </NavLink>
+
         ))}
       </nav>
     </aside>

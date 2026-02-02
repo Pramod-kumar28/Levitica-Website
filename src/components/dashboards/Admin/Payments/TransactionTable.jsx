@@ -1,11 +1,35 @@
 import { motion } from "framer-motion";
 import { useGetTransactionQuery } from "../../../../Services/paymentServices/transactionServices";
+import {
+  FiUser,
+  FiCreditCard,
+  FiCheckCircle,
+  FiXCircle,
+  FiAlertTriangle,
+  FiClock,
+} from "react-icons/fi";
 
-const statusColors = {
-  created: "secondary",
-  paid: "success",
-  failed: "danger",
-  signature_invalid: "warning"
+const statusStyles = {
+  created: {
+    label: "CREATED",
+    class: "tw-bg-gray-100 tw-text-gray-700",
+    icon: <FiClock />,
+  },
+  paid: {
+    label: "PAID",
+    class: "tw-bg-green-100 tw-text-green-700",
+    icon: <FiCheckCircle />,
+  },
+  failed: {
+    label: "FAILED",
+    class: "tw-bg-red-100 tw-text-red-700",
+    icon: <FiXCircle />,
+  },
+  signature_invalid: {
+    label: "INVALID",
+    class: "tw-bg-yellow-100 tw-text-yellow-700",
+    icon: <FiAlertTriangle />,
+  },
 };
 
 const formatDateIST = (dateStr) =>
@@ -15,37 +39,45 @@ const formatDateIST = (dateStr) =>
     month: "short",
     year: "numeric",
     hour: "2-digit",
-    minute: "2-digit"
+    minute: "2-digit",
   });
 
 const AdminPaymentsTable = () => {
-
   const { data: payments, isLoading } = useGetTransactionQuery();
-  console.log(payments,"payments")
 
   if (isLoading) {
-    return <div className="text-center py-4">Loading payments...</div>;
+    return (
+      <div className="tw-flex tw-justify-center tw-items-center tw-py-10 tw-text-gray-500">
+        Loading payments…
+      </div>
+    );
   }
-  if(payments?.transactions.length === 0){
-    return <div className="text-center py-4">No payments found.</div>;
+
+  if (!payments?.transactions?.length) {
+    return (
+      <div className="tw-text-center tw-py-10 tw-text-gray-500">
+        No payments found.
+      </div>
+    );
   }
 
   return (
-    <div className="table-responsive">
-      <table className="table table-hover align-middle">
-        <thead className="table-light">
-          <tr>
-            <th>Order ID</th>
-            <th>Payment ID</th>
-            <th>User</th>
-            <th>Courses</th>
-            <th>Amount Paid</th>
-            <th>Mode</th>
-            <th>App Used</th>
-            <th>Status</th>
-            <th>Date (IST)</th>
+    <div className="tw-bg-white tw-border tw-rounded-xl tw-shadow-sm tw-overflow-x-auto">
+      <table className="tw-w-full tw-text-sm">
+        <thead className="tw-bg-gray-50 tw-border-b tw-sticky tw-top-0 tw-z-10">
+          <tr className="tw-text-left tw-text-gray-600">
+            <th className="tw-p-4">Order ID</th>
+            <th className="tw-p-4">Payment ID</th>
+            <th className="tw-p-4">User</th>
+            <th className="tw-p-4">Courses</th>
+            <th className="tw-p-4">Amount</th>
+            <th className="tw-p-4">Mode</th>
+            <th className="tw-p-4">App</th>
+            <th className="tw-p-4">Status</th>
+            <th className="tw-p-4">Date (IST)</th>
           </tr>
         </thead>
+
         <tbody>
           {payments.transactions.map((payment, idx) => {
             const {
@@ -58,48 +90,87 @@ const AdminPaymentsTable = () => {
               paymentMode,
               appUsed,
               user = {},
-              courses = []
+              courses = [],
             } = payment;
 
-            const badgeColor = statusColors[status] || "dark";
+            const statusMeta = statusStyles[status] || statusStyles.created;
 
             return (
               <motion.tr
                 key={_id || idx}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05, duration: 0.3 }}
-                whileHover={{ scale: 1.01, backgroundColor: "#f9f9f9" }}
+                transition={{ delay: idx * 0.04 }}
+                className="hover:tw-bg-gray-50 tw-border-b last:tw-border-b-0"
               >
-                <td className="fw-bold text-primary">{orderId}</td>
-                <td>{paymentId || "—"}</td>
-                <td>
-                  <div>{user.name || "Unknown"}</div>
-                  <small className="text-muted">{user.email || "—"}</small>
+                <td className="tw-p-4 tw-font-medium tw-text-blue-600">
+                  {orderId}
                 </td>
-                <td>
-                  {courses.length > 0 ? (
-                    courses.map((course, i) => (
-                      <div key={course._id || i}>
-                        <span className="fw-semibold">{course.name}</span>
-                        <small className="text-muted ms-1">
-                          ₹{course.price?.toLocaleString() || "—"}
-                        </small>
-                      </div>
-                    ))
+
+                <td className="tw-p-4 tw-text-gray-700">
+                  {paymentId || "—"}
+                </td>
+
+                <td className="tw-p-4">
+                  <div className="tw-flex tw-items-center tw-gap-2">
+                    <FiUser className="tw-text-gray-400" />
+                    <div>
+                      <p className="tw-font-medium">
+                        {user.name || "Unknown"}
+                      </p>
+                      <p className="tw-text-xs tw-text-gray-500">
+                        {user.email || "—"}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+
+                <td className="tw-p-4">
+                  {courses.length ? (
+                    <div className="tw-space-y-1">
+                      {courses.map((course, i) => (
+                        <div key={course._id || i}>
+                          <span className="tw-font-medium">
+                            {course.name}
+                          </span>
+                          <span className="tw-ml-1 tw-text-xs tw-text-gray-500">
+                            ₹{course.price?.toLocaleString()}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   ) : (
-                    <span className="text-muted">No courses</span>
+                    <span className="tw-text-gray-400">No courses</span>
                   )}
                 </td>
-                <td>₹{amount?.toLocaleString() || "—"}</td>
-                <td>{paymentMode?.toUpperCase() || "—"}</td>
-                <td>{appUsed || "—"}</td>
-                <td>
-                  <span className={`badge bg-${badgeColor}`}>
-                    {status.replace("_", " ").toUpperCase()}
+
+                <td className="tw-p-4 tw-font-semibold">
+                  ₹{amount?.toLocaleString()}
+                </td>
+
+                <td className="tw-p-4 tw-uppercase">
+                  <div className="tw-flex tw-items-center tw-gap-1">
+                    <FiCreditCard />
+                    {paymentMode || "—"}
+                  </div>
+                </td>
+
+                <td className="tw-p-4">
+                  {appUsed || "—"}
+                </td>
+
+                <td className="tw-p-4">
+                  <span
+                    className={`tw-inline-flex tw-items-center tw-gap-1 tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-semibold ${statusMeta.class}`}
+                  >
+                    {statusMeta.icon}
+                    {statusMeta.label}
                   </span>
                 </td>
-                <td>{formatDateIST(createdAt)}</td>
+
+                <td className="tw-p-4 tw-text-gray-600">
+                  {formatDateIST(createdAt)}
+                </td>
               </motion.tr>
             );
           })}

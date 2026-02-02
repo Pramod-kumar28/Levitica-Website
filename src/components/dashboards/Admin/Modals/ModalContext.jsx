@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import LiveClassForm from '../LiveClass/LiveClassForm';
-import CourseModal from '../Addcourse/CoursesModal';
+import CourseModal from '../CourseManagement/CoursesModal';
 import BatchModal from '../Batchs/BatchModal';
 
 const ModalContext = createContext();

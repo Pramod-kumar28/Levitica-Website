@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { coursesData, allCoursesList } from '../data/coursesData';
-import Footer from './Footer';
+
+import {
+  FaCheckCircle,
+  FaClock,
+  FaVideo,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaChevronDown,
+} from "react-icons/fa";
+
 
 const CourseDetails = () => {
   const { courseId, category } = useParams();
-   
+
   const [openIndex, setOpenIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -19,12 +29,12 @@ const CourseDetails = () => {
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
-console.log(course)
+  console.log(course)
   useEffect(() => {
     const fetchCourseData = () => {
       try {
         // Get course data based on URL parameter
-        console.log(courseId,"iamcoid")
+        console.log(courseId, "iamcoid")
         const courseKey = courseId || 'java-full-stack';
         const courseData = coursesData[courseKey];
 
@@ -46,7 +56,7 @@ console.log(course)
 
   const handleCourseChange = (slug) => {
     console.log(slug)
-    
+
     navigate(`/trainings/${slug}`);
   };
 
@@ -61,192 +71,207 @@ console.log(course)
   return (<>
     <div className="main">
       {/* Header Section */}
-      <section className="hero-section ptb-100 gradient-overlay "
-        style={{ background: "url('/img/header-bg-5.jpg') no-repeat top center / cover " }}>
-        <div className="hero-bottom-shape-two" style={{ background: "url('/img/hero-bottom-shape.svg') no-repeat bottom center" }}></div>
-        <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="col-md-8 col-lg-7">
-              <div className="page-header-content text-white text-center pt-sm-5 pt-md-5 pt-lg-0">
-                <h1 className="text-white mb-0">{course?.title}</h1>
+      <section
+        className="hero-section gradient-overlay tw-pt-12 tw-relative"
+        style={{
+          background: "url('/img/header-bg-5.jpg') center / cover no-repeat",
+        }}
+      >
+        <div
+          className="hero-bottom-shape-two"
+          style={{
+            background: "url('/img/hero-bottom-shape.svg') no-repeat bottom center",
+          }}
+        />
 
-              </div>
-            </div>
-          </div>
+        <div className="tw-relative tw-max-w-4xl tw-mx-auto tw-px-4 tw-text-center tw-py-20">
+          <h1 className="tw-text-4xl md:tw-text-5xl tw-font-bold tw-text-white">
+            {course?.title}
+          </h1>
         </div>
       </section>
 
-      <section className="service-details-section   " style={{ width: 'auto' }}>
 
-        <div className="container mt-5">
-          <div className="row">
-            <div className="col-lg-8 col-md-8">
-              <div className="service-details-wrap ">
-                <img src={course.image} alt={course.title} style={{ height: '350px', width: '100%', padding: "10px" }} className="img-fluid rounded shadow-sm" />
-                <div className="services-detail-content mt-4  ">
-                  <h4>Course Overview</h4>
-                  {course.fullDescription.map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
+      <section className="tw-bg-white">
+        <div className="tw-max-w-7xl tw-mx-auto tw-px-4 tw-py-16">
+          <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-12 tw-gap-10">
+            <div className="lg:tw-col-span-8">
+              <img
+                src={course.image}
+                alt={course.title}
+                className="tw-w-full tw-h-[350px] tw-object-cover tw-rounded-xl tw-shadow"
+              />
+
+              <div className="tw-mt-8">
+                <h2 className="tw-text-2xl tw-font-semibold tw-mb-4">
+                  Course Overview
+                </h2>
+
+                {course.fullDescription.map((p, i) => (
+                  <p key={i} className="tw-text-slate-600 tw-mb-4">
+                    {p}
+                  </p>
+                ))}
+              </div>
+
+              {/* Features */}
+              <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-8 tw-mt-10">
+                <img
+                  src="/img/about-1.jpg"
+                  alt=""
+                  className="tw-rounded-xl"
+                />
+
+                <ul className="tw-space-y-3">
+                  {course.features.map((f, i) => (
+                    <li key={i} className="tw-flex tw-gap-3 tw-items-start">
+                      <FaCheckCircle className="tw-text-primary tw-mt-1" />
+                      <span className="tw-text-slate-700">{f}</span>
+                    </li>
                   ))}
-
-                  <div className="row mt-5 ">
-                    <div className="col-md-6">
-                      <div className="img-wrap ">
-                        <img src="\img\about-1.jpg" style={{ height: '280px', width: '100%', padding: "10px" }} alt="course content" className="img-fluid" />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <ul className="list-unstyled tech-feature-list">
-                        {course.features.map((feature, index) => (
-                          <li key={index} className="py-1">
-                            <span className="ti-check-box mr-2 color-secondary"></span>
-                            <strong>{feature.split(' ')[0]}</strong> {feature.split(' ').slice(1).join(' ')}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-
-
-             
-
-                </div>
+                </ul>
               </div>
             </div>
-
-
-            <div className="col-lg-4 col-md-4">
-              <div className="sidebar-right pl-4">
-                {/* All Courses List */}
-                <aside className="widget widget-categories">
-                  <div className="widget-title">
-                    <h5>The Best Courses</h5>
-                  </div>
-                  <ul className="all-service-list">
-                    {allCoursesList.map((c, index) => (
-                      <li key={index}>
-                        <a
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleCourseChange(c.slug);
-                          }}
-                          className={c.title === course?.title ? "active" : ""}
-                        >
-                          {c.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </aside>
-
-                {/* Course Enrollment Card */}
-                <aside className="widget widget-categories mb-4">
-                  <div className="card border-0 shadow-sm">
-                    <div className="card-body text-center">
-                      <h5 className="card-title">Enroll Now</h5>
-                      <div className="price-tag mb-3">
-                        <span className="h3 text-primary">{course.price}</span>
-                        <span className="text-muted"> only</span>
-                      </div>
-                      <p className="card-text">
-                        <span className="ti-time mr-2"></span>
-                        {course.duration}
-                      </p>
-                      <p className="card-text">
-                        <span className="ti-video-camera mr-2"></span>
-                        {course.mode}
-                      </p>
-                     <Link className='mb-3' to={'/sign-up'}>
-                      <button className="btn outline-btn btn-block ">Only Live Classes</button></Link>
-                      <Link to={'/sign-up'}>
-                      <button className="accent-solid-btn btn btn-block">Enroll</button>
-                      
-                      </Link>
-                      
-                    </div>
-                  </div>
-                </aside>
-
-                {/* Need Help */}
-                <aside className="widget widget-categories ">
-                  <div className="widget-title">
-                    <h5>Need Help?</h5>
-                  </div>
-                  <p>We are available 24/7 for dedicated support</p>
-                  <ul className="primary-list mt-25">
-                    <li><span className="ti-location-pin mr-2 color-primary"></span> Office #407 &409 4th Floor, Jain Sadguru Image's Capital Park, Madhapur,Hyderabad</li>
-                    <li><span className="ti-mobile mr-2 color-primary"></span>+91 7337572543</li>
-                    <li><span className="ti-email mr-2 color-primary"></span> hr@designcareermetrics.com</li>
-                  </ul>
-                </aside>
-              </div>
-            </div>
-          </div>
-        </div>
-      
-  
-
-    <div id="accordion-1" className="accordion accordion-faq w-75" style={{ margin: "auto" }}>
-      {course.faqs.map((faq, index) => (
-        <div key={index} className="card">
-          <div 
-            className={`card-header py-3 ${openIndex === index ? '' : 'collapsed'}`}
-            id={`heading-1-${index}`}
-            onClick={() => toggleFAQ(index)}
-            style={{ cursor: "pointer" }}
-            role="button"
-            aria-expanded={openIndex === index}
-            aria-controls={`collapse-1-${index}`}
-          >
-            <h6 className="mb-0">
-              <span className={
-                index === 0 ? "ti-receipt mr-3" : 
-                index === 1 ? "ti-gallery mr-3" : "ti-wallet mr-3"
-              }></span>
-              {faq.question}
-            </h6>
-          </div>
-          <div 
-            id={`collapse-1-${index}`} 
-            className={`collapse ${openIndex === index ? 'show' : ''}`}
-            aria-labelledby={`heading-1-${index}`}
-            data-parent="#accordion-1"
-          >
-            <div className="card-body">
-              <p>{faq.answer}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-           <section className="call-to-action py-5 ">
-        <div className="container">
-          <div className="row justify-content-around align-items-center">
-            <div className="col-md-7">
-              <div className="subscribe-content">
-                <h3 className="mb-1">Start Your Tech Career Today</h3>
-                <p>Join thousands of students who have transformed their careers with our courses.</p>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="action-btn text-lg-right text-sm-left">
-                <button className="btn secondary-solid-btn">Explore All Courses</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      </section>
-
 
      
 
+          <div className="lg:tw-col-span-4 tw-space-y-8">
+
+          
+              {/* All Courses List */}
+              <div className="tw-border tw-rounded-xl tw-p-6">
+                <h4 className="tw-font-semibold tw-mb-4">The Best Courses</h4>
+
+                <ul className="tw-space-y-2">
+                  {allCoursesList.map((c, i) => (
+                    <li key={i}>
+                      <button
+                        onClick={() => handleCourseChange(c.slug)}
+                        className={`tw-text-left tw-w-full tw-py-2 tw-text-sm ${c.title === course?.title
+                          ? "tw-text-primary tw-font-semibold"
+                          : "tw-text-slate-600 hover:tw-text-primary"
+                          }`}
+                      >
+                        {c.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+
+              {/* Course Enrollment Card */}
+              <div className="tw-border tw-rounded-xl tw-p-6 tw-shadow-sm">
+                <h4 className="tw-font-semibold tw-mb-2">Enroll Now</h4>
+
+                <p className="tw-text-3xl tw-font-bold tw-text-primary">
+                  {course.price}
+                  <span className="tw-text-sm tw-text-slate-500"> only</span>
+                </p>
+
+                <div className="tw-mt-4 tw-space-y-2 tw-text-slate-600">
+                  <p className="tw-flex tw-items-center tw-gap-2">
+                    <FaClock /> {course.duration}
+                  </p>
+                  <p className="tw-flex tw-items-center tw-gap-2">
+                    <FaVideo /> {course.mode}
+                  </p>
+                </div>
+
+                <Link to="/sign-up">
+                  <button className="btn outline-btn tw-w-full tw-mt-4">
+                    Only Live Classes
+                  </button>
+                </Link>
+
+                <Link to="/sign-up">
+                  <button className="btn accent-solid-btn tw-w-full tw-mt-2">
+                    Enroll
+                  </button>
+                </Link>
+              </div>
+
+              {/* Need Help */}
+              <div className="tw-border tw-rounded-xl tw-p-6">
+                <h4 className="tw-font-semibold tw-mb-3">Need Help?</h4>
+
+                <ul className="tw-space-y-3 tw-text-slate-600">
+                  <li className="tw-flex tw-gap-3">
+                    <FaMapMarkerAlt /> Madhapur, Hyderabad
+                  </li>
+                  <li className="tw-flex tw-gap-3">
+                    <FaPhoneAlt /> +91 7337572543
+                  </li>
+                  <li className="tw-flex tw-gap-3">
+                    <FaEnvelope /> hr@designcareermetrics.com
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          </div>
+
+        <div className="tw-max-w-4xl tw-mx-auto tw-my-8">
+          {course.faqs.map((faq, i) => (
+            <div
+              key={i}
+              className="tw-border tw-rounded-lg tw-mb-3"
+            >
+              <button
+                onClick={() => toggleFAQ(i)}
+                className="tw-w-full tw-flex tw-justify-between tw-items-center tw-p-4"
+              >
+                <span className="tw-font-medium">{faq.question}</span>
+                <FaChevronDown
+                  className={`tw-transition ${openIndex === i ? "tw-rotate-180" : ""
+                    }`}
+                />
+              </button>
+
+              {openIndex === i && (
+                <div className="tw-px-4 tw-pb-4 tw-text-slate-600">
+                  {faq.answer}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+
+       <section className="call-to-action tw-py-12">
+  <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
+    <div className="tw-flex tw-flex-col md:tw-flex-row tw-items-center tw-justify-between tw-gap-6">
+
+      {/* Text */}
+      <div className="tw-text-center md:tw-text-left md:tw-max-w-xl">
+        <h3 className="tw-text-2xl md:tw-text-3xl tw-font-semibold tw-mb-2">
+          Start Your Tech Career Today
+        </h3>
+        <p className="tw-text-slate-600">
+          Join thousands of students who have transformed their careers with our courses.
+        </p>
+      </div>
+
+      {/* Button */}
+      <div className="tw-flex tw-justify-center md:tw-justify-end">
+        <button className="btn secondary-solid-btn">
+          Explore All Courses
+        </button>
+      </div>
+
     </div>
- 
-    </>
+  </div>
+</section>
+
+      </section >
+
+
+
+
+    </div >
+
+  </>
   );
 };
 

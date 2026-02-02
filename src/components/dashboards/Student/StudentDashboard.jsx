@@ -8,20 +8,14 @@ import WelcomeScreen from "./WelcomeScreen";
 
 
 const StudentDashboard = () => {
-
-
-
-
   return (
     <>
-
-   
-        <div className>
-          <WelcomeScreen />
-          <CourseAdsCarousel />
-          <MyLearnings/>
-        <QuickActionCards/>
-        </div>
+      <div className>
+        <WelcomeScreen />
+        <CourseAdsCarousel />
+        <MyLearnings />
+        <QuickActionCards />
+      </div>
 
     </>
   );

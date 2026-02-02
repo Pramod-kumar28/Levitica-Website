@@ -1,64 +1,129 @@
-import { Menu } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
-
   return (
-    <>
-      <header className="header">
-        <nav className="navbar navbar-expand-lg border fixed-top custom-nav bg-white text-dark">
-          <div className="container">
-            <div className="navbar-brand ">
-              <div >
-                <img
-                  src="/img/dcmlogo3.jpg"
-                  alt="logo"
-                  className="logo-img "
-                />
-              </div>
-              <div >
-                <button className="navbar-toggler" onClick={() => setIsNavOpen(!isNavOpen)} aria-label="Toggle navigation">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                  </svg>
+    <header className="tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-50 tw-bg-white tw-border-b">
+      <nav className="tw-max-w-7xl tw-mx-auto tw-px-4 tw-py-3">
+        <div className="tw-flex tw-items-center tw-justify-between tw-h-16">
+
+          {/* Logo */}
+          <Link to="/" className="tw-flex tw-items-center">
+            <img
+              src="/img/dcmlogo3.jpg"
+              alt="logo"
+              className="tw-h-10 tw-w-auto"
+            />
+          </Link>
+
+          {/* Mobile toggle */}
+          <button
+            className="lg:tw-hidden tw-text-gray-700"
+            onClick={() => setIsNavOpen(!isNavOpen)}
+            aria-label="Toggle navigation"
+          >
+            {isNavOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+
+          {/* Desktop menu */}
+          <ul className="tw-hidden lg:tw-flex tw-items-center tw-gap-6 tw-font-semibold">
+            <NavItem to="/">Home</NavItem>
+            <NavItem to="/services">Services</NavItem>
+            <NavItem to="/trainings">Trainings</NavItem>
+            <NavItem to="/about-us">About Us</NavItem>
+            <NavItem to="/contact-us">Contact Us</NavItem>
+
+            {/* ⬇️ KEEP btn classes */}
+            <li>
+              <Link to="/login">
+                <button className="btn outline-btn">Log in</button>
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/sign-up">
+                <button className="btn outline-btn">Sign Up</button>
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/dcm-app">
+                <button className="btn accent-outline-btn">
+                  Download App
                 </button>
-              </div>
-            </div>
+              </Link>
+            </li>
+          </ul>
+        </div>
 
-            <div className={`navbar-collapse collapse ${isNavOpen ? "show  bg-white" : ""}`}>
-              <ul className="navbar-nav ml-auto menu ">
-                <li ><Link to="/" onClick={() => setIsNavOpen(false)} className="text-dark " >Home</Link></li>
-                <li>
-                  <Link to="/services" className="text-dark" onClick={() => setIsNavOpen(false)}>Services</Link>
+        {/* Mobile menu */}
+        {isNavOpen && (
+          <div className="lg:tw-hidden tw-border-t tw-py-4">
+            <ul className="tw-flex tw-flex-col tw-gap-4">
+              <MobileNavItem to="/" close={() => setIsNavOpen(false)}>Home</MobileNavItem>
+              <MobileNavItem to="/services" close={() => setIsNavOpen(false)}>Services</MobileNavItem>
+              <MobileNavItem to="/trainings" close={() => setIsNavOpen(false)}>Trainings</MobileNavItem>
+              <MobileNavItem to="/about-us" close={() => setIsNavOpen(false)}>About Us</MobileNavItem>
+              <MobileNavItem to="/contact-us" close={() => setIsNavOpen(false)}>Contact Us</MobileNavItem>
 
-                </li>
-                <li><Link to="/trainings" className="text-dark" onClick={() => setIsNavOpen(false)}>Trainings</Link></li>
-                <li><Link to="/about-us" className="text-dark" onClick={() => setIsNavOpen(false)}>About Us</Link></li>
-                <li><Link to="/contact-us" className="text-dark" onClick={() => setIsNavOpen(false)}>Contact Us</Link></li>
-                <li>
-                  <Link to="/login" className="text-dark  " onClick={() => setIsNavOpen(false)}><button className="btn outline-btn ">Log in</button></Link>
+              {/* ⬇️ KEEP btn classes */}
+              <li>
+                <Link to="/login" onClick={() => setIsNavOpen(false)}>
+                  <button className="btn outline-btn tw-w-full">
+                    Log in
+                  </button>
+                </Link>
+              </li>
 
-                </li>
-                <li>
-                  <Link to="/sign-up" className="text-dark " onClick={() => setIsNavOpen(false)}>
-                    <button className="btn outline-btn ">Sign Up</button>
-                  </Link>
-                </li>
-                <li>
+              <li>
+                <Link to="/sign-up" onClick={() => setIsNavOpen(false)}>
+                  <button className="btn outline-btn tw-w-full">
+                    Sign Up
+                  </button>
+                </Link>
+              </li>
 
-                  <Link to="/dcm-app" className="text-dark" onClick={() => setIsNavOpen(false)}>
-                    <button className="btn accent-outline-btn ">Download App</button>
-                  </Link>
-                </li>
-              </ul>
-            </div>
+              <li>
+                <Link to="/dcm-app" onClick={() => setIsNavOpen(false)}>
+                  <button className="btn accent-outline-btn tw-w-full">
+                    Download App
+                  </button>
+                </Link>
+              </li>
+            </ul>
           </div>
-        </nav>
-      </header>
-    </>
-  )
+        )}
+      </nav>
+    </header>
+  );
 };
+
+/* ---------------- Helpers ---------------- */
+
+const NavItem = ({ to, children }) => (
+  <li>
+    <Link
+      to={to}
+      className="tw-text-gray-700 hover:tw-text-blue-600 tw-transition"
+    >
+      {children}
+    </Link>
+  </li>
+);
+
+const MobileNavItem = ({ to, children, close }) => (
+  <li>
+    <Link
+      to={to}
+      onClick={close}
+      className="tw-text-gray-700 hover:tw-text-blue-600"
+    >
+      {children}
+    </Link>
+  </li>
+);
+
 export default Navbar;
