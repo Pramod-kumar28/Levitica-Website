@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useGetIdAndBatchNamesQuery } from "../../../../Services/admin/batchdetailsService";
 import { FiX, FiInfo } from "react-icons/fi";
 
-/* ---------------- Validation ---------------- */
+/* ---------------- Validation (UNCHANGED) ---------------- */
 
 const validationSchema = Yup.object({
   title: Yup.string().required("Required"),
@@ -84,29 +84,39 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="tw-fixed tw-inset-0 tw-bg-black/50 tw-z-50 tw-flex tw-items-center tw-justify-center tw-p-4"
+        className="tw-fixed tw-inset-0 tw-z-50 tw-flex tw-items-center tw-justify-center tw-bg-slate-900/60 tw-backdrop-blur-sm tw-p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         <motion.div
-          initial={{ y: -30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -20, opacity: 0 }}
-          className="tw-bg-white tw-w-full tw-max-w-lg tw-rounded-xl tw-shadow-xl tw-flex tw-flex-col tw-max-h-[90vh]"
+          initial={{ scale: 0.96, y: 20, opacity: 0 }}
+          animate={{ scale: 1, y: 0, opacity: 1 }}
+          exit={{ scale: 0.96, y: 20, opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="tw-w-full tw-max-w-xl tw-max-h-[90vh] tw-overflow-hidden tw-rounded-2xl tw-bg-white tw-shadow-2xl"
         >
-          {/* Header */}
-          <div className="tw-flex tw-items-center tw-justify-between tw-p-5 tw-border-b">
-            <h2 className="tw-text-xl tw-font-semibold">
-              {isEditMode ? "Edit Live Class" : "Schedule Live Class"}
-            </h2>
-            <button onClick={onSuccess}>
-              <FiX className="tw-text-xl tw-text-gray-500 hover:tw-text-gray-700" />
+          {/* ================= Header ================= */}
+          <div className="tw-flex tw-items-start tw-justify-between tw-gap-4 tw-border-b tw-border-slate-200 tw-px-6 tw-py-4">
+            <div>
+              <h2 className="tw-text-lg tw-font-semibold tw-text-slate-900">
+                {isEditMode ? "Edit Live Class" : "Schedule Live Class"}
+              </h2>
+              <p className="tw-mt-1 tw-text-sm tw-text-slate-500">
+                Configure class timing, batch, and instructor details
+              </p>
+            </div>
+
+            <button
+              onClick={onSuccess}
+              className="tw-rounded-lg tw-p-2 tw-text-slate-500 hover:tw-bg-slate-100 hover:tw-text-slate-700"
+            >
+              <FiX className="tw-h-5 tw-w-5" />
             </button>
           </div>
 
-          {/* Body */}
-          <div className="tw-overflow-y-auto tw-p-5">
+          {/* ================= Body ================= */}
+          <div className="tw-overflow-y-auto tw-p-6 tw-max-h-[75vh]">
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -127,18 +137,20 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                 } catch (err) {
                   toast.error(
                     err?.data?.message ||
-                      `Failed to ${isEditMode ? "update" : "create"} class`
+                      `Failed to ${
+                        isEditMode ? "update" : "create"
+                      } class`
                   );
                 }
               }}
             >
               {({ errors, touched, values }) => (
-                <Form className="tw-space-y-4">
+                <Form className="tw-space-y-5">
                   {/* Title */}
                   <FieldInput
                     name="title"
-                    label="Title"
-                    placeholder="Enter class title"
+                    label="Class Title"
+                    placeholder="e.g. React Hooks Deep Dive"
                     errors={errors}
                     touched={touched}
                   />
@@ -168,11 +180,12 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     touched={touched}
                   />
 
-                  {/* End Date */}
+                  {/* End Date (animated) */}
                   {values.recurrence === "daily" && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
+                      transition={{ duration: 0.2 }}
                     >
                       <FieldInput
                         name="endDate"
@@ -193,29 +206,30 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     touched={touched}
                   />
 
-                  {/* Course */}
-                  <FieldSelect
-                    name="courseId"
-                    label="Course"
-                    options={courses?.map((c) => ({
-                      value: c._id,
-                      label: c.name,
-                    }))}
-                    errors={errors}
-                    touched={touched}
-                  />
+                  {/* Course & Batch */}
+                  <div className="tw-grid tw-grid-cols-1 md:tw-grid-cols-2 tw-gap-4">
+                    <FieldSelect
+                      name="courseId"
+                      label="Course"
+                      options={courses?.map((c) => ({
+                        value: c._id,
+                        label: c.name,
+                      }))}
+                      errors={errors}
+                      touched={touched}
+                    />
 
-                  {/* Batch */}
-                  <FieldSelect
-                    name="batchId"
-                    label="Batch"
-                    options={batches?.map((b) => ({
-                      value: b._id,
-                      label: b.batchName,
-                    }))}
-                    errors={errors}
-                    touched={touched}
-                  />
+                    <FieldSelect
+                      name="batchId"
+                      label="Batch"
+                      options={batches?.map((b) => ({
+                        value: b._id,
+                        label: b.batchName,
+                      }))}
+                      errors={errors}
+                      touched={touched}
+                    />
+                  </div>
 
                   {/* Instructor Email */}
                   <FieldInput
@@ -231,7 +245,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="tw-w-full tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white tw-font-medium tw-rounded-lg tw-py-3 tw-mt-2 disabled:tw-opacity-50"
+                    className="tw-mt-2 tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded-xl tw-bg-indigo-600 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-transition hover:tw-bg-indigo-700 disabled:tw-cursor-not-allowed disabled:tw-opacity-60"
                   >
                     {isLoading
                       ? isEditMode
@@ -244,9 +258,10 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
 
                   {/* Info */}
                   {values.recurrence === "daily" && (
-                    <div className="tw-flex tw-gap-2 tw-bg-blue-50 tw-border tw-border-blue-200 tw-rounded-lg tw-p-3 tw-text-sm tw-text-blue-700">
-                      <FiInfo className="tw-mt-0.5" />
-                      Daily classes will repeat until the end date.
+                    <div className="tw-flex tw-gap-2 tw-rounded-xl tw-border tw-border-indigo-200 tw-bg-indigo-50 tw-p-3 tw-text-sm tw-text-indigo-700">
+                      <FiInfo className="tw-mt-0.5 tw-h-4 tw-w-4" />
+                      Daily classes will automatically repeat until the selected
+                      end date.
                     </div>
                   )}
                 </Form>
@@ -259,40 +274,42 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
   );
 };
 
-/* ---------------- Reusable Fields ---------------- */
+/* ---------------- Reusable Fields (Refined UI) ---------------- */
 
 const FieldInput = ({ label, name, errors, touched, ...props }) => (
   <div>
-    <label className="tw-block tw-text-sm tw-font-medium tw-mb-1">
+    <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
       {label}
     </label>
     <Field
       name={name}
       {...props}
-      className={`tw-w-full tw-border tw-rounded-lg tw-p-3 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500 ${
+      className={`tw-w-full tw-rounded-lg tw-border tw-px-3 tw-py-2 tw-text-sm tw-transition focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20 ${
         errors[name] && touched[name]
-          ? "tw-border-red-500"
-          : "tw-border-gray-300"
+          ? "tw-border-rose-500"
+          : "tw-border-slate-300"
       }`}
     />
     {errors[name] && touched[name] && (
-      <p className="tw-text-xs tw-text-red-500 tw-mt-1">{errors[name]}</p>
+      <p className="tw-mt-1 tw-text-xs tw-text-rose-600">
+        {errors[name]}
+      </p>
     )}
   </div>
 );
 
 const FieldSelect = ({ label, name, options = [], errors, touched }) => (
   <div>
-    <label className="tw-block tw-text-sm tw-font-medium tw-mb-1">
+    <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
       {label}
     </label>
     <Field
       as="select"
       name={name}
-      className={`tw-w-full tw-border tw-rounded-lg tw-p-3 ${
+      className={`tw-w-full tw-rounded-lg tw-border tw-bg-white tw-px-3 tw-py-2 tw-text-sm focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20 ${
         errors[name] && touched[name]
-          ? "tw-border-red-500"
-          : "tw-border-gray-300"
+          ? "tw-border-rose-500"
+          : "tw-border-slate-300"
       }`}
     >
       <option value="">Select {label}</option>
@@ -303,7 +320,9 @@ const FieldSelect = ({ label, name, options = [], errors, touched }) => (
       ))}
     </Field>
     {errors[name] && touched[name] && (
-      <p className="tw-text-xs tw-text-red-500 tw-mt-1">{errors[name]}</p>
+      <p className="tw-mt-1 tw-text-xs tw-text-rose-600">
+        {errors[name]}
+      </p>
     )}
   </div>
 );

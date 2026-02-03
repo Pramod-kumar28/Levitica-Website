@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 
-.gradient-text {
+/* .gradient-text {
   background: linear-gradient(45deg, #ff0080, #0080ff, #00ff80);
   background-clip: text;
   -webkit-background-clip: text;
@@ -30,4 +30,14 @@
 
 .dark .blur-overlay {
   background: oklch(0.12 0.08 280 / 0.1);
+} */
+
+.tw-input {
+  @apply tw-w-full tw-rounded-xl tw-border tw-border-slate-300
+         tw-px-4 tw-py-3
+         focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500;
+}
+
+.tw-label {
+  @apply tw-block tw-mb-1 tw-text-sm tw-font-medium tw-text-slate-700;
 }

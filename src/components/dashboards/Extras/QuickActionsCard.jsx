@@ -1,83 +1,50 @@
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import {
+  FiBox,
+  FiBook,
+  FiCreditCard,
+  FiUserPlus,
+} from "react-icons/fi";
 
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+const QuickActionsCard = () => {
+  const navigate = useNavigate();
 
-
-
-const buttonVariants = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (i) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      delay: i * 0.15,
-      duration: 0.4,
-      ease: 'easeOut',
-    },
-  }),
-};
-
-const QuickActionCard = () => {
-  const navigate=useNavigate()
   const actions = [
-  { label: 'Create New Batch', icon: '📦', color: '#4facfe', onClick: () => {navigate('batchs')} },
-  { label: 'Create New Course', icon: '📚', color: '#43e97b', onClick: () => {navigate('courses')} },
-  { label: 'See Payments', icon: '💳', color: '#b817e9ff', onClick: () => {navigate('payments')} },
-  { label: 'Assign Batch', icon: '🧑‍🏫', color: '#290ad8ff', onClick: () => {navigate('students/unassigned')} },
-];
-  const cardStyle = {
-  maxWidth: '360px',
-  margin: 'auto',
-  padding: '2rem',
-  borderRadius: '16px',
-  backdropFilter: 'blur(10px)',
-
-    
-  boxShadow: '0 0 25px rgba(0,0,0,0.3)',
-  color: '#fff',
-
-  };
+    { label: "Create Batch", icon: FiBox, onClick: () => navigate("batchs") },
+    { label: "Create Course", icon: FiBook, onClick: () => navigate("courses") },
+    { label: "Payments", icon: FiCreditCard, onClick: () => navigate("payments") },
+    {
+      label: "Assign Batch",
+      icon: FiUserPlus,
+      onClick: () => navigate("students/unassigned"),
+    },
+  ];
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      style={cardStyle}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="tw-rounded-2xl tw-border tw-border-slate-200 tw-bg-white tw-p-6 tw-shadow-sm"
     >
-      <h4 style={{ fontWeight: 'bold', marginBottom: '1.5rem',color:"black" }}>🚀 Quick Actions</h4>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between' }}>
-        {actions.map((action, idx) => (
-          <motion.button
-            key={idx}
-            custom={idx}
-            initial="hidden"
-            animate="visible"
-            variants={buttonVariants}
-            onClick={action.onClick}
-            style={{
-              flexGrow: 1,
-              minWidth: '45%',
-              padding: '0.75rem 1rem',
-              border: 'none',
-              borderRadius: '8px',
-              background: action.color,
-              color: '#fff',
-              fontWeight: '600',
-              cursor: 'pointer',
-              boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
-              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-            }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
+      <h3 className="tw-text-lg tw-font-semibold tw-text-slate-900 tw-mb-4">
+        Quick Actions
+      </h3>
+
+      <div className="tw-grid tw-grid-cols-2 tw-gap-3">
+        {actions.map((a, i) => (
+          <button
+            key={i}
+            onClick={a.onClick}
+            className="tw-flex tw-items-center tw-gap-2 tw-rounded-xl tw-border tw-border-slate-200 tw-bg-slate-50 tw-p-3 tw-text-sm tw-font-medium tw-text-slate-700 hover:tw-bg-indigo-50 hover:tw-text-indigo-700 tw-transition"
           >
-            {action.icon} {action.label}
-          </motion.button>
+            <a.icon />
+            {a.label}
+          </button>
         ))}
       </div>
     </motion.div>
   );
 };
 
-export default QuickActionCard;
+export default QuickActionsCard;

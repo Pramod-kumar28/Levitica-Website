@@ -1,13 +1,18 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { useGetCoursesQuery } from '../../../../Services/admin/coursesService';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useBatchHandlers } from './batchshooks';
-import { X } from 'lucide-react';
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useGetCoursesQuery } from "../../../../Services/admin/coursesService";
+import { motion, AnimatePresence } from "framer-motion";
+import { useBatchHandlers } from "./batchshooks";
+import {
+  FiX,
+  FiBookOpen,
+  FiCalendar,
+  FiCheckCircle,
+} from "react-icons/fi";
 
-const BatchModal = ({ handleClose, mode = 'add', batch = {} }) => {
-  const isEdit = mode === 'edit';
+const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
+  const isEdit = mode === "edit";
 
   const {
     handleAddBatchSubmit,
@@ -16,32 +21,32 @@ const BatchModal = ({ handleClose, mode = 'add', batch = {} }) => {
     updateStatus,
   } = useBatchHandlers();
 
-  const { data: courses, isLoading: coursesLoading, error: coursesError } = useGetCoursesQuery();
+  const { data: courses } = useGetCoursesQuery();
 
   const initialValues = isEdit
     ? {
         batchId: batch._id,
-        batchName: batch.batchName || '',
-        courseId: batch.courseId || '',
-        startDate: batch.startDate?.slice(0, 10) || '',
-        endDate: batch.endDate?.slice(0, 10) || '',
+        batchName: batch.batchName || "",
+        courseId: batch.courseId || "",
+        startDate: batch.startDate?.slice(0, 10) || "",
+        endDate: batch.endDate?.slice(0, 10) || "",
         isActive: batch.isActive ?? true,
       }
     : {
-        batchName: '',
-        courseId: '',
-        startDate: '',
-        endDate: '',
+        batchName: "",
+        courseId: "",
+        startDate: "",
+        endDate: "",
         isActive: true,
       };
 
   const validationSchema = Yup.object({
-    batchName: Yup.string().required('Required'),
-    courseId: Yup.string().required('Required'),
-    startDate: Yup.date().required('Required'),
+    batchName: Yup.string().required("Batch name is required"),
+    courseId: Yup.string().required("Course is required"),
+    startDate: Yup.date().required("Start date is required"),
     endDate: Yup.date()
-      .min(Yup.ref('startDate'), 'End date must be after start date')
-      .required('Required'),
+      .min(Yup.ref("startDate"), "End date must be after start date")
+      .required("End date is required"),
   });
 
   const onSubmit = async (values, { resetForm }) => {
@@ -54,166 +59,168 @@ const BatchModal = ({ handleClose, mode = 'add', batch = {} }) => {
     handleClose();
   };
 
-  const isLoading = isEdit ? updateStatus.isLoading : addStatus.isLoading;
-  
+  const isLoading = isEdit
+    ? updateStatus.isLoading
+    : addStatus.isLoading;
 
   return (
     <AnimatePresence>
       <motion.div
-        className="dashboard-app-container"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        style={{ 
-          position: 'fixed', 
-          top: 0, 
-          left: 0, 
-          right: 0, 
-          bottom: 0, 
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          zIndex: 1100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '1rem'
-        }}
+        className="tw-fixed tw-inset-0 tw-z-[1100] tw-flex tw-items-center tw-justify-center tw-bg-slate-900/60 tw-backdrop-blur-sm tw-p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
-        <div className="card shadow-xl rounded-xl w-100" style={{ maxWidth: '500px', maxHeight: '90vh', overflow: 'hidden' }}>
-          <div className="card-header d-flex justify-content-between align-items-center p-4 border-bottom">
-            <h3 className="mb-0 fw-bold fs-2xl text-dark">
-              {isEdit ? '✏️ Edit Batch' : '🎓 Create Batch'}
-            </h3>
-          <X onClick={handleClose} className='text-dark'/>
-          </div>
+        <motion.div
+          initial={{ scale: 0.96, y: 24, opacity: 0 }}
+          animate={{ scale: 1, y: 0, opacity: 1 }}
+          exit={{ scale: 0.96, y: 24, opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className="tw-w-full tw-max-w-lg tw-max-h-[90vh] tw-overflow-hidden tw-rounded-2xl tw-bg-white tw-shadow-2xl"
+        >
+          {/* ================= HEADER ================= */}
+          <div className="tw-flex tw-items-start tw-justify-between tw-gap-4 tw-border-b tw-border-slate-200 tw-p-6">
+            <div>
+              <h2 className="tw-text-lg tw-font-semibold tw-text-slate-900">
+                {isEdit ? "Edit Batch" : "Create New Batch"}
+              </h2>
+              <p className="tw-mt-1 tw-text-sm tw-text-slate-500">
+                {isEdit
+                  ? "Update batch details and timeline"
+                  : "Create a new batch for student enrollment"}
+              </p>
+            </div>
 
-          <div className="card-body p-0" style={{ overflowY: 'auto' }}>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+            <button
+              onClick={handleClose}
+              className="tw-rounded-lg tw-p-2 tw-text-slate-500 tw-transition hover:tw-bg-slate-100 hover:tw-text-slate-700"
             >
-              <Formik 
-                initialValues={initialValues} 
-                validationSchema={validationSchema} 
-                onSubmit={onSubmit}
-              >
-                {({ isSubmitting }) => (
-                  <Form className="p-4">
-                    {coursesError && (
-                      <div className="bg-error text-white rounded-lg p-3 mb-3 text-center">
-                        Failed to load courses.
-                      </div>
-                    )}
-
-                    {/* Batch Name */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="batchName" className="form-label fw-medium text-dark mb-2">
-                        Batch Name
-                      </label>
-                      <Field 
-                        name="batchName" 
-                        className="form-control rounded-lg p-3 border"
-                        placeholder="Enter batch name"
-                      />
-                      <ErrorMessage name="batchName" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Course Selection */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="courseId" className="form-label fw-medium text-dark mb-2">
-                        Course
-                      </label>
-                      {coursesLoading ? (
-                        <div className="text-muted fs-sm p-3 bg-light rounded-lg">
-                          Loading courses...
-                        </div>
-                      ) : (
-                        <Field as="select" name="courseId" className="form-select rounded-lg p-3 border">
-                          <option value="">Select a course</option>
-                          {courses?.map(course => (
-                            <option key={course._id} value={course._id}>
-                              {course.name}
-                            </option>
-                          ))}
-                        </Field>
-                      )}
-                      <ErrorMessage name="courseId" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Date Fields */}
-                    <div className="row g-3 mb-3">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="startDate" className="form-label fw-medium text-dark mb-2">
-                            Start Date
-                          </label>
-                          <Field 
-                            name="startDate" 
-                            type="date" 
-                            className="form-control rounded-lg p-3 border"
-                          />
-                          <ErrorMessage name="startDate" component="div" className="text-error fs-sm mt-1" />
-                        </div>
-                      </div>
-                      
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="endDate" className="form-label fw-medium text-dark mb-2">
-                            End Date
-                          </label>
-                          <Field 
-                            name="endDate" 
-                            type="date" 
-                            className="form-control rounded-lg p-3 border"
-                          />
-                          <ErrorMessage name="endDate" component="div" className="text-error fs-sm mt-1" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Active Checkbox */}
-                   
-                      <div >
-                        <input type="checkbox" name="isActive" id="isActive" />
-                        <label htmlFor="isActive" className='text-dark fw-medium ml-2'> Active</label>
-                      
-                     
-                    </div>
-
-                    {/* Submit Button */}
-                    <div className="form-group mt-4">
-                      <button
-                        type="submit"
-                        className="btn btn-primary w-100 p-3 rounded-lg fw-semibold"
-                        disabled={isSubmitting || isLoading}
-                        style={{ minHeight: '50px' }}
-                      >
-                        {isLoading ? (
-                          <span className="d-flex align-items-center justify-content-center">
-                            <span className="spinner-border spinner-border-sm me-2" />
-                            Saving...
-                          </span>
-                        ) : (
-                          <span className="d-flex align-items-center justify-content-center">
-                            {isEdit ? '💾 Update Batch' : '🚀 Create Batch'}
-                          </span>
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Form Tips */}
-                    <div className="bg-light rounded-lg p-3 mt-3">
-                      <div className="text-muted fs-sm">
-                        <strong>💡 Tip:</strong> Ensure the end date is after the start date for proper scheduling.
-                      </div>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </motion.div>
+              <FiX className="tw-h-5 tw-w-5" />
+            </button>
           </div>
-        </div>
+
+          {/* ================= FORM ================= */}
+          <div className="tw-overflow-y-auto tw-p-6">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+            >
+              {() => (
+                <Form className="tw-space-y-5">
+                  {/* Batch Name */}
+                  <div>
+                    <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
+                      Batch Name
+                    </label>
+                    <Field
+                      name="batchName"
+                      placeholder="e.g. React Batch A"
+                      className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-px-3 tw-py-2 tw-text-sm tw-transition focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
+                    />
+                    <ErrorMessage
+                      name="batchName"
+                      component="p"
+                      className="tw-mt-1 tw-text-xs tw-text-rose-600"
+                    />
+                  </div>
+
+                  {/* Course */}
+                  <div>
+                    <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
+                      Course
+                    </label>
+                    <div className="tw-relative">
+                      <FiBookOpen className="tw-pointer-events-none tw-absolute tw-left-3 tw-top-2.5 tw-h-5 tw-w-5 tw-text-slate-400" />
+                      <Field
+                        as="select"
+                        name="courseId"
+                        className="tw-w-full tw-appearance-none tw-rounded-lg tw-border tw-border-slate-300 tw-bg-white tw-px-10 tw-py-2 tw-text-sm focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
+                      >
+                        <option value="">Select course</option>
+                        {courses?.map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.name}
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+                    <ErrorMessage
+                      name="courseId"
+                      component="p"
+                      className="tw-mt-1 tw-text-xs tw-text-rose-600"
+                    />
+                  </div>
+
+                  {/* Dates */}
+                  <div className="tw-grid tw-grid-cols-1 tw-gap-4 md:tw-grid-cols-2">
+                    {[
+                      { name: "startDate", label: "Start Date" },
+                      { name: "endDate", label: "End Date" },
+                    ].map(({ name, label }) => (
+                      <div key={name}>
+                        <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
+                          {label}
+                        </label>
+                        <div className="tw-relative">
+                          <FiCalendar className="tw-pointer-events-none tw-absolute tw-left-3 tw-top-2.5 tw-h-5 tw-w-5 tw-text-slate-400" />
+                          <Field
+                            type="date"
+                            name={name}
+                            className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-px-10 tw-py-2 tw-text-sm focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
+                          />
+                        </div>
+                        <ErrorMessage
+                          name={name}
+                          component="p"
+                          className="tw-mt-1 tw-text-xs tw-text-rose-600"
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Active Toggle */}
+                  <label className="tw-flex tw-items-center tw-gap-3 tw-rounded-lg tw-border tw-border-slate-200 tw-p-3 tw-transition hover:tw-bg-slate-50">
+                    <Field
+                      type="checkbox"
+                      name="isActive"
+                      className="tw-h-5 tw-w-5 tw-accent-indigo-600"
+                    />
+                    <div>
+                      <p className="tw-text-sm tw-font-medium tw-text-slate-800">
+                        Active Batch
+                      </p>
+                      <p className="tw-text-xs tw-text-slate-500">
+                        Students can enroll into this batch
+                      </p>
+                    </div>
+                  </label>
+
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="tw-mt-2 tw-flex tw-w-full tw-items-center tw-justify-center tw-gap-2 tw-rounded-xl tw-bg-gradient-to-r tw-from-indigo-600 tw-to-blue-600 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-shadow-lg tw-transition hover:tw-from-indigo-700 hover:tw-to-blue-700 disabled:tw-cursor-not-allowed disabled:tw-opacity-60"
+                  >
+                    {isLoading
+                      ? "Saving..."
+                      : isEdit
+                      ? "Update Batch"
+                      : "Create Batch"}
+                  </button>
+
+                  {/* Tip */}
+                  <div className="tw-flex tw-items-start tw-gap-2 tw-rounded-xl tw-border tw-border-indigo-200 tw-bg-indigo-50 tw-p-3 tw-text-sm tw-text-indigo-700">
+                    <FiCheckCircle className="tw-mt-0.5 tw-h-4 tw-w-4" />
+                    <span>
+                      Make sure the end date is later than the start date.
+                    </span>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );

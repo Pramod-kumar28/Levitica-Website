@@ -94,6 +94,7 @@ const NoFooterLayout = () => (
 const AppRouter = () => {
   return (
     <Routes>
+      
 
       {/* Main public layout */}
       <Route element={<AppLayout />}>

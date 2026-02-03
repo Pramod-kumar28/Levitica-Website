@@ -1,78 +1,66 @@
 import QuickActionsCard from "../Extras/QuickActionsCard";
 import StatCard from "../Extras/StatCard";
-
 import { useGetStatsQuery } from "../../../Services/admin/statsService";
 import UserCreationForm from "./UserCreation/UserCreationForm";
 import CourseAdsCarousel from "../Ads/CourseAds";
 import WelcomeScreen from "../Student/WelcomeScreen";
-import UserTable from "./UserCreation/UserManagement";
-import StudentsTable from "./StudentManagement/AllStudentTable";
 
 const AdminDashboard = () => {
   const { data: stats, isLoading, error } = useGetStatsQuery();
 
-  // Provide default values while data is loading or undefined
-  const { verifiedUsers = 0, batches = 0, enrollments = 0, courses = 0 } = stats?.data || {};
+  const {
+    verifiedUsers = 0,
+    batches = 0,
+    enrollments = 0,
+    courses = 0,
+  } = stats?.data || {};
 
   const statsData = [
-    { icon: "👥", label: " Verified Users", count: verifiedUsers, color: "primary" },
-    { icon: "📚", label: "Courses", count: courses, color: "success" },
-    { icon: "📦", label: "Batches", count: batches, color: "warning" },
-    { icon: "📝", label: "Enrolled User", count: enrollments, color: "info" },
+    { label: "Verified Users", count: verifiedUsers, tone: "indigo" },
+    { label: "Courses", count: courses, tone: "emerald" },
+    { label: "Batches", count: batches, tone: "amber" },
+    { label: "Enrollments", count: enrollments, tone: "blue" },
   ];
 
-  // Optional: Show loading state
   if (isLoading) {
     return (
-      <div className="container my-4">
-        <div className="d-flex justify-content-center align-items-center" style={{ height: '300px' }}>
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
+      <div className="tw-flex tw-h-[60vh] tw-items-center tw-justify-center tw-text-slate-500">
+        Loading dashboard…
       </div>
     );
   }
 
-  // Optional: Show error state
   if (error) {
     return (
-      <div className="container my-4">
-        <div className="alert alert-danger" role="alert">
-          Error loading dashboard data. Please try again later.
-        </div>
+      <div className="tw-rounded-xl tw-border tw-border-rose-200 tw-bg-rose-50 tw-p-6 tw-text-rose-700">
+        Failed to load dashboard data.
       </div>
     );
   }
 
   return (
-    <div className="container my-4">
+    <div className="tw-space-y-10 tw-p-6 tw-bg-slate-50 tw-min-h-screen">
       <WelcomeScreen />
       <CourseAdsCarousel />
 
-      {/* --- Stats Row --- */}
-      <div className="row">
-        <div className="col-md-5 my-5">
-          <QuickActionsCard />
-        </div>
+      {/* ===== Top Section ===== */}
+      <div className="tw-grid tw-grid-cols-1 xl:tw-grid-cols-3 tw-gap-6">
+        <QuickActionsCard />
 
-        <div className="col-md-6">
-          <div className="row">
-            {statsData.map((stat, idx) => (
-              <div key={idx} className="col-12 col-sm-6 col-lg-6 my-5">
-                <StatCard {...stat} />
-              </div>
-            ))}
-          </div>
+        <div className="tw-grid tw-grid-cols-2 md:tw-grid-cols-4 xl:tw-grid-cols-2 tw-gap-4">
+          {statsData.map((stat, idx) => (
+            <StatCard key={idx} {...stat} />
+          ))}
         </div>
       </div>
-      <div className="my-5">
-<h4 className="text-center">Quick Access to Create A New User</h4>
-      <UserCreationForm />
+
+      {/* ===== User Creation ===== */}
+      <div className="tw-rounded-2xl tw-border tw-border-slate-200 tw-bg-white tw-p-6 tw-shadow-sm">
+        <h2 className="tw-text-lg tw-font-semibold tw-text-slate-900 tw-mb-4">
+          Quick User Creation
+        </h2>
+        <UserCreationForm />
       </div>
-     
-        
-            
     </div>
   );
 };

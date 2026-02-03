@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useGetMeetingsQuery, useDeleteMeetingMutation } from "../../../../Services/admin/zoomService";
 import toast from "react-hot-toast";
+import { useModal, MODAL_TYPES } from "../Modals/ModalContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiGrid,
@@ -23,6 +24,7 @@ import {
 const AdminLiveClasses = () => {
   const { data, isLoading, error, refetch } = useGetMeetingsQuery();
   const [deleteMeeting] = useDeleteMeetingMutation();
+   const { openModal } = useModal();
 
   const [starting, setStarting] = useState(false);
   const [activeTab, setActiveTab] = useState("cards");
@@ -42,6 +44,13 @@ const handleStartClass = async (id) => {
     setStarting(false);
   }
 };
+
+const handleEdit = (liveClass) => {
+  openModal(MODAL_TYPES.EDIT_MEETING, {
+    initialData: liveClass,
+  });
+};
+
 
 
 const handleDelete = (meetingId) => {
@@ -147,6 +156,7 @@ const handleDelete = (meetingId) => {
 
   return (
    <div className="tw-p-6 tw-space-y-6">
+    
 
   {/* ===== Page Header ===== */}
   <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-4">
@@ -165,7 +175,8 @@ const handleDelete = (meetingId) => {
         Export
       </button>
 
-      <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-blue-600 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-700">
+      <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-blue-600 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-700"
+       onClick={() => openModal(MODAL_TYPES.CREATE_MEETING)}>
         <FiPlus />
         Create Class
       </button>
@@ -262,6 +273,7 @@ const handleDelete = (meetingId) => {
       <CardsView
         filteredMeetings={filteredMeetings}
         handleStartClass={handleStartClass}
+         handleEdit={handleEdit}
         handleDelete={handleDelete}
         deletingId={deletingId}
         formatDate={formatDate}
@@ -272,6 +284,7 @@ const handleDelete = (meetingId) => {
       <TableView
         filteredMeetings={filteredMeetings}
         handleStartClass={handleStartClass}
+         handleEdit={handleEdit}
         handleDelete={handleDelete}
         deletingId={deletingId}
         formatDate={formatDate}
@@ -287,38 +300,72 @@ const handleDelete = (meetingId) => {
 };
 
 /* ---------------- CARDS VIEW ---------------- */
-
-const CardsView = ({ filteredMeetings, handleStartClass, handleDelete, deletingId, formatDate, formatTime, StatusBadge }) => (
+const CardsView = ({
+  filteredMeetings,
+  handleStartClass,
+  handleEdit,
+  handleDelete,
+  deletingId,
+  formatDate,
+  formatTime,
+  StatusBadge,
+}) => (
   <div className="tw-grid md:tw-grid-cols-3 tw-gap-6">
     {filteredMeetings.map((m) => (
       <motion.div
         key={m._id}
         whileHover={{ y: -4 }}
-        className="tw-bg-white tw-rounded-xl tw-border tw-p-5 tw-flex tw-flex-col"
+        className="tw-bg-white tw-rounded-xl tw-border tw-p-5 tw-flex tw-flex-col tw-shadow-sm hover:tw-shadow-md tw-transition"
       >
-        <div className="tw-flex tw-justify-between">
-          <h3 className="tw-font-semibold">{m.title}</h3>
+        {/* Header */}
+        <div className="tw-flex tw-justify-between tw-items-start">
+          <h3 className="tw-font-semibold tw-text-gray-900">
+            {m.title}
+          </h3>
           <StatusBadge status={m.status} />
         </div>
 
+        {/* Meta */}
         <div className="tw-mt-3 tw-space-y-2 tw-text-sm tw-text-gray-600">
-          <p className="tw-flex tw-items-center tw-gap-2"><FiBookOpen /> {m.course?.name}</p>
-          <p className="tw-flex tw-items-center tw-gap-2"><FiUsers /> {m.batch?.batchName || "—"}</p>
-          <p className="tw-flex tw-items-center tw-gap-2"><FiCalendar /> {formatDate(m.startTime)}</p>
-          <p className="tw-flex tw-items-center tw-gap-2"><FiClock /> {formatTime(m.startTime)} • {m.duration} mins</p>
+          <p className="tw-flex tw-items-center tw-gap-2">
+            <FiBookOpen /> {m.course?.name}
+          </p>
+          <p className="tw-flex tw-items-center tw-gap-2">
+            <FiUsers /> {m.batch?.batchName || "—"}
+          </p>
+          <p className="tw-flex tw-items-center tw-gap-2">
+            <FiCalendar /> {formatDate(m.startTime)}
+          </p>
+          <p className="tw-flex tw-items-center tw-gap-2">
+            <FiClock /> {formatTime(m.startTime)} • {m.duration} mins
+          </p>
         </div>
 
-        <div className="tw-mt-4 tw-flex tw-gap-2">
+        {/* Actions */}
+        <div className="tw-mt-auto tw-pt-4 tw-flex tw-gap-2">
           {(m.status === "scheduled" || m.status === "ongoing") && (
-            <button className="tw-btn-primary" onClick={() => handleStartClass(m._id)}>
-              <FiPlay /> {m.status === "ongoing" ? "Join" : "Start"}
+            <button
+              onClick={() => handleStartClass(m._id)}
+              className="tw-flex-1 tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded-lg tw-bg-blue-600 tw-py-2 tw-text-sm tw-font-medium tw-text-white hover:tw-bg-blue-700"
+            >
+              <FiPlay />
+              {m.status === "ongoing" ? "Join" : "Start"}
             </button>
           )}
-          <button className="tw-btn-outline"><FiEdit /></button>
+
+          <button
+            onClick={() => handleEdit(m)}
+            className="tw-rounded-lg tw-border tw-border-gray-300 tw-px-3 tw-text-gray-600 hover:tw-bg-gray-50 hover:tw-text-gray-800"
+            title="Edit class"
+          >
+            <FiEdit />
+          </button>
+
           <button
             disabled={deletingId === m._id}
             onClick={() => handleDelete(m._id)}
-            className="tw-btn-danger"
+            className="tw-rounded-lg tw-border tw-border-red-200 tw-px-3 tw-text-red-600 hover:tw-bg-red-50 disabled:tw-opacity-50"
+            title="Delete class"
           >
             <FiTrash2 />
           </button>
@@ -328,9 +375,18 @@ const CardsView = ({ filteredMeetings, handleStartClass, handleDelete, deletingI
   </div>
 );
 
-/* ---------------- TABLE VIEW ---------------- */
 
-const TableView = ({ filteredMeetings, handleStartClass, handleDelete, deletingId, formatDate, formatTime, StatusBadge }) => (
+/* ---------------- TABLE VIEW ---------------- */
+const TableView = ({
+  filteredMeetings,
+  handleStartClass,
+  handleEdit,
+  handleDelete,
+  deletingId,
+  formatDate,
+  formatTime,
+  StatusBadge,
+}) => (
   <div className="tw-bg-white tw-border tw-rounded-xl tw-overflow-x-auto">
     <table className="tw-w-full tw-text-sm">
       <thead className="tw-bg-gray-50">
@@ -344,21 +400,59 @@ const TableView = ({ filteredMeetings, handleStartClass, handleDelete, deletingI
           <th className="tw-p-3 tw-text-center">Actions</th>
         </tr>
       </thead>
+
       <tbody>
         {filteredMeetings.map((m) => (
-          <tr key={m._id} className="tw-border-t">
-            <td className="tw-p-3 tw-font-medium">{m.title}</td>
+          <tr
+            key={m._id}
+            className="tw-border-t hover:tw-bg-gray-50"
+          >
+            <td className="tw-p-3 tw-font-medium tw-text-gray-900">
+              {m.title}
+            </td>
             <td className="tw-p-3">{m.course?.name}</td>
             <td className="tw-p-3">{m.batch?.batchName || "—"}</td>
-            <td className="tw-p-3">{formatDate(m.startTime)}<br /><span className="tw-text-xs tw-text-gray-500">{formatTime(m.startTime)}</span></td>
+            <td className="tw-p-3">
+              {formatDate(m.startTime)}
+              <div className="tw-text-xs tw-text-gray-500">
+                {formatTime(m.startTime)}
+              </div>
+            </td>
             <td className="tw-p-3">{m.duration} mins</td>
-            <td className="tw-p-3"><StatusBadge status={m.status} /></td>
-            <td className="tw-p-3 tw-text-center tw-flex tw-gap-2 tw-justify-center">
-              {(m.status === "scheduled" || m.status === "ongoing") && (
-                <button onClick={() => handleStartClass(m._id)} className="tw-btn-primary"><FiPlay /></button>
-              )}
-              <button className="tw-btn-outline"><FiEdit /></button>
-              <button disabled={deletingId === m._id} onClick={() => handleDelete(m._id)} className="tw-btn-danger"><FiTrash2 /></button>
+            <td className="tw-p-3">
+              <StatusBadge status={m.status} />
+            </td>
+
+            {/* Actions */}
+            <td className="tw-p-3">
+              <div className="tw-flex tw-items-center tw-justify-center tw-gap-2">
+                {(m.status === "scheduled" || m.status === "ongoing") && (
+                  <button
+                    onClick={() => handleStartClass(m._id)}
+                    className="tw-rounded-md tw-bg-blue-600 tw-p-2 tw-text-white hover:tw-bg-blue-700"
+                    title="Start / Join"
+                  >
+                    <FiPlay />
+                  </button>
+                )}
+
+                <button
+                  onClick={() => handleEdit(m)}
+                  className="tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-text-gray-600 hover:tw-bg-gray-100"
+                  title="Edit"
+                >
+                  <FiEdit />
+                </button>
+
+                <button
+                  disabled={deletingId === m._id}
+                  onClick={() => handleDelete(m._id)}
+                  className="tw-rounded-md tw-border tw-border-red-200 tw-p-2 tw-text-red-600 hover:tw-bg-red-50 disabled:tw-opacity-50"
+                  title="Delete"
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
             </td>
           </tr>
         ))}
@@ -366,5 +460,6 @@ const TableView = ({ filteredMeetings, handleStartClass, handleDelete, deletingI
     </table>
   </div>
 );
+
 
 export default AdminLiveClasses;

@@ -1,17 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useCoursesCategory } from '../../../../hooks/useCourses.js';
 import { useCourseHandlers } from './courseshooks.js';
-import { X } from 'lucide-react';
+import { FiX, FiSave } from 'react-icons/fi';
 
 const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
- 
-  const {
-    handleAddCourseSubmit,
-    handleUpdateCourseSubmit,
-  } = useCourseHandlers();
-
+  const { handleAddCourseSubmit, handleUpdateCourseSubmit } = useCourseHandlers();
   const isEdit = mode === 'edit';
 
   const initialValues = isEdit
@@ -50,191 +44,143 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
     thumbnail: Yup.string().url('Must be a valid URL').required('Image URL is required'),
   });
 
- 
   return (
     <AnimatePresence>
       <motion.div
-        className="dashboard-app-container"
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-        style={{ 
-          position: 'fixed', 
-          top: 0, 
-          left: 0, 
-          right: 0, 
-          bottom: 0, 
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          zIndex: 1100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '1rem'
-        }}
+        className="tw-fixed tw-inset-0 tw-z-[1100] tw-flex tw-items-center tw-justify-center tw-bg-slate-900/60 tw-backdrop-blur-sm tw-p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
-        <div className="card shadow-xl rounded-xl w-100" style={{ maxWidth: '500px', maxHeight: '90vh', overflow: 'hidden' }}>
-          <div className="card-header d-flex justify-content-between align-items-center p-4 border-bottom">
-            <h3 className="mb-0 fw-bold fs-2xl text-dark">
-              {isEdit ? '✏️ Edit Course' : '📝 Add New Course'}
-            </h3>
-           <X onClick={onSuccess} className='text-dark'/>
-          </div>
-
-          <div className="card-body p-0" style={{ overflowY: 'auto' }}>
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+        <motion.div
+          initial={{ scale: 0.96, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.96, opacity: 0, y: 20 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
+          className="tw-w-full tw-max-w-xl tw-overflow-hidden tw-rounded-2xl tw-bg-white tw-shadow-2xl"
+        >
+          {/* Header */}
+          <div className="tw-flex tw-items-center tw-justify-between tw-border-b tw-border-slate-200 tw-px-6 tw-py-4">
+            <div>
+              <h2 className="tw-text-lg tw-font-semibold tw-text-slate-900">
+                {isEdit ? 'Edit Course' : 'Add New Course'}
+              </h2>
+              <p className="tw-mt-1 tw-text-sm tw-text-slate-500">
+                {isEdit
+                  ? 'Update course information'
+                  : 'Create a new course for the platform'}
+              </p>
+            </div>
+            <button
+              onClick={onSuccess}
+              className="tw-rounded-lg tw-p-2 tw-text-slate-500 tw-transition hover:tw-bg-slate-100 hover:tw-text-slate-700"
             >
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={async (values, actions) => {
-               
-                  try {
-                    await onSubmitFn(values);
-                    if (!isEdit) actions.resetForm();
-                    onSuccess();
-                  }
-                   catch (error) {
-                    console.error(`${isEdit ? 'Update' : 'Add'} failed:`, error);
-                    alert(`❌ Failed to ${isEdit ? 'update' : 'add'} course.`);
-                  }
-                }}
-              >
-                {({ isSubmitting }) => (
-                  <Form className="p-4">
-                    {/* Course Name */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="name" className="form-label fw-medium text-dark mb-2">
-                        Course Name
-                      </label>
-                      <Field 
-                        name="name" 
-                        className="form-control rounded-lg p-3 border"
-                        placeholder="Enter course name"
-                      />
-                      <ErrorMessage name="name" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Description */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="description" className="form-label fw-medium text-dark mb-2">
-                        Description
-                      </label>
-                      <Field 
-                        as="textarea" 
-                        name="description" 
-                        rows={3} 
-                        className="form-control rounded-lg p-3 border"
-                        placeholder="Enter course description"
-                      />
-                      <ErrorMessage name="description" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Image URL */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="thumbnail" className="form-label fw-medium text-dark mb-2">
-                        Image URL
-                      </label>
-                      <Field 
-                        name="thumbnail" 
-                        className="form-control rounded-lg p-3 border"
-                        placeholder="Enter image URL"
-                      />
-                      <ErrorMessage name="thumbnail" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Category*/}
-                    {(
-                      <div className="form-group mb-3">
-                        <label htmlFor="category" className="form-label fw-medium text-dark mb-2">
-                          Category
-                        </label>
-                        <Field 
-                         
-                          name="category" 
-                          className="form-select rounded-lg p-3 border"
-                        >
-                          
-                        </Field>
-                        <ErrorMessage name="category" component="div" className="text-error fs-sm mt-1" />
-                      </div>
-                    )}
-
-                    {/* Instructor */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="instructor" className="form-label fw-medium text-dark mb-2">
-                        Instructor
-                      </label>
-                      <Field 
-                        name="instructor" 
-                        className="form-control rounded-lg p-3 border"
-                        placeholder="Enter instructor name"
-                      />
-                      <ErrorMessage name="instructor" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Duration */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="duration" className="form-label fw-medium text-dark mb-2">
-                        Duration
-                      </label>
-                      <Field 
-                        name="duration" 
-                        className="form-control rounded-lg p-3 border"
-                        placeholder="e.g., 8 weeks, 30 hours"
-                      />
-                      <ErrorMessage name="duration" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Price */}
-                    <div className="form-group mb-3">
-                      <label htmlFor="price" className="form-label fw-medium text-dark mb-2">
-                        Price (₹)
-                      </label>
-                      <Field 
-                        name="price" 
-                        className="form-control rounded-lg p-3 border"
-                        placeholder="Enter course price"
-                      />
-                      <ErrorMessage name="price" component="div" className="text-error fs-sm mt-1" />
-                    </div>
-
-                    {/* Submit Button */}
-                    <div className="form-group mt-4">
-                      <button 
-                        type="submit" 
-                        className="btn btn-primary w-100 p-3 rounded-lg fw-semibold"
-                        disabled={isSubmitting}
-                        style={{ minHeight: '50px' }}
-                      >
-                        {isSubmitting ? (
-                          <span className="d-flex align-items-center justify-content-center">
-                            <span className="spinner-border spinner-border-sm me-2" />
-                            {isEdit ? 'Updating...' : 'Adding...'}
-                          </span>
-                        ) : (
-                          <span className="d-flex align-items-center justify-content-center">
-                            {isEdit ? '💾 Update Course' : '🚀 Add Course'}
-                          </span>
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Form Tips */}
-                    <div className="bg-light rounded-lg p-3 mt-3">
-                      <div className="text-muted fs-sm">
-                        <strong>💡 Tips:</strong> Fill all required fields to create a complete course listing.
-                      </div>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </motion.div>
+              <FiX className="tw-h-5 tw-w-5" />
+            </button>
           </div>
-        </div>
+
+          {/* Form */}
+          <div className="tw-max-h-[75vh] tw-overflow-y-auto tw-p-6">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={async (values, actions) => {
+                try {
+                  await onSubmitFn(values);
+                  if (!isEdit) actions.resetForm();
+                  onSuccess();
+                } catch (error) {
+                  console.error(`${isEdit ? 'Update' : 'Add'} failed:`, error);
+                  alert(`❌ Failed to ${isEdit ? 'update' : 'add'} course.`);
+                }
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form className="tw-space-y-4">
+                  {[
+                    { name: 'name', label: 'Course Name', placeholder: 'React Mastery' },
+                    {
+                      name: 'thumbnail',
+                      label: 'Thumbnail URL',
+                      placeholder: 'https://image-url.com',
+                    },
+                    { name: 'instructor', label: 'Instructor', placeholder: 'John Doe' },
+                    { name: 'duration', label: 'Duration', placeholder: '8 weeks' },
+                    { name: 'price', label: 'Price (₹)', placeholder: '1999' },
+                  ].map(({ name, label, placeholder }) => (
+                    <div key={name}>
+                      <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
+                        {label}
+                      </label>
+                      <Field
+                        name={name}
+                        placeholder={placeholder}
+                        className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-px-3 tw-py-2 tw-text-sm tw-transition focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
+                      />
+                      <ErrorMessage
+                        name={name}
+                        component="p"
+                        className="tw-mt-1 tw-text-xs tw-text-rose-600"
+                      />
+                    </div>
+                  ))}
+
+                  {/* Description */}
+                  <div>
+                    <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
+                      Description
+                    </label>
+                    <Field
+                      as="textarea"
+                      name="description"
+                      rows={3}
+                      placeholder="Course overview..."
+                      className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-px-3 tw-py-2 tw-text-sm tw-transition focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
+                    />
+                    <ErrorMessage
+                      name="description"
+                      component="p"
+                      className="tw-mt-1 tw-text-xs tw-text-rose-600"
+                    />
+                  </div>
+
+                  {/* Category */}
+                  <div>
+                    <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
+                      Category
+                    </label>
+                    <Field
+                      as="select"
+                      name="category"
+                      className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-bg-white tw-px-3 tw-py-2 tw-text-sm focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
+                    />
+                    <ErrorMessage
+                      name="category"
+                      component="p"
+                      className="tw-mt-1 tw-text-xs tw-text-rose-600"
+                    />
+                  </div>
+
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="tw-mt-4 tw-flex tw-w-full tw-items-center tw-justify-center tw-gap-2 tw-rounded-xl tw-bg-indigo-600 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-transition hover:tw-bg-indigo-700 disabled:tw-cursor-not-allowed disabled:tw-opacity-70"
+                  >
+                    <FiSave />
+                    {isSubmitting
+                      ? isEdit
+                        ? 'Updating...'
+                        : 'Adding...'
+                      : isEdit
+                      ? 'Update Course'
+                      : 'Add Course'}
+                  </button>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );

@@ -2,148 +2,144 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSignupMutation } from '../../../../Services/authService';
+import { FiUser, FiMail, FiLock, FiX } from 'react-icons/fi';
 
 const CreateAdminForm = () => {
-  // Alert state
   const [alertType, setAlertType] = useState(null);
   const [alertMessage, setAlertMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
 
-  // Signup mutation
   const [triggerSignup, { isLoading }] = useSignupMutation();
 
-  // Formik setup
   const formik = useFormik({
     initialValues: {
       name: '',
       email: '',
       password: '',
-      role: 'admin' // Default role is admin
+      role: 'admin',
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Name is required'),
-      email: Yup.string().email('Invalid email format').required('Email is required'),
-      password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required')
+      email: Yup.string()
+        .email('Invalid email format')
+        .required('Email is required'),
+      password: Yup.string()
+        .min(6, 'Password must be at least 6 characters')
+        .required('Password is required'),
     }),
     onSubmit: async values => {
       try {
-        // Add role to the values
-        const adminData = {
+        const response = await triggerSignup({
           ...values,
-          role: 'admin' // Ensure role is set to admin
-        };
-
-        const response = await triggerSignup(adminData).unwrap();
+          role: 'admin',
+        }).unwrap();
 
         setAlertType('success');
-        setAlertMessage(response?.message || 'Admin account created successfully!');
+        setAlertMessage(
+          response?.message || 'Admin account created successfully!'
+        );
         setShowAlert(true);
-
-        // Reset form after successful submission
         formik.resetForm();
       } catch (error) {
-        console.error('Admin creation failed:', error);
-
-        const fallbackMessage = 'Admin creation failed. Please try again.';
-        const extractedMessage =
+        const message =
           error?.data?.error ||
           error?.data?.message ||
           error?.message ||
-          fallbackMessage;
+          'Admin creation failed. Please try again.';
 
+        setAlertType('error');
+        setAlertMessage(message);
         setShowAlert(true);
-        setAlertType('danger');
-        setAlertMessage(extractedMessage);
       }
-    }
+    },
   });
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h4 className="card-title">Create Admin Account</h4>
-        <p className="card-description">Create a new admin user with administrative privileges</p>
+    <div className="tw-rounded-2xl tw-border tw-border-slate-200 tw-bg-white tw-shadow-sm">
+      {/* Header */}
+      <div className="tw-border-b tw-border-slate-200 tw-p-6">
+        <h2 className="tw-text-lg tw-font-semibold tw-text-slate-900">
+          Create Admin Account
+        </h2>
+        <p className="tw-mt-1 tw-text-sm tw-text-slate-500">
+          Grant administrative access to a new user
+        </p>
       </div>
-      <div className="card-body">
+
+      <div className="tw-p-6">
         {/* Alert */}
         {showAlert && (
-          <div className={`alert alert-${alertType} alert-dismissible fade show`} role="alert">
-            {alertMessage}
+          <div
+            className={`tw-mb-4 tw-flex tw-items-start tw-justify-between tw-gap-4 tw-rounded-xl tw-border tw-p-4 ${
+              alertType === 'success'
+                ? 'tw-border-emerald-200 tw-bg-emerald-50 tw-text-emerald-700'
+                : 'tw-border-rose-200 tw-bg-rose-50 tw-text-rose-700'
+            }`}
+          >
+            <p className="tw-text-sm">{alertMessage}</p>
             <button
-              type="button"
-              className="btn-close"
               onClick={() => setShowAlert(false)}
-            ></button>
+              className="tw-text-current tw-opacity-70 hover:tw-opacity-100"
+            >
+              <FiX />
+            </button>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={formik.handleSubmit}>
-          {/* Name */}
-          <div className="form-group mb-3">
-            <label className="form-label">Full Name</label>
-            <div className="input-group">
-              <span className="input-group-text"><i className="ti-user"></i></span>
-              <input
-                type="text"
-                name="name"
-                className="form-control"
-                placeholder="Enter admin name"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.name}
-              />
+        <form onSubmit={formik.handleSubmit} className="tw-space-y-5">
+          {[
+            {
+              name: 'name',
+              label: 'Full Name',
+              placeholder: 'Admin name',
+              icon: FiUser,
+              type: 'text',
+            },
+            {
+              name: 'email',
+              label: 'Email Address',
+              placeholder: 'admin@example.com',
+              icon: FiMail,
+              type: 'email',
+            },
+            {
+              name: 'password',
+              label: 'Password',
+              placeholder: 'Create a secure password',
+              icon: FiLock,
+              type: 'password',
+            },
+          ].map(({ name, label, placeholder, icon: Icon, type }) => (
+            <div key={name}>
+              <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
+                {label}
+              </label>
+              <div className="tw-relative">
+                <Icon className="tw-pointer-events-none tw-absolute tw-left-3 tw-top-2.5 tw-h-5 tw-w-5 tw-text-slate-400" />
+                <input
+                  type={type}
+                  name={name}
+                  placeholder={placeholder}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values[name]}
+                  className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-px-10 tw-py-2 tw-text-sm tw-transition focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
+                />
+              </div>
+              {formik.touched[name] && formik.errors[name] && (
+                <p className="tw-mt-1 tw-text-xs tw-text-rose-600">
+                  {formik.errors[name]}
+                </p>
+              )}
             </div>
-            {formik.touched.name && formik.errors.name && (
-              <div className="text-danger mt-1">{formik.errors.name}</div>
-            )}
-          </div>
+          ))}
 
-          {/* Email */}
-          <div className="form-group mb-3">
-            <label className="form-label">Email Address</label>
-            <div className="input-group">
-              <span className="input-group-text"><i className="ti-email"></i></span>
-              <input
-                type="email"
-                name="email"
-                className="form-control"
-                placeholder="admin@example.com"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.email}
-              />
-            </div>
-            {formik.touched.email && formik.errors.email && (
-              <div className="text-danger mt-1">{formik.errors.email}</div>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="form-group mb-3">
-            <label className="form-label">Password</label>
-            <div className="input-group">
-              <span className="input-group-text"><i className="ti-lock"></i></span>
-              <input
-                type="password"
-                name="password"
-                className="form-control"
-                placeholder="Create a secure password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                value={formik.values.password}
-              />
-            </div>
-            {formik.touched.password && formik.errors.password && (
-              <div className="text-danger mt-1">{formik.errors.password}</div>
-            )}
-          </div>
-
-          {/* Submit Button */}
+          {/* Submit */}
           <button
             type="submit"
-            className="btn btn-primary"
             disabled={!formik.isValid || isLoading}
+            className="tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded-xl tw-bg-indigo-600 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-transition hover:tw-bg-indigo-700 disabled:tw-cursor-not-allowed disabled:tw-opacity-60"
           >
             {isLoading ? 'Creating Admin...' : 'Create Admin Account'}
           </button>
