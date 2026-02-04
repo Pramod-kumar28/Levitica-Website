@@ -81,11 +81,11 @@ const colorMap = {
 
 const ProductsShowcase = () => {
   return (
-    <section className="tw-bg-gradient-to-b tw-from-slate-50 tw-to-white tw-py-16">
+    <section className="tw-bg-gradient-to-b tw-from-slate-50 tw-to-white tw-py-6">
       <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
 
         {/* Header */}
-        <div className="tw-text-center tw-max-w-2xl tw-mx-auto tw-mb-20">
+        <div className="tw-text-center tw-max-w-2xl tw-mx-auto tw-mb-10">
           <span className="tw-inline-block tw-mb-4 tw-rounded-full tw-bg-indigo-100 tw-text-indigo-700 tw-text-sm tw-font-semibold tw-px-4 tw-py-1">
             Products
           </span>

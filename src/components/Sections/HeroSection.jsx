@@ -21,9 +21,9 @@ const HeroSection = () => {
                 People First. Solutions Always
               </span>
 
-              <h1 className="tw-mt-3">
+              <h2 className="tw-mt-3 tw-text-4xl lg:tw-text-5xl tw-font-bold ">
                 Expert Training. Reliable Manpower. Proven Consulting
-              </h1>
+              </h2>
 
               <p className="tw-mt-4 tw-text-lg">
                 Holistically procrastinate mission-critical convergence with reliable customer service.

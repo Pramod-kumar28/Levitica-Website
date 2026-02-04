@@ -6,7 +6,7 @@ const Navbar = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   return (
-    <header className="tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-50 tw-bg-white tw-border-b">
+    <header className="tw-fixed tw-top-0 tw-left-0 tw-right-0 tw-z-50 tw-bg-white tw-shadow-lg tw-border-b">
       <nav className="tw-max-w-7xl tw-mx-auto tw-px-4 tw-py-3">
         <div className="tw-flex tw-items-center tw-justify-between tw-h-16">
 

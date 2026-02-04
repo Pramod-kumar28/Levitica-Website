@@ -67,8 +67,8 @@ const Footer = () => {
             </h4>
 
             <ul className="tw-space-y-4">
-              <li className="tw-flex tw-gap-3">
-                <FaMapMarkerAlt className="tw-mt-1 tw-text-indigo-400" />
+              <li className="tw-flex tw-items-center tw-gap-3">
+                <FaMapMarkerAlt className="tw-mt-1 tw-text-indigo-400" size={32} />
                 <span>
                   Office #407 & 409, 4th Floor, Jain Sadguru Image's Capital Park,
                   Madhapur, Hyderabad

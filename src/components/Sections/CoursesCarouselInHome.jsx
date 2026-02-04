@@ -51,10 +51,10 @@ const CoursesCarouselInHome = () => {
   }, []);
 
   return (
-    <section className="tw-bg-slate-50 tw-py-12 tw-overflow-x-hidden">
+    <section className="tw-bg-slate-50 tw-py-8 lg:tw-py-12 tw-overflow-x-hidden">
       <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
         {/* Header */}
-        <div className="tw-text-center tw-mb-8">
+        <div className="tw-text-center">
           <h2 className="tw-text-3xl sm:tw-text-4xl md:tw-text-5xl tw-font-bold">
             Explore Our Popular Courses
           </h2>
@@ -124,10 +124,10 @@ const CoursesCarouselInHome = () => {
         </div>
 
         {/* CTA */}
-        <div className="tw-text-center tw-mt-16">
+        <div className="tw-text-center tw-mt-2 lg:tw-mt-4 ">
           <Link
             to="/trainings"
-            className="tw-inline-block tw-rounded-full tw-border tw-border-blue-600 tw-px-6 tw-py-3 tw-font-medium tw-text-blue-600 hover:tw-bg-blue-600 hover:tw-text-white tw-transition"
+            className="tw-inline-block tw-rounded-full tw-border tw-border-blue-600 tw-px-6 tw-py-3 tw-font-medium tw-text-white tw-bg-blue-600 hover:tw-bg-blue-800 hover:tw-text-white  tw-transition"
           >
             View All Our Courses
           </Link>
