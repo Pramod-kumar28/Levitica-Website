@@ -6,8 +6,6 @@ import {
 import { useReactTable, flexRender } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import {
-  FiCheckSquare,
-  FiSquare,
   FiUsers,
   FiTrash2,
   FiChevronLeft,

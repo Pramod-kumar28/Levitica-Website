@@ -10,10 +10,9 @@ import {
   Users,
   Layers,
   UserPlus,
-  Award,
   CreditCard,
   Settings,
-  X,
+  
 } from "lucide-react";
 
 const Sidebar = ({ isOpen, onClose }) => {
