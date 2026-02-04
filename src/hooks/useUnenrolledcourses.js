@@ -9,7 +9,7 @@ export const useUnenrolledCourses = (enrolledCourseIds = []) => {
     error,
     isSuccess,
     refetch,
-    hasData
+
   } = useCourses();
 
   const filteredCourses = useMemo(() => {

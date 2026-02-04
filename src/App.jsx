@@ -36,7 +36,7 @@ import LiveClasses from './components/dashboards/Student/LiveClasses';
 import ClassResources from './components/dashboards/Student/ClassResources';
 
 import AskQuestions from './components/dashboards/Student/AskQuestions';
-import BookOneOnOne from './components/dashboards/Student/BookOneToOneSession';
+
 import SettingsPage from './components/dashboards/Student/Settings';
 
 // Admin
@@ -152,7 +152,7 @@ const AppRouter = () => {
             <Route path="class-resources" element={<ClassResources />} />
         
             <Route path="ask-questions" element={<AskQuestions />} />
-            <Route path="book-session" element={<BookOneOnOne />} />
+            {/* <Route path="book-session" element={<BookOneOnOne />} /> */}
             <Route path="settings" element={<SettingsPage />} />
           </Route>
         </Route>
