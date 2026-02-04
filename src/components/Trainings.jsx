@@ -6,7 +6,7 @@ import { FaArrowRight } from "react-icons/fa";
 const Trainings = () => {
   return (
     <>
-      <div className="main tw-pt-24">
+      <div className=" tw-bg-white tw-pt-20  ">
 
         {/* Header Section */}
         <section

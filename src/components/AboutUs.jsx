@@ -152,11 +152,11 @@ const services = [
 
 const AboutUs = () => {
   return (
-    <div className="tw-bg-white tw-text-slate-800">
+    <div className="tw-bg-white tw-text-slate-800 tw-pt-20">
 
       {/* ================= HERO SECTION (Unchanged) ================= */}
       <section
-        className="hero-section gradient-overlay tw-relative tw-py-32"
+        className="hero-section gradient-overlay tw-relative ptb-100"
         style={{
           background: "url('/img/header-bg-5.jpg') center / cover no-repeat",
         }}
@@ -179,9 +179,7 @@ const AboutUs = () => {
           <p className="tw-mt-4 tw-text-xl tw-text-slate-200 tw-max-w-2xl tw-mx-auto">
             Technology, Talent & Transformation — all under one roof.
           </p>
-          <Link to="/contact-us" className="btn accent-solid-btn tw-mt-8 tw-px-8 tw-py-3 tw-text-lg tw-inline-block">
-            Start Your Journey
-          </Link>
+         
         </div>
       </section>
 

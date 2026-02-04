@@ -1,30 +1,32 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
+
 import HeroSection from "./HeroSection";
-import HeroSlideIT from "./HeroSlideIT";
+import HeroSlideMarketing from "./HeroSlideMarketing";
+import HeroSlideAI from "./HeroSlideAI";
 
 const HeroCarousel = () => {
   return (
-<Swiper
-  modules={[Autoplay, Pagination]}
-  autoplay={{ delay: 4000, disableOnInteraction: false }}
-  loop={true}
-  pagination={{ clickable: true }}
-  className="hero-carousel"
->
-
+    <Swiper
+      modules={[Autoplay, Pagination]}
+      autoplay={{ delay: 4000, disableOnInteraction: false }}
+      loop
+      pagination={{ clickable: true }}
+      className="hero-carousel"
+    >
       <SwiperSlide>
         <HeroSection />
       </SwiperSlide>
 
       <SwiperSlide>
-        
-        <HeroSection />
-        
+        <HeroSlideMarketing />
+      </SwiperSlide>
+
+      <SwiperSlide>
+        <HeroSlideAI />
       </SwiperSlide>
     </Swiper>
   );
