@@ -1,15 +1,17 @@
 import { Link } from "react-router-dom";
+import { memo } from "react";
 import {
   FiArrowRight,
   FiTrendingUp,
   FiShare2,
   FiBarChart2,
 } from "react-icons/fi";
-import MarketingLottie from "../lottie/MarketingLottie";
+// import MarketingLottie from "../lottie/MarketingLottie";
 
-const HeroSlideMarketing = () => {
+
+const HeroSlideMarketing = memo(({isActive}) => {
   return (
-    <section className="tw-relative tw-overflow-hidden tw-py-20 lg:tw-py-28 tw-bg-gradient-to-br tw-from-orange-900 tw-via-red-900 tw-to-pink-900">
+    <section className="tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-orange-900 tw-via-red-900 tw-to-pink-900">
       
       {/* Background glow */}
       <div className="tw-absolute tw-inset-0 tw-bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] tw-from-white/5 tw-to-transparent" />
@@ -18,7 +20,7 @@ const HeroSlideMarketing = () => {
         <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-5 tw-gap-12 tw-items-center">
 
           {/* ================= TEXT ================= */}
-          <div className="lg:tw-col-span-3 tw-text-white tw-order-2 lg:tw-order-1">
+          <div className="lg:tw-col-span-3 tw-text-white tw-order-1 lg:tw-order-1">
 
             <span className="tw-inline-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-rounded-full tw-bg-white/10 tw-backdrop-blur-sm tw-text-sm tw-font-medium tw-mb-6 hover:tw-bg-white/20 tw-transition">
               <span className="tw-w-2 tw-h-2 tw-bg-yellow-400 tw-rounded-full tw-animate-pulse"></span>
@@ -112,9 +114,13 @@ const HeroSlideMarketing = () => {
           </div>
 
           {/* ================= LOTTIE ================= */}
-          <div className="lg:tw-col-span-2 tw-relative tw-order-1 lg:tw-order-2">
+          <div className="lg:tw-col-span-2 tw-relative tw-order-2 lg:tw-order-2">
             <div className="tw-relative tw-z-10 lg:tw--mr-8">
-              <MarketingLottie />
+              {/* {isActive ? (
+                <MarketingLottie isActive />
+              ) : (
+                <div className="tw-w-full tw-max-w-md tw-h-[360px]" />
+              )} */}
             </div>
 
             {/* floating glows */}
@@ -126,7 +132,7 @@ const HeroSlideMarketing = () => {
       </div>
     </section>
   );
-};
+});
 
 /* ================= FEATURE ITEM ================= */
 const Feature = ({ icon, label, color }) => {

@@ -1,7 +1,5 @@
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-
 import { Autoplay, Pagination } from "swiper/modules";
 
 import HeroSection from "./HeroSection";
@@ -9,12 +7,15 @@ import HeroSlideMarketing from "./HeroSlideMarketing";
 import HeroSlideAI from "./HeroSlideAI";
 
 const HeroCarousel = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   return (
     <Swiper
       modules={[Autoplay, Pagination]}
-      autoplay={{ delay: 4000, disableOnInteraction: false }}
-      loop
+      autoplay={{ delay: 5000, disableOnInteraction: false }}
+      loop={false}  // ❗ IMPORTANT
       pagination={{ clickable: true }}
+      onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
       className="hero-carousel"
     >
       <SwiperSlide>
@@ -22,11 +23,11 @@ const HeroCarousel = () => {
       </SwiperSlide>
 
       <SwiperSlide>
-        <HeroSlideMarketing />
+        <HeroSlideMarketing isActive={activeIndex === 1} />
       </SwiperSlide>
 
       <SwiperSlide>
-        <HeroSlideAI />
+        <HeroSlideAI isActive={activeIndex === 2} />
       </SwiperSlide>
     </Swiper>
   );

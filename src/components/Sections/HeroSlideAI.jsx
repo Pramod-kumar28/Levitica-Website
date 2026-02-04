@@ -1,8 +1,10 @@
-import AILottie from "../lottie/AILottie"
+import { Link } from "react-router-dom";
+import { memo } from "react";
 
-const HeroSlideAI = () => {
+
+const HeroSlideAI = memo(({isActive}) => {
   return (
-    <section className="tw-relative tw-overflow-hidden tw-py-20 lg:tw-py-28 tw-bg-gradient-to-br tw-from-blue-900 tw-via-indigo-900 tw-to-purple-900">
+    <section className="tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-blue-900 tw-via-indigo-900 tw-to-purple-900">
       {/* Animated background elements */}
       <div className="tw-absolute tw-inset-0 tw-bg-grid-white/5 tw-bg-[size:20px_20px]" />
       <div className="tw-absolute tw-top-0 tw-left-0 tw-right-0 tw-h-px tw-bg-gradient-to-r tw-from-transparent tw-via-white/30 tw-to-transparent" />
@@ -26,54 +28,58 @@ const HeroSlideAI = () => {
               We build AI solutions that drive smarter decisions and accelerate growth.
             </p>
 
-            <div className="tw-flex tw-flex-wrap tw-gap-4 tw-mt-8">
-              <a 
-                href="/training" 
-                className="
-                  tw-inline-flex
-                  tw-items-center
-                  tw-gap-2
-                  tw-bg-gradient-to-r
-                  tw-from-cyan-500
-                  tw-to-emerald-500
-                  hover:tw-from-cyan-600
-                  hover:tw-to-emerald-600
-                  tw-text-white
-                  tw-px-8
-                  tw-py-3
-                  tw-rounded-xl
-                  tw-font-semibold
-                  tw-shadow-lg
-                  hover:tw-shadow-xl
-                  tw-transition-all
-                  tw-duration-300
-                "
-              >
-                Start Learning AI
-              </a>
-              <a 
-                href="/contact" 
-                className="
-                  tw-inline-flex
-                  tw-items-center
-                  tw-gap-2
-                  tw-bg-white/10
-                  hover:tw-bg-white/20
-                  tw-backdrop-blur-sm
-                  tw-text-white
-                  tw-border
-                  tw-border-white/30
-                  tw-px-8
-                  tw-py-3
-                  tw-rounded-xl
-                  tw-font-semibold
-                  tw-transition-all
-                  tw-duration-300
-                "
-              >
-                Book Consultation
-              </a>
-            </div>
+          <div className="tw-flex tw-flex-wrap tw-gap-4 tw-mt-8">
+  <Link
+    to="/training"
+    className="
+      tw-inline-flex
+      tw-items-center
+      tw-gap-2
+      tw-bg-gradient-to-r
+      tw-from-cyan-500
+      tw-to-emerald-500
+      hover:tw-from-cyan-600
+      hover:tw-to-emerald-600
+      tw-text-white
+      hover:tw-text-white
+      tw-px-8
+      tw-py-3
+      tw-rounded-xl
+      tw-font-semibold
+      tw-shadow-lg
+      hover:tw-shadow-xl
+      tw-transition-all
+      tw-duration-300
+    "
+  >
+    Start Learning AI
+  </Link>
+
+  <Link
+    to="/contact"
+    className="
+      tw-inline-flex
+      tw-items-center
+      tw-gap-2
+      tw-bg-white/10
+      hover:tw-bg-white/20
+      tw-backdrop-blur-sm
+      tw-text-white
+      hover:tw-text-white
+      tw-border
+      tw-border-white/30
+      tw-px-8
+      tw-py-3
+      tw-rounded-xl
+      tw-font-semibold
+      tw-transition-all
+      tw-duration-300
+    "
+  >
+    Book Consultation
+  </Link>
+</div>
+
 
             {/* Stats */}
             <div className="tw-flex tw-flex-wrap tw-gap-8 tw-mt-12">
@@ -95,7 +101,11 @@ const HeroSlideAI = () => {
           {/* Lottie Animation - Takes 2 columns and overlaps */}
           <div className="lg:tw-col-span-2 tw-relative tw-mt-8 lg:tw-mt-0">
             <div className="tw-relative tw-z-10 tw--ml-4 lg:tw--ml-8">
-              <AILottie />
+              {/* {isActive ? (
+                <AILottie isActive />
+              ) : (
+                <div className="tw-w-full tw-max-w-md tw-h-[360px]" />
+              )} */}
             </div>
             {/* Floating elements */}
             <div className="tw-absolute tw-top-4 tw-right-4 tw-w-20 tw-h-20 tw-bg-cyan-500/20 tw-rounded-full tw-blur-xl"></div>
@@ -106,6 +116,6 @@ const HeroSlideAI = () => {
       </div>
     </section>
   );
-};
+});
 
 export default HeroSlideAI;

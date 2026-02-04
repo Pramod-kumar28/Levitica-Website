@@ -8,7 +8,7 @@ const HeroSection = () => {
   tw-grid 
   tw-grid-cols-1 
   lg:tw-grid-cols-2 
-  tw-items-center
+  tw-items-center 
   tw-gap-y-16
   lg:tw-gap-y-0
   lg:tw-gap-x-16

@@ -1,11 +1,11 @@
-import Lottie from "lottie-react";
+import BaseLottie from "./BaseLottie";
 import aiAnimation from "./ai.json";
 
-const AILottie = () => {
+const AILottie = ({ isActive }) => {
   return (
-    <Lottie
+    <BaseLottie
       animationData={aiAnimation}
-      loop
+      isActive={isActive}
       className="tw-w-full tw-max-w-md"
     />
   );
