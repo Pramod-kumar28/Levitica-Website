@@ -1,64 +1,100 @@
+import { useEffect, useState } from "react";
 import DetailsContent from "./DetailsContent";
-import { useState } from 'react';
-import "./InternshipPaymentForm.css"
 import InternshipPaymentForm from "./InternshipsPaymentForm";
 import { X } from "lucide-react";
 
 const Internships = () => {
-    const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
 
-    return (
-        <div className="internship min-h-screen overflow-x-hidden">
-          <div
-  className="min-h-screen bg-cover bg-center bg-no-repeat relative"
-  style={{
-    backgroundImage: "linear-gradient(to right, #f75bd0ff, #162e66)" 
-  }}
->
-                {/* Desktop Layout */}
-                <div className="lg-flex min-h-screen">
-                    {/* Left Content - Details */}
-                    <div className="lg-w-3/4">
-                        <div className="bg-white">
-                            <DetailsContent
-                                showPaymentForm={showPaymentForm}
-                                setShowPaymentForm={setShowPaymentForm}
-                            />
-                        </div>
-                    </div>
+  /* 🔒 Prevent body scroll when mobile modal is open */
+  useEffect(() => {
+    if (showPaymentForm) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
 
-                    {/* Right Content - Payment Form - Hidden on Mobile */}
-                    <div className="lg-w-1/4 p-8 lg-hidden-mobile">
-                        <div className="form-position-ab">
-                            <InternshipPaymentForm />
-                        </div>
-                    </div>
-                </div>
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showPaymentForm]);
 
-                {/* Mobile Payment Form Overlay */}
-                {showPaymentForm && (
-                    <div className="mobile-payment-overlay">
-                        <div className="mobile-payment-form open">
-                            <div className="mobile-payment-container">
-                                <div className="mobile-payment-header">
-                                    <h3 className="mobile-payment-title">Payment Details</h3>
-                                    <button
-                                        onClick={() => setShowPaymentForm(false)}
-                                        className="mobile-payment-close"
-                                    >
-                                        <X size={24} />
-                                    </button>
-                                </div>
-                                <div className="mobile-payment-content">
-                                    <InternshipPaymentForm />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
+  /* ⌨️ Close on ESC */
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setShowPaymentForm(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  return (
+    <div className="tw-min-h-screen tw-overflow-x-hidden">
+      <div
+        className="tw-min-h-screen tw-relative "
+
+      >
+        {/* ================= Desktop Layout ================= */}
+        <div className="tw-flex tw-min-h-screen">
+          {/* Left: Details */}
+          <div className="tw-w-full lg:tw-max-w-5xl tw-bg-white md:tw-mx-auto lg:tw-mx-1">
+            <DetailsContent
+              showPaymentForm={showPaymentForm}
+              setShowPaymentForm={setShowPaymentForm}
+            />
+          </div>
+
+          {/* Right: Payment Form (Desktop only) */}
+          <aside className="tw-hidden lg:tw-flex lg:tw-w-2/5  lg:tw-bg-gradient-to-r tw-from-[#162e66] tw-to-[#162e66] lg:tw-p-8 lg:tw-relative">
+            <div className="tw-absolute tw-top-32 tw-right-28  tw-w-full">
+              <div className="tw-max-w-lg tw-mx-auto">
+                <InternshipPaymentForm />
+              </div>
             </div>
+          </aside>
         </div>
-    );
-}
+
+        {/* ================= Mobile Payment Drawer ================= */}
+        {showPaymentForm && (
+          <div
+            className="tw-fixed tw-inset-0 tw-z-50 lg:tw-hidden"
+            aria-modal="true"
+            role="dialog"
+          >
+            {/* Backdrop */}
+            <div
+              className="tw-absolute tw-inset-0 tw-bg-black/50"
+              onClick={() => setShowPaymentForm(false)}
+            />
+
+            {/* Bottom Sheet */}
+            <div className="tw-absolute tw-bottom-0 tw-left-0 tw-right-0 tw-bg-white tw-rounded-t-3xl tw-max-h-[90vh] tw-flex tw-flex-col tw-animate-slide-up">
+              {/* Header */}
+              <div className="tw-flex tw-items-center tw-justify-between tw-p-5 tw-border-b">
+                <h3 className="tw-text-lg tw-font-semibold tw-text-gray-900">
+                  Payment Details
+                </h3>
+                <button
+                  onClick={() => setShowPaymentForm(false)}
+                  className="tw-p-2 tw-rounded-full hover:tw-bg-gray-100 tw-transition"
+                  aria-label="Close payment form"
+                >
+                  <X size={22} />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="tw-flex-1 tw-overflow-y-auto tw-p-4">
+                <div className="tw-max-w-lg tw-mx-auto">
+                  <InternshipPaymentForm />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 export default Internships;

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {
-  useGetIdAndBatchNamesQuery,
+  useGetBatchesQuery,
   useDeleteBatchMutation,
-  useGetBatchstudentsQuery,
 } from "../../../../Services/admin/batchdetailsService";
 import { useModal, MODAL_TYPES } from "../Modals/ModalContext";
-import { motion, AnimatePresence } from "framer-motion";
-import { toast } from "react-hot-toast";
-import * as XLSX from "xlsx";
+import { AnimatePresence, motion } from "framer-motion";
+import toast from "react-hot-toast";
 import {
   FiPlus,
   FiEdit,
@@ -15,43 +13,64 @@ import {
   FiUsers,
   FiGrid,
   FiList,
-  FiDownload,
-  FiX,
-  FiRefreshCw,
+  FiBookOpen,
+  FiCalendar,
 } from "react-icons/fi";
 
+
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+  flexRender,
+} from "@tanstack/react-table";
+
+
+
+
+const STATUS_TABS = [
+  { key: "all", label: "All" },
+  { key: "active", label: "Active" },
+  { key: "inactive", label: "Inactive" },
+  { key: "completed", label: "Completed" },
+  { key: "cancelled", label: "Cancelled" },
+];
+
+/* ================= MAIN ================= */
+
 const BatchManagement = () => {
-  const { data: batches = [], isLoading, isError, refetch } =
-    useGetIdAndBatchNamesQuery();
-  const [deleteBatch] = useDeleteBatchMutation();
   const { openModal } = useModal();
 
-  const [expandedBatch, setExpandedBatch] = useState(null);
-  const [batchName, setBatchName] = useState("");
   const [view, setView] = useState("cards");
+  const [page, setPage] = useState(1);
+  const [status, setStatus] = useState("all");
+  const limit = 10;
+
+
+  const { data, isLoading, isError } = useGetBatchesQuery({
+    page,
+    limit,
+    ...(status !== "all" ? { status } : {}),
+  });
+  const [deleteBatch] = useDeleteBatchMutation();
+
+  const batches = data?.data || [];
+  const pagination = data?.pagination;
 
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Delete "${name}" batch?`)) return;
     try {
       await deleteBatch(id).unwrap();
       toast.success("Batch deleted");
-      refetch();
-      setExpandedBatch(null);
+
     } catch {
       toast.error("Delete failed");
     }
   };
 
-  const toggleStudents = (id, name) => {
-    setExpandedBatch(prev => (prev === id ? null : id));
-    setBatchName(name);
-  };
-
-  /* ---------------- Loading / Error ---------------- */
-
   if (isLoading) {
     return (
-      <div className="tw-flex tw-items-center tw-justify-center tw-h-64 tw-text-slate-500">
+      <div className="tw-flex tw-justify-center tw-items-center tw-h-64">
         Loading batches…
       </div>
     );
@@ -59,127 +78,114 @@ const BatchManagement = () => {
 
   if (isError) {
     return (
-      <div className="tw-text-center tw-py-12">
-        <p className="tw-text-rose-600">Failed to load batches</p>
-        <button
-          onClick={refetch}
-          className="tw-mt-4 tw-inline-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-indigo-600 tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-text-white hover:tw-bg-indigo-700"
-        >
-          <FiRefreshCw />
-          Retry
-        </button>
+      <div className="tw-text-center tw-text-rose-600">
+        Failed to load batches
       </div>
     );
   }
 
   return (
-    <div className="tw-min-h-screen tw-bg-slate-50 tw-p-6 tw-space-y-8">
-      {/* ================= Header ================= */}
-      <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-6">
+    <div className="tw-p-6 tw-space-y-6">
+      {/* HEADER */}
+      <div className="tw-flex tw-justify-between tw-items-center">
         <div>
-          <h1 className="tw-text-3xl tw-font-bold tw-text-slate-900">
-            Batch Management
-          </h1>
-          <p className="tw-mt-1 tw-text-sm tw-text-slate-500">
-            Create, organize, and manage student batches
+          <h1 className="tw-text-2xl tw-font-bold">Batch Management</h1>
+          <p className="tw-text-sm tw-text-slate-500">
+            {pagination?.total || batches.length} total batches
           </p>
         </div>
 
         <button
-          onClick={() => openModal(MODAL_TYPES.CREATE_BATCH, { mode: "add" })}
-          className="tw-inline-flex tw-items-center tw-gap-2 tw-rounded-xl tw-bg-gradient-to-r tw-from-indigo-600 tw-to-blue-600 tw-px-5 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-shadow-lg hover:tw-from-indigo-700 hover:tw-to-blue-700"
+          onClick={() => openModal(MODAL_TYPES.CREATE_BATCH)}
+          className="tw-flex tw-items-center tw-gap-2 tw-bg-indigo-600 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg"
         >
-          <FiPlus />
-          Create Batch
+          <FiPlus /> Create Batch
         </button>
       </div>
-
-      {/* ================= Controls ================= */}
-      <div className="tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-center sm:tw-justify-between tw-gap-4">
-        <p className="tw-text-sm tw-text-slate-500">
-          <span className="tw-font-medium tw-text-slate-900">
-            {batches.length}
-          </span>{" "}
-          total batches
-        </p>
-
-        <div className="tw-inline-flex tw-rounded-xl tw-border tw-border-slate-200 tw-bg-white tw-p-1">
-          {[
-            { key: "cards", icon: FiGrid, label: "Cards" },
-            { key: "table", icon: FiList, label: "Table" },
-          ].map(({ key, icon: Icon, label }) => (
-            <button
-              key={key}
-              onClick={() => setView(key)}
-              className={`tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-px-4 tw-py-2 tw-text-sm tw-font-medium tw-transition ${
-                view === key
-                  ? "tw-bg-indigo-600 tw-text-white tw-shadow"
-                  : "tw-text-slate-600 hover:tw-bg-slate-100"
+      <div className="tw-flex tw-gap-2 tw-flex-wrap">
+        {STATUS_TABS.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => {
+              setStatus(tab.key);
+              setPage(1);
+            }}
+            className={`tw-px-4 tw-py-2 tw-rounded-lg tw-text-sm ${status === tab.key
+                ? "tw-bg-indigo-600 tw-text-white"
+                : "tw-bg-white tw-border"
               }`}
-            >
-              <Icon />
-              {label}
-            </button>
-          ))}
-        </div>
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
-      {/* ================= Content ================= */}
+
+
+      {/* VIEW TOGGLE */}
+      <div className="tw-flex tw-gap-2">
+        {[
+          { key: "cards", icon: FiGrid },
+          { key: "table", icon: FiList },
+        ].map(({ key, icon: Icon }) => (
+          <button
+            key={key}
+            onClick={() => setView(key)}
+            className={`tw-px-3 tw-py-2 tw-rounded-lg ${view === key
+              ? "tw-bg-indigo-600 tw-text-white"
+              : "tw-bg-white tw-border"
+              }`}
+          >
+            <Icon />
+          </button>
+        ))}
+      </div>
+
+      {/* CONTENT */}
       <AnimatePresence mode="wait">
         {view === "cards" ? (
           <motion.div
             key="cards"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
             <BatchCards
               batches={batches}
-              expandedBatch={expandedBatch}
-              onEdit={batch =>
+              onEdit={(batch) =>
                 openModal(MODAL_TYPES.CREATE_BATCH, {
                   mode: "edit",
                   batch,
                 })
               }
               onDelete={handleDelete}
-              onView={toggleStudents}
+              onViewStudents={(batchId) =>
+                openModal(MODAL_TYPES.VIEW_BATCH_STUDENTS, { batchId })
+              }
             />
           </motion.div>
         ) : (
           <motion.div
             key="table"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
             <BatchTable
               batches={batches}
-              onEdit={batch =>
+              pagination={pagination}
+              page={page}
+              setPage={setPage}
+              onEdit={(batch) =>
                 openModal(MODAL_TYPES.CREATE_BATCH, {
                   mode: "edit",
                   batch,
                 })
               }
+              onViewStudents={(batchId) =>
+                openModal(MODAL_TYPES.VIEW_BATCH_STUDENTS, { batchId })
+              }
               onDelete={handleDelete}
-              onView={toggleStudents}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ================= Students Panel ================= */}
-      <AnimatePresence>
-        {expandedBatch && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <StudentsSection
-              batchId={expandedBatch}
-              batchName={batchName}
-              onClose={() => setExpandedBatch(null)}
             />
           </motion.div>
         )}
@@ -188,181 +194,312 @@ const BatchManagement = () => {
   );
 };
 
-/* ================= Cards ================= */
+export default BatchManagement;
 
-const BatchCards = ({ batches, onEdit, onDelete, onView, expandedBatch }) => (
+/* ================= CARDS ================= */
+
+
+const BatchCards = ({ batches, onEdit, onDelete ,onViewStudents}) => (
   <div className="tw-grid sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
-    {batches.map(batch => (
+    {batches.map((batch) => (
       <div
         key={batch._id}
-        className="tw-rounded-xl tw-border tw-border-slate-200 tw-bg-white tw-p-5 tw-shadow-sm hover:tw-shadow-md tw-transition"
+        className="tw-rounded-xl tw-border tw-bg-white tw-p-5 tw-shadow-sm hover:tw-shadow-md tw-transition"
       >
-        <h3 className="tw-font-semibold tw-text-slate-900">
-          {batch.batchName}
-        </h3>
-        <p className="tw-mt-1 tw-text-xs tw-text-slate-500">
-          ID: {batch._id.slice(-8)}
-        </p>
+        {/* ===== HEADER ===== */}
+        <div className="tw-flex tw-items-start tw-justify-between">
+          <div>
+            <h3 className="tw-font-semibold tw-text-slate-900">
+              {batch.batchName}
+            </h3>
 
-        <div className="tw-mt-4 tw-flex tw-items-center tw-justify-between">
+            <div className="tw-mt-1 tw-flex tw-items-center tw-gap-1 tw-text-xs tw-text-slate-500">
+              <FiBookOpen size={12} />
+              {batch.courseId?.name || "Unknown Course"}
+            </div>
+          </div>
+
+          {/* STATUS */}
+          <span
+            className={`tw-rounded-full tw-px-2 tw-py-0.5 tw-text-xs tw-font-medium
+              ${batch.status === "active"
+                ? "tw-bg-emerald-50 tw-text-emerald-600"
+                : "tw-bg-rose-50 tw-text-rose-600"
+              }
+            `}
+          >
+            {batch.status}
+          </span>
+        </div>
+
+        {/* ===== DATES ===== */}
+        <div className="tw-mt-4 tw-space-y-1 tw-text-xs tw-text-slate-500">
+          <div className="tw-flex tw-items-center tw-gap-1">
+            <FiCalendar size={12} />
+            <span>
+              Start:{" "}
+              {batch.startDate
+                ? new Date(batch.startDate).toLocaleDateString()
+                : "—"}
+            </span>
+          </div>
+
+          <div className="tw-flex tw-items-center tw-gap-1">
+            <FiCalendar size={12} />
+            <span>
+              End:{" "}
+              {batch.endDate
+                ? new Date(batch.endDate).toLocaleDateString()
+                : "—"}
+            </span>
+          </div>
+        </div>
+
+        {/* ===== FOOTER ===== */}
+        <div className="tw-mt-5 tw-flex tw-items-center tw-justify-between">
           <div className="tw-flex tw-gap-2">
+            
+               <ActionBtn icon={FiUsers} onClick={() => onViewStudents(batch._id)} />
             <ActionBtn icon={FiEdit} onClick={() => onEdit(batch)} />
             <ActionBtn
               icon={FiTrash2}
               danger
               onClick={() => onDelete(batch._id, batch.batchName)}
             />
-            <ActionBtn
-              icon={FiUsers}
-              onClick={() => onView(batch._id, batch.batchName)}
-            />
           </div>
 
-          {expandedBatch === batch._id && (
-            <span className="tw-text-xs tw-font-medium tw-text-indigo-600">
-              Viewing
-            </span>
-          )}
+          <span className="tw-text-xs tw-text-slate-400">
+            #{batch._id}
+          </span>
         </div>
       </div>
     ))}
   </div>
 );
 
-/* ================= Table ================= */
 
-const BatchTable = ({ batches, onEdit, onDelete, onView }) => (
-  <div className="tw-rounded-xl tw-border tw-border-slate-200 tw-bg-white tw-overflow-hidden">
-    <table className="tw-w-full tw-text-sm">
-      <thead className="tw-bg-slate-50 tw-text-slate-500">
-        <tr>
-          <th className="tw-p-4 tw-text-left">Batch</th>
-          <th className="tw-p-4">ID</th>
-          <th className="tw-p-4 tw-text-right">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {batches.map(batch => (
-          <tr
-            key={batch._id}
-            className="tw-border-t hover:tw-bg-slate-50"
+/* ================= TABLE (TANSTACK) ================= */
+
+const BatchTable = ({
+  batches,
+  pagination,
+  page,
+  setPage,
+  onEdit,
+  onDelete,
+  onViewStudents
+}) => {
+  const columns = [
+    {
+      accessorKey: "batchName",
+      header: "Batch",
+      cell: (info) => (
+        <p className="tw-font-medium tw-text-slate-900">
+          {info.getValue()}
+        </p>
+      ),
+    },
+
+    {
+      id: "courseName",
+      header: "Course",
+      accessorFn: (row) => row.courseId?.name ?? "Unknown",
+      cell: (info) => (
+        <span className="tw-bg-indigo-50 tw-text-indigo-600 tw-px-2 tw-py-1 tw-rounded-full tw-text-xs">
+          {info.getValue()}
+        </span>
+      ),
+    },
+
+    {
+      id: "dates",
+      header: "Duration",
+      cell: ({ row }) => {
+        const { startDate, endDate } = row.original;
+        return (
+          <div className="tw-text-xs tw-text-slate-600 tw-space-y-1">
+            <div className="tw-flex tw-items-center tw-gap-1">
+              <FiCalendar size={12} />
+              <span>
+                {startDate
+                  ? new Date(startDate).toLocaleDateString()
+                  : "—"}
+              </span>
+            </div>
+            <div className="tw-flex tw-items-center tw-gap-1">
+              <FiCalendar size={12} />
+              <span>
+                {endDate
+                  ? new Date(endDate).toLocaleDateString()
+                  : "—"}
+              </span>
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      id: "status",
+      header: "Status",
+      cell: ({ row }) => {
+        const status = row.original.status;
+
+        const statusStyles = {
+          active: "tw-bg-emerald-50 tw-text-emerald-600",
+          completed: "tw-bg-blue-50 tw-text-blue-600",
+          cancelled: "tw-bg-rose-50 tw-text-rose-600",
+          inactive: "tw-bg-slate-100 tw-text-slate-600",
+        };
+
+        return (
+          <span
+            className={`tw-rounded-full tw-px-3 tw-py-1 tw-text-xs tw-font-semibold capitalize
+          ${statusStyles[status] || "tw-bg-gray-100 tw-text-gray-600"}
+        `}
           >
-            <td className="tw-p-4 tw-font-medium tw-text-slate-900">
-              {batch.batchName}
-            </td>
-            <td className="tw-p-4 tw-text-xs tw-text-slate-500">
-              {batch._id.slice(-8)}
-            </td>
-            <td className="tw-p-4">
-              <div className="tw-flex tw-justify-end tw-gap-2">
-                <ActionBtn icon={FiEdit} onClick={() => onEdit(batch)} />
-                <ActionBtn
-                  icon={FiTrash2}
-                  danger
-                  onClick={() => onDelete(batch._id, batch.batchName)}
-                />
-                <ActionBtn
-                  icon={FiUsers}
-                  onClick={() => onView(batch._id, batch.batchName)}
-                />
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+            {status}
+          </span>
+        );
+      },
+    },
 
-/* ================= Students ================= */
 
-const StudentsSection = ({ batchId, batchName, onClose }) => {
-  const { data, isLoading } = useGetBatchstudentsQuery(batchId);
+    {
+      accessorKey: "_id",
+      header: "ID",
+      cell: (info) => (
+        <span className="tw-text-xs tw-text-slate-500">
+          #{info.getValue()}
+        </span>
+      ),
+    },
 
-  const downloadExcel = () => {
-    const students = data?.students || [];
-    if (!students.length) return toast.error("No data");
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => {
+        const batch = row.original;
+        return (
+          <div className="tw-flex tw-justify-start tw-gap-3">
+              <ActionBtn
+            icon={FiUsers}
+            onClick={() => onViewStudents(batch._id)}
+          />
+            <ActionBtn icon={FiEdit} onClick={() => onEdit(batch)} />
+            <ActionBtn
+              icon={FiTrash2}
+              danger
+              onClick={() => onDelete(batch._id, batch.batchName)}
+            />
+          </div>
+        );
+      },
+    },
+  ];
 
-    const sheet = XLSX.utils.json_to_sheet(
-      students.map((s, i) => ({
-        "#": i + 1,
-        Name: s.user?.name,
-        Email: s.user?.email,
-        Course: s.course?.name,
-      }))
-    );
+  const table = useReactTable({
+    data: batches,
+    columns,
+    pageCount: pagination?.totalPages ?? -1,
+    manualPagination: true,
+    state: {
+      pagination: {
+        pageIndex: page - 1,
+        pageSize: pagination?.limit || 10,
+      },
+    },
+    onPaginationChange: (updater) => {
+      const next =
+        typeof updater === "function"
+          ? updater({ pageIndex: page - 1, pageSize: 10 })
+          : updater;
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, sheet, "Students");
-    XLSX.writeFile(wb, `${batchName}.xlsx`);
-  };
+      setPage(next.pageIndex + 1);
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
 
   return (
-    <div className="tw-rounded-xl tw-border tw-border-slate-200 tw-bg-white tw-p-6 tw-shadow-lg">
-      <div className="tw-flex tw-items-center tw-justify-between tw-mb-4">
-        <h3 className="tw-font-semibold tw-text-slate-900">
-          Students – {batchName}
-        </h3>
+    <div className="tw-bg-white tw-border tw-rounded-xl tw-overflow-hidden">
+      <table className="tw-w-full tw-text-sm">
+        <thead className="tw-bg-slate-50 tw-text-slate-600">
+          {table.getHeaderGroups().map((hg) => (
+            <tr key={hg.id}>
+              {hg.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className="tw-p-4 tw-text-left tw-font-semibold"
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr
+              key={row.id}
+              className="tw-border-t hover:tw-bg-slate-50"
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id} className="tw-p-4 align-top">
+                  {flexRender(
+                    cell.column.columnDef.cell,
+                    cell.getContext()
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {/* PAGINATION */}
+      <div className="tw-flex tw-justify-between tw-items-center tw-p-4 tw-border-t">
+        <span className="tw-text-sm tw-text-slate-600">
+          Page {page} of {pagination?.totalPages}
+        </span>
+
         <div className="tw-flex tw-gap-2">
           <button
-            onClick={downloadExcel}
-            className="tw-inline-flex tw-items-center tw-gap-2 tw-rounded-lg tw-border tw-border-slate-300 tw-px-3 tw-py-1.5 tw-text-sm hover:tw-bg-slate-50"
+            disabled={page === 1}
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            className="tw-border tw-rounded-lg tw-px-3 tw-py-1 disabled:tw-opacity-50"
           >
-            <FiDownload />
-            Excel
+            Prev
           </button>
+
           <button
-            onClick={onClose}
-            className="tw-rounded-lg tw-p-2 tw-text-slate-500 hover:tw-bg-slate-100"
+            disabled={page === pagination?.totalPages}
+            onClick={() => setPage((p) => p + 1)}
+            className="tw-border tw-rounded-lg tw-px-3 tw-py-1 disabled:tw-opacity-50"
           >
-            <FiX />
+            Next
           </button>
         </div>
       </div>
-
-      {isLoading ? (
-        <p className="tw-text-slate-500">Loading students…</p>
-      ) : (
-        <div className="tw-overflow-x-auto">
-          <table className="tw-w-full tw-text-sm">
-            <thead className="tw-bg-slate-50 tw-text-slate-500">
-              <tr>
-                <th className="tw-p-3">#</th>
-                <th className="tw-p-3 tw-text-left">Name</th>
-                <th className="tw-p-3 tw-text-left">Email</th>
-                <th className="tw-p-3 tw-text-left">Course</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.students?.map((s, i) => (
-                <tr key={i} className="tw-border-t">
-                  <td className="tw-p-3">{i + 1}</td>
-                  <td className="tw-p-3">{s.user?.name}</td>
-                  <td className="tw-p-3">{s.user?.email}</td>
-                  <td className="tw-p-3">{s.course?.name}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
     </div>
   );
 };
 
-/* ================= Shared ================= */
+
+
+/* ================= SHARED ================= */
 
 const ActionBtn = ({ icon: Icon, onClick, danger }) => (
   <button
     onClick={onClick}
-    className={`tw-rounded-lg tw-p-2 tw-transition ${
-      danger
-        ? "tw-text-rose-600 hover:tw-bg-rose-50"
-        : "tw-text-slate-600 hover:tw-bg-slate-100"
-    }`}
+    className={`tw-p-2 tw-rounded-lg ${danger
+      ? "tw-text-rose-600 hover:tw-bg-rose-50"
+      : "tw-text-slate-600 hover:tw-bg-slate-100"
+      }`}
   >
-    <Icon />
+    <Icon size={16} />
   </button>
 );
-
-export default BatchManagement;

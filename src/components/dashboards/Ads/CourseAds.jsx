@@ -38,7 +38,7 @@ const CourseAdsCarousel = () => {
               style={{ backgroundImage: `url(${course.image})` }}
             >
               {/* Overlay */}
-              <div className="tw-absolute tw-inset-0 tw-bg-gradient-to-r tw-from-black/70 tw-via-black/40 tw-to-transparent" />
+              <div className="tw-absolute tw-inset-0 tw-bg-gradient-to-r tw-from-black/70 tw-via-black/30 tw-to-black/70" />
 
               {/* Content */}
               <div className="tw-relative tw-h-full tw-flex tw-items-center">

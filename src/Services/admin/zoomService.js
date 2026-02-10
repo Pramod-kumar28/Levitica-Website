@@ -4,13 +4,13 @@ import { createApiService } from '../../config/apiConfig';
 export const zoomApi = createApi({
   ...createApiService({
     reducerPath: 'zoomApi',
-    baseUrl: '/api',
+    baseUrl: '/admin/zoom',
     tagTypes: ['Meeting'],
   }),
   endpoints: (builder) => ({
-   createMeeting: builder.mutation({
+    createMeeting: builder.mutation({
       query: (data) => ({
-        url: 'zoom/create-meeting',
+        url: '/',
         method: 'POST',
         body: data
       }),
@@ -18,33 +18,33 @@ export const zoomApi = createApi({
     }),
 
     getMeetings: builder.query({
-      query: () => 'zoom/get-classes',
+      query: () => '/',
       providesTags: ['Meeting'],
     }),
-    startLiveClass:builder.mutation({
-      query:(id)=>({
-        url:`zoom/start/${id}`,
-        method:"GET"
+    startLiveClass: builder.mutation({
+      query: (id) => ({
+        url: `zoom/start/${id}`,
+        method: "GET"
       }),
-       providesTags: ['Meeting'],
+      providesTags: ['Meeting'],
     }),
-     updateMeeting: builder.mutation({
+    updateMeeting: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `zoom/meetings/${id}`,
+        url: `/${id}`,
         method: 'PUT',
         body: data
       }),
       invalidatesTags: ['Meeting'],
     }),
-    deleteMeeting:builder.mutation({
-      query:(id)=>({
-        url:`/zoom/delete-meeting/${id}`,
-        method:"Delete"
+    deleteMeeting: builder.mutation({
+      query: (id) => ({
+        url: `/${id}`,
+        method: "DELETE"
       }),
-       invalidatesTags: ['Meeting'],
+      invalidatesTags: ['Meeting'],
     })
 
-   
+
   }),
 });
 

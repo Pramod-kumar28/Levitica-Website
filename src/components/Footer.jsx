@@ -34,7 +34,7 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="tw-bg-slate-900 tw-text-slate-300">
+    <footer className="bg-footer tw-text-slate-300">
 
       {/* TOP */}
       <div className="tw-max-w-7xl tw-mx-auto tw-px-4 tw-py-20">

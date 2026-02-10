@@ -8,36 +8,46 @@ export const batchDetailsApi = createApi({
     tagTypes: ["Batch", "BatchStudents"], // Add both tag types you need
   }),
   endpoints: (builder) => ({
-    getIdAndBatchNames: builder.query({
-      query: () => ({
-        url: "/allbatchNames",
-        method: "GET",
+
+    getBatches: builder.query({
+      query: ({ page = 1, limit = 10, status } = {}) => ({
+        url: "/",
+        params: {
+          page,
+          limit,
+          ...(status ? { status } : {}), // 👈 only send if exists
+        },
       }),
-      // Provide tags for all batches and individual batches
       providesTags: (result) =>
-        result
+        result?.data
           ? [
-              // Add tags for each batch
-              ...result.map(({ _id }) => ({ type: "Batch", id: _id })),
-              // Add a general tag for the list
-              { type: "Batch", id: "LIST" },
-            ]
+            ...result.data.map(({ _id }) => ({
+              type: "Batch",
+              id: _id,
+            })),
+            { type: "Batch", id: "LIST" },
+          ]
           : [{ type: "Batch", id: "LIST" }],
-      refetchOnMountOrArgChange: true,
     }),
+
     getBatchstudents: builder.query({
-      query: (id) => ({
-        url: `/${id}`,
+      query: ({ batchId, page = 1, limit = 10 }) => ({
+        url: `/${batchId}`,
         method: "GET",
+        params: {
+          page,
+          limit,
+        },
       }),
-      // Provide tags for batch students
-      providesTags: (result, error, id) => [
-        { type: "BatchStudents", id },
-        // Also tag with the batch ID for cross-invalidation if needed
-        { type: "Batch", id },
+
+      providesTags: (result, error, { batchId }) => [
+        { type: "BatchStudents", id: batchId },
+        { type: "Batch", id: batchId },
       ],
+
       refetchOnMountOrArgChange: true,
     }),
+
     addBatch: builder.mutation({
       query: (newBatchData) => ({
         url: "/newbatch",
@@ -49,7 +59,7 @@ export const batchDetailsApi = createApi({
     }),
     updateBatch: builder.mutation({
       query: ({ batchId, updatedData }) => ({
-        url: `/updateBatch/${batchId}`,
+        url: `/${batchId}`,
         method: "PUT",
         body: updatedData,
       }),
@@ -74,14 +84,17 @@ export const batchDetailsApi = createApi({
         { type: "BatchStudents", id: batchId },
       ],
     }),
+    getBatchesByCourse: builder.query({
+      query: (courseId) => `/by-course/${courseId}`,
+    }),
   }),
 });
 
 export const {
-  useGetIdAndBatchNamesQuery,
+
+  useGetBatchesQuery,
+  useGetBatchesByCourseQuery,
   useGetBatchstudentsQuery,
-  useLazyGetIdAndBatchNamesQuery,
-  useLazyGetBatchstudentsQuery,
   useAddBatchMutation,
   useUpdateBatchMutation,
   useDeleteBatchMutation,

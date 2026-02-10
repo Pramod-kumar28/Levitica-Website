@@ -26,17 +26,11 @@ import ForgotPassword from './components/Forgotpassword';
 import ChangePassword from './components/ChangePassword';
 import EmailVerification from './utils/EmailVerification';
 
-// Dashboard
-
-
 // Student
 import CourseCatalog from './components/dashboards/Student/CourseCatelog';
-import CourseDetails from './components/dashboards/Student/CourseCatelogDetails';
 import LiveClasses from './components/dashboards/Student/LiveClasses';
 import ClassResources from './components/dashboards/Student/ClassResources';
-
 import AskQuestions from './components/dashboards/Student/AskQuestions';
-
 import SettingsPage from './components/dashboards/Student/Settings';
 
 // Admin
@@ -51,7 +45,7 @@ import AdminDashboard from './components/dashboards/Admin/AdminDashboard';
 import CoursesManagement from './components/dashboards/Admin/CourseManagement/CoursesManagement';
 import BatchManagement from './components/dashboards/Admin/Batchs/BatchManagement';
 
-// Other
+
 import Internship from './components/Sections/Internship/Internship';
 import PaymentSuccess from './components/Sections/Internship/PaymentSuccessPage';
 import { Privacy, Refund, Terms, KnowledgeBase, Forums } from './components/Sections/AllTermsPolicy';
@@ -60,7 +54,9 @@ import DashboardIndex from './protectedRoutes/DashboardIndex';
 import ProtectedRoute from './protectedRoutes/ProtechedRoutes';
 import StudentDashboard from './components/dashboards/Student/StudentDashboard';
 import MyCourseList from './components/dashboards/Student/MyCoursesList';
-
+import CommonCourseDetails from './components/dashboards/common/CommonCourseDetails';
+import DashboardGate from './protectedRoutes/DashboardGate.jsx';
+import InternshipsDomainManagement from './components/dashboards/Admin/Internships/InternshipsManagement.jsx';
 /* ---------------- Layout wrappers ---------------- */
 
 const AppLayout = () => (
@@ -92,9 +88,12 @@ const NoFooterLayout = () => (
 /* ---------------- Router ---------------- */
 
 const AppRouter = () => {
+
+
+
   return (
     <Routes>
-      
+
 
       {/* Main public layout */}
       <Route element={<AppLayout />}>
@@ -132,55 +131,66 @@ const AppRouter = () => {
         <Route path="internships/payment-success" element={<PaymentSuccess />} />
       </Route>
 
-      <Route path="dashboard" element={<ProtectedRoute />}>
-        {/* Decide role */}
-        <Route index element={<DashboardIndex />} />
+      <Route path="dashboard" element={<DashboardGate />}>
+        <Route element={<ProtectedRoute />}>
 
-        {/* ================= STUDENT ================= */}
-        <Route
-          path="student"
-          element={
-            <ProtectedRoute allowedRoles={["student"]} />
-          }
-        >
-          <Route element={<DashboardLayout />}>
-            <Route index element={<StudentDashboard />} />
-            <Route path="browsercourses" element={<CourseCatalog />} />
-            <Route path="mycourses" element={<MyCourseList />} />
-            <Route path="course/details" element={<CourseDetails />} />
-            <Route path="live-session" element={<LiveClasses />} />
-            <Route path="class-resources" element={<ClassResources />} />
-        
-            <Route path="ask-questions" element={<AskQuestions />} />
-            {/* <Route path="book-session" element={<BookOneOnOne />} /> */}
-            <Route path="settings" element={<SettingsPage />} />
+          <Route index element={<DashboardIndex />} />
+          <Route element={<ProtectedRoute allowedRoles={["student", "admin"]} />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="course/:id" element={<CommonCourseDetails />} />
+            </Route>
           </Route>
-        </Route>
 
-        {/* ================= ADMIN ================= */}
-        <Route
-          path="admin"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]} />
-          }
-        >
-          <Route element={<DashboardLayout />}>
-            <Route index element={<AdminDashboard />} />
-            <Route path="addadmin" element={<AddAdmin />} />
-            <Route path="payments" element={<AdminPaymentsTable />} />
-            <Route path="courses" element={<CoursesManagement />} />
-            <Route path="zoom" element={<AdminLiveClasses />} />
-            <Route path="batchs" element={<BatchManagement />} />
 
-            <Route path="students" element={<AssignStudents />}>
-              <Route index element={<StudentsTable />} />
-              <Route path="unassigned" element={<UnassignedStudents />} />
-              <Route path="assigned" element={<AssignedStudents />} />
+          {/* ================= STUDENT ================= */}
+          <Route
+            path="student"
+            element={
+              <ProtectedRoute allowedRoles={["student"]} />
+            }
+          >
+            <Route element={<DashboardLayout />}>
+              <Route index element={<StudentDashboard />} />
+              <Route path="browsercourses" element={<CourseCatalog />} />
+              <Route path="mycourses" element={<MyCourseList />} />
+
+              <Route path="live-session" element={<LiveClasses />} />
+              <Route path="class-resources" element={<ClassResources />} />
+              <Route path="course/:id" element={<CommonCourseDetails />} />
+
+              <Route path="ask-questions" element={<AskQuestions />} />
+              {/* <Route path="book-session" element={<BookOneOnOne />} /> */}
+              <Route path="settings" element={<SettingsPage />} />
+            </Route>
+          </Route>
+
+          {/* ================= ADMIN ================= */}
+          <Route
+            path="admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]} />
+            }
+          >
+            <Route element={<DashboardLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="addadmin" element={<AddAdmin />} />
+              <Route path="payments" element={<AdminPaymentsTable />} />
+
+
+              <Route path="courses" element={<CoursesManagement />} />
+              <Route path="internships" element={<InternshipsDomainManagement />} />
+              <Route path="zoom" element={<AdminLiveClasses />} />
+              <Route path="batchs" element={<BatchManagement />} />
+
+              <Route path="students" element={<AssignStudents />}>
+                <Route index element={<StudentsTable />} />
+                <Route path="unassigned" element={<UnassignedStudents />} />
+                <Route path="assigned" element={<AssignedStudents />} />
+              </Route>
             </Route>
           </Route>
         </Route>
       </Route>
-
 
 
     </Routes>

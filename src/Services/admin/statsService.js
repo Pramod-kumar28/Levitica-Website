@@ -4,7 +4,7 @@ import { createApiService } from "../../config/apiConfig";
 export const statsApi = createApi({
   ...createApiService({
     reducerPath: 'statsApi',
-    baseUrl: '/api/admin',
+    baseUrl: '/admin/stats',
     tagTypes: ['adminstats'],
   }),
   endpoints: (builder) => ({

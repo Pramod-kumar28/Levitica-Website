@@ -5,16 +5,12 @@ import Sidebar from "./Sidebar/Sidebar";
 import Topbar from "./Topbar/Topbar";
 import Loader from "./common/Loader";
 import ScrollToTop from "../../utils/ScrollToTop";
-import useAuthCheck from "../../hooks/useAuthCheck";
 import { ModalProvider } from "./Admin/Modals/ModalContext";
 
 const DashboardLayout = () => {
-  const { isChecking } = useAuthCheck();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  if (isChecking) {
-    return <Loader message="Loading dashboard..." />;
-  }
 
   return (
     <ModalProvider>
@@ -24,34 +20,37 @@ const DashboardLayout = () => {
           toggleSidebar={() => setIsSidebarOpen((v) => !v)}
         />
 
-   {/* ================= BODY ================= */}
-    <div className="tw-flex tw-flex-1 tw-relative tw-pt-20 tw-h-screen">
-  {/* SIDEBAR (NON-SCROLLING) */}
-  <Sidebar
-    isOpen={isSidebarOpen}
-    onClose={() => setIsSidebarOpen(false)}
-  />
+        {/* ================= BODY ================= */}
+        <div className="tw-flex tw-flex-1 tw-relative tw-pt-20 tw-h-screen">
+          {/* SIDEBAR (NON-SCROLLING) */}
+          <Sidebar
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+          />
 
-  {/* MOBILE OVERLAY */}
-  {isSidebarOpen && (
-    <div
-      className="tw-fixed tw-inset-0 tw-bg-black/40 tw-z-30 lg:tw-hidden"
-      onClick={() => setIsSidebarOpen(false)}
-    />
-  )}
+          {/* MOBILE OVERLAY */}
+          {isSidebarOpen && (
+            <div
+              className="tw-fixed tw-inset-0 tw-bg-black/40 tw-z-30 lg:tw-hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            />
+          )}
 
-  {/* MAIN CONTENT (SCROLLS) */}
-  <main className="tw-flex-1 tw-overflow-y-auto tw-p-4">
-    <Suspense fallback={<Loader message="Loading module..." />}>
-      <ScrollToTop />
-      <Outlet />
-    </Suspense>
-  </main>
-</div>
-  
+          {/* MAIN CONTENT (SCROLLS) */}
+          <main className="tw-flex-1 tw-overflow-y-auto tw-p-4">
+            <Suspense fallback={<Loader message="Loading module..." />}>
+              <ScrollToTop />
+              <Outlet />
+            </Suspense>
+          </main>
+        </div>
+
       </div>
     </ModalProvider>
   );
 };
+
+
+
 
 export default DashboardLayout;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import {
   useGetStudentsQuery,
   useDownloadStudentsExcelMutation,
-} from "../../../../Services/admin/coursesCategoryServices";
+} from "../../../../Services/admin/studentReportsServices";
 import {
   Download,
   Loader2,

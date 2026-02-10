@@ -4,6 +4,7 @@ import { useGetStatsQuery } from "../../../Services/admin/statsService";
 import UserCreationForm from "./UserCreation/UserCreationForm";
 import CourseAdsCarousel from "../Ads/CourseAds";
 import WelcomeScreen from "../Student/WelcomeScreen";
+import StatsCharts from "../Extras/StatsCharts";
 
 const AdminDashboard = () => {
   const { data: stats, isLoading, error } = useGetStatsQuery();
@@ -16,10 +17,10 @@ const AdminDashboard = () => {
   } = stats?.data || {};
 
   const statsData = [
-    { label: "Verified Users", count: verifiedUsers, tone: "indigo" },
-    { label: "Courses", count: courses, tone: "emerald" },
-    { label: "Batches", count: batches, tone: "amber" },
-    { label: "Enrollments", count: enrollments, tone: "blue" },
+    { label: "Verified Users", count: verifiedUsers },
+    { label: "Courses", count: courses },
+    { label: "Batches", count: batches },
+    { label: "Enrollments", count: enrollments },
   ];
 
   if (isLoading) {
@@ -53,6 +54,9 @@ const AdminDashboard = () => {
           ))}
         </div>
       </div>
+
+      {/* ===== Charts Section ===== */}
+      <StatsCharts data={statsData} />
 
       {/* ===== User Creation ===== */}
       <div className="tw-rounded-2xl tw-border tw-border-slate-200 tw-bg-white tw-p-6 tw-shadow-sm">

@@ -3,11 +3,14 @@ import { useSelector } from "react-redux";
 import Loader from "../components/dashboards/common/Loader";
 
 const ProtectedRoute = ({ allowedRoles }) => {
-  const { user, loading, isAuthenticated } = useSelector(
+  const { user, isAuthenticated, authChecked } = useSelector(
     (state) => state.auth
   );
 
-  if (loading) return <Loader message="Checking access..." />;
+  // ⛔ WAIT — auth not restored yet
+  if (!authChecked) {
+    return <Loader message="checking auth"/>
+  }
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/login" replace />;
@@ -20,4 +23,4 @@ const ProtectedRoute = ({ allowedRoles }) => {
   return <Outlet />;
 };
 
-export default ProtectedRoute;
+export default ProtectedRoute

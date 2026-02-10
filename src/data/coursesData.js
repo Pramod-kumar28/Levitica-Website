@@ -494,7 +494,6 @@ export const coursesData = {
     duration: "3 months",
     mode: "Online Live Classes"
   },
-  
   "graphic-design": {
     "id": 1,
     "title": "Graphic Design",
@@ -535,7 +534,6 @@ export const coursesData = {
     "mode": "Online Live Classes",
     "path": "/trainings/uiux-development/graphic-design"
   },
-  
   "design-tools-mastery": {
     "id": 2,
     "title": "Design Tools Mastery",
@@ -576,7 +574,6 @@ export const coursesData = {
     "mode": "Online Live Classes",
     "path": "/trainings/uiux-development/design-tools-mastery"
   },
-  
   "interaction-design": {
     "id": 3,
     "title": "Interaction Design",
@@ -617,7 +614,6 @@ export const coursesData = {
     "mode": "Online Live Classes",
     "path": "/trainings/uiux-development/interaction-design"
   },
-  
   "machine-learning": {
     "id": 1,
     "title": "Machine Learning",
@@ -904,7 +900,7 @@ export const coursesData = {
     "path": "/trainings/data-science/data-analytics"
   },
   
-    "ethical-hacking": {
+  "ethical-hacking": {
       "id": 1,
       "title": "Ethical Hacking Fundamentals",
       "image": "/img/application-security-svgrepo-com.svg",
@@ -943,8 +939,8 @@ export const coursesData = {
       "duration": "3 months",
       "mode": "Online Live Classes",
       "path": "/trainings/cybersecurity/ethical-hacking"
-    },
-    "network-security": {
+  },
+  "network-security": {
       "id": 2,
       "title": "Network Security",
       "image": "/img/networking-monitor-svgrepo-com.svg",
@@ -983,8 +979,8 @@ export const coursesData = {
       "duration": "2.5 months",
       "mode": "Online Live Classes",
       "path": "/trainings/cybersecurity/network-security"
-    },
-    "incident-response": {
+  },
+  "incident-response": {
       "id": 3,
       "title": "Incident Response & Forensics",
       "image": "/img/incident-maintenance-svgrepo-com.svg",
@@ -1023,8 +1019,8 @@ export const coursesData = {
       "duration": "3 months",
       "mode": "Online Live Classes",
       "path": "/trainings/cybersecurity/incident-response"
-    },
-    "risk-assessment": {
+  },
+  "risk-assessment": {
       "id": 4,
       "title": "Security Risk Assessment",
       "image": "/img/security-shield-svgrepo-com.svg",
@@ -1063,8 +1059,8 @@ export const coursesData = {
       "duration": "2 months",
       "mode": "Online Live Classes",
       "path": "/trainings/cybersecurity/risk-assessment"
-    },
-    "malware-analysis": {
+  },
+  "malware-analysis": {
       "id": 5,
       "title": "Malware Analysis",
       "image": "/img/virus-svgrepo-com.svg",
@@ -1103,8 +1099,8 @@ export const coursesData = {
       "duration": "3.5 months",
       "mode": "Online Live Classes",
       "path": "/trainings/cybersecurity/malware-analysis"
-    },
-    "cloud-security": {
+  },
+  "cloud-security": {
       "id": 6,
       "title": "Cloud Security",
       "image": "/img/cloud-computing-cloud-security-network-password-network-security-privacy-code-svgrepo-com.svg",
@@ -1143,8 +1139,8 @@ export const coursesData = {
       "duration": "3 months",
       "mode": "Online Live Classes",
       "path": "/trainings/cybersecurity/cloud-security"
-    },
-    
+  },
+  
   "group-discussion": {
     "id": 1,
     "title": "Group Discussion",
@@ -1305,6 +1301,260 @@ export const coursesData = {
     "mode": "Online Live Classes",
     "path": "/trainings/communication/interview-techniques"
   }
+  ,
+ 
+  "seo-fundamentals": {
+    "id": 101,
+    "title": "SEO Fundamentals",
+    "image": "/img/seo-search-svgrepo-com.svg",
+    "description": "Learn search engine optimization techniques, keyword research, on-page and off-page SEO strategies. Master Google ranking factors and analytics tools.",
+    "fullDescription": [
+      "Comprehensive understanding of search engine algorithms and ranking factors",
+      "Practical keyword research and competitive analysis techniques",
+      "On-page optimization including meta tags, content structure, and technical SEO",
+      "Off-page SEO strategies for building authority and backlinks",
+      "Analytics setup and performance tracking for measurable results"
+    ],
+    "features": [
+      "Keyword Research & Analysis",
+      "On-Page Optimization",
+      "Technical SEO Audits",
+      "Link Building Strategies",
+      "Local SEO Implementation",
+      "Mobile SEO Best Practices",
+      "Google Analytics & Search Console",
+      "SEO Reporting & Performance Tracking"
+    ],
+    "faqs": [
+      {
+        "question": "Do I need technical background for this course?",
+        "answer": "No technical background required. We start from basics and build up to advanced concepts."
+      },
+      {
+        "question": "What tools will we learn?",
+        "answer": "You'll master Google Search Console, Google Analytics, SEMrush, Ahrefs, and various SEO plugins."
+      },
+      {
+        "question": "How long to see results from SEO?",
+        "answer": "SEO requires patience. You'll learn strategies that show initial results in 3-6 months, with significant impact in 6-12 months."
+      }
+    ],
+    "price": "₹25,000",
+    "duration": "10 weeks",
+    "mode": "Hybrid (Online + Practical Projects)",
+    "path": "/trainings/digital-marketing/seo-fundamentals"
+  },
+
+  "social-media-marketing": {
+    "id": 102,
+    "title": "Social Media Marketing",
+    "image": "/img/social-media-svgrepo-com.svg",
+    "description": "Master platform-specific strategies for Facebook, Instagram, LinkedIn and Twitter. Learn content creation, community management and paid advertising.",
+    "fullDescription": [
+      "Platform-specific strategies for Facebook, Instagram, LinkedIn, Twitter, and emerging platforms",
+      "Content creation and calendar planning for consistent engagement",
+      "Community building and management techniques",
+      "Paid advertising strategies and budget optimization",
+      "Influencer marketing and collaboration tactics"
+    ],
+    "features": [
+      "Platform Strategy Development",
+      "Content Creation & Scheduling",
+      "Community Management",
+      "Paid Social Advertising",
+      "Influencer Marketing",
+      "Social Listening & Analytics",
+      "Crisis Management",
+      "Campaign Performance Tracking"
+    ],
+    "faqs": [
+      {
+        "question": "Which social media platforms are covered?",
+        "answer": "We cover Facebook, Instagram, LinkedIn, Twitter, YouTube, Pinterest, and emerging platforms like TikTok."
+      },
+      {
+        "question": "Will I learn about social media advertising?",
+        "answer": "Yes, comprehensive training on Facebook Ads, Instagram Ads, LinkedIn Ads, and Twitter Ads."
+      },
+      {
+        "question": "Do I get to manage real social media accounts?",
+        "answer": "Yes, you'll work on real projects and case studies to build your portfolio."
+      }
+    ],
+    "price": "₹20,000",
+    "duration": "8 weeks",
+    "mode": "Online Live Classes + Practical Assignments",
+    "path": "/trainings/digital-marketing/social-media-marketing"
+  },
+
+  "content-marketing": {
+    "id": 103,
+    "title": "Content Marketing Strategy",
+    "image": "/img/content-marketing-svgrepo-com.svg",
+    "description": "Learn to create compelling content that drives engagement and conversions. Master blogging, video content, email campaigns and content calendars.",
+    "fullDescription": [
+      "Strategic content planning aligned with business objectives and audience needs",
+      "Multi-format content creation including blogs, videos, infographics, and podcasts",
+      "Content distribution and promotion strategies across channels",
+      "Conversion optimization through effective CTAs and landing pages",
+      "Content performance measurement and ROI analysis"
+    ],
+    "features": [
+      "Content Strategy Development",
+      "Blog Writing & SEO Content",
+      "Video Content Creation",
+      "Email Marketing Campaigns",
+      "Content Calendar Management",
+      "Content Distribution Strategy",
+      "Conversion Rate Optimization",
+      "Content Performance Analytics"
+    ],
+    "faqs": [
+      {
+        "question": "What content formats are covered?",
+        "answer": "We cover blog writing, video scripts, podcasts, infographics, case studies, whitepapers, and social media content."
+      },
+      {
+        "question": "Will I learn copywriting skills?",
+        "answer": "Yes, we include persuasive writing, headline creation, and conversion-focused copywriting techniques."
+      },
+      {
+        "question": "How is content marketing different from SEO?",
+        "answer": "SEO focuses on technical optimization for search engines, while content marketing focuses on creating valuable content for audiences that also improves SEO."
+      }
+    ],
+    "price": "₹22,000",
+    "duration": "9 weeks",
+    "mode": "Online Interactive Sessions",
+    "path": "/trainings/digital-marketing/content-marketing"
+  },
+
+  "google-ads-ppc": {
+    "id": 104,
+    "title": "Google Ads & PPC",
+    "image": "/img/google-ads-svgrepo-com.svg",
+    "description": "Master pay-per-click advertising on Google Ads. Learn campaign setup, keyword bidding, ad copywriting, and conversion tracking for maximum ROI.",
+    "fullDescription": [
+      "Complete Google Ads platform mastery including Search, Display, Video, and Shopping campaigns",
+      "Keyword research, bidding strategies, and budget optimization techniques",
+      "Ad copywriting and creative optimization for higher CTR",
+      "Conversion tracking setup and performance analysis",
+      "Advanced features like remarketing, audience targeting, and automation"
+    ],
+    "features": [
+      "Campaign Structure & Setup",
+      "Keyword Research & Bidding",
+      "Ad Copywriting & Creatives",
+      "Conversion Tracking Setup",
+      "Remarketing Strategies",
+      "Performance Analytics",
+      "A/B Testing Implementation",
+      "ROI Optimization Techniques"
+    ],
+    "faqs": [
+      {
+        "question": "Do I need prior experience with Google Ads?",
+        "answer": "No, we start from absolute basics and progress to advanced campaign management."
+      },
+      {
+        "question": "Will I get Google Ads certification?",
+        "answer": "Yes, we prepare you for Google Ads certification exams and provide guidance throughout the process."
+      },
+      {
+        "question": "What budget is required for practice?",
+        "answer": "We provide simulation exercises, but recommend a small test budget (₹5,000-10,000) for practical learning."
+      }
+    ],
+    "price": "₹28,000",
+    "duration": "7 weeks",
+    "mode": "Live Online Classes + Hands-on Labs",
+    "path": "/trainings/digital-marketing/google-ads-ppc"
+  },
+
+  "marketing-analytics": {
+    "id": 105,
+    "title": "Marketing Analytics",
+    "image": "/img/analytics-svgrepo-com.svg",
+    "description": "Learn to measure and analyze marketing performance using Google Analytics and other tools. Master data interpretation, reporting and optimization strategies.",
+    "fullDescription": [
+      "Complete Google Analytics 4 setup and implementation",
+      "Data collection, processing, and quality assurance",
+      "Performance tracking across channels and campaigns",
+      "Data visualization and reporting techniques",
+      "Predictive analytics and data-driven decision making"
+    ],
+    "features": [
+      "Google Analytics 4 Mastery",
+      "UTM Tracking & Attribution",
+      "Multi-channel Funnel Analysis",
+      "Conversion Path Analysis",
+      "Data Visualization Tools",
+      "Custom Reporting",
+      "Predictive Analytics",
+      "Data-driven Optimization"
+    ],
+    "faqs": [
+      {
+        "question": "Which analytics tools are covered?",
+        "answer": "We cover Google Analytics 4, Google Tag Manager, Google Data Studio, and basic Excel/Sheets for analysis."
+      },
+      {
+        "question": "Do I need programming knowledge?",
+        "answer": "No programming required. We focus on practical implementation using no-code/low-code tools."
+      },
+      {
+        "question": "Will I learn to create dashboards?",
+        "answer": "Yes, comprehensive training on creating interactive dashboards in Google Data Studio and other BI tools."
+      }
+    ],
+    "price": "₹26,000",
+    "duration": "8 weeks",
+    "mode": "Online Interactive Workshops",
+    "path": "/trainings/digital-marketing/marketing-analytics"
+  },
+
+  "email-marketing-automation": {
+    "id": 106,
+    "title": "Email Marketing Automation",
+    "image": "/img/email-marketing-svgrepo-com.svg",
+    "description": "Master email campaign strategies, automation workflows, segmentation and performance tracking. Learn to build effective lead nurturing sequences.",
+    "fullDescription": [
+      "End-to-end email marketing strategy development and implementation",
+      "List building, segmentation, and deliverability optimization",
+      "Automated workflow creation for lead nurturing and customer journeys",
+      "Personalization and dynamic content implementation",
+      "Performance analysis and continuous optimization strategies"
+    ],
+    "features": [
+      "Email Strategy Development",
+      "List Building & Segmentation",
+      "Automation Workflow Design",
+      "Personalization & Dynamic Content",
+      "A/B Testing Strategies",
+      "Deliverability Optimization",
+      "Performance Analytics",
+      "GDPR & Compliance Guidelines"
+    ],
+    "faqs": [
+      {
+        "question": "Which email platforms are covered?",
+        "answer": "We cover Mailchimp, Sendinblue, HubSpot, ActiveCampaign, and ConvertKit with hands-on practice."
+      },
+      {
+        "question": "Will I learn about GDPR and compliance?",
+        "answer": "Yes, comprehensive coverage of email marketing laws, privacy regulations, and compliance requirements."
+      },
+      {
+        "question": "What types of automation will I learn?",
+        "answer": "Welcome sequences, abandoned cart flows, lead nurturing, re-engagement campaigns, and customer lifecycle automation."
+      }
+    ],
+    "price": "₹18,000",
+    "duration": "6 weeks",
+    "mode": "Online Live Sessions + Practical Projects",
+    "path": "/trainings/digital-marketing/email-marketing-automation"
+  }
+
 
 
 

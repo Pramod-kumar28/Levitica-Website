@@ -1,13 +1,13 @@
 // features/auth/authSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-
 const initialState = {
   user: null,
   token: null,
-  stats: null,
+  isAuthenticated: false,
   loading: false,
+  authChecked: false,
   error: null,
-  lastRefreshed: null, // 👈 Track token refresh time
+  lastRefreshed: null,
 };
 
 const authSlice = createSlice({
@@ -15,10 +15,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      console.log('Login action payload:', action.payload);
       const { user } = action.payload;
+      console.log(action.payload, 'iam payload')
       state.user = user;
-      state.isAuthenticated=true
+      state.isAuthenticated = true;
+      state.authChecked = true;
       state.loading = false;
       state.error = null;
       state.lastRefreshed = Date.now();
@@ -27,11 +28,13 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      state.stats = null;
+      state.isAuthenticated = false;
       state.loading = false;
+      state.authChecked = true;
       state.error = null;
       state.lastRefreshed = null;
     },
+
 
     // 👇 ADD THIS ACTION for token refresh
     tokenRefreshed: (state) => {
@@ -51,39 +54,16 @@ const authSlice = createSlice({
     },
   },
 
-  extraReducers: (builder) => {
-    builder
-      .addCase('auth/login/pending', (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase('auth/login/fulfilled', (state, action) => {
-        const { user, token, stats } = action.payload;
-        state.user = user;
-        state.token = token;
-        state.stats = user?.role === 'admin' ? stats || null : null;
-        state.loading = false;
-        state.error = null;
-        state.lastRefreshed = Date.now();
-      })
-      .addCase('auth/login/rejected', (state, action) => {
-        state.loading = false;
-        state.user = null;
-        state.token = null;
-        state.stats = null;
-        state.lastRefreshed = null;
-        state.error = action.error?.message || 'Login failed';
-      });
-  },
+
 });
 
 // 👇 UPDATE EXPORTS to include the new actions
-export const { 
-  login, 
-  logout, 
-  tokenRefreshed, // 👈 Add this
-  updateToken,    // 👈 Optional
-  clearError      // 👈 Optional
+export const {
+  login,
+  logout,
+  tokenRefreshed,
+  updateToken,
+  clearError
 } = authSlice.actions;
 
 export default authSlice.reducer;

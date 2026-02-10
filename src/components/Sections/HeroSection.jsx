@@ -1,7 +1,7 @@
 const HeroSection = () => {
   return (
-    <section className="hero-equal-height tw-relative tw-overflow-hidden tw-pt-24 tw-pb-20 lg:tw-pt-32 lg:tw-pb-24">
-      <div className="hero-shape"></div>
+    <section className="hero-equal-height tw-relative tw-overflow-hidden  tw-py-20 lg:tw-pt-32 lg:tw-pb-24">
+      
 
       <div className=" tw-mx-auto tw-px-4">
         <div className="

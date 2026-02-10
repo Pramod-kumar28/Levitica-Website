@@ -12,7 +12,7 @@ const Topbar = ({ toggleSidebar }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="tw-h-20 tw-bg-white tw-fixed tw-w-full tw-border-b tw-flex tw-items-center tw-justify-between tw-px-4 tw-z-50">
+    <header className="tw-h-20 tw-bg-white tw-fixed tw-w-full tw-border-b tw-shadow-lg tw-flex tw-items-center tw-justify-between tw-px-4 tw-z-50">
       {/* LEFT */}
       <div className="tw-flex tw-items-center tw-gap-3">
         <button

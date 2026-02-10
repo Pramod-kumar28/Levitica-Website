@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FiUsers, FiBookOpen, FiAward, FiAlertTriangle } from "react-icons/fi";
 import toast from "react-hot-toast";
 
@@ -11,7 +11,8 @@ import {
 } from "../../../../Services/admin/assignService";
 
 import { useCourses } from "../../../../hooks/useCourses";
-import { useGetIdAndBatchNamesQuery } from "../../../../Services/admin/batchdetailsService";
+import { useGetBatchesByCourseQuery, } from "../../../../Services/admin/batchdetailsService";
+
 import {
   flattenEnrollments,
   transformAssignmentPayload,
@@ -19,8 +20,14 @@ import {
 
 const UnassignedStudents = () => {
   const { courses = [], isLoading: isCoursesLoading } = useCourses();
-  const { data: batches = [], isLoading: isBatchesLoading } =
-    useGetIdAndBatchNamesQuery();
+  const [selectedCourseId, setSelectedCourseId] = useState("");
+
+  const {
+    data: courseBatches,
+  } = useGetBatchesByCourseQuery(selectedCourseId, {
+    skip: !selectedCourseId,
+  });
+
 
   const [assignStudents, { isLoading: isAssigning }] =
     useAssignStudentsToBatchMutation();
@@ -47,10 +54,15 @@ const UnassignedStudents = () => {
     _id: c._id,
   }));
 
-  const availableBatches = batches.map((b) => ({
-    title: b.batchName,
-    _id: b._id,
-  }));
+  const availableBatches = selectedCourseId
+    ? courseBatches?.data?.map((b) => ({
+      title: b.batchName,
+      _id: b._id,
+    })) || []
+    : [];
+
+    console.log(availableBatches,'iam batches')
+
 
   const handleAssign = async (payload) => {
     try {
@@ -64,7 +76,7 @@ const UnassignedStudents = () => {
   };
 
   /* ================= LOADING ================= */
-  if (isUnassignedLoading || isCoursesLoading || isBatchesLoading) {
+  if (isUnassignedLoading || isCoursesLoading ) {
     return <Loader message="Loading unassigned students..." />;
   }
 
@@ -155,7 +167,8 @@ const UnassignedStudents = () => {
             isAssignedView={false}
             onAssignBatch={handleAssign}
             isAssigning={isAssigning}
-            onRemove={() => {}}
+            onCourseChange={setSelectedCourseId}
+            onRemove={() => { }}
           />
         </div>
 

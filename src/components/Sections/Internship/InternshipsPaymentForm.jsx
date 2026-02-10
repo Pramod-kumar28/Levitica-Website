@@ -1,43 +1,26 @@
+// InternshipPaymentForm.jsx
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
-import {usePayment} from './services/handlePayment.js';
+import { usePayment } from './services/handlePayment.js';
+import { FaCode, FaLaptopCode, FaCalendarAlt } from "react-icons/fa";
+import { MdEmail, MdPhone, MdSchool, MdAssignment } from "react-icons/md";
+import { HiAcademicCap, HiUser } from "react-icons/hi";
 
 const InternshipPaymentForm = () => {
-  
-   const { handlePayment, isLoading } = usePayment();
+  const { handlePayment, isLoading } = usePayment();
 
-  // Domain options
   const domainOptions = [
-    { 
-      id: 'java-fullstack', 
-      name: 'Java Full Stack Development'
-    },
-    { 
-      id: 'python-ai', 
-      name: 'Python Full Stack + Generative AI'
-    },
-    { 
-      id: 'dotnet-cloud', 
-      name: '.NET Full Stack + Cloud AI'
-    },
-    { 
-      id: 'flutter-mobile', 
-      name: 'Flutter Mobile App Development'
-    },
-    { 
-      id: 'software-testing', 
-      name: 'Software Testing & Automation'
-    },
-    { 
-      id: 'data-science-ai', 
-      name: 'Data Science & AI'
-    }
+    { id: 'java-fullstack', name: 'Java Full Stack Development' },
+    { id: 'python-ai', name: 'Python Full Stack + Generative AI' },
+    { id: 'dotnet-cloud', name: '.NET Full Stack + Cloud AI' },
+    { id: 'flutter-mobile', name: 'Flutter Mobile App Development' },
+    { id: 'software-testing', name: 'Software Testing & Automation' },
+    { id: 'data-science-ai', name: 'Data Science & AI' }
   ];
 
   const programOptions = [
-    { id: '5days', name: '5 Days Program', days: 5, amount: 500 },
-    { id: '15days', name: '15 Days Program', days: 15, amount: 1000 }
+    { id: '5days', name: '5 Days Program', days: 5, amount: 1000 },
+    { id: '15days', name: '15 Days Program', days: 15, amount: 2000 }
   ];
 
   const departmentOptions = [
@@ -93,10 +76,9 @@ const InternshipPaymentForm = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-    
       console.log('Form submitted:', values);
       try {
-        await handlePayment(values); // Pass setIsLoading to handlePayment
+        await handlePayment(values);
       } catch (error) {
         console.error('Payment handling error:', error);
       }
@@ -119,317 +101,321 @@ const InternshipPaymentForm = () => {
   };
 
   return (
-    <div>
-      <div className="lg-w-3/4 p-4">
-        <div className="bg-white shadow-lg p-6">
-          {/* Title */}
-          <div className="title mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Payment Details</h2>
-            <div className="title-underline w-12 h-1 bg-blue-600 mt-2"></div>
+    <div className="tw-bg-white tw-shadow-xl tw-rounded-xl tw-p-6 tw-w-full lg:tw-max-w-lg">
+      {/* Title */}
+      <div className="tw-mb-6">
+        <h2 className="tw-text-xl tw-font-bold tw-text-gray-900">Payment Details</h2>
+        <div className="tw-w-12 tw-h-1 tw-bg-gradient-to-r tw-from-blue-600 tw-to-purple-600 tw-mt-2 tw-rounded-full"></div>
+      </div>
+
+      {/* Form Section */}
+      <form onSubmit={formik.handleSubmit} className="tw-space-y-4">
+        {/* Name */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <HiUser className="tw-inline tw-mr-1" /> Name of the student *
+          </label>
+          <input
+            type="text"
+            name="name"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.name && formik.touched.name 
+                ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            placeholder="Enter your name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.name && formik.touched.name && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.name}</p>
+          )}
+        </div>
+
+        {/* Email */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <MdEmail className="tw-inline tw-mr-1" /> Email *
+          </label>
+          <input
+            type="email"
+            name="email"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.email && formik.touched.email 
+                ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            placeholder="Enter your email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.email && formik.touched.email && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.email}</p>
+          )}
+        </div>
+
+        {/* Phone */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <MdPhone className="tw-inline tw-mr-1" /> Phone *
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.phone && formik.touched.phone 
+                ? 'tw-border-red-500 focus:tw-ring-red500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            placeholder="Enter your phone number"
+            value={formik.values.phone}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.phone && formik.touched.phone && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.phone}</p>
+          )}
+        </div>
+
+        {/* College Name */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <MdSchool className="tw-inline tw-mr-1" /> College Name *
+          </label>
+          <div className="tw-relative">
+            <input
+              type="text"
+              name="collegeName"
+              list="collegeOptions"
+              className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+                formik.errors.collegeName && formik.touched.collegeName 
+                  ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                  : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
+              placeholder="Select or type college name"
+              value={formik.values.collegeName}
+              onChange={handleCollegeInput}
+              onBlur={formik.handleBlur}
+            />
+            <datalist id="collegeOptions">
+              {collegeOptions.map((college) => (
+                <option key={college.code} value={college.name}>
+                  {college.name} ({college.code})
+                </option>
+              ))}
+            </datalist>
           </div>
+          {formik.errors.collegeName && formik.touched.collegeName && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.collegeName}</p>
+          )}
+        </div>
 
-          {/* Form Section */}
-          <div>
-            <form onSubmit={formik.handleSubmit} className="UI-form space-y-4">
-              {/* Name */}
-              <div className="Field">
-                <label className="Field-label">
-                  Name of the student *
-                </label>
-                <div className="Field-content">
-                  <input
-                    type="text"
-                    name="name"
-                    className={`Field-el ${formik.errors.name && formik.touched.name ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="Enter your name"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.errors.name && formik.touched.name && (
-                    <div className="Field-error">{formik.errors.name}</div>
-                  )}
-                </div>
-              </div>
+        {/* College Code */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <FaCode className="tw-inline tw-mr-1" /> College Code *
+          </label>
+          <input
+            type="text"
+            name="collegeCode"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.collegeCode && formik.touched.collegeCode 
+                ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            placeholder="Enter college code"
+            value={formik.values.collegeCode}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.collegeCode && formik.touched.collegeCode && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.collegeCode}</p>
+          )}
+        </div>
 
-              {/* Email */}
-              <div className="Field">
-                <label className="Field-label">
-                  Email *
-                </label>
-                <div className="Field-content">
-                  <input
-                    type="email"
-                    name="email"
-                    className={`Field-el ${formik.errors.email && formik.touched.email ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="Enter your email"
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.errors.email && formik.touched.email && (
-                    <div className="Field-error">{formik.errors.email}</div>
-                  )}
-                </div>
-              </div>
+        {/* Department */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <HiAcademicCap className="tw-inline tw-mr-1" /> Department *
+          </label>
+          <div className="tw-relative">
+            <input
+              type="text"
+              name="department"
+              list="departmentOptions"
+              className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+                formik.errors.department && formik.touched.department 
+                  ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                  : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
+              placeholder="Select or type department"
+              value={formik.values.department}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            <datalist id="departmentOptions">
+              {departmentOptions.map((dept) => (
+                <option key={dept} value={dept} />
+              ))}
+            </datalist>
+          </div>
+          {formik.errors.department && formik.touched.department && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.department}</p>
+          )}
+        </div>
 
-              {/* Phone */}
-              <div className="Field">
-                <label className="Field-label">
-                  Phone *
-                </label>
-                <div className="Field-content">
-                  <input
-                    type="tel"
-                    name="phone"
-                    className={`Field-el ${formik.errors.phone && formik.touched.phone ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="Enter your phone number"
-                    value={formik.values.phone}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.errors.phone && formik.touched.phone && (
-                    <div className="Field-error">{formik.errors.phone}</div>
-                  )}
-                </div>
-              </div>
+        {/* Semester */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <FaCalendarAlt className="tw-inline tw-mr-1" /> Semester *
+          </label>
+          <select
+            name="semester"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.semester && formik.touched.semester 
+                ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            value={formik.values.semester}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="">Select Semester</option>
+            {semesterOptions.map((sem) => (
+              <option key={sem} value={sem}>{sem} Semester</option>
+            ))}
+          </select>
+          {formik.errors.semester && formik.touched.semester && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.semester}</p>
+          )}
+        </div>
 
-              {/* College Name */}
-              <div className="Field">
-                <label className="Field-label">
-                  College Name *
-                </label>
-                <div className="Field-content">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="collegeName"
-                      list="collegeOptions"
-                      className={`Field-el ${formik.errors.collegeName && formik.touched.collegeName ? 'border-red-500' : 'border-gray-300'}`}
-                      placeholder="Select from dropdown or type your college name"
-                      value={formik.values.collegeName}
-                      onChange={handleCollegeInput}
-                      onBlur={(e) => {
-                        formik.handleBlur(e);
-                        const selectedCollege = collegeOptions.find(college => college.name === e.target.value);
-                        if (selectedCollege && formik.values.collegeCode === '') {
-                          formik.setFieldValue('collegeCode', selectedCollege.code);
-                        }
-                      }}
-                    />
-                    <datalist id="collegeOptions">
-                      {collegeOptions.map((college) => (
-                        <option key={college.code} value={college.name}>
-                          {college.name} ({college.code})
-                        </option>
-                      ))}
-                    </datalist>
-                  </div>
-                  {formik.errors.collegeName && formik.touched.collegeName && (
-                    <div className="Field-error">{formik.errors.collegeName}</div>
-                  )}
-                </div>
-              </div>
+        {/* Roll Number */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <MdAssignment className="tw-inline tw-mr-1" /> Roll Number *
+          </label>
+          <input
+            type="text"
+            name="rollNumber"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.rollNumber && formik.touched.rollNumber 
+                ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            placeholder="Enter roll number"
+            value={formik.values.rollNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.rollNumber && formik.touched.rollNumber && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.rollNumber}</p>
+          )}
+        </div>
 
-              {/* College Code */}
-              <div className="Field">
-                <label className="Field-label">
-                  College Code *
-                </label>
-                <div className="Field-content">
-                  <input
-                    type="text"
-                    name="collegeCode"
-                    className={`Field-el ${formik.errors.collegeCode && formik.touched.collegeCode ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="Enter college code"
-                    value={formik.values.collegeCode}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.errors.collegeCode && formik.touched.collegeCode && (
-                    <div className="Field-error">{formik.errors.collegeCode}</div>
-                  )}
-                </div>
-              </div>
+        {/* Domain Selection */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            <FaLaptopCode className="tw-inline tw-mr-1" /> Internship Domain *
+          </label>
+          <select
+            name="domain"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.domain && formik.touched.domain 
+                ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            value={formik.values.domain}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="">Select Internship Domain</option>
+            {domainOptions.map((domain) => (
+              <option key={domain.id} value={domain.id}>
+                {domain.name}
+              </option>
+            ))}
+          </select>
+          {formik.errors.domain && formik.touched.domain && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.domain}</p>
+          )}
+        </div>
 
-              {/* Department */}
-              <div className="Field">
-                <label className="Field-label">
-                  Department *
-                </label>
-                <div className="Field-content">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="department"
-                      list="departmentOptions"
-                      className={`Field-el ${formik.errors.department && formik.touched.department ? 'border-red-500' : 'border-gray-300'}`}
-                      placeholder="Select or type your department"
-                      value={formik.values.department}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                    <datalist id="departmentOptions">
-                      {departmentOptions.map((dept) => (
-                        <option key={dept} value={dept} />
-                      ))}
-                    </datalist>
-                  </div>
-                  {formik.errors.department && formik.touched.department && (
-                    <div className="Field-error">{formik.errors.department}</div>
-                  )}
-                </div>
-              </div>
+        {/* Program Selection */}
+        <div>
+          <label className="tw-block tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-1">
+            Choose Program Duration *
+          </label>
+          <select
+            name="program"
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
+              formik.errors.program && formik.touched.program 
+                ? 'tw-border-red-500 focus:tw-ring-red-500' 
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+            } focus:tw-outline-none focus:tw-ring-2`}
+            value={formik.values.program}
+            onChange={handleProgramChange}
+            onBlur={formik.handleBlur}
+          >
+            <option value="">Select a program</option>
+            {programOptions.map((program) => (
+              <option key={program.id} value={program.id}>
+                {program.name} - {program.days} days - ₹{program.amount}
+              </option>
+            ))}
+          </select>
+          {formik.errors.program && formik.touched.program && (
+            <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.program}</p>
+          )}
+        </div>
 
-              {/* Semester */}
-              <div className="Field">
-                <label className="Field-label">
-                  Semester *
-                </label>
-                <div className="Field-content">
-                  <select
-                    name="semester"
-                    className={`Field-el ${formik.errors.semester && formik.touched.semester ? 'border-red-500' : 'border-gray-300'}`}
-                    value={formik.values.semester}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  >
-                    <option value="">Select Semester</option>
-                    {semesterOptions.map((sem) => (
-                      <option key={sem} value={sem}>{sem} Semester</option>
-                    ))}
-                  </select>
-                  {formik.errors.semester && formik.touched.semester && (
-                    <div className="Field-error">{formik.errors.semester}</div>
-                  )}
-                </div>
-              </div>
-
-              {/* Roll Number */}
-              <div className="Field">
-                <label className="Field-label">
-                  Roll Number *
-                </label>
-                <div className="Field-content">
-                  <input
-                    type="text"
-                    name="rollNumber"
-                    className={`Field-el ${formik.errors.rollNumber && formik.touched.rollNumber ? 'border-red-500' : 'border-gray-300'}`}
-                    placeholder="Enter roll number"
-                    value={formik.values.rollNumber}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.errors.rollNumber && formik.touched.rollNumber && (
-                    <div className="Field-error">{formik.errors.rollNumber}</div>
-                  )}
-                </div>
-              </div>
-
-              {/* Domain Selection */}
-              <div className="Field">
-                <label className="Field-label">
-                  💻 Internship Domain *
-                </label>
-                <div className="Field-content">
-                  <select
-                    name="domain"
-                    className={`Field-el ${formik.errors.domain && formik.touched.domain ? 'border-red-500' : 'border-gray-300'}`}
-                    value={formik.values.domain}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  >
-                    <option value="">Select Internship Domain</option>
-                    {domainOptions.map((domain) => (
-                      <option key={domain.id} value={domain.id}>
-                        {domain.name}
-                      </option>
-                    ))}
-                  </select>
-                  {formik.errors.domain && formik.touched.domain && (
-                    <div className="Field-error">{formik.errors.domain}</div>
-                  )}
-                </div>
-              </div>
-
-              {/* Program Selection */}
-              <div className="Field">
-                <label className="Field-label">
-                  Choose Program Duration *
-                </label>
-                <div className="Field-content">
-                  <select
-                    name="program"
-                    className={`Field-el ${formik.errors.program && formik.touched.program ? 'border-red-500' : 'border-gray-300'}`}
-                    value={formik.values.program}
-                    onChange={handleProgramChange}
-                    onBlur={formik.handleBlur}
-                  >
-                    <option value="">Select a program</option>
-                    {programOptions.map((program) => (
-                      <option key={program.id} value={program.id}>
-                        {program.name} - {program.days} days - ₹{program.amount}
-                      </option>
-                    ))}
-                  </select>
-                  {formik.errors.program && formik.touched.program && (
-                    <div className="Field-error">{formik.errors.program}</div>
-                  )}
-                </div>
-              </div>
-
-              {/* Amount Display */}
-              <div className="Field Field--amount bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <div className="Field-label text-sm font-medium text-gray-700 mb-2">
-                  Amount
-                </div>
-                <div className="Field-content">
-                  <div className="Field-wrapper flex items-center">
-                    <span className="Field-addon Field-addon--before mr-2">
-                      <span className="currency-symbol font-bold text-gray-900">₹</span>
-                    </span>
-                    <div className="">
-                      <label className="font-bold text-2xl text-gray-900">
-                        {formik.values.amount}.00
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Form Footer */}
-              <div id="form-footer" className="mt-6">
-                <div className="form-footer-payment flex flex-col sm-flex-row justify-between items-center space-y-4 sm-space-y-0">
-                  <img
-                    id="fin-logo"
-                    alt="pay-methods"
-                    src="https://cdn.razorpay.com/static/assets/pay_methods_branding.png"
-                    width="180"
-                    className="mb-4 sm-mb-0"
-                  />
-                  <button
-                    type="submit"
-                    className={`btn btn--gradient`}
-                    disabled={isLoading || formik.values.amount === 0}
-                    tabIndex="0"
-                  >
-                    {isLoading ? (
-                      <>
-                        <span className="loading-spinner mr-2"></span>
-                        Processing...
-                      </>
-                    ) : (
-                      <>
-                        Pay <span className="ml-2">₹ {formik.values.amount}.00</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </form>
+        {/* Amount Display */}
+        <div className="tw-bg-gradient-to-r tw-from-blue-50 tw-to-purple-50 tw-p-4 tw-rounded-lg tw-border tw-border-blue-100">
+          <div className="tw-text-sm tw-font-medium tw-text-gray-700 tw-mb-2">
+            Amount to Pay
+          </div>
+          <div className="tw-flex tw-items-center">
+            <span className="tw-text-2xl tw-font-bold tw-text-gray-900 tw-mr-1">₹</span>
+            <span className="tw-text-3xl tw-font-bold tw-text-gray-900">
+              {formik.values.amount}.00
+            </span>
           </div>
         </div>
-      </div>
+
+        {/* Form Footer */}
+        <div className="tw-mt-6">
+          <div className="tw-flex tw-flex-col sm:tw-flex-row tw-justify-between tw-items-center tw-space-y-4 sm:tw-space-y-0">
+            <img
+              alt="pay-methods"
+              src="https://cdn.razorpay.com/static/assets/pay_methods_branding.png"
+              width="180"
+              className="tw-mb-4 sm:tw-mb-0"
+            />
+            <button
+              type="submit"
+              className={`tw-bg-gradient-to-r tw-from-blue-600 tw-to-purple-600 tw-text-white tw-font-semibold tw-py-3 tw-px-6 tw-rounded-lg tw-transition-all tw-w-full sm:tw-w-auto ${
+                isLoading || formik.values.amount === 0
+                  ? 'tw-opacity-50 tw-cursor-not-allowed'
+                  : 'hover:tw-from-blue-700 hover:tw-to-purple-700 hover:tw-shadow-lg'
+              }`}
+              disabled={isLoading || formik.values.amount === 0}
+            >
+              {isLoading ? (
+                <>
+                  <span className="tw-inline-block tw-animate-spin tw-mr-2">⟳</span>
+                  Processing...
+                </>
+              ) : (
+                <>
+                  Pay ₹ {formik.values.amount}.00
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };

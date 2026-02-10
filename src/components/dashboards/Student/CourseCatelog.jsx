@@ -41,9 +41,9 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
           {course.name}
         </h3>
 
-        <p className="tw-text-xs tw-text-gray-500 tw-mt-1 tw-line-clamp-2">
+        {/* <p className="tw-text-xs tw-text-gray-500 tw-mt-1 tw-line-clamp-2">
           {course.description}
-        </p>
+        </p> */}
 
         {/* Meta */}
         <div className="tw-flex tw-gap-4 tw-text-xs tw-text-gray-500 tw-mt-3">
@@ -76,7 +76,7 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
 
         <div className="tw-flex tw-gap-2 tw-mt-3">
           <button
-            onClick={() => navigate(`/dashboard/course/details`)}
+            onClick={() => navigate(`/dashboard/course/${course._id}`)}
             className="
               tw-flex-1
               tw-border
@@ -131,6 +131,8 @@ const CourseCatalog = () => {
   const { courses, isLoading: coursesLoading, error: coursesError } =
     useUnenrolledCourses(enrolledIds);
 
+  
+    
   const [addItem] = useAddItemMutation();
 
   const handleAdd = async (courseId) => {

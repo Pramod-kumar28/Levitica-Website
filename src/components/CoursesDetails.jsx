@@ -16,6 +16,7 @@ const CourseDetail = () => {
     cybersecurity: data.cyberSecurity,
     softskills: data.softSkills,
     appdevelopment: data.appDevelopment,
+    digitalmarketing:data.digitalMarketing
   };
 
   const selectedCourses = categoryMap[normalizedCategory];
@@ -27,9 +28,9 @@ const CourseDetail = () => {
 
   const selectedCourse = courseId
     ? selectedCourses?.find((course) => {
-        const slug = course.path.split("/").pop().toLowerCase();
-        return slug === courseId;
-      })
+      const slug = course.path.split("/").pop().toLowerCase();
+      return slug === courseId;
+    })
     : null;
 
   return (
@@ -40,29 +41,29 @@ const CourseDetail = () => {
         {!selectedCourse && (
           <>
             {/* HERO */}
-          <section
-  className="hero-section  tw-py-12 gradient-overlay tw-relative"
-  style={{
-    background: "url('/img/header-bg-5.jpg') center / cover no-repeat",
-  }}
->
-  {/* bottom shape */}
-  <div
-    className="hero-bottom-shape-two"
-    style={{
-      background: "url('/img/hero-bottom-shape.svg') no-repeat bottom center",
-    }}
-  />
+            <section
+              className="hero-section  tw-py-12 gradient-overlay tw-relative"
+              style={{
+                background: "url('/img/header-bg-5.jpg') center / cover no-repeat",
+              }}
+            >
+              {/* bottom shape */}
+              <div
+                className="hero-bottom-shape-two"
+                style={{
+                  background: "url('/img/hero-bottom-shape.svg') no-repeat bottom center",
+                }}
+              />
 
-  {/* content */}
-  <div className="tw-relative tw-max-w-4xl tw-mx-auto tw-px-4 tw-text-center tw-py-20">
-    <h1 className="tw-text-4xl md:tw-text-5xl tw-font-bold tw-text-white">
-      {courseId
-        ? formatCategory(selectedCourse?.title)
-        : formatCategory(category)}
-    </h1>
-  </div>
-</section>
+              {/* content */}
+              <div className="tw-relative tw-max-w-4xl tw-mx-auto tw-px-4 tw-text-center tw-py-20">
+                <h1 className="tw-text-4xl md:tw-text-5xl tw-font-bold tw-text-white">
+                  {courseId
+                    ? formatCategory(selectedCourse?.title)
+                    : formatCategory(category)}
+                </h1>
+              </div>
+            </section>
 
 
             {/* COURSES LIST */}

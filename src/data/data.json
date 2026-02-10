@@ -37,6 +37,12 @@
     "path": "/trainings/cybersecurity"
   },
   {
+  "title": "Digital Marketing",
+  "img": "/img/digital-marketing-svgrepo-com.svg",
+  "description": "Master digital marketing essentials, including SEO, social media strategy, PPC campaigns, and content marketing. Drive growth through analytics, conversion optimization, and data-driven strategies.",
+  "path": "/trainings/digital-marketing"
+},
+  {
     "title": "Manual and Automation Testing",
     "img": "/img/automated-testing-svgrepo-com.svg",
     "description": "Master software testing fundamentals, including test case design, bug tracking, and automation with Selenium and Postman. Ensure quality through CI/CD integration and performance testing.",
@@ -256,39 +262,43 @@
       "path": "/trainings/data-science/data-analytics"
     }
   ],
-  "testimonials": [
+  
+  "digitalMarketing": [
     {
-      "name": "Naveen ",
-      "role": "Software Engineer",
-      "feedback": "The training was comprehensive and the instructors were very knowledgeable."
+      "title": "SEO Fundamentals",
+      "description": "Learn search engine optimization techniques, keyword research, on-page and off-page SEO strategies. Master Google ranking factors and analytics tools.",
+      "img": "/img/seo-search-svgrepo-com.svg",
+      "path": "/trainings/digital-marketing/seo-fundamentals"
     },
     {
-      "name": "Mani Kiran",
-      "role": "Data Scientist",
-      "feedback": "I learned so much about data analytics and machine learning. Highly recommend!"
+      "title": "Social Media Marketing",
+      "description": "Master platform-specific strategies for Facebook, Instagram, LinkedIn and Twitter. Learn content creation, community management and paid advertising.",
+      "img": "/img/social-media-svgrepo-com.svg",
+      "path": "/trainings/digital-marketing/social-media-marketing"
     },
     {
-      "name": "Keerthi",
-      "role": "Web Developer",
-      "feedback": "The React JS course helped me build my first full-stack application. Great experience!"
-    }
-  ],
-  "workProcess": [
-    {
-      "title": "First-Class Business Solutions",
-      "description": "We deliver strategic solutions that enhance organizational performance and productivity. From leadership development to workflow optimization, our services are built to meet modern business challenges."
+      "title": "Content Marketing Strategy",
+      "description": "Learn to create compelling content that drives engagement and conversions. Master blogging, video content, email campaigns and content calendars.",
+      "img": "/img/content-marketing-svgrepo-com.svg",
+      "path": "/trainings/digital-marketing/content-marketing"
     },
     {
-      "title": "Corporate Training Programs",
-      "description": "We design training programs that develop both technical skills and leadership qualities. Our goal is to help your teams stay competitive and confident in a rapidly changing business landscape."
+      "title": "Google Ads & PPC",
+      "description": "Master pay-per-click advertising on Google Ads. Learn campaign setup, keyword bidding, ad copywriting, and conversion tracking for maximum ROI.",
+      "img": "/img/google-ads-svgrepo-com.svg",
+      "path": "/trainings/digital-marketing/google-ads-ppc"
     },
     {
-      "title": "Consulting for Growth",
-      "description": "Our consultants bring real-world expertise to help companies streamline operations, improve decision-making, and build scalable business models."
+      "title": "Marketing Analytics",
+      "description": "Learn to measure and analyze marketing performance using Google Analytics and other tools. Master data interpretation, reporting and optimization strategies.",
+      "img": "/img/analytics-svgrepo-com.svg",
+      "path": "/trainings/digital-marketing/marketing-analytics"
     },
     {
-      "title": "Manpower Support Services",
-      "description": "We help organizations find, retain, and manage top talent. Whether you need contract staffing, permanent hires, or project-based support, DCM delivers workforce solutions that work."
+      "title": "Email Marketing Automation",
+      "description": "Master email campaign strategies, automation workflows, segmentation and performance tracking. Learn to build effective lead nurturing sequences.",
+      "img": "/img/email-marketing-svgrepo-com.svg",
+      "path": "/trainings/digital-marketing/email-marketing-automation"
     }
   ],
   "paidCourses": [

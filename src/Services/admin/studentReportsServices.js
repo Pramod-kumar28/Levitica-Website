@@ -1,24 +1,18 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { createApiService } from "../../config/apiConfig";
 
-export const courseCategoryApi = createApi({
+export const studentReportsApi = createApi({
   ...createApiService({
-    reducerPath: 'coursesCategoryApi',
-    baseUrl: '/api',
-    tagTypes: ['coursesCategory',"Students"],
+    reducerPath: 'studentReportsApi',
+    baseUrl: '/admin/student-reports',
+    tagTypes: ["Students Report"],
   }),
   endpoints: (builder) => ({
     
-    getCoursesCategory:builder.query({
-      query:()=>({
-        url:`/categories`,
-        method:'GET'
-      }),
-      providesTags: ['coursesCategory'],
-    }),
+   
       getStudents: builder.query({
       query: ({ page = 1, limit = 10, search = '' }) => ({
-        url: 'students',
+        url: '/',
         params: { page, limit, search },
       }),
       providesTags: ['Students'],
@@ -26,7 +20,7 @@ export const courseCategoryApi = createApi({
     
     downloadStudentsExcel: builder.mutation({
       query: (filters = {}) => ({
-        url: 'students/download',
+        url: 'excel',
         params: filters,
         responseHandler: (response) => response.blob(),
         cache: 'no-cache',
@@ -35,4 +29,4 @@ export const courseCategoryApi = createApi({
   }),
 });
 
-export const {useGetCoursesCategoryQuery,useDownloadStudentsExcelMutation,useGetStudentsQuery} = courseCategoryApi;
+export const {useDownloadStudentsExcelMutation,useGetStudentsQuery} = studentReportsApi;

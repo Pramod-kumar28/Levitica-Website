@@ -20,6 +20,7 @@ const GenericTable = ({
   showBatchColumn = false,
   isAssignedView = false,
   onAssignBatch,
+  onCourseChange,
   onRemove,
   getRowId = (row) => row.id,
 }) => {
@@ -28,14 +29,14 @@ const GenericTable = ({
   const [rowSelection, setRowSelection] = useState({});
 
   /* ---------------- Filter ---------------- */
-  const filteredData = useMemo(() => {
-    if (selectedCourse === "All") return data;
-    return data.filter((s) =>
-      selectedCourse === "No Course"
-        ? s.courseName === "No Course"
-        : s.courseName?.toLowerCase().includes(selectedCourse.toLowerCase())
-    );
-  }, [data, selectedCourse]);
+ const filteredData = useMemo(() => {
+  if (!selectedCourse) return data;
+
+  return data.filter(
+    (s) => s.courseId === selectedCourse
+  );
+}, [data, selectedCourse]);
+
 
   /* ---------------- Columns ---------------- */
   const columns = useMemo(() => {
@@ -107,22 +108,34 @@ const GenericTable = ({
               <select
                 className="tw-border tw-rounded-lg tw-px-3 tw-py-2 tw-text-sm"
                 value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
+                onChange={(e) => {
+                  const courseId = e.target.value;
+
+                  setSelectedCourse(courseId);
+                  setSelectedBatch(""); // 🔥 reset batch when course changes
+                  onCourseChange?.(courseId);
+                }}
               >
-                <option value="All">All Courses</option>
+                <option value="">All Courses</option>
+
                 {availableCourses.map(({ _id, title }) => (
-                  <option key={_id} value={title}>{title}</option>
+                  <option key={_id} value={_id}>
+                    {title}
+                  </option>
                 ))}
-                <option value="No Course">No Course</option>
               </select>
+
+
             )}
 
             {showAssignControls && (
               <select
-                className="tw-border tw-rounded-lg tw-px-3 tw-py-2 tw-text-sm"
+                disabled={!availableBatches.length}
+                className="tw-border tw-rounded-lg tw-px-3 tw-py-2 tw-text-sm disabled:tw-opacity-50"
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
               >
+
                 <option value="">Select Batch</option>
                 {availableBatches.map(({ _id, title }) => (
                   <option key={_id} value={_id}>{title}</option>

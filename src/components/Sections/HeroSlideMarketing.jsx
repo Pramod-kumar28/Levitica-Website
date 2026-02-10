@@ -1,159 +1,158 @@
 import { Link } from "react-router-dom";
 import { memo } from "react";
+import { motion } from "framer-motion";
 import {
   FiArrowRight,
   FiTrendingUp,
   FiShare2,
   FiBarChart2,
+  FiTarget,
+  FiUsers,
+  FiActivity,
 } from "react-icons/fi";
-// import MarketingLottie from "../lottie/MarketingLottie";
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 },
+  },
+};
 
-const HeroSlideMarketing = memo(({isActive}) => {
+const item = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+
+const float = {
+  animate: {
+    y: [0, -14, 0],
+    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+  },
+};
+
+const HeroSlideMarketing = memo(() => {
   return (
-    <section className="tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-orange-900 tw-via-red-900 tw-to-pink-900">
-      
-      {/* Background glow */}
+    <section className=" tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-slate-950 tw-via-indigo-950 tw-to-blue-950">
+      {/* background glow */}
       <div className="tw-absolute tw-inset-0 tw-bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] tw-from-white/5 tw-to-transparent" />
 
-      <div className="tw-relative tw-max-w-7xl tw-mx-auto tw-px-4">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="tw-relative tw-max-w-7xl tw-mx-auto tw-px-4"
+      >
         <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-5 tw-gap-12 tw-items-center">
 
-          {/* ================= TEXT ================= */}
-          <div className="lg:tw-col-span-3 tw-text-white tw-order-1 lg:tw-order-1">
-
-            <span className="tw-inline-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-rounded-full tw-bg-white/10 tw-backdrop-blur-sm tw-text-sm tw-font-medium tw-mb-6 hover:tw-bg-white/20 tw-transition">
-              <span className="tw-w-2 tw-h-2 tw-bg-yellow-400 tw-rounded-full tw-animate-pulse"></span>
+          {/* ================= LEFT ================= */}
+          <div className="lg:tw-col-span-3 tw-text-white">
+            <motion.span
+              variants={item}
+              className="tw-inline-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-rounded-full tw-bg-white/10 tw-backdrop-blur tw-text-sm tw-font-medium tw-mb-6"
+            >
+              <span className="tw-w-2 tw-h-2 tw-bg-cyan-400 tw-rounded-full tw-animate-pulse" />
               Growth • Branding • Performance
-            </span>
+            </motion.span>
 
-            <h1 className="tw-text-4xl md:tw-text-5xl lg:tw-text-6xl tw-font-bold tw-leading-tight tw-text-white">
+            <motion.h1
+              variants={item}
+              className="tw-text-4xl md:tw-text-5xl lg:tw-text-6xl tw-font-bold tw-text-white "
+            >
               Digital Marketing That{" "}
-              <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-orange-400 tw-to-pink-400">
-                Delivers
+              <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-cyan-400 tw-to-blue-400">
+                Scales Fast
               </span>
-            </h1>
+            </motion.h1>
 
-            <p className="tw-mt-6 tw-text-base md:tw-text-lg tw-text-orange-100 tw-max-w-2xl">
-              Data-driven SEO, high-conversion social media campaigns, and
-              performance-focused brand strategies designed to grow your
-              visibility, engagement, and revenue.
-            </p>
+            <motion.p
+              variants={item}
+              className="tw-mt-6 tw-text-lg tw-text-blue-100 tw-max-w-2xl"
+            >
+              SEO, paid campaigns, analytics, and growth strategies engineered
+              to drive traffic, engagement, and measurable ROI.
+            </motion.p>
 
-            {/* ================= CTA ================= */}
-            <div className="tw-flex tw-flex-wrap tw-gap-4 tw-mt-8">
+            {/* CTA */}
+            <motion.div variants={item} className="tw-flex tw-gap-4 tw-mt-8">
               <Link
                 to="/services"
-                className="
-                  tw-group
-                  tw-inline-flex
-                  tw-items-center
-                  tw-gap-2
-                  tw-bg-gradient-to-r
-                  tw-from-orange-500
-                  tw-to-pink-500
-                  hover:tw-from-orange-600
-                  hover:tw-to-pink-600
-                  tw-text-white
-                  tw-px-8
-                  tw-py-3
-                  tw-rounded-xl
-                  tw-font-semibold
-                  tw-shadow-lg
-                  hover:tw-shadow-2xl
-                  tw-transition-all
-                "
+                className="tw-group tw-inline-flex tw-items-center tw-gap-2 tw-bg-gradient-to-r tw-from-cyan-500 tw-to-blue-500 hover:tw-from-cyan-600 hover:tw-to-blue-600 tw-text-white tw-px-8 tw-py-3 tw-rounded-xl tw-font-semibold tw-shadow-lg hover:tw-shadow-xl tw-transition"
               >
                 Explore Services
-                <FiArrowRight className="tw-transition-transform group-hover:tw-translate-x-1" />
+                <FiArrowRight className="group-hover:tw-translate-x-1 tw-transition" />
               </Link>
 
               <Link
                 to="/contact-us"
-                className="
-                  tw-group
-                  tw-inline-flex
-                  tw-items-center
-                  tw-gap-2
-                  tw-bg-white/10
-                  hover:tw-bg-white/20
-                  tw-backdrop-blur-sm
-                  tw-text-white
-                  tw-border
-                  tw-border-white/30
-                  tw-px-8
-                  tw-py-3
-                  tw-rounded-xl
-                  tw-font-semibold
-                  tw-transition-all
-                "
+                className="tw-inline-flex tw-items-center tw-gap-2 tw-bg-white/10 hover:tw-bg-white/20 tw-text-white tw-border tw-border-white/30 tw-px-8 tw-py-3 tw-rounded-xl tw-font-semibold tw-backdrop-blur tw-transition"
               >
                 Contact Us
-                <FiArrowRight className="tw-opacity-70 group-hover:tw-opacity-100 group-hover:tw-translate-x-1 tw-transition" />
               </Link>
-            </div>
+            </motion.div>
 
-            {/* ================= FEATURES ================= */}
-            <div className="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 tw-gap-6 tw-mt-12">
-              <Feature
-                icon={<FiTrendingUp />}
-                label="SEO Optimization"
-                color="orange"
-              />
-              <Feature
-                icon={<FiShare2 />}
-                label="Social Media"
-                color="pink"
-              />
-              <Feature
-                icon={<FiBarChart2 />}
-                label="Analytics & Growth"
-                color="red"
-              />
-            </div>
+            {/* features */}
+            <motion.div
+              variants={item}
+              className="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 tw-gap-6 tw-mt-12"
+            >
+              <Feature icon={<FiTrendingUp />} label="SEO Growth" />
+              <Feature icon={<FiShare2 />} label="Social Campaigns" />
+              <Feature icon={<FiBarChart2 />} label="Analytics" />
+            </motion.div>
           </div>
 
-          {/* ================= LOTTIE ================= */}
-          <div className="lg:tw-col-span-2 tw-relative tw-order-2 lg:tw-order-2">
-            <div className="tw-relative tw-z-10 lg:tw--mr-8">
-              {/* {isActive ? (
-                <MarketingLottie isActive />
-              ) : (
-                <div className="tw-w-full tw-max-w-md tw-h-[360px]" />
-              )} */}
-            </div>
+          {/* ================= RIGHT (ANIMATED ICON SYSTEM) ================= */}
+          <motion.div
+            variants={container}
+            className="lg:tw-col-span-2 tw-relative tw-h-[360px] tw-flex tw-items-center tw-justify-center"
+          >
+            {/* Center core */}
+            <motion.div
+              variants={item}
+              className="tw-relative tw-z-10 tw-w-36 tw-h-36 tw-rounded-3xl tw-bg-white/10 tw-backdrop-blur tw-border tw-border-white/20 tw-flex tw-items-center tw-justify-center tw-text-cyan-300 tw-text-5xl tw-shadow-xl"
+            >
+              <FiActivity />
+            </motion.div>
 
-            {/* floating glows */}
-            <div className="tw-absolute tw-top-8 tw-left-4 tw-w-24 tw-h-24 tw-bg-pink-500/20 tw-rounded-full tw-blur-xl"></div>
-            <div className="tw-absolute tw-bottom-8 tw-right-4 tw-w-20 tw-h-20 tw-bg-orange-500/20 tw-rounded-full tw-blur-xl"></div>
-          </div>
+            {/* Floating icons */}
+            <FloatingIcon icon={<FiTarget />} top="10%" left="15%" />
+            <FloatingIcon icon={<FiUsers />} top="20%" right="10%" />
+            <FloatingIcon icon={<FiTrendingUp />} bottom="15%" left="12%" />
+            <FloatingIcon icon={<FiBarChart2 />} bottom="10%" right="15%" />
 
+            {/* glow */}
+            <div className="tw-absolute tw-w-72 tw-h-72 tw-bg-cyan-500/20 tw-rounded-full tw-blur-3xl" />
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 });
 
-/* ================= FEATURE ITEM ================= */
-const Feature = ({ icon, label, color }) => {
-  const colors = {
-    orange: "tw-bg-orange-500/20 tw-text-orange-300",
-    pink: "tw-bg-pink-500/20 tw-text-pink-300",
-    red: "tw-bg-red-500/20 tw-text-red-300",
-  };
+/* ================= HELPERS ================= */
 
-  return (
-    <div className="tw-group tw-flex tw-items-center tw-gap-3 hover:tw-translate-y-[-2px] tw-transition">
-      <div
-        className={`tw-p-2 tw-rounded-lg ${colors[color]} group-hover:tw-scale-110 tw-transition`}
-      >
-        {icon}
-      </div>
-      <span className="tw-text-sm tw-text-orange-200 group-hover:tw-text-white tw-transition">
-        {label}
-      </span>
+const Feature = ({ icon, label }) => (
+  <div className="tw-flex tw-items-center tw-gap-3">
+    <div className="tw-p-2 tw-rounded-lg tw-bg-cyan-500/20 tw-text-cyan-300">
+      {icon}
     </div>
-  );
-};
+    <span className="tw-text-sm tw-text-blue-200">{label}</span>
+  </div>
+);
+
+const FloatingIcon = ({ icon, ...style }) => (
+  <motion.div
+    {...float}
+    style={style}
+    className="tw-absolute tw-w-14 tw-h-14 tw-rounded-xl tw-bg-white/10 tw-backdrop-blur tw-border tw-border-white/20 tw-flex tw-items-center tw-justify-center tw-text-cyan-300 tw-shadow-lg"
+  >
+    {icon}
+  </motion.div>
+);
 
 export default HeroSlideMarketing;

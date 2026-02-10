@@ -388,7 +388,7 @@ const AboutUs = () => {
       </section>
 
       {/* ================= CORE VALUES ================= */}
-      <section className="tw-bg-gradient-to-br tw-from-slate-900 tw-to-slate-800 tw-text-white tw-py-20">
+      <section className="secondary-bg tw-text-white tw-py-20">
         <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
           <div className="tw-text-center tw-mb-16">
             <h2 className="tw-text-4xl tw-font-bold tw-mb-4 tw-text-white">
@@ -407,7 +407,7 @@ const AboutUs = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="tw-bg-slate-800/50 tw-backdrop-blur-sm tw-rounded-2xl tw-p-8 tw-border tw-border-slate-700 hover:tw-border-slate-600 tw-transition"
+                className="primary-bg tw-backdrop-blur-sm tw-rounded-2xl tw-p-8 tw-border tw-border-slate-700 hover:tw-border-slate-600 tw-transition"
               >
                 <div className="tw-text-4xl tw-mb-6">
                   {value.icon}

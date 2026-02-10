@@ -1,49 +1,82 @@
-// redux/api/courseApi.js
+// adminCourseApi.js
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { createApiService } from "../../config/apiConfig";
 
-export const courseApi = createApi({
+export const adminCourseApi = createApi({
   ...createApiService({
-    reducerPath: 'ADcourseApi',
+    reducerPath: 'adminCourseApi',
     baseUrl: '/admin/courses',
     tagTypes: ['Course'],
   }),
   endpoints: (builder) => ({
-    getCourses: builder.query({
-      query: () => '/getcourses',
-      providesTags: ['Course']
-    }),
+
     addCourse: builder.mutation({
       query: (course) => ({
-        url: '/add-course',
+        url: '/',
         method: 'POST',
-        body: course
+        body: course,
       }),
-      invalidatesTags: ['Course']
+      invalidatesTags: [{ type: 'Course', id: 'LIST' }],
     }),
+
     updateCourse: builder.mutation({
-      query: ({ _id, ...course }) => ({
-        url: `/update-course/${_id}`,
+      query: ({ id, ...course }) => ({
+        url: `/${id}`,
         method: 'PUT',
-        body: course
+        body: course,
       }),
-      invalidatesTags: ['Course']
+      invalidatesTags: (r, e, { id }) => [{ type: 'Course', id }],
     }),
+
     deleteCourse: builder.mutation({
       query: (id) => ({
-        url: `/delete-course/${id}`,
-        method: 'DELETE'
+        url: `/${id}`,
+        method: 'DELETE',
       }),
-      invalidatesTags: ['Course']
-    })
-  })
+      invalidatesTags: [{ type: 'Course', id: 'LIST' }],
+    }),
+
+    addCourseDetails: builder.mutation({
+      query: ({ courseId, body }) => ({
+        url: `/${courseId}/details`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: (r, e, { courseId }) => [
+        { type: 'Course', id: courseId },
+      ],
+    }),
+
+    updateCourseDetails: builder.mutation({
+      query: ({ courseId, body }) => ({
+        url: `/${courseId}/details`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: (r, e, { courseId }) => [
+        { type: 'Course', id: courseId },
+      ],
+    }),
+
+    updateCurriculum: builder.mutation({
+      query: ({ courseId, curriculum }) => ({
+        url: `/${courseId}/details/curriculum`,
+        method: 'PATCH',
+        body: { curriculum },
+      }),
+      invalidatesTags: (r, e, { courseId }) => [
+        { type: 'Course', id: courseId },
+      ],
+    }),
+
+  }),
 });
 
 export const {
-  
-  useGetCoursesQuery,
   useAddCourseMutation,
+  useUpdateCourseMutation,
   useDeleteCourseMutation,
-  useLazyGetCoursesQuery,
-  useUpdateCourseMutation
-} = courseApi;
+  useAddCourseDetailsMutation,
+  useUpdateCourseDetailsMutation,
+  useUpdateCurriculumMutation,
+} = adminCourseApi;

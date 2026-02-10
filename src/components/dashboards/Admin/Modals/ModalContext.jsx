@@ -3,6 +3,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import LiveClassForm from "../LiveClass/LiveClassForm";
 import CourseModal from "../CourseManagement/CoursesModal";
 import BatchModal from "../Batchs/BatchModal";
+import CourseDetailsModal from "../CourseManagement/CoursesDetailsModal";
+import InternshipsDomainModal from "../Internships/InternshipsDomainModal";
+import BatchStudentsModal from "../Batchs/BatchStudentsModal";
 
 const ModalContext = createContext();
 
@@ -13,6 +16,11 @@ export const MODAL_TYPES = {
   EDIT_COURSE: "EDIT_COURSE",
   CREATE_BATCH: "CREATE_BATCH",
   EDIT_BATCH: "EDIT_BATCH",
+  ADD_COURSE_DETAILS: "ADD_COURSE_DETAILS",
+  EDIT_COURSE_DETAILS: "EDIT_COURSE_DETAILS",
+  ADD_INTERNSHIP_DOMAIN: "ADD_INTERNSHIPS_DOMAIN",
+  EDIT_INTERNSHIP_DOMAIN: "EDIT_INTERNSHIP_DOMAIN",
+  VIEW_BATCH_STUDENTS: "VIEW_BATCH_STUDENTS"
 };
 
 export const ModalProvider = ({ children }) => {
@@ -60,6 +68,8 @@ export const ModalProvider = ({ children }) => {
             >
               {/* ================= Modal Content ================= */}
 
+              
+              {/* LIVE CLASSES CREATE AND EDIT */}
               {modalType === MODAL_TYPES.CREATE_MEETING && (
                 <LiveClassForm
                   onSuccess={closeModal}
@@ -75,7 +85,7 @@ export const ModalProvider = ({ children }) => {
                   {...modalProps}
                 />
               )}
-
+              {/* COURSE MODAL FOR ADD AND EDIT */}
               {modalType === MODAL_TYPES.ADD_COURSE && (
                 <CourseModal
                   onSuccess={closeModal}
@@ -91,7 +101,7 @@ export const ModalProvider = ({ children }) => {
                   {...modalProps}
                 />
               )}
-
+              {/* BATCH  MODAL  FOR ADD AND EDIT */}
               {modalType === MODAL_TYPES.CREATE_BATCH && (
                 <BatchModal
                   handleClose={closeModal}
@@ -106,7 +116,49 @@ export const ModalProvider = ({ children }) => {
                   mode="edit"
                   {...modalProps}
                 />
+
               )}
+              {/* COURSE DETAILS MODAL */}
+              {modalType === MODAL_TYPES.ADD_COURSE_DETAILS && (
+                <CourseDetailsModal
+                  courseId={modalProps.courseId}
+                  onSuccess={closeModal}
+                />
+              )}
+
+              {modalType === MODAL_TYPES.EDIT_COURSE_DETAILS && (
+                <CourseDetailsModal
+                  courseId={modalProps.courseId}
+                  initialData={modalProps.initialData}
+                  onSuccess={closeModal}
+                />
+              )}
+              {/* Internships domain modal */}
+              {modalType === MODAL_TYPES.ADD_INTERNSHIP_DOMAIN && (
+                <InternshipsDomainModal
+                  handleClose={closeModal}
+                  mode="add"
+                  {...modalProps}
+                />
+              )}
+
+              {modalType === MODAL_TYPES.EDIT_INTERNSHIP_DOMAIN && (
+                <InternshipsDomainModal
+                  handleClose={closeModal}
+                  mode="edit"
+                  domain={modalProps.domain}
+                />
+              )}
+              {/* Batch students modal */}
+              {modalType === MODAL_TYPES.VIEW_BATCH_STUDENTS && (
+                <BatchStudentsModal
+                  batchId={modalProps.batchId}
+                  handleClose={closeModal}
+                />
+
+              )}
+
+
             </motion.div>
           </motion.div>
         )}

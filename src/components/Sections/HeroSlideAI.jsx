@@ -1,10 +1,19 @@
 import { Link } from "react-router-dom";
 import { memo } from "react";
+import { motion } from "framer-motion";
+import {
+  FiCpu,
+  FiDatabase,
+  FiActivity,
+  FiCloud,
+  FiTrendingUp,
+} from "react-icons/fi";
+
 
 
 const HeroSlideAI = memo(({isActive}) => {
   return (
-    <section className="tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-blue-900 tw-via-indigo-900 tw-to-purple-900">
+    <section className=" tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-blue-900 tw-via-indigo-900 tw-to-purple-900">
       {/* Animated background elements */}
       <div className="tw-absolute tw-inset-0 tw-bg-grid-white/5 tw-bg-[size:20px_20px]" />
       <div className="tw-absolute tw-top-0 tw-left-0 tw-right-0 tw-h-px tw-bg-gradient-to-r tw-from-transparent tw-via-white/30 tw-to-transparent" />
@@ -100,13 +109,28 @@ const HeroSlideAI = memo(({isActive}) => {
 
           {/* Lottie Animation - Takes 2 columns and overlaps */}
           <div className="lg:tw-col-span-2 tw-relative tw-mt-8 lg:tw-mt-0">
-            <div className="tw-relative tw-z-10 tw--ml-4 lg:tw--ml-8">
-              {/* {isActive ? (
-                <AILottie isActive />
-              ) : (
-                <div className="tw-w-full tw-max-w-md tw-h-[360px]" />
-              )} */}
-            </div>
+           <div className="tw-relative tw-z-10 tw--ml-4 lg:tw--ml-8 tw-h-[360px] tw-flex tw-items-center tw-justify-center">
+
+  {/* Center AI Core */}
+  <motion.div
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
+    className="tw-relative tw-z-20 tw-w-36 tw-h-36 tw-rounded-3xl tw-bg-white/10 tw-backdrop-blur-lg tw-border tw-border-white/20 tw-flex tw-items-center tw-justify-center tw-text-cyan-300 tw-text-5xl tw-shadow-xl"
+  >
+    <FiCpu />
+  </motion.div>
+
+  {/* Floating Icons */}
+  <FloatingAIIcon icon={<FiDatabase />} top="12%" left="10%" />
+  <FloatingAIIcon icon={<FiCloud />} top="20%" right="8%" />
+  <FloatingAIIcon icon={<FiTrendingUp />} bottom="14%" left="12%" />
+  <FloatingAIIcon icon={<FiActivity />} bottom="10%" right="14%" />
+
+  {/* Glow */}
+  <div className="tw-absolute tw-w-72 tw-h-72 tw-bg-cyan-500/20 tw-rounded-full tw-blur-3xl"></div>
+</div>
+
             {/* Floating elements */}
             <div className="tw-absolute tw-top-4 tw-right-4 tw-w-20 tw-h-20 tw-bg-cyan-500/20 tw-rounded-full tw-blur-xl"></div>
             <div className="tw-absolute tw-bottom-4 tw-left-4 tw-w-16 tw-h-16 twbg-purple-500/20 tw-rounded-full tw-blur-xl"></div>
@@ -119,3 +143,19 @@ const HeroSlideAI = memo(({isActive}) => {
 });
 
 export default HeroSlideAI;
+
+
+const FloatingAIIcon = ({ icon, ...style }) => (
+  <motion.div
+    style={style}
+    animate={{ y: [0, -14, 0] }}
+    transition={{
+      duration: 4,
+      repeat: Infinity,
+      ease: "easeInOut",
+    }}
+    className="tw-absolute tw-w-14 tw-h-14 tw-rounded-xl tw-bg-white/10 tw-backdrop-blur tw-border tw-border-white/20 tw-flex tw-items-center tw-justify-center tw-text-cyan-300 tw-shadow-lg"
+  >
+    {icon}
+  </motion.div>
+);

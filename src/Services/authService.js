@@ -3,7 +3,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { createApiService } from "../config/apiConfig";
 
 export const authApi = createApi({
-  
+
   ...createApiService({
     reducerPath: 'authApi',
     baseUrl: '/auth',
@@ -34,13 +34,10 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['Auth'],
     }),
-
     verifyAuth: builder.query({
-      query: () => '/verify',
-      providesTags: ['Auth'],
-      keepUnusedDataFor: 5, // Very short cache for verification
+      query: () => "/verify",
+      
     }),
-
     refreshToken: builder.mutation({
       query: () => ({
         url: '/refresh',

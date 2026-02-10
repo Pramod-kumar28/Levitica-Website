@@ -3,11 +3,13 @@ import { useCourseHandlers } from "./courseshooks";
 import { useCourses } from "../../../../hooks/useCourses";
 import { MODAL_TYPES, useModal } from "../Modals/ModalContext";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FiPlus,
   FiEdit,
   FiTrash2,
   FiUsers,
+  FiEye,
   FiGrid,
   FiList,
   FiDownload,
@@ -111,89 +113,209 @@ const CoursesManagement = () => {
 };
 export default CoursesManagement;
 
-const CoursesCardView = ({ courses, onEdit, onDelete, onViewBatches }) => (
-  <div className="tw-grid sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
-    {courses.map(course => (
-      <motion.div
-        key={course._id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="tw-bg-white tw-rounded-xl tw-border tw-p-5 tw-shadow-sm hover:tw-shadow-md"
-      >
-        <div className="tw-flex tw-justify-between">
-          <div>
-            <h3 className="tw-font-semibold tw-text-lg">{course.name}</h3>
-            <p className="tw-text-sm tw-text-gray-500">{course.category}</p>
+
+
+
+
+const CoursesCardView = ({
+  courses,
+  onEdit,
+  onDelete,
+  onViewBatches,
+}) => {
+  const navigate = useNavigate();
+  const { openModal } = useModal();
+
+  return (
+    <div className="tw-grid sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
+      {courses.map((course) => (
+        <motion.div
+          key={course._id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="tw-bg-white tw-rounded-xl tw-border tw-p-5 tw-shadow-sm hover:tw-shadow-md"
+        >
+          <div className="tw-relative tw-h-40">
+            <img
+          src={course.thumbnail}
+          alt={course.name}
+          className="tw-w-full tw-h-full tw-object-cover"
+        />
           </div>
-          <span className="tw-text-blue-600 tw-font-semibold">
-            ₹{course.price}
-          </span>
-        </div>
+          {/* Header */}
+          <div className="tw-flex tw-justify-between tw-mt-3">
 
-        <p className="tw-text-sm tw-text-gray-600 tw-mt-3 line-clamp-2">
-          {course.description}
-        </p>
-
-        <div className="tw-flex tw-justify-between tw-items-center tw-mt-4">
-          <span className="tw-text-xs tw-text-gray-500">
-            {course.duration}
-          </span>
-
-          <div className="tw-flex tw-gap-3">
-            <FiEdit
-              className="tw-text-blue-600 tw-cursor-pointer"
-              onClick={() => onEdit(course)}
-            />
-            <FiTrash2
-              className="tw-text-red-500 tw-cursor-pointer"
-              onClick={() => onDelete(course._id)}
-            />
-            <FiUsers
-              className="tw-text-gray-600 tw-cursor-pointer"
-              onClick={() => onViewBatches(course._id)}
-            />
+            <div>
+              <h3 className="tw-font-semibold tw-text-lg">{course.name}</h3>
+              <p className="tw-text-sm tw-text-gray-500">
+                {course.category}
+              </p>
+            </div>
+            <span className="tw-text-blue-600 tw-font-semibold">
+              ₹{course.price}
+            </span>
           </div>
-        </div>
-      </motion.div>
-    ))}
-  </div>
-);
 
-const CoursesTableView = ({ courses, onEdit, onDelete, onViewBatches }) => (
-  <div className="tw-bg-white tw-rounded-xl tw-border tw-overflow-hidden">
-    <table className="tw-w-full">
-      <thead className="tw-bg-gray-50">
-        <tr className="tw-text-left tw-text-sm tw-text-gray-500">
-          <th className="tw-p-4">Course</th>
-          <th>Category</th>
-          <th>Duration</th>
-          <th>Price</th>
-          <th className="tw-text-right tw-p-4">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {courses.map(course => (
-          <tr key={course._id} className="tw-border-t">
-            <td className="tw-p-4">
-              <div className="tw-font-medium">{course.name}</div>
-              <div className="tw-text-xs tw-text-gray-500 line-clamp-1">
-                {course.description}
-              </div>
-            </td>
-            <td>{course.category}</td>
-            <td>{course.duration}</td>
-            <td className="tw-font-semibold">₹{course.price}</td>
-            <td className="tw-p-4 tw-flex tw-justify-end tw-gap-3">
-              <FiEdit onClick={() => onEdit(course)} />
-              <FiTrash2 onClick={() => onDelete(course._id)} />
-              <FiUsers onClick={() => onViewBatches(course._id)} />
-            </td>
+          {/* Meta */}
+          <p className="tw-text-sm tw-text-gray-600 tw-mt-3 line-clamp-2">
+            {/* {course.description || "No description added yet"} */}
+          </p>
+
+          <div className="tw-flex tw-justify-between tw-items-center tw-mt-4">
+            <span className="tw-text-xs tw-text-gray-500">
+              {course.duration}
+            </span>
+
+            {/* Actions */}
+            <div className="tw-flex tw-gap-3 tw-items-center">
+              {/* Edit course */}
+              <FiEdit
+                title="Edit Course"
+                className="tw-text-blue-600 tw-cursor-pointer"
+                onClick={() => onEdit(course)}
+              />
+
+              {/* Add / View Details */}
+              {course.details ? (
+                <FiEye
+                  title="View Details"
+                  className="tw-text-green-600 tw-cursor-pointer"
+                  onClick={() =>
+                    navigate(`/dashboard/course/${course._id}`)
+                  }
+                />
+              ) : (
+                <FiPlus
+                  title="Add Details"
+                  className="tw-text-green-600 tw-cursor-pointer"
+                  onClick={() =>
+                    openModal(MODAL_TYPES.ADD_COURSE_DETAILS, {
+                      courseId: course._id,
+                    })
+                  }
+                />
+              )}
+
+              {/* View batches */}
+              <FiUsers
+                title="View Batches"
+                className="tw-text-gray-600 tw-cursor-pointer"
+                onClick={() => onViewBatches(course._id)}
+              />
+
+              {/* Delete ONLY if no details */}
+              {!course.details && (
+                <FiTrash2
+                  title="Delete Course"
+                  className="tw-text-red-500 tw-cursor-pointer"
+                  onClick={() => onDelete(course._id)}
+                />
+              )}
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+
+const CoursesTableView = ({
+  courses,
+  onEdit,
+  onDelete,
+  onViewBatches,
+}) => {
+  const navigate = useNavigate();
+  const { openModal } = useModal();
+
+  return (
+    <div className="tw-bg-white tw-rounded-xl tw-border tw-overflow-hidden">
+      <table className="tw-w-full">
+        <thead className="tw-bg-gray-50">
+          <tr className="tw-text-left tw-text-sm tw-text-gray-500">
+            <th className="tw-p-4">Course</th>
+            <th>Category</th>
+            <th>Duration</th>
+            <th>Price</th>
+            <th className="tw-text-right tw-p-4">Actions</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+        </thead>
+
+        <tbody>
+          {courses.map((course) => (
+            <tr key={course._id} className="tw-border-t">
+              {/* Course */}
+              <td className="tw-p-4">
+                <div className="tw-font-medium">{course.name}</div>
+                {/* <div className="tw-text-xs tw-text-gray-500 line-clamp-1">
+                  {course.description || "No description added"}
+                </div> */}
+              </td>
+
+              <td>{course.category}</td>
+              <td>{course.duration}</td>
+              <td className="tw-font-semibold">₹{course.price}</td>
+
+              {/* Actions */}
+              <td className="tw-p-4">
+                <div className="tw-flex tw-justify-end tw-gap-4 tw-items-center">
+                  {/* Edit course */}
+                  <FiEdit
+                    title="Edit Course"
+                    className="tw-cursor-pointer tw-text-blue-600"
+                    onClick={() => onEdit(course)}
+                  />
+
+                  {/* Add / View Details */}
+                  {course.details ? (
+                    <FiEye
+                      title="View Details"
+                      className="tw-cursor-pointer tw-text-green-600"
+                      onClick={() =>
+                        navigate(
+                          `/dashboard/course/${course._id}/`
+                        )
+                      }
+                    />
+                  ) : (
+                    <FiPlus
+                      title="Add Details"
+                      className="tw-cursor-pointer tw-text-green-600"
+                      onClick={() =>
+                        openModal(MODAL_TYPES.ADD_COURSE_DETAILS, {
+                          courseId: course._id,
+                        })
+                      }
+                    />
+                  )}
+
+                  {/* View batches */}
+                  <FiUsers
+                    title="View Batches"
+                    className="tw-cursor-pointer tw-text-gray-600"
+                    onClick={() => onViewBatches(course._id)}
+                  />
+
+                  {/* Delete only if no details */}
+                  {!course.details && (
+                    <FiTrash2
+                      title="Delete Course"
+                      className="tw-cursor-pointer tw-text-red-500"
+                      onClick={() => onDelete(course._id)}
+                    />
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+
 
 const BatchSection = ({ courseId, onClose }) => (
   <motion.div

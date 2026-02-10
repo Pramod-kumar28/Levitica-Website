@@ -781,7 +781,140 @@ Our focus is on driving business value through scalable architecture, performanc
     },
   ],
 
-  }
+  },
+  "digital-marketing": {
+  id: 15,
+  title: "Digital Marketing Services",
+  slug: "digital-marketing",
+  image: "/img/svg/marketing-strategy.svg",
+  description:
+    `End-to-end digital marketing solutions designed to increase online visibility, drive qualified traffic, and generate measurable business growth.
+We combine data-driven strategies, creative execution, and continuous optimization to deliver superior ROI.
+Our focus is on building brand authority, engaging target audiences, and converting leads into loyal customers.`,
+
+  serviceTypes: [
+    {
+      name: "Search Engine Optimization (SEO)",
+      description:
+        "On-page, technical, and off-page SEO to improve organic rankings and drive sustainable traffic.",
+      icon: "Search",
+    },
+    {
+      name: "Social Media Marketing",
+      description:
+        "Strategic content creation, community management, and paid campaigns across all major platforms.",
+      icon: "Users",
+    },
+    {
+      name: "Pay-Per-Click (PPC) Advertising",
+      description:
+        "Google Ads, social media ads, and display campaigns optimized for maximum conversions.",
+      icon: "TrendingUp",
+    },
+    {
+      name: "Content Marketing",
+      description:
+        "Strategic content creation including blogs, videos, infographics, and whitepapers.",
+      icon: "FileText",
+    },
+    {
+      name: "Email Marketing",
+      description:
+        "Automated email campaigns, newsletters, and lead nurturing sequences for customer retention.",
+      icon: "Mail",
+    },
+    {
+      name: "Conversion Rate Optimization (CRO)",
+      description:
+        "A/B testing, UX analysis, and optimization to maximize website conversions and revenue.",
+      icon: "Target",
+    },
+    {
+      name: "Marketing Analytics",
+      description:
+        "Performance tracking, ROI analysis, and data-driven insights for continuous improvement.",
+      icon: "BarChart",
+    },
+  ],
+
+  keyHighlights: [
+    "Data-driven marketing strategies",
+    "Transparent reporting and analytics",
+    "Industry-specific campaign expertise",
+    "Omnichannel marketing approach",
+  ],
+
+  engagementModels: [
+    "Monthly retainer packages",
+    "Project-based campaigns",
+    "Performance-based pricing",
+    "Consultation & strategy planning",
+  ],
+
+  benefits: [
+    "Increased online visibility and brand awareness",
+    "Higher quality lead generation",
+    "Improved ROI on marketing spend",
+    "Better customer engagement and retention",
+    "Data-backed decision making",
+  ],
+
+  industries: [
+    "E-commerce & Retail",
+    "Technology & SaaS",
+    "Healthcare & Wellness",
+    "Real Estate & Construction",
+    "Education & EdTech",
+    "Hospitality & Travel",
+    "B2B & Professional Services",
+  ],
+
+  process: [
+    {
+      step: "Research & Strategy",
+      description:
+        "Market analysis, competitor research, and customized marketing strategy development.",
+    },
+    {
+      step: "Campaign Execution",
+      description:
+        "Multi-channel campaign implementation with creative content and precise targeting.",
+    },
+    {
+      step: "Monitor & Optimize",
+      description:
+        "Continuous performance tracking, A/B testing, and strategy refinement.",
+    },
+  ],
+
+  faqs: [
+    {
+      question: "How long does it take to see results from SEO?",
+      answer:
+        "SEO is a long-term strategy. Initial improvements can be seen in 3-6 months, with significant results typically appearing within 6-12 months of consistent effort.",
+    },
+    {
+      question: "Do you provide monthly performance reports?",
+      answer:
+        "Yes, we provide comprehensive monthly reports with detailed analytics, campaign performance metrics, and actionable insights.",
+    },
+    {
+      question: "Can you handle both B2B and B2C marketing campaigns?",
+      answer:
+        "Absolutely. We have expertise in creating tailored strategies for both B2B and B2C audiences across various industries.",
+    },
+    {
+      question: "How do you measure campaign success?",
+      answer:
+        "We track KPIs like traffic growth, conversion rates, ROI, engagement metrics, and customer acquisition costs using advanced analytics tools.",
+    },
+    {
+      question: "Do you manage social media content creation?",
+      answer:
+        "Yes, we offer complete social media management including content strategy, creation, scheduling, community engagement, and performance analysis.",
+    },
+  ],
+}
 }
 
 
