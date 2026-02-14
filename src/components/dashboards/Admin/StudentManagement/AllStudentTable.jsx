@@ -79,7 +79,7 @@ const StudentsTable = () => {
   }
 
   return (
-    <div className="tw-space-y-6">
+    <div className="tw-space-y-6 ">
       {/* ================= HEADER ================= */}
       <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-4">
         <div>

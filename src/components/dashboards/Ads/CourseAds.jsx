@@ -22,7 +22,7 @@ const CourseAdsCarousel = () => {
   const navigate = useNavigate();
 
   return (
-   <div className="tw-py-10">
+   <div >
      <div className="tw-w-full tw-rounded-2xl tw-overflow-hidden">
       <Swiper
         modules={[Autoplay, Pagination]}

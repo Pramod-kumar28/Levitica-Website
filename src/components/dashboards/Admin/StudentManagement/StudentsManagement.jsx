@@ -33,7 +33,7 @@ const AssignStudents = () => {
   ];
 
   return (
-    <div className="tw-space-y-6">
+    <div className="tw-space-y-6 tw-p-4">
       {/* ================= HEADER ================= */}
       <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-4">
         <div>
@@ -54,7 +54,7 @@ const AssignStudents = () => {
 
       {/* ================= TABS ================= */}
       <div className="tw-bg-white tw-rounded-xl tw-border tw-shadow-sm">
-        <div className="tw-flex tw-flex-wrap tw-gap-2 tw-border-b tw-p-3">
+        <div className="tw-flex tw-flex-wrap tw-gap-2 tw-border-b tw-p-6">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
@@ -85,7 +85,7 @@ const AssignStudents = () => {
         </div>
 
         {/* ================= CONTENT ================= */}
-        <div className="tw-p-4">
+        <div className="tw-px-7">
           <Outlet />
         </div>
       </div>

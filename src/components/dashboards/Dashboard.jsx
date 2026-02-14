@@ -37,7 +37,7 @@ const DashboardLayout = () => {
           )}
 
           {/* MAIN CONTENT (SCROLLS) */}
-          <main className="tw-flex-1 tw-overflow-y-auto tw-p-4">
+          <main className="tw-flex-1 tw-overflow-y-auto tw-p-6">
             <Suspense fallback={<Loader message="Loading module..." />}>
               <ScrollToTop />
               <Outlet />

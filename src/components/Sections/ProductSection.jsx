@@ -222,7 +222,7 @@ const ProductsSection = () => {
 
   /* ---------- RENDER ---------- */
   return (
-    <section className="tw-py-20 tw-bg-gray-50">
+    <section className="tw-py-12 tw-bg-gray-50">
       <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
         {/* Header */}
         <div className="tw-text-center tw-max-w-3xl tw-mx-auto tw-mb-14">

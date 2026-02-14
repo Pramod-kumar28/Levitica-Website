@@ -40,7 +40,6 @@ import UnassignedStudents from './components/dashboards/Admin/StudentManagement/
 import AssignedStudents from './components/dashboards/Admin/StudentManagement/AssignedStudents';
 import AddAdmin from './components/dashboards/Admin/AddAdmin/AddAdmin';
 import AdminLiveClasses from './components/dashboards/Admin/LiveClass/LiveClassManagement';
-import AdminPaymentsTable from './components/dashboards/Admin/Payments/TransactionTable';
 import AdminDashboard from './components/dashboards/Admin/AdminDashboard';
 import CoursesManagement from './components/dashboards/Admin/CourseManagement/CoursesManagement';
 import BatchManagement from './components/dashboards/Admin/Batchs/BatchManagement';
@@ -57,6 +56,7 @@ import MyCourseList from './components/dashboards/Student/MyCoursesList';
 import CommonCourseDetails from './components/dashboards/common/CommonCourseDetails';
 import DashboardGate from './protectedRoutes/DashboardGate.jsx';
 import InternshipsDomainManagement from './components/dashboards/Admin/Internships/InternshipsManagement.jsx';
+import PaymentOverview from './components/dashboards/Admin/Payments/PaymentOverview.jsx';
 /* ---------------- Layout wrappers ---------------- */
 
 const AppLayout = () => (
@@ -174,7 +174,7 @@ const AppRouter = () => {
             <Route element={<DashboardLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="addadmin" element={<AddAdmin />} />
-              <Route path="payments" element={<AdminPaymentsTable />} />
+              <Route path="payments" element={<PaymentOverview />} />
 
 
               <Route path="courses" element={<CoursesManagement />} />

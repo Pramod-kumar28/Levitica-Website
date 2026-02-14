@@ -155,7 +155,7 @@ const handleDelete = (meetingId) => {
   /* ---------------- UI ---------------- */
 
   return (
-   <div className="tw-p-6 tw-space-y-6">
+   <div className="tw-space-y-8">
     
 
   {/* ===== Page Header ===== */}

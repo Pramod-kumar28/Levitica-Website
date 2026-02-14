@@ -42,7 +42,7 @@ const promoBlocks = [
 
 const AboutUsSection = () => {
   return (
-    <section className="tw-bg-gradient-to-b tw-from-white tw-to-slate-50 tw-py-24">
+    <section className="tw-bg-gradient-to-b tw-from-white tw-to-slate-50 tw-py-16">
       <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
 
         <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-16 tw-items-center">

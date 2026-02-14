@@ -6,23 +6,14 @@ import { FaCode, FaLaptopCode, FaCalendarAlt } from "react-icons/fa";
 import { MdEmail, MdPhone, MdSchool, MdAssignment } from "react-icons/md";
 import { HiAcademicCap, HiUser } from "react-icons/hi";
 
-const InternshipPaymentForm = () => {
+const InternshipPaymentForm = ({ domains }) => {
   const { handlePayment, isLoading } = usePayment();
 
-  const domainOptions = [
-    { id: 'java-fullstack', name: 'Java Full Stack Development' },
-    { id: 'python-ai', name: 'Python Full Stack + Generative AI' },
-    { id: 'dotnet-cloud', name: '.NET Full Stack + Cloud AI' },
-    { id: 'flutter-mobile', name: 'Flutter Mobile App Development' },
-    { id: 'software-testing', name: 'Software Testing & Automation' },
-    { id: 'data-science-ai', name: 'Data Science & AI' }
-  ];
-
-  const programOptions = [
-    { id: '5days', name: '5 Days Program', days: 5, amount: 1000 },
-    { id: '15days', name: '15 Days Program', days: 15, amount: 2000 }
-  ];
-
+  const domainOptions = domains.map((domain) => ({
+    id: domain._id,
+    name: domain.name,
+  }));
+  
   const departmentOptions = [
     'Computer Science',
     'Information Technology',
@@ -76,20 +67,29 @@ const InternshipPaymentForm = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
-      console.log('Form submitted:', values);
+      
       try {
         await handlePayment(values);
       } catch (error) {
-        console.error('Payment handling error:', error);
+
       }
     }
   });
 
-  const handleProgramChange = (e) => {
-    const selectedProgram = programOptions.find(program => program.id === e.target.value);
-    formik.setFieldValue('program', e.target.value);
-    formik.setFieldValue('amount', selectedProgram ? selectedProgram.amount : 0);
-  };
+
+  // Get selected domain
+const selectedDomain = domains.find(
+  (domain) => domain._id === formik.values.domain
+);
+
+// Build program options dynamically
+const programOptions =
+  selectedDomain?.durations?.map((duration) => ({
+   id: String(duration.days),
+    name: duration.label,
+    days: duration.days,
+    amount: duration.fee,
+  })) || [];
 
   const handleCollegeInput = (e) => {
     const selectedCollegeName = e.target.value;
@@ -118,11 +118,10 @@ const InternshipPaymentForm = () => {
           <input
             type="text"
             name="name"
-            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-              formik.errors.name && formik.touched.name 
-                ? 'tw-border-red-500 focus:tw-ring-red-500' 
-                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-            } focus:tw-outline-none focus:tw-ring-2`}
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.name && formik.touched.name
+              ? 'tw-border-red-500 focus:tw-ring-red-500'
+              : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
             placeholder="Enter your name"
             value={formik.values.name}
             onChange={formik.handleChange}
@@ -141,11 +140,10 @@ const InternshipPaymentForm = () => {
           <input
             type="email"
             name="email"
-            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-              formik.errors.email && formik.touched.email 
-                ? 'tw-border-red-500 focus:tw-ring-red-500' 
-                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-            } focus:tw-outline-none focus:tw-ring-2`}
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.email && formik.touched.email
+              ? 'tw-border-red-500 focus:tw-ring-red-500'
+              : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
             placeholder="Enter your email"
             value={formik.values.email}
             onChange={formik.handleChange}
@@ -164,11 +162,10 @@ const InternshipPaymentForm = () => {
           <input
             type="tel"
             name="phone"
-            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-              formik.errors.phone && formik.touched.phone 
-                ? 'tw-border-red-500 focus:tw-ring-red500' 
-                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-            } focus:tw-outline-none focus:tw-ring-2`}
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.phone && formik.touched.phone
+              ? 'tw-border-red-500 focus:tw-ring-red500'
+              : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
             placeholder="Enter your phone number"
             value={formik.values.phone}
             onChange={formik.handleChange}
@@ -189,11 +186,10 @@ const InternshipPaymentForm = () => {
               type="text"
               name="collegeName"
               list="collegeOptions"
-              className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-                formik.errors.collegeName && formik.touched.collegeName 
-                  ? 'tw-border-red-500 focus:tw-ring-red-500' 
-                  : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-              } focus:tw-outline-none focus:tw-ring-2`}
+              className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.collegeName && formik.touched.collegeName
+                ? 'tw-border-red-500 focus:tw-ring-red-500'
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+                } focus:tw-outline-none focus:tw-ring-2`}
               placeholder="Select or type college name"
               value={formik.values.collegeName}
               onChange={handleCollegeInput}
@@ -220,11 +216,10 @@ const InternshipPaymentForm = () => {
           <input
             type="text"
             name="collegeCode"
-            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-              formik.errors.collegeCode && formik.touched.collegeCode 
-                ? 'tw-border-red-500 focus:tw-ring-red-500' 
-                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-            } focus:tw-outline-none focus:tw-ring-2`}
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.collegeCode && formik.touched.collegeCode
+              ? 'tw-border-red-500 focus:tw-ring-red-500'
+              : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
             placeholder="Enter college code"
             value={formik.values.collegeCode}
             onChange={formik.handleChange}
@@ -245,11 +240,10 @@ const InternshipPaymentForm = () => {
               type="text"
               name="department"
               list="departmentOptions"
-              className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-                formik.errors.department && formik.touched.department 
-                  ? 'tw-border-red-500 focus:tw-ring-red-500' 
-                  : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-              } focus:tw-outline-none focus:tw-ring-2`}
+              className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.department && formik.touched.department
+                ? 'tw-border-red-500 focus:tw-ring-red-500'
+                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+                } focus:tw-outline-none focus:tw-ring-2`}
               placeholder="Select or type department"
               value={formik.values.department}
               onChange={formik.handleChange}
@@ -273,11 +267,10 @@ const InternshipPaymentForm = () => {
           </label>
           <select
             name="semester"
-            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-              formik.errors.semester && formik.touched.semester 
-                ? 'tw-border-red-500 focus:tw-ring-red-500' 
-                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-            } focus:tw-outline-none focus:tw-ring-2`}
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.semester && formik.touched.semester
+              ? 'tw-border-red-500 focus:tw-ring-red-500'
+              : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
             value={formik.values.semester}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -300,11 +293,10 @@ const InternshipPaymentForm = () => {
           <input
             type="text"
             name="rollNumber"
-            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${
-              formik.errors.rollNumber && formik.touched.rollNumber 
-                ? 'tw-border-red-500 focus:tw-ring-red-500' 
-                : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
-            } focus:tw-outline-none focus:tw-ring-2`}
+            className={`tw-w-full tw-p-3 tw-border tw-rounded-lg tw-transition-all ${formik.errors.rollNumber && formik.touched.rollNumber
+              ? 'tw-border-red-500 focus:tw-ring-red-500'
+              : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
+              } focus:tw-outline-none focus:tw-ring-2`}
             placeholder="Enter roll number"
             value={formik.values.rollNumber}
             onChange={formik.handleChange}
@@ -328,8 +320,11 @@ const InternshipPaymentForm = () => {
                 : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
             } focus:tw-outline-none focus:tw-ring-2`}
             value={formik.values.domain}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            onChange={(e) => {
+              formik.setFieldValue("domain", e.target.value);
+              formik.setFieldValue("program", "");
+              formik.setFieldValue("amount", 0);
+            }}
           >
             <option value="">Select Internship Domain</option>
             {domainOptions.map((domain) => (
@@ -338,6 +333,7 @@ const InternshipPaymentForm = () => {
               </option>
             ))}
           </select>
+
           {formik.errors.domain && formik.touched.domain && (
             <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.domain}</p>
           )}
@@ -356,16 +352,24 @@ const InternshipPaymentForm = () => {
                 : 'tw-border-gray-300 focus:tw-border-blue-500 focus:tw-ring-blue-500'
             } focus:tw-outline-none focus:tw-ring-2`}
             value={formik.values.program}
-            onChange={handleProgramChange}
-            onBlur={formik.handleBlur}
+            onChange={(e) => {
+              const selectedProgram = programOptions.find(
+                (program) => program.id === e.target.value
+              );
+
+              formik.setFieldValue("program", e.target.value);
+              formik.setFieldValue("amount", selectedProgram?.amount || 0);
+            }}
+            disabled={!selectedDomain}
           >
-            <option value="">Select a program</option>
+            <option value="">Select Program Duration</option>
             {programOptions.map((program) => (
               <option key={program.id} value={program.id}>
-                {program.name} - {program.days} days - ₹{program.amount}
+                {program.days} days - ₹{program.amount}
               </option>
             ))}
           </select>
+
           {formik.errors.program && formik.touched.program && (
             <p className="tw-text-red-500 tw-text-xs tw-mt-1">{formik.errors.program}</p>
           )}
@@ -395,11 +399,10 @@ const InternshipPaymentForm = () => {
             />
             <button
               type="submit"
-              className={`tw-bg-gradient-to-r tw-from-blue-600 tw-to-purple-600 tw-text-white tw-font-semibold tw-py-3 tw-px-6 tw-rounded-lg tw-transition-all tw-w-full sm:tw-w-auto ${
-                isLoading || formik.values.amount === 0
-                  ? 'tw-opacity-50 tw-cursor-not-allowed'
-                  : 'hover:tw-from-blue-700 hover:tw-to-purple-700 hover:tw-shadow-lg'
-              }`}
+              className={`tw-bg-gradient-to-r tw-from-blue-600 tw-to-purple-600 tw-text-white tw-font-semibold tw-py-3 tw-px-6 tw-rounded-lg tw-transition-all tw-w-full sm:tw-w-auto ${isLoading || formik.values.amount === 0
+                ? 'tw-opacity-50 tw-cursor-not-allowed'
+                : 'hover:tw-from-blue-700 hover:tw-to-purple-700 hover:tw-shadow-lg'
+                }`}
               disabled={isLoading || formik.values.amount === 0}
             >
               {isLoading ? (

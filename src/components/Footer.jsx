@@ -70,8 +70,7 @@ const Footer = () => {
               <li className="tw-flex tw-items-center tw-gap-3">
                 <FaMapMarkerAlt className="tw-mt-1 tw-text-indigo-400" size={32} />
                 <span>
-                  Office #407 & 409, 4th Floor, Jain Sadguru Image's Capital Park,
-                  Madhapur, Hyderabad
+                  2nd Floor, Vittal Rao Nagar, Madhapur, Sriram Plaza, Hyderabad, Telangana – 500081
                 </span>
               </li>
 

@@ -1,183 +1,224 @@
-import { motion } from "framer-motion";
-import { useGetTransactionQuery } from "../../../../Services/paymentServices/transactionServices";
+import { useState, useMemo } from "react";
 import {
-  FiUser,
-  FiCreditCard,
-  FiCheckCircle,
-  FiXCircle,
-  FiAlertTriangle,
-  FiClock,
-} from "react-icons/fi";
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  flexRender,
+  createColumnHelper,
+} from "@tanstack/react-table";
 
+const columnHelper = createColumnHelper();
+
+// 🎨 Status Badge Styling
 const statusStyles = {
-  created: {
-    label: "CREATED",
-    class: "tw-bg-gray-100 tw-text-gray-700",
-    icon: <FiClock />,
-  },
-  paid: {
-    label: "PAID",
-    class: "tw-bg-green-100 tw-text-green-700",
-    icon: <FiCheckCircle />,
-  },
-  failed: {
-    label: "FAILED",
-    class: "tw-bg-red-100 tw-text-red-700",
-    icon: <FiXCircle />,
-  },
-  signature_invalid: {
-    label: "INVALID",
-    class: "tw-bg-yellow-100 tw-text-yellow-700",
-    icon: <FiAlertTriangle />,
-  },
+  paid: "tw-bg-green-100 tw-text-green-700",
+  failed: "tw-bg-red-100 tw-text-red-700",
+  created: "tw-bg-yellow-100 tw-text-yellow-700",
+  attempted: "tw-bg-blue-100 tw-text-blue-700",
 };
 
-const formatDateIST = (dateStr) =>
-  new Date(dateStr).toLocaleString("en-IN", {
-    timeZone: "Asia/Kolkata",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+const PaymentsTable = ({ data = [] }) => {
+  const [sorting, setSorting] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+
+  // ===============================
+  // Filtering Logic
+  // ===============================
+
+  const filteredData = useMemo(() => {
+    return data.filter((row) => {
+      const matchesStatus = statusFilter
+        ? row.status === statusFilter
+        : true;
+
+      const search = globalFilter.toLowerCase();
+
+      const matchesSearch =
+        row.name?.toLowerCase().includes(search) ||
+        row.email?.toLowerCase().includes(search) ||
+        row.orderId?.toLowerCase().includes(search) ||
+        row.paymentId?.toLowerCase().includes(search);
+
+      return matchesStatus && matchesSearch;
+    });
+  }, [data, globalFilter, statusFilter]);
+
+  // ===============================
+  // Columns
+  // ===============================
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor("orderId", {
+        header: "Order ID",
+      }),
+
+      columnHelper.accessor("paymentId", {
+        header: "Payment ID",
+      }),
+
+      columnHelper.accessor("name", {
+        header: "User",
+      }),
+
+      columnHelper.accessor("email", {
+        header: "Email",
+      }),
+
+      columnHelper.accessor("title", {
+        header: "Course / Domain",
+      }),
+
+      columnHelper.accessor("type", {
+        header: "Type",
+      }),
+
+      columnHelper.accessor("amount", {
+        header: "Amount",
+        cell: (info) => (
+          <span className="tw-font-semibold tw-text-gray-900">
+            ₹{info.getValue()?.toLocaleString()}
+          </span>
+        ),
+      }),
+
+      columnHelper.accessor("status", {
+        header: "Status",
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <span
+              className={`tw-inline-flex tw-items-center tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-semibold ${
+                statusStyles[value] ||
+                "tw-bg-gray-100 tw-text-gray-600"
+              }`}
+            >
+              {value?.toUpperCase()}
+            </span>
+          );
+        },
+      }),
+
+      columnHelper.accessor("createdAt", {
+        header: "Date",
+        cell: (info) => (
+          <span className="tw-text-gray-500 tw-text-sm">
+            {new Date(info.getValue()).toLocaleString(
+              "en-IN",
+              { timeZone: "Asia/Kolkata" }
+            )}
+          </span>
+        ),
+      }),
+    ],
+    []
+  );
+
+  // ===============================
+  // Table Instance
+  // ===============================
+
+  const table = useReactTable({
+    data: filteredData,
+    columns,
+    state: { sorting },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
-const AdminPaymentsTable = () => {
-  const { data: payments, isLoading } = useGetTransactionQuery();
-
-  if (isLoading) {
-    return (
-      <div className="tw-flex tw-justify-center tw-items-center tw-py-10 tw-text-gray-500">
-        Loading payments…
-      </div>
-    );
-  }
-
-  if (!payments?.transactions?.length) {
-    return (
-      <div className="tw-text-center tw-py-10 tw-text-gray-500">
-        No payments found.
-      </div>
-    );
-  }
+  // ===============================
+  // UI
+  // ===============================
 
   return (
-    <div className="tw-bg-white tw-border tw-rounded-xl tw-shadow-sm tw-overflow-x-auto">
+    <div className="tw-bg-white tw-border tw-rounded-xl tw-shadow-md tw-overflow-hidden">
+
+      {/* 🔎 Filters */}
+      <div className="tw-flex tw-gap-4 tw-p-5 tw-border-b tw-bg-gray-50 tw-flex-wrap">
+        <input
+          type="text"
+          placeholder="Search payments..."
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className="tw-border tw-rounded-lg tw-px-4 tw-py-2 tw-text-sm tw-bg-white focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"
+        />
+
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="tw-border tw-rounded-lg tw-px-4 tw-py-2 tw-text-sm tw-bg-white focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"
+        >
+          <option value="">All Status</option>
+          <option value="paid">Paid</option>
+          <option value="failed">Failed</option>
+          <option value="created">Created</option>
+          <option value="attempted">Attempted</option>
+        </select>
+      </div>
+
+      {/* 📋 Table */}
       <table className="tw-w-full tw-text-sm">
-        <thead className="tw-bg-gray-50 tw-border-b tw-sticky tw-top-0 tw-z-10">
-          <tr className="tw-text-left tw-text-gray-600">
-            <th className="tw-p-4">Order ID</th>
-            <th className="tw-p-4">Payment ID</th>
-            <th className="tw-p-4">User</th>
-            <th className="tw-p-4">Courses</th>
-            <th className="tw-p-4">Amount</th>
-            <th className="tw-p-4">Mode</th>
-            <th className="tw-p-4">App</th>
-            <th className="tw-p-4">Status</th>
-            <th className="tw-p-4">Date (IST)</th>
-          </tr>
+        <thead className="tw-bg-gray-100 tw-text-gray-700">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  onClick={header.column.getToggleSortingHandler()}
+                  className="tw-p-4 tw-text-left tw-font-semibold tw-cursor-pointer tw-select-none hover:tw-text-blue-600"
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+
+                  {{
+                    asc: " 🔼",
+                    desc: " 🔽",
+                  }[header.column.getIsSorted()] ?? null}
+                </th>
+              ))}
+            </tr>
+          ))}
         </thead>
 
         <tbody>
-          {payments.transactions.map((payment, idx) => {
-            const {
-              _id,
-              orderId,
-              paymentId,
-              amount,
-              status,
-              createdAt,
-              paymentMode,
-              appUsed,
-              user = {},
-              courses = [],
-            } = payment;
-
-            const statusMeta = statusStyles[status] || statusStyles.created;
-
-            return (
-              <motion.tr
-                key={_id || idx}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.04 }}
-                className="hover:tw-bg-gray-50 tw-border-b last:tw-border-b-0"
+          {table.getRowModel().rows.length === 0 ? (
+            <tr>
+              <td
+                colSpan={columns.length}
+                className="tw-text-center tw-p-8 tw-text-gray-500"
               >
-                <td className="tw-p-4 tw-font-medium tw-text-blue-600">
-                  {orderId}
-                </td>
-
-                <td className="tw-p-4 tw-text-gray-700">
-                  {paymentId || "—"}
-                </td>
-
-                <td className="tw-p-4">
-                  <div className="tw-flex tw-items-center tw-gap-2">
-                    <FiUser className="tw-text-gray-400" />
-                    <div>
-                      <p className="tw-font-medium">
-                        {user.name || "Unknown"}
-                      </p>
-                      <p className="tw-text-xs tw-text-gray-500">
-                        {user.email || "—"}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="tw-p-4">
-                  {courses.length ? (
-                    <div className="tw-space-y-1">
-                      {courses.map((course, i) => (
-                        <div key={course._id || i}>
-                          <span className="tw-font-medium">
-                            {course.name}
-                          </span>
-                          <span className="tw-ml-1 tw-text-xs tw-text-gray-500">
-                            ₹{course.price?.toLocaleString()}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="tw-text-gray-400">No courses</span>
-                  )}
-                </td>
-
-                <td className="tw-p-4 tw-font-semibold">
-                  ₹{amount?.toLocaleString()}
-                </td>
-
-                <td className="tw-p-4 tw-uppercase">
-                  <div className="tw-flex tw-items-center tw-gap-1">
-                    <FiCreditCard />
-                    {paymentMode || "—"}
-                  </div>
-                </td>
-
-                <td className="tw-p-4">
-                  {appUsed || "—"}
-                </td>
-
-                <td className="tw-p-4">
-                  <span
-                    className={`tw-inline-flex tw-items-center tw-gap-1 tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-semibold ${statusMeta.class}`}
+                No payments found
+              </td>
+            </tr>
+          ) : (
+            table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className="tw-border-b hover:tw-bg-gray-50 tw-transition"
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="tw-p-4 tw-align-middle"
                   >
-                    {statusMeta.icon}
-                    {statusMeta.label}
-                  </span>
-                </td>
-
-                <td className="tw-p-4 tw-text-gray-600">
-                  {formatDateIST(createdAt)}
-                </td>
-              </motion.tr>
-            );
-          })}
+                    {flexRender(
+                      cell.column.columnDef.cell ??
+                        cell.column.columnDef.accessorKey,
+                      cell.getContext()
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>
   );
 };
 
-export default AdminPaymentsTable;
+export default PaymentsTable;

@@ -85,7 +85,7 @@ const BatchManagement = () => {
   }
 
   return (
-    <div className="tw-p-6 tw-space-y-6">
+    <div className=" tw-space-y-8 tw-py-3">
       {/* HEADER */}
       <div className="tw-flex tw-justify-between tw-items-center">
         <div>

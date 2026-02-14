@@ -9,7 +9,7 @@ export const internshipsDomainApi = createApi({
   }),
 
   endpoints: (builder) => ({
-       /* ================= GET DOMAIN BY ID ================= */
+       /*  GET DOMAIN BY ID  */
     getInternshipsDomainById: builder.query({
       query: (id) => ({
         url: `/${id}`,

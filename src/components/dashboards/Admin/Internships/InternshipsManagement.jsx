@@ -50,7 +50,7 @@ const InternshipsDomainManagement = () => {
   }
 
   return (
-    <div className="tw-p-6 tw-space-y-6">
+    <div className="tw-py-3 tw-space-y-8">
       {/* ================= HEADER ================= */}
       <div className="tw-flex tw-items-start tw-justify-between">
         <div>

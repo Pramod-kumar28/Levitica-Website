@@ -5,64 +5,15 @@ import { MdOutlineWork } from "react-icons/md";
 import { GiAchievement } from "react-icons/gi";
 import { useGetAllInternshipsDomainsQuery } from "../../../Services/paymentServices/internshipsServices";
 
-const DetailsContent = ({ showPaymentForm, setShowPaymentForm }) => {
-  const { data, isLoading, isError } = useGetAllInternshipsDomainsQuery({
-    isActive: true, // public / student view
-  });
-
-  const domains = data?.data || [];
-  console.log("domains in details content ", domains)
+const DetailsContent = ({ domains, isLoading, isError, showPaymentForm, setShowPaymentForm }) => {
+  
   const formatDurations = (durations = []) =>
     durations.map(d => d.label).join(" / ");
 
   const formatFees = (durations = []) =>
     durations.map(d => `₹${d.fee}`).join(" / ");
 
-  // const domains = [
-  //   {
-  //     name: "Java Full Stack Development",
-  //     focus: "Core Java, Spring Boot, React, MySQL",
-  //     duration: "5 / 15 Days",
-  //     level: "Basic / Intermediate",
-  //     fee: "₹1000 / ₹2000"
-  //   },
-  //   {
-  //     name: "Python Full Stack + Generative AI",
-  //     focus: "Django, FastAPI, React, AI Integrations",
-  //     duration: "5 / 15 Days",
-  //     level: "Basic / Intermediate",
-  //     fee: "₹1000 / ₹2000"
-  //   },
-  //   {
-  //     name: ".NET Full Stack + Cloud AI",
-  //     focus: "ASP.NET Core, Angular, Azure Integrations",
-  //     duration: "5 / 15 Days",
-  //     level: "Basic / Intermediate",
-  //     fee: "₹1000 / ₹2000"
-  //   },
-  //   {
-  //     name: "Flutter Mobile App Development",
-  //     focus: "Dart, Firebase, APIs, AI Chatbot Integration",
-  //     duration: "5 / 15 Days",
-  //     level: "Basic / Intermediate",
-  //     fee: "₹1000 / ₹2000"
-  //   },
-  //   {
-  //     name: "Software Testing & Automation",
-  //     focus: "Manual, Selenium, PyTest, CI/CD",
-  //     duration: "5 / 15 Days",
-  //     level: "Basic / Intermediate",
-  //     fee: "₹1000 / ₹2000"
-  //   },
-  //   {
-  //     name: "Data Science & AI",
-  //     focus: "Python, ML, Deep Learning Basics",
-  //     duration: "5 / 15 Days",
-  //     level: "Basic / Intermediate",
-  //     fee: "₹1000 / ₹2000"
-  //   }
-  // ];
-
+ 
   const learningOutcomes = [
     "Build and deploy real-time mini projects",
     "Strengthen core technical and problem-solving skills",

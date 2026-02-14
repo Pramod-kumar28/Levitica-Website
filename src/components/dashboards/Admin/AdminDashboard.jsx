@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="tw-space-y-10 tw-p-6 tw-bg-slate-50 tw-min-h-screen">
+    <div className="tw-space-y-10  tw-min-h-screen">
       <WelcomeScreen />
       <CourseAdsCarousel />
 

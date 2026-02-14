@@ -2,9 +2,17 @@ import { useEffect, useState } from "react";
 import DetailsContent from "./DetailsContent";
 import InternshipPaymentForm from "./InternshipsPaymentForm";
 import { X } from "lucide-react";
+import { useGetAllInternshipsDomainsQuery } from "../../../Services/paymentServices/internshipsServices";
+
 
 const Internships = () => {
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  const { data, isLoading, isError } = 
+  useGetAllInternshipsDomainsQuery({ isActive: true });
+
+const domains = data?.data || [];
+console.log("domains in internships ", domains)
+
 
   /* 🔒 Prevent body scroll when mobile modal is open */
   useEffect(() => {
@@ -39,16 +47,24 @@ const Internships = () => {
           {/* Left: Details */}
           <div className="tw-w-full lg:tw-max-w-5xl tw-bg-white md:tw-mx-auto lg:tw-mx-1">
             <DetailsContent
+              domains={domains}
+              isLoading={isLoading}
+              isError={isError}
               showPaymentForm={showPaymentForm}
               setShowPaymentForm={setShowPaymentForm}
             />
+
           </div>
 
           {/* Right: Payment Form (Desktop only) */}
           <aside className="tw-hidden lg:tw-flex lg:tw-w-2/5  lg:tw-bg-gradient-to-r tw-from-[#162e66] tw-to-[#162e66] lg:tw-p-8 lg:tw-relative">
             <div className="tw-absolute tw-top-32 tw-right-28  tw-w-full">
               <div className="tw-max-w-lg tw-mx-auto">
-                <InternshipPaymentForm />
+                <InternshipPaymentForm
+                  domains={domains}
+                  isLoading={isLoading}
+                />
+
               </div>
             </div>
           </aside>
@@ -86,7 +102,11 @@ const Internships = () => {
               {/* Content */}
               <div className="tw-flex-1 tw-overflow-y-auto tw-p-4">
                 <div className="tw-max-w-lg tw-mx-auto">
-                  <InternshipPaymentForm />
+                  <InternshipPaymentForm
+                    domains={domains}
+                    isLoading={isLoading}
+                  />
+
                 </div>
               </div>
             </div>
