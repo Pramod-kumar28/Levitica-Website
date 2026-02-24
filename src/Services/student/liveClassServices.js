@@ -1,29 +1,28 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createApiService } from '../../config/apiConfig';
+import { api } from "../api";
 
-export const liveClassesApi = createApi({
-  ...createApiService({
-    reducerPath: 'liveClassesApi',
-  
-    baseUrl: '/api/classes', // Adjust base path if needed
-    
-  tagTypes: ['LiveClasses']}),
+export const liveClassesApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    // 🔍 Fetch upcoming live classes
+
+    // 🔍 FETCH UPCOMING LIVE CLASSES
     getLiveClasses: builder.query({
-      query: () => '/upcoming',
-      providesTags: ['LiveClasses'],
+      query: () => ({
+        url: "/student/classes/upcoming",
+        method: "GET",
+      }),
+      providesTags: ["LiveClasses"],
     }),
 
-    // 🚪 Join a live class (redirect to Zoom)
+    // 🚪 JOIN LIVE CLASS
     joinLiveClass: builder.mutation({
       query: (id) => ({
-        url: `/join/${id}`,
-        method: 'GET',
-        
+        url: `/student/classes/join/${id}`,
+        method: "GET",
       }),
     }),
+
   }),
+
+  overrideExisting: false,
 });
 
 export const {

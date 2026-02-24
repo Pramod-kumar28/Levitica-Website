@@ -1,30 +1,23 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../../config/apiConfig";
+import { api } from "../api";
 
-export const internshipsDomainApi = createApi({
-  ...createApiService({
-    reducerPath: "internshipsDomainApi",
-    baseUrl: "/admin/internshipsdomain",
-    tagTypes: ["InternshipDomain"],
-  }),
-
+export const internshipsDomainApi = api.injectEndpoints({
   endpoints: (builder) => ({
-       /*  GET DOMAIN BY ID  */
+
+    /* ================= GET DOMAIN BY ID ================= */
     getInternshipsDomainById: builder.query({
       query: (id) => ({
-        url: `/${id}`,
+        url: `/admin/internshipsdomain/${id}`,
         method: "GET",
       }),
       providesTags: (result, error, id) => [
         { type: "InternshipDomain", id },
       ],
-      refetchOnMountOrArgChange: true,
     }),
 
     /* ================= CREATE DOMAIN ================= */
     createInternshipsDomain: builder.mutation({
       query: (domainData) => ({
-        url: "/",
+        url: "/admin/internshipsdomain",
         method: "POST",
         body: domainData,
       }),
@@ -34,7 +27,7 @@ export const internshipsDomainApi = createApi({
     /* ================= UPDATE DOMAIN ================= */
     updateInternshipsDomain: builder.mutation({
       query: ({ id, updatedData }) => ({
-        url: `/${id}`,
+        url: `/admin/internshipsdomain/${id}`,
         method: "PUT",
         body: updatedData,
       }),
@@ -47,7 +40,7 @@ export const internshipsDomainApi = createApi({
     /* ================= DELETE DOMAIN ================= */
     deleteInternshipsDomain: builder.mutation({
       query: (id) => ({
-        url: `/${id}`,
+        url: `/admin/internshipsdomain/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [
@@ -55,7 +48,10 @@ export const internshipsDomainApi = createApi({
         { type: "InternshipDomain", id: "LIST" },
       ],
     }),
+
   }),
+
+  overrideExisting: false,
 });
 
 export const {

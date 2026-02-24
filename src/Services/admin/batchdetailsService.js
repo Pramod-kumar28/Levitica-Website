@@ -1,101 +1,97 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../../config/apiConfig";
+import { api } from "../api";
 
-export const batchDetailsApi = createApi({
-  ...createApiService({
-    reducerPath: "batchDetailsApi",
-    baseUrl: "/admin/batchs",
-    tagTypes: ["Batch", "BatchStudents"], // Add both tag types you need
-  }),
+export const batchApi = api.injectEndpoints({
   endpoints: (builder) => ({
 
+    // ✅ GET ALL BATCHES
     getBatches: builder.query({
       query: ({ page = 1, limit = 10, status } = {}) => ({
-        url: "/",
+        url: "/admin/batchs",
         params: {
           page,
           limit,
-          ...(status ? { status } : {}), // 👈 only send if exists
+          ...(status ? { status } : {}),
         },
       }),
       providesTags: (result) =>
         result?.data
           ? [
-            ...result.data.map(({ _id }) => ({
-              type: "Batch",
-              id: _id,
-            })),
-            { type: "Batch", id: "LIST" },
-          ]
+              ...result.data.map(({ _id }) => ({
+                type: "Batch",
+                id: _id,
+              })),
+              { type: "Batch", id: "LIST" },
+            ]
           : [{ type: "Batch", id: "LIST" }],
     }),
 
+    // ✅ GET STUDENTS OF A BATCH
     getBatchstudents: builder.query({
       query: ({ batchId, page = 1, limit = 10 }) => ({
-        url: `/${batchId}`,
+        url: `/admin/batchs/${batchId}`,
         method: "GET",
-        params: {
-          page,
-          limit,
-        },
+        params: { page, limit },
       }),
-
       providesTags: (result, error, { batchId }) => [
         { type: "BatchStudents", id: batchId },
         { type: "Batch", id: batchId },
       ],
-
-      refetchOnMountOrArgChange: true,
     }),
 
+    // ✅ ADD BATCH
     addBatch: builder.mutation({
       query: (newBatchData) => ({
-        url: "/newbatch",
+        url: "/admin/batchs/newbatch",
         method: "POST",
         body: newBatchData,
       }),
-      // Invalidate the batch list when a new batch is added
       invalidatesTags: [{ type: "Batch", id: "LIST" }],
     }),
+
+    // ✅ UPDATE BATCH
     updateBatch: builder.mutation({
       query: ({ batchId, updatedData }) => ({
-        url: `/${batchId}`,
+        url: `/admin/batchs/${batchId}`,
         method: "PUT",
         body: updatedData,
       }),
-      // Invalidate both the specific batch and the list
       invalidatesTags: (result, error, { batchId }) => [
         { type: "Batch", id: batchId },
         { type: "Batch", id: "LIST" },
-        // Also invalidate the students for this batch
         { type: "BatchStudents", id: batchId },
       ],
     }),
+
+    // ✅ DELETE BATCH
     deleteBatch: builder.mutation({
       query: (batchId) => ({
-        url: `/deleteBatch/${batchId}`,
+        url: `/admin/batchs/deleteBatch/${batchId}`,
         method: "DELETE",
       }),
-      // Invalidate both the specific batch and the list
       invalidatesTags: (result, error, batchId) => [
         { type: "Batch", id: batchId },
         { type: "Batch", id: "LIST" },
-        // Also invalidate the students for this batch
         { type: "BatchStudents", id: batchId },
       ],
     }),
+
+    // ✅ GET BATCHES BY COURSE
     getBatchesByCourse: builder.query({
-      query: (courseId) => `/by-course/${courseId}`,
+      query: (courseId) => ({
+        url: `/admin/batchs/by-course/${courseId}`,
+      }),
     }),
+
   }),
+
+  overrideExisting: false,
 });
 
 export const {
-
   useGetBatchesQuery,
   useGetBatchesByCourseQuery,
   useGetBatchstudentsQuery,
   useAddBatchMutation,
   useUpdateBatchMutation,
   useDeleteBatchMutation,
-} = batchDetailsApi;
+} = batchApi;

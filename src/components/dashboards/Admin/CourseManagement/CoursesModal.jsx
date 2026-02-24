@@ -10,9 +10,9 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
 
   const initialValues = isEdit
     ? {
-        _id: course._id,
+        id: course._id,
         name: course.name || '',
-        description: course.description || '',
+        shortdescription: course.shortdescription || '',
         instructor: course.instructor || '',
         duration: course.duration || '',
         price: course.price || '',
@@ -21,7 +21,7 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
       }
     : {
         name: '',
-        description: '',
+        shortdescription: '',
         instructor: '',
         duration: '',
         price: '',
@@ -33,12 +33,11 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
 
   const validationSchema = Yup.object({
     name: Yup.string().required('Course name is required'),
-    description: Yup.string().required('Description is required'),
+    shortdescription: Yup.string().required('Short description is required'),
     instructor: Yup.string().required('Instructor is required'),
     duration: Yup.string().required('Duration is required'),
     price: Yup.number()
       .typeError('Price must be a number')
-      .positive('Price must be positive')
       .required('Price is required'),
     category: Yup.string().required('Category is required'),
     thumbnail: Yup.string().url('Must be a valid URL').required('Image URL is required'),
@@ -85,6 +84,7 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={async (values, actions) => {
+                console.log(values ,"from course modal")
                 try {
                   await onSubmitFn(values);
                   if (!isEdit) actions.resetForm();
@@ -125,20 +125,20 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                     </div>
                   ))}
 
-                  {/* Description */}
+                  {/* shortdescription */}
                   <div>
                     <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
-                      Description
+                      Short Description
                     </label>
                     <Field
                       as="textarea"
-                      name="description"
+                      name="shortdescription"
                       rows={3}
                       placeholder="Course overview..."
                       className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-px-3 tw-py-2 tw-text-sm tw-transition focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
                     />
                     <ErrorMessage
-                      name="description"
+                      name="shortdescription"
                       component="p"
                       className="tw-mt-1 tw-text-xs tw-text-rose-600"
                     />

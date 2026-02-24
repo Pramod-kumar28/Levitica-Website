@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useGetStudentEnrolledCoursesQuery } from '../../../Services/student/enrollFormServices';
 import { useAddItemMutation } from '../../../Services/student/cartServices';
 import { useUnenrolledCourses } from '../../../hooks/useUnenrolledcourses';
 import { Clock, BookOpen, ShoppingCart, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { addItemToCart } from '../../../features/cartSlice';
 
 const CourseCard = ({ course, handleAdd, isAdded }) => {
   const navigate = useNavigate();
@@ -30,9 +31,7 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
           {course.category}
         </span>
 
-        <span className="tw-absolute tw-top-2 tw-right-2 tw-bg-red-600 tw-text-white tw-text-xs tw-font-semibold tw-px-2 tw-py-1 tw-rounded">
-          LIVE
-        </span>
+      
       </div>
 
       {/* Content */}
@@ -69,9 +68,16 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
       {/* Footer */}
       <div className="tw-border-t tw-p-4">
         <div className="tw-flex tw-items-center tw-justify-between">
-          <span className="tw-font-semibold tw-text-sm">
-            ₹{course.price}
-          </span>
+          {course.price === 0 ? (
+            <span className="tw-text-green-600 tw-font-semibold">
+              FREE
+            </span>
+          ) : (
+            <span className="tw-font-semibold tw-text-sm">
+              {course.price > 0 ? `₹${course.price}` : "FREE"}
+            </span>)}
+
+
         </div>
 
         <div className="tw-flex tw-gap-2 tw-mt-3">
@@ -90,7 +96,7 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
           </button>
 
           <button
-            onClick={() => handleAdd(course._id)}
+            onClick={() => handleAdd(course)}
             disabled={isAdded}
             className={`
               tw-flex-1
@@ -102,10 +108,9 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
               tw-py-2
               tw-rounded-lg
               tw-font-medium
-              ${
-                isAdded
-                  ? 'tw-bg-green-600 tw-text-white'
-                  : 'tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white'
+              ${isAdded
+                ? 'tw-bg-green-600 tw-text-white'
+                : 'tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white'
               }
             `}
           >
@@ -122,28 +127,38 @@ const CourseCard = ({ course, handleAdd, isAdded }) => {
 const CourseCatalog = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const userId = useSelector(state => state.auth.user?.id);
+const dispatch= useDispatch()
 
-  const { data: enrolledCourses, isLoading: enrolledLoading, error: enrolledError } =
-    useGetStudentEnrolledCoursesQuery(userId, { skip: !userId });
 
-  const enrolledIds = enrolledCourses?.data?.map(c => c.course?._id) || [];
+  const {
+    data: enrolledIdsData,
+    isLoading: enrolledLoading, error: enrolledError
+
+  } = useGetStudentEnrolledCoursesQuery({ type: "ids" });
+
+  const enrolledIds = enrolledIdsData?.data || [];
+
 
   const { courses, isLoading: coursesLoading, error: coursesError } =
     useUnenrolledCourses(enrolledIds);
 
-  
-    
+
+  console.log(courses, "iam")
   const [addItem] = useAddItemMutation();
 
-  const handleAdd = async (courseId) => {
+  const handleAdd = async (course) => {
     if (!userId) {
       toast.error('Please login to add items to cart');
       return;
     }
     try {
-      await addItem({ userId, courseId }).unwrap();
+      await addItem({ userId, courseId:course._id }).unwrap();
+     
+        // 2️⃣ Redux update
+    dispatch(addItemToCart(course));
+
       toast.success('Added to cart!');
-    } catch (error){
+    } catch (error) {
       toast.error('Failed to add to cart');
     }
   };

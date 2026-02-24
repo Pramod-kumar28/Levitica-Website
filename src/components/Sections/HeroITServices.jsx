@@ -9,171 +9,169 @@ import {
   FaAws,
   FaGoogle,
 } from "react-icons/fa";
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 40 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: "easeOut" },
-  },
-};
-
-const float = {
-  animate: {
-    y: [0, -12, 0],
-    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-  },
-};
+import HeroWrapper from "./HeroWrapper";
 
 const HeroITServices = memo(() => {
   return (
-    <section className=" tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-slate-950 tw-via-indigo-950 tw-to-purple-950">
-      {/* Grid overlay */}
-      <div className="tw-absolute tw-inset-0 tw-bg-grid-white/5 tw-bg-[size:24px_24px]" />
+    <HeroWrapper bg="tw-bg-gradient-to-br tw-from-slate-950 tw-via-indigo-950 tw-to-purple-950">
 
-      {/* Glow blobs */}
-      <div className="tw-absolute tw-top-[-100px] tw-left-[-100px] tw-w-[300px] tw-h-[300px] tw-bg-cyan-500/20 tw-rounded-full tw-blur-3xl" />
-      <div className="tw-absolute tw-bottom-[-120px] tw-right-[-120px] tw-w-[320px] tw-h-[320px] tw-bg-purple-500/20 tw-rounded-full tw-blur-3xl" />
+      {/* Background Effects */}
+      <div className="tw-absolute tw-inset-0 tw-bg-grid-white/5 tw-bg-[size:20px_20px]" />
+      <div className="tw-absolute tw-top-0 tw-left-0 tw-right-0 tw-h-px tw-bg-gradient-to-r tw-from-transparent tw-via-white/30 tw-to-transparent" />
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="tw-relative tw-max-w-7xl tw-mx-auto tw-px-4"
-      >
-        <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-14 tw-items-center">
-          {/* LEFT CONTENT */}
-          <div className="tw-text-white">
-            <motion.span
-              variants={item}
-              className="tw-inline-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-rounded-full tw-bg-white/10 tw-backdrop-blur tw-text-sm tw-font-medium tw-mb-6"
-            >
-              <span className="tw-w-2 tw-h-2 tw-bg-emerald-400 tw-rounded-full tw-animate-pulse" />
-              IT Services • Cloud • AI Solutions
-            </motion.span>
+      <div className="tw-relative tw-max-w-7xl tw-mx-auto tw-w-full tw-h-full tw-flex tw-items-center tw-px-4">
+        <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-5 tw-gap-8 lg:tw-gap-12 tw-items-center tw-w-full">
 
-            <motion.h1
-              variants={item}
-              className="tw-text-2xl md:tw-text-4xl lg:tw-text-5xl tw-font-bold tw-leading-tight tw-text-white"
-            >
+          {/* ================= LEFT CONTENT ================= */}
+          <div className="lg:tw-col-span-3 tw-text-white">
+
+            <span className="tw-inline-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-rounded-full tw-bg-white/10 tw-backdrop-blur-sm tw-text-sm tw-font-medium tw-mb-6">
+              <span className="tw-w-2 tw-h-2 tw-bg-emerald-400 tw-rounded-full tw-animate-pulse " />
+              IT Services • Cloud Solutions
+            </span>
+
+            <h1 className="tw-text-3xl sm:tw-text-3xl md:tw-text-4xl lg:tw-text-5xl tw-font-bold tw-leading-tight tw-text-white">
               Scalable{" "}
               <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-cyan-400 tw-to-emerald-400">
-                IT Services & Digital
+                IT Infrastructure
               </span>{" "}
-              Solutions
-            </motion.h1>
+              & Digital Systems
+            </h1>
 
-            <motion.p
-              variants={item}
-              className="tw-mt-6 tw-text-lg tw-text-blue-100 tw-max-w-xl"
-            >
-              We design, develop, and scale modern web apps, mobile platforms,
-              cloud infrastructure, and AI-powered systems for growing
-              businesses.
-            </motion.p>
+            <p className="tw-mt-6 tw-text-lg tw-text-blue-100 tw-max-w-2xl">
+              We architect, develop, and scale secure enterprise solutions —
+              from modern web apps to cloud-native systems and AI-powered platforms.
+            </p>
 
             {/* CTA */}
-            <motion.div
-              variants={item}
-              className="tw-flex tw-flex-wrap tw-gap-4 tw-mt-10"
-            >
+            <div className="tw-flex tw-flex-col sm:tw-flex-row tw-gap-3 sm:tw-gap-4 tw-mt-6 sm:tw-mt-8">
               <Link
                 to="/services"
-                className="tw-bg-gradient-to-r tw-from-cyan-500 tw-to-emerald-500 hover:tw-from-cyan-600 hover:tw-to-emerald-600 tw-text-white tw-px-8 tw-py-3 tw-rounded-xl tw-font-semibold tw-shadow-lg hover:tw-shadow-xl tw-transition-all"
-              >
+                className="
+                tw-inline-flex
+               tw-items-center
+               tw-justify-center
+               tw-gap-2
+               tw-bg-gradient-to-r
+               tw-from-cyan-500
+               tw-to-emerald-500
+               hover:tw-from-cyan-600
+               hover:tw-to-emerald-600
+               tw-text-white
+               hover:tw-text-white
+               tw-text-sm sm:tw-text-base
+               tw-px-5 sm:tw-px-8
+               tw-py-2.5 sm:tw-py-3
+               tw-rounded-lg sm:tw-rounded-xl
+               tw-font-medium sm:tw-font-semibold
+               tw-shadow-md sm:tw-shadow-lg
+               hover:tw-shadow-xl
+               tw-transition-all
+               tw-duration-300
+             ">
+
                 Explore Services
               </Link>
 
               <Link
-                to="/contact"
-                className="tw-bg-white/10 hover:tw-bg-white/20 tw-text-white tw-border tw-border-white/30 tw-px-8 tw-py-3 tw-rounded-xl tw-font-semibold tw-backdrop-blur tw-transition-all"
+                to="/contact-us"
+                className="
+      tw-inline-flex
+      tw-items-center
+      tw-justify-center
+      tw-gap-2
+      tw-bg-white/10
+      hover:tw-bg-white/20
+      tw-text-white
+      hover:tw-text-white
+      tw-border
+      tw-border-white/30
+      tw-backdrop-blur
+      tw-text-sm sm:tw-text-base
+      tw-px-5 sm:tw-px-8
+      tw-py-2.5 sm:tw-py-3
+      tw-rounded-lg sm:tw-rounded-xl
+      tw-font-medium sm:tw-font-semibold
+      tw-transition-all
+      tw-duration-300
+    "
               >
-                Get Free Consultation
+                Get Consultation
               </Link>
-            </motion.div>
-
+            </div>
             {/* Stats */}
-            <motion.div
-              variants={item}
-              className="tw-flex tw-gap-10 tw-mt-12"
-            >
+            <div className="
+            tw-flex 
+            tw-justify-between 
+            tw-items-center 
+            tw-mt-8 
+            tw-text-center
+            sm:tw-gap-8">
               <Stat value="120+" label="Projects Delivered" />
-              <Stat value="99.9%" label="Uptime" />
+              <Stat value="99.9%" label="System Uptime" />
               <Stat value="8+ Years" label="Experience" />
-            </motion.div>
+
+            </div>
           </div>
 
-          {/* RIGHT SERVICES */}
-          <motion.div
-            variants={container}
-            className="tw-grid tw-grid-cols-2 tw-gap-6"
-          >
-            <ServiceCard
-              icon={<FaCode />}
-              title="Web Development"
-              desc="High-performance React, Next.js & backend systems"
-            />
-            <ServiceCard
-              icon={<FaMobileAlt />}
-              title="App Development"
-              desc="Scalable Android & iOS applications"
-            />
-            <ServiceCard
-              icon={<FaCloud />}
-              title="Cloud Solutions"
-              desc="AWS & GCP architecture, DevOps & scaling"
-            />
-            <ServiceCard
-              icon={<FaBrain />}
-              title="Data Science & AI"
-              desc="ML models, analytics & automation"
-            />
+          {/* ================= RIGHT VISUAL SYSTEM ================= */}
+          <div className="lg:tw-col-span-2 tw-relative tw-mt-8 lg:tw-mt-0">
 
-            {/* Floating cloud icons */}
-            <motion.div
-              {...float}
-              className="tw-col-span-2 tw-flex tw-justify-center tw-gap-6 tw-mt-4 tw-text-4xl tw-text-white/70"
-            >
-              <FaAws />
-              <FaGoogle />
-            </motion.div>
-          </motion.div>
+            <div className="tw-relative tw-z-10 tw-h-[360px] tw-flex tw-items-center tw-justify-center">
+
+              {/* Center Core */}
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="tw-relative tw-z-20 tw-w-36 tw-h-36 tw-rounded-3xl tw-bg-white/10 tw-backdrop-blur-lg tw-border tw-border-white/20 tw-flex tw-items-center tw-justify-center tw-text-cyan-300 tw-text-5xl tw-shadow-xl"
+              >
+                <FaCode />
+              </motion.div>
+
+              {/* Floating Icons */}
+              <FloatingITIcon icon={<FaMobileAlt />} top="12%" left="10%" />
+              <FloatingITIcon icon={<FaCloud />} top="20%" right="8%" />
+              <FloatingITIcon icon={<FaBrain />} bottom="14%" left="12%" />
+              <FloatingITIcon icon={<FaAws />} bottom="10%" right="14%" />
+
+              {/* Glow */}
+              <div className="tw-absolute tw-w-72 tw-h-72 tw-bg-cyan-500/20 tw-rounded-full tw-blur-3xl"></div>
+            </div>
+
+            {/* Extra floating accent */}
+            <div className="tw-absolute tw-top-4 tw-right-4 tw-w-20 tw-h-20 tw-bg-cyan-500/20 tw-rounded-full tw-blur-xl"></div>
+            <div className="tw-absolute tw-bottom-4 tw-left-4 tw-w-16 tw-h-16 tw-bg-purple-500/20 tw-rounded-full tw-blur-xl"></div>
+          </div>
+
         </div>
-      </motion.div>
-    </section>
+      </div>
+    </HeroWrapper>
   );
 });
 
 export default HeroITServices;
 
-/* ------------------ Components ------------------ */
+/* ---------------- Helpers ---------------- */
 
 const Stat = ({ value, label }) => (
-  <div>
-    <div className="tw-text-3xl tw-font-bold tw-text-cyan-300">{value}</div>
-    <div className="tw-text-sm tw-text-blue-200">{label}</div>
+  <div className="tw-flex-1">
+    <div className="tw-text-lg sm:tw-text-2xl lg:tw-text-3xl tw-font-bold tw-text-cyan-300">
+      {value}
+    </div>
+    <div className="tw-text-xs sm:tw-text-sm tw-text-blue-200">
+      {label}
+    </div>
   </div>
 );
 
-const ServiceCard = ({ icon, title, desc }) => (
+const FloatingITIcon = ({ icon, ...style }) => (
   <motion.div
-    variants={item}
-    whileHover={{ y: -8, scale: 1.02 }}
-    className="tw-bg-white/10 tw-backdrop-blur-lg tw-border tw-border-white/20 tw-rounded-2xl tw-p-6 tw-text-white tw-shadow-lg"
+    style={style}
+    animate={{ y: [0, -14, 0] }}
+    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+    className="tw-absolute tw-w-14 tw-h-14 tw-rounded-xl tw-bg-white/10 tw-backdrop-blur tw-border tw-border-white/20 tw-flex tw-items-center tw-justify-center tw-text-cyan-300 tw-shadow-lg"
   >
-    <div className="tw-text-3xl tw-text-white">{icon}</div>
-    <h3 className="tw-mt-4 tw-text-lg tw-font-semibold tw-text-white">{title}</h3>
-    <p className="tw-mt-2 tw-text-sm tw-text-blue-100">{desc}</p>
+    {icon}
   </motion.div>
 );

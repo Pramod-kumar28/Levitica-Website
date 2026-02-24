@@ -1,41 +1,44 @@
-// src/features/payments/paymentsApi.js
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createApiService } from '../../config/apiConfig';
+import { api } from "../api";
 
-export const paymentsApi = createApi({
-    ...createApiService({
-        reducerPath: 'paymentsApi',
-        baseUrl: '/payments',
-        tagTypes: ['Payments'], // capitalized for convention
+export const paymentsApi = api.injectEndpoints({
+  endpoints: (builder) => ({
+
+    // ✅ GET RAZORPAY CONFIG
+    getRazorpayConfig: builder.query({
+      query: () => ({
+        url: "/api/payments/config",
+        method: "GET",
+      }),
+      providesTags: ["Payments"],
     }),
-    endpoints: (builder) => ({
-        getRazorpayConfig: builder.query({
-            query: () => '/config',
-            providesTags: ['Payments']
-        }),
-        createOrder: builder.mutation({
-            query: ({ courseIds, userId }) => ({
-                url: '/order',
-                method: 'POST',
-                body: { courseIds, userId }
-            }),
-            invalidatesTags: ['Payments']
-        }),
-        verifyPayment: builder.mutation({
-            query: (payload) => ({
-                url: '/verify',
-                method: 'POST',
-                body: payload
-            }),
-            invalidatesTags: ['Payments']
-        }),
-        
-    })
+
+    // ✅ CREATE ORDER
+    createOrder: builder.mutation({
+      query: ({ courseIds, userId }) => ({
+        url: "/api/payments/order",
+        method: "POST",
+        body: { courseIds, userId },
+      }),
+      invalidatesTags: ["Payments"],
+    }),
+
+    // ✅ VERIFY PAYMENT
+    verifyPayment: builder.mutation({
+      query: (payload) => ({
+        url: "/api/payments/verify",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["Payments"],
+    }),
+
+  }),
+
+  overrideExisting: false,
 });
 
 export const {
-    useGetRazorpayConfigQuery,
-    useCreateOrderMutation,
-    useVerifyPaymentMutation,
-    
+  useGetRazorpayConfigQuery,
+  useCreateOrderMutation,
+  useVerifyPaymentMutation,
 } = paymentsApi;

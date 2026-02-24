@@ -1,106 +1,119 @@
-// features/auth/authApi.js
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../config/apiConfig";
+import { api } from "./api";
 
-export const authApi = createApi({
-
-  ...createApiService({
-    reducerPath: 'authApi',
-    baseUrl: '/auth',
-    tagTypes: ['Auth'],
-    keepUnusedDataFor: 30, // Shorter cache for auth
-    refetchOnMountOrArgChange: true, // Always fresh auth
-  }),
-
+export const authApi = api.injectEndpoints({
   endpoints: (builder) => ({
+
+    // ✅ LOGIN
     login: builder.mutation({
       query: (credentials) => ({
-        url: '/login',
-        method: 'POST',
+        url: "/auth/login",
+        method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ['Auth'],
-      // Optimistic updates
-      onQueryStarted: async (credentials, { dispatch, queryFulfilled }) => {
-        // You can add optimistic update logic here
-      },
+      invalidatesTags: ["Auth"],
     }),
 
+    // ✅ SIGNUP
     signup: builder.mutation({
       query: (credentials) => ({
-        url: '/signup',
-        method: 'POST',
+        url: "/auth/signup",
+        method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ["Auth"],
     }),
+
+    // ✅ VERIFY AUTH
     verifyAuth: builder.query({
-      query: () => "/verify",
-      
+      query: () => ({
+        url: "/auth/verify",
+        method: "GET",
+      }),
+      providesTags: ["Auth"],
     }),
+
+    // ✅ REFRESH TOKEN
     refreshToken: builder.mutation({
       query: () => ({
-        url: '/refresh',
-        method: 'POST',
+        url: "/auth/refresh",
+        method: "POST",
       }),
-      // Don't invalidate auth to prevent loops
-      invalidatesTags: [],
     }),
 
+    // ✅ SEND VERIFICATION EMAIL
     sendVerificationEmail: builder.mutation({
       query: (body) => ({
-        url: '/send-verification-email',
-        method: 'POST',
+        url: "/auth/send-verification-email",
+        method: "POST",
         body,
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ["Auth"],
     }),
 
+    // ✅ CHANGE PASSWORD
+    changePassword: builder.mutation({
+      query: (body) => ({
+        url: "/auth/change-password",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
+
+    // ✅ VERIFY EMAIL
     verifyEmail: builder.query({
-      query: ({ ivfm, id }) => `/verify-email?ivfm=${ivfm}&id=${id}`,
-      providesTags: ['Auth'],
-      // One-time verification, no need to cache
+      query: ({ ivfm, id }) => ({
+        url: `/auth/verify-email?ivfm=${ivfm}&id=${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Auth"],
       keepUnusedDataFor: 0,
     }),
 
+    // ✅ FORGOT PASSWORD
     forgotPassword: builder.mutation({
       query: (email) => ({
-        url: '/forgot-password',
-        method: 'POST',
+        url: "/auth/forgot-password",
+        method: "POST",
         body: { email },
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ["Auth"],
     }),
 
+    // ✅ RESET PASSWORD
     resetPassword: builder.mutation({
       query: ({ email, rspd, newPassword }) => ({
-        url: '/reset-password',
-        method: 'POST',
+        url: "/auth/reset-password",
+        method: "POST",
         body: { email, rspd, newPassword },
       }),
-      invalidatesTags: ['Auth'],
+      invalidatesTags: ["Auth"],
     }),
 
+    // ✅ LOGOUT
     logout: builder.mutation({
       query: () => ({
-        url: '/logout',
-        method: 'POST',
+        url: "/auth/logout",
+        method: "POST",
       }),
-      invalidatesTags: ['Auth'],
-      // Clear all auth data on logout
-      onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+      invalidatesTags: ["Auth"],
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         await queryFulfilled;
-        // Clear all queries
-        dispatch(authApi.util.resetApiState());
+
+        // 🔥 Clear entire RTK Query cache
+        dispatch(api.util.resetApiState());
       },
     }),
+
   }),
+
+  overrideExisting: false,
 });
 
-// Enhanced hooks with better TypeScript
 export const {
   useLoginMutation,
   useSignupMutation,
+  useChangePasswordMutation,
   useVerifyAuthQuery,
   useLazyVerifyAuthQuery,
   useRefreshTokenMutation,
@@ -111,7 +124,7 @@ export const {
   useLogoutMutation,
 } = authApi;
 
-// Utility exports for advanced usage
+// Export utilities from main api
 export const {
   util: {
     updateQueryData,
@@ -121,4 +134,4 @@ export const {
     getRunningMutations,
     getRunningQueries,
   },
-} = authApi;
+} = api;

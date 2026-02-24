@@ -319,7 +319,7 @@ const CardsView = ({
       >
         {/* Header */}
         <div className="tw-flex tw-justify-between tw-items-start">
-          <h3 className="tw-font-semibold tw-text-gray-900">
+          <h3 className="tw-font-semibold lg:tw-text-xl tw-text-lg tw-text-gray-900">
             {m.title}
           </h3>
           <StatusBadge status={m.status} />

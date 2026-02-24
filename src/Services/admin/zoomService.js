@@ -1,51 +1,58 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createApiService } from '../../config/apiConfig';
+import { api } from "../api";
 
-export const zoomApi = createApi({
-  ...createApiService({
-    reducerPath: 'zoomApi',
-    baseUrl: '/admin/zoom',
-    tagTypes: ['Meeting'],
-  }),
+export const zoomApi = api.injectEndpoints({
   endpoints: (builder) => ({
+
+    // ✅ CREATE MEETING
     createMeeting: builder.mutation({
       query: (data) => ({
-        url: '/',
-        method: 'POST',
-        body: data
+        url: "/admin/zoom",
+        method: "POST",
+        body: data,
       }),
-      invalidatesTags: ['Meeting'],
+      invalidatesTags: ["Meeting"],
     }),
 
+    // ✅ GET MEETINGS
     getMeetings: builder.query({
-      query: () => '/',
-      providesTags: ['Meeting'],
+      query: () => ({
+        url: "/admin/zoom",
+        method: "GET",
+      }),
+      providesTags: ["Meeting"],
     }),
+
+    // ✅ START LIVE CLASS
     startLiveClass: builder.mutation({
       query: (id) => ({
-        url: `zoom/start/${id}`,
-        method: "GET"
+        url: `/admin/zoom/zoom/start/${id}`,
+        method: "GET",
       }),
-      providesTags: ['Meeting'],
+      invalidatesTags: ["Meeting"],
     }),
+
+    // ✅ UPDATE MEETING
     updateMeeting: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `/${id}`,
-        method: 'PUT',
-        body: data
+        url: `/admin/zoom/${id}`,
+        method: "PUT",
+        body: data,
       }),
-      invalidatesTags: ['Meeting'],
+      invalidatesTags: ["Meeting"],
     }),
+
+    // ✅ DELETE MEETING
     deleteMeeting: builder.mutation({
       query: (id) => ({
-        url: `/${id}`,
-        method: "DELETE"
+        url: `/admin/zoom/${id}`,
+        method: "DELETE",
       }),
-      invalidatesTags: ['Meeting'],
-    })
-
+      invalidatesTags: ["Meeting"],
+    }),
 
   }),
+
+  overrideExisting: false,
 });
 
 export const {

@@ -14,7 +14,7 @@ import {
   FaServer,
   FaMobileAlt,
   FaPaintBrush,
-   FaRobot,
+  FaRobot,
   FaNetworkWired,
   FaChalkboardTeacher,
   FaUserTie,
@@ -32,6 +32,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import AboutUsLottie from "./lottie/AboutUsLottie";
+import ConsultingCTA from "./Sections/CallToActionSection";
 
 const stats = [
   { value: "200+", label: "Happy Clients", icon: <FaHandshake />, color: "tw-text-emerald-500" },
@@ -179,134 +180,89 @@ const AboutUs = () => {
           <p className="tw-mt-4 tw-text-xl tw-text-slate-200 tw-max-w-2xl tw-mx-auto">
             Technology, Talent & Transformation — all under one roof.
           </p>
-         
+
         </div>
       </section>
 
       {/* ================= COMPANY STORY ================= */}
-      <section className="tw-py-20">
-        <div className="tw-max-w-7xl tw-mx-auto tw-grid lg:tw-grid-cols-2 tw-gap-16 tw-px-4 tw-items-center">
+      <section className="tw-py-16">
+        <div className="tw-max-w-6xl tw-mx-auto tw-grid lg:tw-grid-cols-2 tw-gap-12  tw-px-5 md:tw-gap-16 tw-items-center">
+
+          {/* LEFT CONTENT */}
           <div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="tw-inline-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-rounded-full tw-bg-blue-50 tw-text-blue-600 tw-mb-6"
+              className="tw-inline-flex tw-items-center tw-gap-2 
+                   tw-px-3 tw-py-1.5 tw-rounded-full 
+                   tw-bg-blue-50 tw-text-blue-600 tw-mb-5 tw-text-sm"
             >
               <FaLightbulb />
-              <span className="tw-font-medium">Our Story</span>
+              <span className="tw-font-medium">Our Journey</span>
             </motion.div>
-            
-            <h2 className="tw-text-4xl tw-font-bold tw-mb-6 tw-bg-gradient-to-r tw-from-blue-600 tw-to-purple-600 tw-bg-clip-text tw-text-transparent">
-              Pioneering Digital Excellence Since 2015
+
+            <h2 className="tw-text-2xl md:tw-text-3xl lg:tw-text-4xl 
+                     tw-font-semibold tw-mb-5 tw-text-slate-900">
+              Building Careers Through Practical Learning
             </h2>
-            
-            <div className="tw-space-y-6">
-              <p className="tw-text-lg tw-text-slate-700">
-                DCM Technologies began with a simple vision: to bridge the gap between innovative ideas and their digital realization. Today, we stand as a comprehensive technology partner for businesses worldwide.
+
+            <div className="tw-space-y-5">
+              <p className="tw-text-base md:tw-text-lg tw-text-slate-700 tw-leading-relaxed">
+                Design Career Metrics was established with a focused purpose — to bridge
+                the gap between academic education and industry expectations. We believe
+                meaningful career growth begins when learning becomes practical, measurable,
+                and guided by real-world insight.
               </p>
-              
-              <div className="tw-bg-gradient-to-r tw-from-slate-50 tw-to-white tw-p-6 tw-rounded-xl tw-border tw-border-slate-200">
-                <h3 className="tw-font-bold tw-text-xl tw-mb-3 tw-flex tw-items-center tw-gap-3">
-                  <FaGlobe className="tw-text-blue-500" />
-                  <span>Global Reach, Local Expertise</span>
-                </h3>
-                <p className="tw-text-slate-600">
-                  With teams across three continents, we combine global best practices with deep understanding of local markets to deliver solutions that resonate with your audience.
-                </p>
-              </div>
-              
-              <div className="tw-grid md:tw-grid-cols-2 tw-gap-4 tw-mt-6">
-                <div className="tw-flex tw-items-center tw-gap-3">
-                  <div className="tw-p-2 tw-bg-green-100 tw-rounded-lg">
-                    <FaServer className="tw-text-green-600" />
-                  </div>
-                  <div>
-                    <h4 className="tw-font-semibold">Infrastructure First</h4>
-                    <p className="tw-text-sm tw-text-slate-500">Enterprise-grade foundations</p>
-                  </div>
-                </div>
-                <div className="tw-flex tw-items-center tw-gap-3">
-                  <div className="tw-p-2 tw-bg-purple-100 tw-rounded-lg">
-                    <FaUsers className="tw-text-purple-600" />
-                  </div>
-                  <div>
-                    <h4 className="tw-font-semibold">Team Excellence</h4>
-                    <p className="tw-text-sm tw-text-slate-500">Certified professionals</p>
-                  </div>
-                </div>
-              </div>
+
+              <p className="tw-text-slate-600 tw-leading-relaxed">
+                Our programs are structured around hands-on internships, guided projects,
+                and continuous mentorship. Instead of theoretical exposure alone, we emphasize
+                execution, accountability, and confidence-building.
+              </p>
+
+              <p className="tw-text-slate-600 tw-leading-relaxed">
+                Every learning path is designed to help students develop clarity in their
+                goals, strengthen technical foundations, and build portfolios that reflect
+                real capability. Growth at Design Career Metrics is intentional, structured,
+                and outcome-driven.
+              </p>
             </div>
           </div>
 
-          {/* Lottie Animation */}
+          {/* RIGHT SIDE */}
           <div className="tw-flex tw-justify-center lg:tw-justify-end">
-            <div className="tw-max-w-lg tw-w-full">
+            <div className="tw-max-w-md md:tw-max-w-lg tw-w-full">
+
               <AboutUsLottie />
-              <div className="tw-mt-8 tw-p-6 tw-bg-gradient-to-br tw-from-blue-50 tw-to-indigo-50 tw-rounded-2xl tw-border tw-border-blue-100">
-                <h4 className="tw-font-bold tw-text-lg tw-mb-3 tw-flex tw-items-center tw-gap-2">
+
+              <div className="tw-mt-6 tw-p-5 
+                        tw-bg-slate-50 
+                        tw-rounded-xl 
+                        tw-border tw-border-slate-200">
+
+                <h4 className="tw-font-semibold tw-text-base tw-mb-2 
+                         tw-flex tw-items-center tw-gap-2">
                   <FaChartLine className="tw-text-blue-500" />
-                  <span>Continuous Innovation</span>
+                  <span>Focused Progress</span>
                 </h4>
-                <p className="tw-text-slate-600">
-                  We invest 20% of our resources in R&D to stay ahead of technology curves and bring future-ready solutions to our clients.
+
+                <p className="tw-text-sm tw-text-slate-600 tw-leading-relaxed">
+                  We continuously refine our programs based on evolving industry needs,
+                  ensuring that every learner remains aligned with current tools, workflows,
+                  and expectations.
                 </p>
               </div>
+
             </div>
           </div>
+
         </div>
       </section>
 
-      {/* ================= INDUSTRY EXPERTISE ================= */}
-      <section className="tw-bg-gradient-to-b tw-from-white tw-to-slate-50 tw-py-20">
-        <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
-          <div className="tw-text-center tw-max-w-3xl tw-mx-auto tw-mb-12">
-            <h2 className="tw-text-4xl tw-font-bold tw-mb-4">
-              <span className="tw-bg-gradient-to-r tw-from-cyan-600 tw-to-blue-600 tw-bg-clip-text tw-text-transparent">
-                Industry Expertise
-              </span>
-            </h2>
-            <p className="tw-text-lg tw-text-slate-600">
-              We've delivered transformative solutions across diverse sectors
-            </p>
-          </div>
-
-          <div className="tw-grid sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-8">
-            {services.map((serviceGroup, groupIndex) => (
-              <motion.div
-                key={groupIndex}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: groupIndex * 0.1 }}
-                className="tw-bg-white tw-rounded-2xl tw-p-8 tw-shadow-lg tw-border tw-border-slate-200 hover:tw-shadow-xl tw-transition-shadow"
-              >
-                <h3 className="tw-font-bold tw-text-xl tw-mb-6 tw-text-slate-800">
-                  {serviceGroup.category}
-                </h3>
-                <div className="tw-space-y-4">
-                  {serviceGroup.items.map((service, index) => (
-                    <div
-                      key={index}
-                      className="tw-flex tw-items-center tw-gap-4 tw-p-3 tw-rounded-lg hover:tw-bg-slate-50 tw-transition"
-                    >
-                      <div className={`tw-text-2xl ${service.color}`}>
-                        {service.icon}
-                      </div>
-                      <span className="tw-font-medium tw-text-slate-700">
-                        {service.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ================= COMPREHENSIVE SERVICES ================= */}
-      <section className="tw-py-20">
+      <section className="tw-pb-12">
         <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
           <div className="tw-text-center tw-mb-16">
             <h2 className="tw-text-4xl tw-font-bold tw-mb-4">
@@ -427,10 +383,10 @@ const AboutUs = () => {
       {/* ================= DIFFERENTIATORS ================= */}
       <section className="tw-py-20">
         <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
-          <div className="tw-text-center tw-mb-16">
+          <div className="tw-text-center tw-mb-8">
             <h2 className="tw-text-4xl tw-font-bold tw-mb-4">
-              <span className="tw-bg-gradient-to-r tw-from-indigo-600 tw-to-purple-600 tw-bg-clip-text tw-text-transparent">
-                Why Choose DCM Technologies
+              <span >
+                Why Choose Design Career Metrics ?
               </span>
             </h2>
             <p className="tw-text-lg tw-text-slate-600">
@@ -466,112 +422,89 @@ const AboutUs = () => {
       </section>
 
       {/* ================= STATISTICS ================= */}
-      <section className="tw-bg-gradient-to-r tw-from-blue-50 tw-to-indigo-50 tw-py-24">
+      <section className="tw-bg-gradient-to-r tw-from-blue-50 tw-to-indigo-50 tw-py-16 md:tw-py-20">
         <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
-          <div className="tw-grid tw-grid-cols-2 md:tw-grid-cols-3 lg:tw-grid-cols-6 tw-gap-8">
+          <div className="tw-grid tw-grid-cols-2 sm:tw-grid-cols-3 lg:tw-grid-cols-6 tw-gap-8">
+
             {stats.map((s, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.08 }}
                 className="tw-text-center"
               >
-                <div className={`tw-text-4xl tw-mb-4 tw-flex tw-justify-center ${s.color}`}>
+                <div className={`tw-text-2xl md:tw-text-3xl tw-mb-3 tw-flex tw-justify-center ${s.color}`}>
                   {s.icon}
                 </div>
-                <h3 className="tw-text-4xl tw-font-bold tw-text-slate-800 tw-mb-2">
+
+                <h3 className="tw-text-2xl md:tw-text-3xl tw-font-semibold tw-text-slate-800 tw-mb-1">
                   {s.value}
                 </h3>
-                <p className="tw-text-slate-600 tw-font-medium">
+
+                <p className="tw-text-sm md:tw-text-base tw-text-slate-600">
                   {s.label}
                 </p>
               </motion.div>
             ))}
+
           </div>
         </div>
       </section>
 
       {/* ================= INDUSTRIES WE SERVE ================= */}
-      <section className="tw-py-20">
-        <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
-          <div className="tw-text-center tw-mb-16">
-            <h2 className="tw-text-4xl tw-font-bold tw-mb-4">
+      <section className="tw-py-10">
+        <div className="tw-max-w-6xl tw-mx-auto tw-px-4">
+
+          <div className="tw-text-center tw-mb-12">
+            <h2 className="tw-text-2xl md:tw-text-3xl tw-font-semibold tw-mb-3">
               <span className="tw-bg-gradient-to-r tw-from-green-600 tw-to-emerald-600 tw-bg-clip-text tw-text-transparent">
                 Industries We Serve
               </span>
             </h2>
-            <p className="tw-text-lg tw-text-slate-600">
-              Tailored solutions for diverse business verticals
+
+            <p className="tw-text-sm md:tw-text-base tw-text-slate-600">
+              Focused solutions across evolving professional domains
             </p>
           </div>
 
-          <div className="tw-flex tw-flex-wrap tw-justify-center tw-gap-4">
+          <div className="tw-flex tw-flex-wrap tw-justify-center tw-gap-3 md:tw-gap-4">
+
             {industries.map((industry, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className={`${industry.color} tw-px-6 tw-py-3 tw-rounded-full tw-flex tw-items-center tw-gap-2 tw-font-medium hover:tw-shadow-lg tw-transition tw-cursor-pointer`}
+                transition={{ delay: index * 0.04 }}
+                className={`
+            ${industry.color}
+            tw-px-4 md:tw-px-5 
+            tw-py-2 md:tw-py-2.5
+            tw-rounded-full
+            tw-flex tw-items-center tw-gap-2
+            tw-text-sm md:tw-text-base
+            tw-font-medium
+            hover:tw-shadow-md
+            tw-transition-all
+            tw-duration-300
+            tw-cursor-pointer
+          `}
               >
-                {industry.icon}
+                <span className="tw-text-base md:tw-text-lg">
+                  {industry.icon}
+                </span>
                 <span>{industry.name}</span>
               </motion.div>
             ))}
+
           </div>
+
         </div>
       </section>
 
-      {/* ================= FINAL CTA ================= */}
-      <section className="tw-relative tw-overflow-hidden">
-        <div className="tw-absolute tw-inset-0 tw-bg-gradient-to-br tw-from-blue-600 tw-via-purple-600 tw-to-pink-600 tw-opacity-90" />
-        <div className="tw-relative tw-max-w-7xl tw-mx-auto tw-py-28 tw-px-4 tw-text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="tw-text-4xl md:tw-text-5xl tw-font-bold tw-text-white tw-mb-6"
-          >
-            Ready to Transform Your Digital Landscape?
-          </motion.h2>
-          <p className="tw-text-xl tw-text-blue-100 tw-mb-10 tw-max-w-3xl tw-mx-auto">
-            Join 200+ satisfied clients who've accelerated their growth with our technology solutions.
-          </p>
-
-          <div className="tw-flex tw-flex-col sm:tw-flex-row tw-gap-4 tw-justify-center">
-            <Link
-              to="/contact-us"
-              className="tw-bg-white tw-text-blue-600 hover:tw-bg-blue-50 tw-px-8 tw-py-4 tw-rounded-xl tw-font-bold tw-text-lg tw-transition tw-shadow-lg hover:tw-shadow-xl"
-            >
-              Schedule a Consultation
-            </Link>
-            <Link
-              to="/portfolio"
-              className="tw-bg-transparent tw-border-2 tw-border-white tw-text-white hover:tw-bg-white/10 tw-px-8 tw-py-4 tw-rounded-xl tw-font-bold tw-text-lg tw-transition"
-            >
-              View Our Work
-            </Link>
-          </div>
-
-          <div className="tw-mt-12 tw-flex tw-flex-wrap tw-justify-center tw-gap-6">
-            <div className="tw-text-white/80">
-              <div className="tw-font-bold tw-text-2xl">24/7</div>
-              <div className="tw-text-sm">Support</div>
-            </div>
-            <div className="tw-text-white/80">
-              <div className="tw-font-bold tw-text-2xl">30-Day</div>
-              <div className="tw-text-sm">Risk-Free Trial</div>
-            </div>
-            <div className="tw-text-white/80">
-              <div className="tw-font-bold tw-text-2xl">Free</div>
-              <div className="tw-text-sm">Initial Consultation</div>
-            </div>
-          </div>
-        </div>
-      </section>
+   <ConsultingCTA/>
 
     </div>
   );

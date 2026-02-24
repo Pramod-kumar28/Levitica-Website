@@ -1,48 +1,54 @@
-// Services/student/cartServices.js
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createApiService } from '../../config/apiConfig';
+import { api } from "../api";
 
-export const cartApi = createApi({
-  ...createApiService({ 
-    reducerPath: 'cartApi',
-    baseUrl: '/api/cart',
-    tagTypes: ['Cart'],
-  }),
+export const cartApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getCart: builder.query({  
-      query: (userId) => `/${userId}`,
-      providesTags: ['Cart']
+
+    // ✅ GET USER CART
+    getCart: builder.query({
+      query: (userId) => ({
+        url: `/api/cart/${userId}`,
+        method: "GET",
+      }),
+      providesTags: ["Cart"],
     }),
+
+    // ✅ ADD ITEM TO CART
     addItem: builder.mutation({
       query: ({ userId, courseId }) => ({
-        url: '/add',
-        method: 'POST',
-        body: { userId, courseId }
+        url: "/api/cart/add",
+        method: "POST",
+        body: { userId, courseId },
       }),
-      invalidatesTags: ['Cart']
+      invalidatesTags: ["Cart"],
     }),
+
+    // ✅ REMOVE ITEM FROM CART
     removeItem: builder.mutation({
       query: ({ userId, courseId }) => ({
-        url: '/remove',
-        method: 'POST',
-        body: { userId, courseId }
+        url: "/api/cart/remove",
+        method: "POST",
+        body: { userId, courseId },
       }),
-      invalidatesTags: ['Cart']
+      invalidatesTags: ["Cart"],
     }),
-  
+
+    // ✅ CLEAR CART
     clearCart: builder.mutation({
       query: (userId) => ({
-        url: `/clear/${userId}`,
-        method: 'DELETE'
+        url: `/api/cart/clear/${userId}`,
+        method: "DELETE",
       }),
-      invalidatesTags: ['Cart']
-    })
-  })
+      invalidatesTags: ["Cart"],
+    }),
+
+  }),
+
+  overrideExisting: false,
 });
 
-export const { 
-  useGetCartQuery, 
-  useAddItemMutation, 
-  useRemoveItemMutation, 
-  useClearCartMutation
+export const {
+  useGetCartQuery,
+  useAddItemMutation,
+  useRemoveItemMutation,
+  useClearCartMutation,
 } = cartApi;

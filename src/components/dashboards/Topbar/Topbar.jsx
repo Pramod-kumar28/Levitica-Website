@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../../../features/authSlice";
 import CartIcon from "../Student/Cart/CartIcon";
 import { Menu, Bell, ChevronDown, LogOut } from "lucide-react";
+import { useSidebarStore } from "../Sidebar/useSidebarStore";
 
-const Topbar = ({ toggleSidebar }) => {
+const Topbar = () => {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const { toggleSidebar } = useSidebarStore();
 
   return (
     <header className="tw-h-20 tw-bg-white tw-fixed tw-w-full tw-border-b tw-shadow-lg tw-flex tw-items-center tw-justify-between tw-px-4 tw-z-50">

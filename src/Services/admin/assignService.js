@@ -1,37 +1,38 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../../config/apiConfig";
+import { api } from "../api";
 
-export const assignApi = createApi({
-  ...createApiService({
-    reducerPath: 'assignApi',
-    baseUrl: '/admin/enroll',
-    tagTypes: ['Enrollments'],
-  }),
+export const assignApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    
-    getUnassignedEnrollments:builder.query({
-      query:()=>({
-        url:`/unassigned`,
-        method:'GET'
+    getUnassignedEnrollments: builder.query({
+      query: () => ({
+        url: "/admin/enroll/unassigned",
+        method: "GET",
       }),
-      providesTags: ['Enrollments'],
+      providesTags: ["Enrollments"],
     }),
+
     assignStudentsToBatch: builder.mutation({
       query: (payload) => ({
-        url: `/assign`,
-        method: 'POST',
-        body: payload 
+        url: "/admin/enroll/assign",
+        method: "POST",
+        body: payload,
       }),
-      invalidatesTags: ['Enrollments'], 
+      invalidatesTags: ["Enrollments"],
     }),
-    getAssignedEnrollments:builder.query({
-      query:()=>({
-        url:`/assigned`,
-        method:'GET'
+
+    getAssignedEnrollments: builder.query({
+      query: () => ({
+        url: "/admin/enroll/assigned",
+        method: "GET",
       }),
-      providesTags: ['Enrollments'],
-    })
+      providesTags: ["Enrollments"],
+    }),
   }),
+
+  overrideExisting: false, // safer for code splitting
 });
 
-export const { useLazyGetUnassignedEnrollmentsQuery ,useAssignStudentsToBatchMutation, useGetAssignedEnrollmentsQuery } = assignApi;
+export const {
+  useLazyGetUnassignedEnrollmentsQuery,
+  useAssignStudentsToBatchMutation,
+  useGetAssignedEnrollmentsQuery,
+} = assignApi;

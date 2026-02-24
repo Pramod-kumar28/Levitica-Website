@@ -42,10 +42,10 @@ export const useCheckoutHandler = () => {
                 razorpaySignature: response.razorpay_signature,
                 userId: user.id
               });
-              toast.success("✅ Payment verified successfully!");
+              toast.success("Payment verified successfully!");
               resolve({ success: true });
             } catch (err) {
-              toast.error("❌ Payment verification failed.");
+              toast.error(" Payment verification failed.");
               resolve({ success: false });
             }
           },

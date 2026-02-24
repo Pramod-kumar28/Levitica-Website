@@ -158,7 +158,7 @@ const CoursesCardView = ({
 
           {/* Meta */}
           <p className="tw-text-sm tw-text-gray-600 tw-mt-3 line-clamp-2">
-            {/* {course.description || "No description added yet"} */}
+            {course.shortdescription || "No  Short description added yet"}
           </p>
 
           <div className="tw-flex tw-justify-between tw-items-center tw-mt-4">
@@ -248,9 +248,9 @@ const CoursesTableView = ({
               {/* Course */}
               <td className="tw-p-4">
                 <div className="tw-font-medium">{course.name}</div>
-                {/* <div className="tw-text-xs tw-text-gray-500 line-clamp-1">
-                  {course.description || "No description added"}
-                </div> */}
+                <div className="tw-text-xs tw-text-gray-500 line-clamp-1">
+                  {course.shortdescription || "No short description added"}
+                </div>
               </td>
 
               <td>{course.category}</td>

@@ -1,30 +1,33 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../../config/apiConfig";
+import { api } from "../api";
 
-export const statsApi = createApi({
-  ...createApiService({
-    reducerPath: 'statsApi',
-    baseUrl: '/admin/stats',
-    tagTypes: ['adminstats'],
-  }),
+export const statsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    
-    getStats:builder.query({
-      query:()=>({
-        url:`/get-stats`,
-        method:'GET'
+
+    // ✅ GET ADMIN STATS
+    getStats: builder.query({
+      query: () => ({
+        url: "/admin/stats/get-stats",
+        method: "GET",
       }),
-      providesTags: ['adminstats'],
+      providesTags: ["adminstats"],
     }),
-    createUser:builder.mutation({
-      query:(data)=>({
-        url:'/create-user',
-        method:"POST",
-        body:data
+
+    // ✅ CREATE USER (affects stats)
+    createUser: builder.mutation({
+      query: (data) => ({
+        url: "/admin/stats/create-user",
+        method: "POST",
+        body: data,
       }),
-      invalidatesTags:['adminstats']
-    })
+      invalidatesTags: ["adminstats"],
+    }),
+
   }),
+
+  overrideExisting: false,
 });
 
-export const { useGetStatsQuery,useCreateUserMutation} = statsApi;
+export const {
+  useGetStatsQuery,
+  useCreateUserMutation,
+} = statsApi;

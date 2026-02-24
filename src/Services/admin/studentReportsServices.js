@@ -1,32 +1,34 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../../config/apiConfig";
+import { api } from "../api";
 
-export const studentReportsApi = createApi({
-  ...createApiService({
-    reducerPath: 'studentReportsApi',
-    baseUrl: '/admin/student-reports',
-    tagTypes: ["Students Report"],
-  }),
+export const studentReportsApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    
-   
-      getStudents: builder.query({
-      query: ({ page = 1, limit = 10, search = '' }) => ({
-        url: '/',
+
+    // ✅ GET STUDENTS (Paginated + Search)
+    getStudents: builder.query({
+      query: ({ page = 1, limit = 10, search = "" }) => ({
+        url: "/admin/student-reports",
         params: { page, limit, search },
       }),
-      providesTags: ['Students'],
+      providesTags: ["Students"],
     }),
-    
+
+    // ✅ DOWNLOAD STUDENTS EXCEL (Blob)
     downloadStudentsExcel: builder.mutation({
       query: (filters = {}) => ({
-        url: 'excel',
+        url: "/admin/student-reports/excel",
+        method: "GET",
         params: filters,
         responseHandler: (response) => response.blob(),
-        cache: 'no-cache',
+        cache: "no-cache",
       }),
     }),
+
   }),
+
+  overrideExisting: false,
 });
 
-export const {useDownloadStudentsExcelMutation,useGetStudentsQuery} = studentReportsApi;
+export const {
+  useDownloadStudentsExcelMutation,
+  useGetStudentsQuery,
+} = studentReportsApi;

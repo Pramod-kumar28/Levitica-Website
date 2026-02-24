@@ -1,11 +1,12 @@
 
 import { Routes, Route } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
+import './App.css'
 
 // Layouts
 import Navbar from './components/Navbar';
 import Footer from "./components/Footer";
-import ScrollToTop from './utils/ScrollToTop';
+
 
 // Public pages
 import HomePage from './components/HomePage';
@@ -57,12 +58,13 @@ import CommonCourseDetails from './components/dashboards/common/CommonCourseDeta
 import DashboardGate from './protectedRoutes/DashboardGate.jsx';
 import InternshipsDomainManagement from './components/dashboards/Admin/Internships/InternshipsManagement.jsx';
 import PaymentOverview from './components/dashboards/Admin/Payments/PaymentOverview.jsx';
+import StudentEnrolledCourseDetails from './components/dashboards/Student/MyCourseDetails.jsx';
+
 /* ---------------- Layout wrappers ---------------- */
 
 const AppLayout = () => (
   <>
     <Navbar />
-    <ScrollToTop />
     <Outlet />
     <Footer />
 
@@ -72,7 +74,6 @@ const AppLayout = () => (
 
 const AuthLayout = () => (
   <>
-    <ScrollToTop />
     <Outlet />
   </>
 );
@@ -80,7 +81,7 @@ const AuthLayout = () => (
 const NoFooterLayout = () => (
   <>
     <Navbar />
-    <ScrollToTop />
+  
     <Outlet />
   </>
 );
@@ -153,10 +154,12 @@ const AppRouter = () => {
               <Route index element={<StudentDashboard />} />
               <Route path="browsercourses" element={<CourseCatalog />} />
               <Route path="mycourses" element={<MyCourseList />} />
+              <Route path="mycourses/:courseId" element={<StudentEnrolledCourseDetails />} />
+
 
               <Route path="live-session" element={<LiveClasses />} />
               <Route path="class-resources" element={<ClassResources />} />
-              <Route path="course/:id" element={<CommonCourseDetails />} />
+              {/* <Route path="course/:id" element={<CommonCourseDetails />} /> */}
 
               <Route path="ask-questions" element={<AskQuestions />} />
               {/* <Route path="book-session" element={<BookOneOnOne />} /> */}

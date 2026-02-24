@@ -39,7 +39,7 @@ export default function MyLearnings() {
 
         {enrollments.length > 0 && (
           <button
-            onClick={() => navigate("allcourses")}
+            onClick={() => navigate("/dashboard/student/mycourses")}
             className="tw-flex tw-items-center tw-gap-1 tw-text-sm tw-font-medium tw-text-blue-600 hover:tw-underline"
           >
             View all <ArrowRight size={14} />
@@ -52,8 +52,6 @@ export default function MyLearnings() {
         {enrollments.length > 0 ? (
           <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-3 tw-gap-6">
             {enrollments.slice(0, 3).map((enrollment) => {
-              const progress = enrollment.progress || 0;
-              const isStarted = progress > 0;
 
               return (
                 <motion.div
@@ -88,42 +86,17 @@ export default function MyLearnings() {
                       {enrollment.completedLessons?.length || 0} /{" "}
                       {enrollment.course?.totalLessons || 0} lessons
                     </div>
-
-                    {/* Progress */}
-                    <div className="tw-mt-4">
-                      <div className="tw-flex tw-justify-between tw-text-xs tw-mb-1">
-                        <span className="tw-text-gray-500">Progress</span>
-                        <span className="tw-font-medium">{progress}%</span>
-                      </div>
-
-                      <div className="tw-h-2 tw-bg-gray-200 tw-rounded-full tw-overflow-hidden">
-                        <div
-                          className="tw-h-full tw-bg-blue-600 tw-transition-all"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                    </div>
                   </div>
 
                   {/* Action */}
                   <div className="tw-p-4 tw-border-t">
                     <button
                       onClick={() =>
-                        navigate(`/learn/${enrollment.courseId}`)
+                        navigate(`/dashboard/student/mycourses/${enrollment.course._id}`)
                       }
-                      className={`
-                        tw-w-full
-                        tw-flex tw-items-center tw-justify-center tw-gap-2
-                        tw-text-sm tw-font-medium
-                        tw-py-2.5 tw-rounded-lg
-                        ${
-                          isStarted
-                            ? "tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white"
-                            : "tw-bg-emerald-600 hover:tw-bg-emerald-700 tw-text-white"
-                        }
-                      `}
+                      className="tw-w-full tw-flex tw-items-center tw-justify-center tw-gap-2 tw-text-sm tw-font-medium tw-py-2.5 tw-rounded-lg tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white"
                     >
-                      {isStarted ? "Continue Learning" : "Start Learning"}
+                      View Course
                       <Play size={16} />
                     </button>
                   </div>
@@ -147,7 +120,7 @@ export default function MyLearnings() {
             </p>
 
             <button
-              onClick={() => navigate("browsercourses")}
+              onClick={() => navigate("/dashboard/student/browsercourses")}
               className="tw-mt-5 tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white tw-text-sm tw-font-medium tw-px-6 tw-py-2.5 tw-rounded-lg"
             >
               Browse Courses

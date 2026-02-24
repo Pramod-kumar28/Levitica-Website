@@ -209,7 +209,7 @@ const BatchCards = ({ batches, onEdit, onDelete ,onViewStudents}) => (
         {/* ===== HEADER ===== */}
         <div className="tw-flex tw-items-start tw-justify-between">
           <div>
-            <h3 className="tw-font-semibold tw-text-slate-900">
+            <h3 className="tw-font-semibold lg:tw-text-xl tw-text-lg tw-text-slate-900">
               {batch.batchName}
             </h3>
 

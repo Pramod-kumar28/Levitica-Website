@@ -10,6 +10,7 @@ import {
   FiUsers,
   FiActivity,
 } from "react-icons/fi";
+import HeroWrapper from "./HeroWrapper";
 
 const container = {
   hidden: { opacity: 0 },
@@ -36,18 +37,18 @@ const float = {
 };
 
 const HeroSlideMarketing = memo(() => {
+
   return (
-    <section className=" tw-relative tw-overflow-hidden tw-py-28 tw-bg-gradient-to-br tw-from-slate-950 tw-via-indigo-950 tw-to-blue-950">
-      {/* background glow */}
+    <HeroWrapper bg="tw-bg-gradient-to-br tw-from-slate-950 tw-via-indigo-950 tw-to-purple-950">      {/* background glow */}
       <div className="tw-absolute tw-inset-0 tw-bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] tw-from-white/5 tw-to-transparent" />
 
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="tw-relative tw-max-w-7xl tw-mx-auto tw-px-4"
+        className="tw-relative tw-max-w-7xl tw-mx-auto tw-w-full tw-h-full tw-flex tw-items-center"
       >
-        <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-5 tw-gap-12 tw-items-center">
+        <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-5 tw-gap-8 lg:tw-gap-12 tw-items-center tw-w-full">
 
           {/* ================= LEFT ================= */}
           <div className="lg:tw-col-span-3 tw-text-white">
@@ -61,7 +62,7 @@ const HeroSlideMarketing = memo(() => {
 
             <motion.h1
               variants={item}
-              className="tw-text-4xl md:tw-text-5xl lg:tw-text-6xl tw-font-bold tw-text-white "
+              className="tw-text-4xl  md:tw-text-4xl lg:tw-text-5xl tw-font-bold tw-text-white "
             >
               Digital Marketing That{" "}
               <span className="tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-cyan-400 tw-to-blue-400">
@@ -78,18 +79,62 @@ const HeroSlideMarketing = memo(() => {
             </motion.p>
 
             {/* CTA */}
-            <motion.div variants={item} className="tw-flex tw-gap-4 tw-mt-8">
+            <motion.div
+              variants={item}
+              className="tw-flex tw-flex-col sm:tw-flex-row tw-gap-3 sm:tw-gap-4 tw-mt-6 sm:tw-mt-8"
+            >
               <Link
                 to="/services"
-                className="tw-group tw-inline-flex tw-items-center tw-gap-2 tw-bg-gradient-to-r tw-from-cyan-500 tw-to-blue-500 hover:tw-from-cyan-600 hover:tw-to-blue-600 tw-text-white tw-px-8 tw-py-3 tw-rounded-xl tw-font-semibold tw-shadow-lg hover:tw-shadow-xl tw-transition"
+                className="
+      tw-group
+      tw-inline-flex
+      tw-items-center
+      tw-justify-center
+      tw-gap-2
+      tw-bg-gradient-to-r
+      tw-from-cyan-500
+      tw-to-blue-500
+      hover:tw-from-cyan-600
+      hover:tw-to-blue-600
+      tw-text-white
+      hover:tw-text-white
+      tw-text-sm sm:tw-text-base
+      tw-px-5 sm:tw-px-8
+      tw-py-2.5 sm:tw-py-3
+      tw-rounded-lg sm:tw-rounded-xl
+      tw-font-medium sm:tw-font-semibold
+      tw-shadow-md sm:tw-shadow-lg
+      hover:tw-shadow-xl
+      tw-transition-all
+      tw-duration-300
+    "
               >
                 Explore Services
-                <FiArrowRight className="group-hover:tw-translate-x-1 tw-transition" />
+                <FiArrowRight className="tw-text-base group-hover:tw-translate-x-1 tw-transition" />
               </Link>
 
               <Link
                 to="/contact-us"
-                className="tw-inline-flex tw-items-center tw-gap-2 tw-bg-white/10 hover:tw-bg-white/20 tw-text-white tw-border tw-border-white/30 tw-px-8 tw-py-3 tw-rounded-xl tw-font-semibold tw-backdrop-blur tw-transition"
+                className="
+      tw-inline-flex
+      tw-items-center
+      tw-justify-center
+      tw-gap-2
+      tw-bg-white/10
+      hover:tw-bg-white/20
+      tw-backdrop-blur-sm
+      tw-text-white
+      hover:tw-text-white
+      tw-border
+      tw-border-white/30
+      tw-text-sm sm:tw-text-base
+      tw-px-5 sm:tw-px-8
+      tw-py-2.5 sm:tw-py-3
+      tw-rounded-lg sm:tw-rounded-xl
+      tw-font-medium sm:tw-font-semibold
+      tw-transition-all
+      tw-duration-300
+    "
               >
                 Contact Us
               </Link>
@@ -130,7 +175,7 @@ const HeroSlideMarketing = memo(() => {
           </motion.div>
         </div>
       </motion.div>
-    </section>
+    </HeroWrapper>
   );
 });
 

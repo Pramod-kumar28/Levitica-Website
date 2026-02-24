@@ -11,7 +11,6 @@ const BaseLottie = ({
       animationData={animationData}
       loop={loop && isActive}
       autoplay={isActive}
-      renderer="canvas"   // 🔥 BIG performance win
       className={className}
     />
   );

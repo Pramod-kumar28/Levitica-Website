@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import {
   BookOpen,
@@ -7,7 +6,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import { useGetStudentbyIdQuery } from "../../../Services/student/enrollFormServices";
+import { useGetStudentEnrolledCoursesQuery } from "../../../Services/student/enrollFormServices";
+import { Link } from "react-router-dom";
 
 /* ================= COURSE CARD ================= */
 const EnrolledCourseCard = ({ course, index }) => {
@@ -58,7 +58,8 @@ const EnrolledCourseCard = ({ course, index }) => {
 
       {/* Action */}
       <div className="tw-p-4 tw-border-t">
-        <button
+        <Link
+          to={`${course._id}`}
           className="
             tw-w-full
             tw-flex
@@ -76,7 +77,7 @@ const EnrolledCourseCard = ({ course, index }) => {
         >
           Go to Course
           <ArrowRight size={16} />
-        </button>
+        </Link>
       </div>
     </motion.div>
   );
@@ -99,16 +100,21 @@ const EnrolledCoursesGrid = ({ courses }) => {
 
 /* ================= MAIN ================= */
 const MyCourseList = () => {
-  const { user } = useSelector((state) => state.auth);
 
-  const { data, isLoading } = useGetStudentbyIdQuery(user?.id, {
-    skip: !user?.id,
-  });
-
+  const {
+    data: enrolledSummaryData,
+    isLoading,
+    
+  } = useGetStudentEnrolledCoursesQuery({ type: "summary" });
+  console.log(enrolledSummaryData, 'iam enrolledcourse')
   const enrolledCourses =
-    data?.enrollment?.enrolledCourses?.map(
-      (item) => item.course
-    ) || [];
+    enrolledSummaryData?.data?.map(item => ({
+      ...item.course,            // flatten course
+      progress: item.progress,
+      completed: item.completed,
+      enrolledAt: item.enrolledAt
+    })) || [];
+
 
   return (
     <div className="tw-max-w-7xl tw-mx-auto tw-px-4 tw-py-6">

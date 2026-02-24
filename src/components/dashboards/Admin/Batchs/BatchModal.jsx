@@ -25,20 +25,22 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
   /* ================= INITIAL VALUES ================= */
   const initialValues = isEdit
     ? {
-        batchId: batch._id,
-        batchName: batch.batchName || "",
-        courseId: batch.courseId?._id || "",
-        startDate: batch.startDate?.slice(0, 10) || "",
-        endDate: batch.endDate?.slice(0, 10) || "",
-        status: batch.status || "active",
-      }
+      batchId: batch._id,
+      batchName: batch.batchName || "",
+      courseId: batch.courseId?._id || "",
+      startDate: batch.startDate?.slice(0, 10) || "",
+      endDate: batch.endDate?.slice(0, 10) || "",
+      status: batch.status || "active",
+      completedAt: batch.completedAt?.slice(0, 10) || "",
+    }
     : {
-        batchName: "",
-        courseId: "",
-        startDate: "",
-        endDate: "",
-        status: "active",
-      };
+      batchName: "",
+      courseId: "",
+      startDate: "",
+      endDate: "",
+      status: "active",
+      completedAt: "",
+    };
 
   /* ================= VALIDATION ================= */
   const validationSchema = Yup.object({
@@ -49,8 +51,15 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
       .min(Yup.ref("startDate"), "End date must be after start date")
       .required("End date is required"),
     status: Yup.string()
-      .oneOf(["active", "completed", "cancelled","inactive"])
+      .oneOf(["active", "completed", "cancelled", "inactive"])
       .required("Status is required"),
+
+    completedAt: Yup.date().when("status", {
+      is: "completed",
+      then: (schema) =>
+        schema.required("Completion date is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
   });
 
   /* ================= SUBMIT ================= */
@@ -105,7 +114,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
               validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
-              {() => (
+              {({ values, setFieldValue }) => (
                 <Form className="tw-space-y-5">
                   {/* Batch Name */}
                   <div>
@@ -118,7 +127,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                   <div>
                     <label className="tw-label">Course</label>
                     <div className="tw-relative">
-                     
+
                       <Field as="select" name="courseId" className="tw-input tw-pl-10 tw-pr-4">
                         <option value="">Select course</option>
                         {courses?.map((c) => (
@@ -146,7 +155,24 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                   {/* STATUS DROPDOWN */}
                   <div>
                     <label className="tw-label">Batch Status</label>
-                    <Field as="select" name="status" className="tw-input">
+                    <Field
+                      as="select"
+                      name="status"
+                      className="tw-input"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setFieldValue("status", value);
+
+                        if (value === "completed") {
+                          setFieldValue(
+                            "completedAt",
+                            new Date().toISOString().slice(0, 10)
+                          );
+                        } else {
+                          setFieldValue("completedAt", "");
+                        }
+                      }}
+                    >
                       <option value="active">Active</option>
                       <option value="inactive">Inactive</option>
                       <option value="completed">Completed</option>
@@ -154,6 +180,23 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                     </Field>
                     <ErrorMessage name="status" component="p" className="tw-error" />
                   </div>
+                  {/* COMPLETED AT (Conditional) */}
+                  {values.status === "completed" && (
+                    <div>
+                      <label className="tw-label">Completed At</label>
+                      <Field
+                        type="date"
+                        name="completedAt"
+                        className="tw-input"
+                      />
+                      <ErrorMessage
+                        name="completedAt"
+                        component="p"
+                        className="tw-error"
+                      />
+                    </div>
+                  )}
+
 
                   {/* Submit */}
                   <button

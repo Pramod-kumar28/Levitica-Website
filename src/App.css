@@ -4532,3 +4532,60 @@ button.scroll-top:focus{
 .subscribe-form-footer.subscribe-form-two{
     top: 0;
 }
+
+/* ========== HERO CAROUSEL STANDARDIZATION ========== */
+
+.hero-carousel {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.hero-carousel .swiper-slide {
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-equal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    min-height: 100%;
+    width: 100%;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .hero-carousel {
+        min-height: 100vh;
+    }
+    
+    .hero-carousel .swiper-slide {
+        min-height: 100vh;
+    }
+}
+
+/* Desktop Optimization */
+@media (min-width: 768px) {
+    .hero-carousel {
+        min-height: calc(100vh - 70px);
+    }
+    
+    .hero-carousel .swiper-slide {
+        min-height: calc(100vh - 70px);
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1024px) {
+    .hero-carousel {
+        min-height: 100vh;
+    }
+    
+    .hero-carousel .swiper-slide {
+        min-height: 100vh;
+    }
+}

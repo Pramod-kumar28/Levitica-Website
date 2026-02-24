@@ -1,6 +1,6 @@
 // config/baseQueryWithReauth.js
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { logout, tokenRefreshed } from "../features/authSlice";
+import { logout } from "../features/authSlice";
 
 const BASE_URL =
   process.env.REACT_APP_ENV === "production"
@@ -29,7 +29,10 @@ export const createBaseQueryWithReauth = (baseUrl = "") => {
   return async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
 
-    if (result.error?.status === 401) {
+    if (
+      result.error?.status === 401 &&
+      args?.url !== "/auth/refresh"
+    ) {
       try {
         if (!refreshPromise) {
           refreshPromise = baseQuery(
@@ -44,9 +47,6 @@ export const createBaseQueryWithReauth = (baseUrl = "") => {
         const refreshResult = await refreshPromise;
 
         if (refreshResult?.data) {
-          api.dispatch(tokenRefreshed());
-
-          // 🔁 retry original request
           result = await baseQuery(args, api, extraOptions);
         } else {
           api.dispatch(logout());

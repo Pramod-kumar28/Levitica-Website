@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const ConsultingCTA = () => {
   return (
-    <section className="tw-bg-slate-100 tw-py-20">
+    <section className="tw-bg-slate-100 tw-py-20 tw-text-center">
       <div className="tw-max-w-7xl tw-mx-auto tw-px-4">
 
         <div className="tw-flex tw-flex-col md:tw-flex-row tw-items-start md:tw-items-center tw-justify-between tw-gap-8">
@@ -19,7 +19,7 @@ const ConsultingCTA = () => {
           </div>
 
           {/* CTA */}
-          <div>
+          <div className="tw-flex tw-justify-center">
             <Link to="/contact-us" className="btn secondary-solid-btn">
               Contact With Us
             </Link>

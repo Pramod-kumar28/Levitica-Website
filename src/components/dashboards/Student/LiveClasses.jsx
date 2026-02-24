@@ -237,7 +237,7 @@ const LiveClasses = () => {
                       tw-py-1
                       tw-rounded-full
                     ">
-                      🔴 LIVE
+                       LIVE
                     </span>
                   )}
                   {status === 'upcoming' && (
@@ -250,7 +250,7 @@ const LiveClasses = () => {
                       tw-py-1
                       tw-rounded-full
                     ">
-                      ⏰ UPCOMING
+                       UPCOMING
                     </span>
                   )}
                   {status === 'completed' && (
@@ -263,7 +263,7 @@ const LiveClasses = () => {
                       tw-py-1
                       tw-rounded-full
                     ">
-                      ✅ COMPLETED
+                       COMPLETED
                     </span>
                   )}
                 </div>

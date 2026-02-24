@@ -6,6 +6,7 @@ import {
   selectCartTotal,
 } from "../../../../features/cartSlice";
 import { useGetCartQuery } from "../../../../Services/student/cartServices";
+import { useGetFreeCourseQuery } from "../../../../Services/sharedServices/courses.Services";
 import { useCartHandlers } from "./cartHandlers";
 import {
   FiX,
@@ -24,9 +25,18 @@ export default function CartDrawer({ isOpen, onClose }) {
   const items = useSelector(selectCartItems);
   const total = useSelector(selectCartTotal);
 
+  /* ================= FETCH CART ================= */
   const { data: cartData } = useGetCartQuery(userId, {
     skip: !userId || !isOpen,
   });
+
+  /* ================= FETCH FREE COURSE ================= */
+  const { data: freeData } = useGetFreeCourseQuery(undefined, {
+    skip: !isOpen,
+  });
+
+  const freeCourse = freeData?.data?.[0];
+  console.log(freeCourse)
 
   const {
     handleRemoveFromCart,
@@ -38,12 +48,27 @@ export default function CartDrawer({ isOpen, onClose }) {
   const loading = removeStatus.isLoading || clearStatus.isLoading;
   const { handleCheckout } = useCheckoutHandler();
 
+  /* ================= SYNC CART ================= */
   useEffect(() => {
     if (cartData?.items) {
       dispatch(setCartItems(cartData.items));
     }
   }, [cartData, dispatch]);
 
+  /* ================= BUSINESS LOGIC ================= */
+  const hasPaidItems = items.some((item) => item.price > 0);
+
+  const displayItems =
+    hasPaidItems && freeCourse
+      ? [
+          ...items,
+          ...(items.some((i) => i._id === freeCourse._id)
+            ? []
+            : [freeCourse]),
+        ]
+      : items;
+
+  /* ================= CHECKOUT ================= */
   const handleBuyNow = async () => {
     if (!user || items.length === 0) return;
 
@@ -60,7 +85,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Overlay */}
+          {/* ===== OVERLAY ===== */}
           <motion.div
             className="tw-fixed tw-inset-0 tw-bg-black/40 tw-z-40"
             initial={{ opacity: 0 }}
@@ -69,7 +94,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             onClick={onClose}
           />
 
-          {/* Drawer */}
+          {/* ===== DRAWER ===== */}
           <motion.div
             className="
               tw-fixed tw-top-0 tw-right-0 tw-h-full
@@ -93,7 +118,9 @@ export default function CartDrawer({ isOpen, onClose }) {
                     <h2 className="tw-text-xl tw-font-bold">Your Cart</h2>
                     <p className="tw-text-xs tw-text-gray-500">
                       {items.length > 0
-                        ? `${items.length} course${items.length > 1 ? "s" : ""} selected`
+                        ? `${items.length} course${
+                            items.length > 1 ? "s" : ""
+                          } selected`
                         : "No courses added yet"}
                     </p>
                   </div>
@@ -123,63 +150,88 @@ export default function CartDrawer({ isOpen, onClose }) {
                   </p>
                 </div>
               ) : (
-                items.map((item) => (
-                  <div
-                    key={item._id}
-                    className="
-                      tw-flex tw-gap-4
-                      tw-border tw-rounded-2xl
-                      tw-p-4
-                      hover:tw-shadow-sm
-                      tw-transition
-                    "
-                  >
-                    {/* Image */}
-                    <div className="tw-w-20 tw-h-20 tw-rounded-xl tw-overflow-hidden tw-bg-gray-100 tw-flex-shrink-0">
-                      <img
-                        src={
-                          item?.imageUrl ||
-                          item?.thumbnail ||
-                          item?.course?.thumbnail ||
-                          "/img/course-placeholder.png"
-                        }
-                        alt={item.name}
-                        className="tw-w-full tw-h-full tw-object-cover"
-                      />
-                    </div>
+                displayItems.map((item) => {
+                  const isFree = item.price === 0;
 
-                    {/* Info */}
-                    <div className="tw-flex-1">
-                      <div className="tw-flex tw-justify-between tw-items-start">
-                        <h4 className="tw-font-semibold tw-text-sm tw-leading-snug tw-line-clamp-2">
-                          {item.name}
-                        </h4>
-                        <button
-                          disabled={loading}
-                          onClick={() =>
-                            handleRemoveFromCart({
-                              userId,
-                              courseId: item._id,
-                            })
+                  return (
+                    <motion.div
+                      key={item._id}
+                      initial={isFree ? { scale: 0.95, opacity: 0 } : false}
+                      animate={isFree ? { scale: 1, opacity: 1 } : false}
+                      transition={{ duration: 0.4 }}
+                      className={`
+                        tw-flex tw-gap-4
+                        tw-border tw-rounded-2xl
+                        tw-p-4
+                        tw-transition
+                        hover:tw-shadow-sm
+                        ${
+                          isFree
+                            ? "tw-bg-green-50 tw-border-green-400 tw-ring-2 tw-ring-green-200"
+                            : ""
+                        }
+                      `}
+                    >
+                      {/* IMAGE */}
+                      <div className="tw-w-20 tw-h-20 tw-rounded-xl tw-overflow-hidden tw-bg-gray-100 tw-flex-shrink-0">
+                        <img
+                          src={
+                            item?.thumbnail ||
+                            "/img/course-placeholder.png"
                           }
-                          className="tw-text-gray-400 hover:tw-text-red-500"
-                        >
-                          <FiTrash2 />
-                        </button>
+                          alt={item.name}
+                          className="tw-w-full tw-h-full tw-object-cover"
+                        />
                       </div>
 
-                      <p className="tw-mt-2 tw-text-base tw-font-bold tw-text-gray-800">
-                        ₹{item.price}
-                      </p>
-                    </div>
-                  </div>
-                ))
+                      {/* INFO */}
+                      <div className="tw-flex-1">
+                        <div className="tw-flex tw-justify-between tw-items-start">
+                          <h4 className="tw-font-semibold tw-text-sm tw-leading-snug tw-line-clamp-2">
+                            {item.name}
+                          </h4>
+
+                          {!isFree && (
+                            <button
+                              disabled={loading}
+                              onClick={() =>
+                                handleRemoveFromCart({
+                                  userId,
+                                  courseId: item._id,
+                                })
+                              }
+                              className="tw-text-gray-400 hover:tw-text-red-500"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          )}
+                        </div>
+
+                        <p className="tw-mt-2 tw-text-base tw-font-bold">
+                          {isFree ? (
+                            <span className="tw-text-green-600">
+                              FREE 🎁
+                            </span>
+                          ) : (
+                            `₹${item.price}`
+                          )}
+                        </p>
+                      </div>
+                    </motion.div>
+                  );
+                })
               )}
             </div>
 
             {/* ===== FOOTER ===== */}
             {items.length > 0 && (
               <div className="tw-sticky tw-bottom-0 tw-bg-white tw-border-t tw-p-5">
+                {hasPaidItems && (
+                  <p className="tw-text-green-600 tw-text-sm tw-mb-2">
+                    🎉 Bonus course included for free!
+                  </p>
+                )}
+
                 <div className="tw-flex tw-justify-between tw-items-center tw-mb-4">
                   <span className="tw-text-sm tw-text-gray-500">
                     Total Amount

@@ -1,27 +1,35 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../../config/apiConfig";
-export const enrollCourseApi = createApi({
-    ...createApiService({
-      reducerPath: 'enrollCourseApi',
-      baseUrl: '/student/enroll',
-      tagTypes: ['Enrollments'],
-    }),
+import { api } from "../api";
+
+export const enrollCourseApi = api.injectEndpoints({
   endpoints: (builder) => ({
 
-    getStudentbyId:builder.query({
-      query:(id)=>({
-        url:`/get/${id}`,
-        method:"GET"
-      })
+    // ✅ GET ENROLLED COURSE DETAILS
+    getStudentEnrolledCoursedetails: builder.query({
+      query: (courseId) => ({
+        url: `/student/enrollments/details/${courseId}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, courseId) => [
+        { type: "Enrollments", id: courseId },
+      ],
     }),
-    getStudentEnrolledCourses:builder.query({
-      query:(id)=>({
-        url:`/getcourses/${id}`,
-        method:"GET",
-      })
-    })
-   
+
+    // ✅ GET ALL ENROLLED COURSES
+    getStudentEnrolledCourses: builder.query({
+      query: ({ type }) => ({
+        url: "/student/enrollments",
+        method: "GET",
+        params: { type },
+      }),
+      providesTags: ["Enrollments"],
+    }),
+
   }),
+
+  overrideExisting: false,
 });
 
-export const { useGetStudentbyIdQuery,useGetStudentEnrolledCoursesQuery } = enrollCourseApi;
+export const {
+  useGetStudentEnrolledCoursedetailsQuery,
+  useGetStudentEnrolledCoursesQuery,
+} = enrollCourseApi;

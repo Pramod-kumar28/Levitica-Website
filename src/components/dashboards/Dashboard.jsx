@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
 import Sidebar from "./Sidebar/Sidebar";
@@ -9,34 +9,20 @@ import { ModalProvider } from "./Admin/Modals/ModalContext";
 
 const DashboardLayout = () => {
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
 
   return (
     <ModalProvider>
       <div className="tw-h-screen tw-bg-gray-100 tw-flex tw-flex-col">
-        {/* ================= TOPBAR (FULL WIDTH) ================= */}
-        <Topbar
-          toggleSidebar={() => setIsSidebarOpen((v) => !v)}
-        />
+        {/* TOPBAR  */}
+        <Topbar/>
 
-        {/* ================= BODY ================= */}
+        {/* BODY */}
         <div className="tw-flex tw-flex-1 tw-relative tw-pt-20 tw-h-screen">
-          {/* SIDEBAR (NON-SCROLLING) */}
-          <Sidebar
-            isOpen={isSidebarOpen}
-            onClose={() => setIsSidebarOpen(false)}
-          />
+          {/* SIDEBAR */}
+          <Sidebar/>
 
-          {/* MOBILE OVERLAY */}
-          {isSidebarOpen && (
-            <div
-              className="tw-fixed tw-inset-0 tw-bg-black/40 tw-z-30 lg:tw-hidden"
-              onClick={() => setIsSidebarOpen(false)}
-            />
-          )}
-
-          {/* MAIN CONTENT (SCROLLS) */}
+         {/* MAIN CONTENT  */}
           <main className="tw-flex-1 tw-overflow-y-auto tw-p-6">
             <Suspense fallback={<Loader message="Loading module..." />}>
               <ScrollToTop />
