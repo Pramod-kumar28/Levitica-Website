@@ -24,9 +24,9 @@ const validationSchema = Yup.object({
     .required("Required"),
   courseId: Yup.string().required("Required"),
   batchId: Yup.string().required("Required"),
-  instructorEmail: Yup.string()
+  hostEmail: Yup.string()
     .email("Invalid email")
-    .required("Instructor email is required"),
+    .required("Host email is required"),
   recurrence: Yup.string().oneOf(["once", "daily"]).required(),
   endDate: Yup.date().nullable().test(
     "end-required",
@@ -85,7 +85,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
       duration: initialData.duration || 60,
       courseId: initialData.course?._id || "",
       batchId: initialData.batch?._id || "",
-      instructorEmail: initialData.hostEmail || "",
+      hostEmail: initialData.hostEmail || "",
       recurrence: initialData.recurrence || "once",
       endDate: initialData.endDate || "",
     }
@@ -95,7 +95,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
       duration: 60,
       courseId: "",
       batchId: "",
-      instructorEmail: "",
+      hostEmail: "",
       recurrence: "once",
       endDate: "",
     };
@@ -123,7 +123,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                 {isEditMode ? "Edit Live Class" : "Schedule Live Class"}
               </h2>
               <p className="tw-text-sm tw-text-slate-500">
-                Configure class timing, batch, and instructor details
+                Configure class timing, batch, and Host details
               </p>
             </div>
             <button onClick={onSuccess}>
@@ -265,9 +265,9 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                   </div>
 
                   <FieldInput
-                    name="instructorEmail"
+                    name="hostEmail"
                     type="email"
-                    label="Instructor Email"
+                    label="Host Email"
                     errors={errors}
                     touched={touched}
                   />

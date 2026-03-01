@@ -4589,3 +4589,68 @@ button.scroll-top:focus{
         min-height: 100vh;
     }
 }
+
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.tw-animate-bounce-in {
+  animation: bounce-in 0.5s ease-out;
+}
+
+.tw-animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+.tw-animate-fadeIn {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* Scrollbar styling */
+.tw-scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tw-scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 3px;
+}
+
+.tw-scrollbar-thumb-gray-400::-webkit-scrollbar-thumb {
+  background-color: #9ca3af;
+}
+
+.tw-scrollbar-track-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}

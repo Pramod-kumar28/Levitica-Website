@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../features/authSlice";
 import CartIcon from "../Student/Cart/CartIcon";
-import { Menu, Bell, ChevronDown, LogOut } from "lucide-react";
+import { FiMenu, FiChevronDown, FiLogOut } from "react-icons/fi";
 import { useSidebarStore } from "../Sidebar/useSidebarStore";
 
 const Topbar = () => {
@@ -21,7 +21,7 @@ const Topbar = () => {
           onClick={toggleSidebar}
           className="tw-p-2 tw-rounded hover:tw-bg-gray-100"
         >
-          <Menu size={22} />
+          <FiMenu size={22} />
         </button>
 
         <img
@@ -35,7 +35,6 @@ const Topbar = () => {
       <div className="tw-flex tw-items-center tw-gap-4">
         {user?.role === "student" && <CartIcon />}
 
-        <Bell size={20} className="tw-text-gray-600" />
 
         <button
           onClick={() => setOpen(!open)}
@@ -44,7 +43,7 @@ const Topbar = () => {
           <div className="tw-w-8 tw-h-8 tw-rounded-full tw-bg-blue-600 tw-text-white tw-flex tw-items-center tw-justify-center">
             {user?.name?.[0]?.toUpperCase()}
           </div>
-          <ChevronDown size={14} />
+          <FiChevronDown size={14} />
         </button>
 
         {open && (
@@ -56,7 +55,7 @@ const Topbar = () => {
               }}
               className="tw-flex tw-items-center tw-gap-2 tw-px-4 tw-py-2 tw-text-red-600 hover:tw-bg-red-50"
             >
-              <LogOut size={16} /> Logout
+              <FiLogOut size={16} /> Logout
             </button>
           </div>
         )}

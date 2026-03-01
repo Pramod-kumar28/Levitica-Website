@@ -3,7 +3,6 @@ import { FaEnvelope, FaPhone, FaUsers } from "react-icons/fa";
 import { HiDesktopComputer, HiPlus } from "react-icons/hi";
 import { MdOutlineWork } from "react-icons/md";
 import { GiAchievement } from "react-icons/gi";
-import { useGetAllInternshipsDomainsQuery } from "../../../Services/paymentServices/internshipsServices";
 
 const DetailsContent = ({ domains, isLoading, isError, showPaymentForm, setShowPaymentForm }) => {
   
@@ -87,7 +86,7 @@ const DetailsContent = ({ domains, isLoading, isError, showPaymentForm, setShowP
                 key={domain._id}
                 className="tw-bg-white tw-border tw-border-gray-200 tw-rounded-lg tw-p-3 hover:tw-shadow-sm tw-transition-shadow"
               >
-                <h4 className="tw-font-semibold tw-text-gray-900 tw-mb-3 tw-text-md">
+                <h4 className="tw-font-semibold tw-text-gray-900 tw-mb-3 tw-text-base">
                   {domain.name}
                 </h4>
 

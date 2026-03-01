@@ -27,7 +27,7 @@ export const useCourseHandlers = () => {
       const { _id, ...payload } = values;
       
       await updateCourseTrigger({ _id, ...payload }).unwrap();
-      toast.success('✅ Course updated successfully!');
+      toast.success('Course updated successfully!');
       
     } catch (error) {
       const message = error?.data?.message || '❌ Failed to update course.';
@@ -36,10 +36,10 @@ export const useCourseHandlers = () => {
   };
 
   const handleDeleteCourse = async (id) => {
-    console.log("Deleting course with id:", id);
+    
     try {
       await deleteCourseTrigger(id).unwrap();
-      toast.success('🗑️ Course deleted successfully!');
+      toast.success('Course deleted successfully!');
     } catch (error) {
       const message = error?.data?.message || '❌ Failed to delete course.';
       toast.error(message);

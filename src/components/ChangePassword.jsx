@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useResetPasswordMutation } from "../Services/authService";
 import ErrorPage from "./ErrorPage";
-import { FaLock } from "react-icons/fa";
+import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ const ChangePassword = () => {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
@@ -29,6 +30,7 @@ const ChangePassword = () => {
       toast.error("Please fill in all fields");
       return;
     }
+
     if (newPassword !== confirmPassword) {
       toast.error("Passwords do not match");
       return;
@@ -54,17 +56,6 @@ const ChangePassword = () => {
             style={{ backgroundImage: "url('/img/slider-img-1.jpg')" }}
           >
             <div className="tw-absolute tw-inset-0 gradient-overlay" />
-
-            <div className="tw-relative tw-h-full tw-flex tw-items-center tw-px-16">
-              <div className="tw-text-white tw-max-w-lg">
-                <h2 className="tw-text-3xl tw-font-bold tw-mb-4">
-                  Change Your Password
-                </h2>
-                <p className="tw-text-white/90 tw-leading-relaxed">
-                  Choose a strong password to keep your account secure and protected.
-                </p>
-              </div>
-            </div>
           </div>
 
           {/* RIGHT FORM */}
@@ -81,38 +72,50 @@ const ChangePassword = () => {
 
               <form onSubmit={handleSubmit} className="tw-space-y-6">
 
-                {/* NEW PASSWORD */}
+                {/* NEW PASSWORD (with toggle) */}
                 <div>
                   <label className="tw-block tw-text-sm tw-font-medium tw-mb-1">
                     New Password
                   </label>
+
                   <div className="tw-relative">
                     <FaLock className="tw-absolute tw-left-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-slate-400" />
+
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="New password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className="tw-w-full tw-pl-10 tw-pr-4 tw-py-3 tw-border tw-rounded-lg
+                      className="tw-w-full tw-pl-10 tw-pr-10 tw-py-3 tw-border tw-rounded-lg
                                  focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"
                     />
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="tw-absolute tw-right-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-slate-500 hover:tw-text-blue-600"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
                   </div>
                 </div>
 
-                {/* CONFIRM PASSWORD */}
+                {/* CONFIRM PASSWORD (no toggle) */}
                 <div>
                   <label className="tw-block tw-text-sm tw-font-medium tw-mb-1">
                     Confirm Password
                   </label>
+
                   <div className="tw-relative">
                     <FaLock className="tw-absolute tw-left-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-slate-400" />
+
                     <input
                       type="password"
                       placeholder="Confirm password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="tw-w-full tw-pl-10 tw-pr-4 tw-py-3 tw-border tw-rounded-lg
-                                 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-blue-500"
+                                 focus:tw-outline-none focus:tw:ring-2 focus:tw-ring-blue-500"
                     />
                   </div>
                 </div>
@@ -128,7 +131,6 @@ const ChangePassword = () => {
                   {isLoading ? "Changing..." : "Change Password"}
                 </button>
 
-                {/* LINK */}
                 <p className="tw-text-center tw-text-sm tw-text-slate-500">
                   Remember your password?{" "}
                   <Link

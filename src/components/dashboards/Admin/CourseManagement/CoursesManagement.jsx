@@ -8,7 +8,6 @@ import {
   FiPlus,
   FiEdit,
   FiTrash2,
-  FiUsers,
   FiEye,
   FiGrid,
   FiList,
@@ -22,11 +21,8 @@ const CoursesManagement = () => {
   const { handleDeleteCourse } = useCourseHandlers();
 
   const [view, setView] = useState("cards");
-  const [expandedCourse, setExpandedCourse] = useState(null);
 
-  const handleViewBatches = (courseId) => {
-    setExpandedCourse(prev => (prev === courseId ? null : courseId));
-  };
+
 
   return (
     <div className=" tw-space-y-6 tw-py-3">
@@ -75,17 +71,25 @@ const CoursesManagement = () => {
         </div>
       </div>
 
+
       {/* Content */}
       <AnimatePresence mode="wait">
         {view === "cards" ? (
           <CoursesCardView
             courses={courses}
-            expandedCourse={expandedCourse}
+
             onEdit={(course) =>
               openModal(MODAL_TYPES.ADD_COURSE, { mode: "edit", course })
             }
-            onDelete={handleDeleteCourse}
-            onViewBatches={handleViewBatches}
+            onDelete={(id) => {
+              const confirmDelete = window.confirm(
+                "Are you sure you want to delete this course? This will permanently remove all course details."
+              );
+
+              if (confirmDelete) {
+                handleDeleteCourse(id);
+              }
+            }}
           />
         ) : (
           <CoursesTableView
@@ -93,21 +97,20 @@ const CoursesManagement = () => {
             onEdit={(course) =>
               openModal(MODAL_TYPES.ADD_COURSE, { mode: "edit", course })
             }
-            onDelete={handleDeleteCourse}
-            onViewBatches={handleViewBatches}
+            onDelete={() => {
+              const confirmDelete = window.confirm(
+                "Are you sure you want to delete this course? This will permanently remove all course details."
+              );
+
+              if (confirmDelete) {
+                handleDeleteCourse();
+              }
+            }}
           />
         )}
       </AnimatePresence>
 
-      {/* Batch Section */}
-      <AnimatePresence>
-        {expandedCourse && (
-          <BatchSection
-            courseId={expandedCourse}
-            onClose={() => setExpandedCourse(null)}
-          />
-        )}
-      </AnimatePresence>
+
     </div>
   );
 };
@@ -121,7 +124,7 @@ const CoursesCardView = ({
   courses,
   onEdit,
   onDelete,
-  onViewBatches,
+
 }) => {
   const navigate = useNavigate();
   const { openModal } = useModal();
@@ -137,10 +140,10 @@ const CoursesCardView = ({
         >
           <div className="tw-relative tw-h-40">
             <img
-          src={course.thumbnail}
-          alt={course.name}
-          className="tw-w-full tw-h-full tw-object-cover"
-        />
+              src={course.thumbnail}
+              alt={course.name}
+              className="tw-w-full tw-h-full tw-object-cover"
+            />
           </div>
           {/* Header */}
           <div className="tw-flex tw-justify-between tw-mt-3">
@@ -152,7 +155,7 @@ const CoursesCardView = ({
               </p>
             </div>
             <span className="tw-text-blue-600 tw-font-semibold">
-              ₹{course.price}
+              {course.price === 0 ? "Free" : `₹${course.price}`}
             </span>
           </div>
 
@@ -196,21 +199,16 @@ const CoursesCardView = ({
                 />
               )}
 
-              {/* View batches */}
-              <FiUsers
-                title="View Batches"
-                className="tw-text-gray-600 tw-cursor-pointer"
-                onClick={() => onViewBatches(course._id)}
+
+
+              {/* Delete  with details details */}
+
+              <FiTrash2
+                title="Delete Course"
+                className="tw-text-red-500 tw-cursor-pointer"
+                onClick={() => onDelete(course._id)}
               />
 
-              {/* Delete ONLY if no details */}
-              {!course.details && (
-                <FiTrash2
-                  title="Delete Course"
-                  className="tw-text-red-500 tw-cursor-pointer"
-                  onClick={() => onDelete(course._id)}
-                />
-              )}
             </div>
           </div>
         </motion.div>
@@ -224,7 +222,7 @@ const CoursesTableView = ({
   courses,
   onEdit,
   onDelete,
-  onViewBatches,
+
 }) => {
   const navigate = useNavigate();
   const { openModal } = useModal();
@@ -290,21 +288,16 @@ const CoursesTableView = ({
                     />
                   )}
 
-                  {/* View batches */}
-                  <FiUsers
-                    title="View Batches"
-                    className="tw-cursor-pointer tw-text-gray-600"
-                    onClick={() => onViewBatches(course._id)}
+
+
+                  {/* Delete with all details */}
+
+                  <FiTrash2
+                    title="Delete Course"
+                    className="tw-cursor-pointer tw-text-red-500"
+                    onClick={() => onDelete(course._id)}
                   />
 
-                  {/* Delete only if no details */}
-                  {!course.details && (
-                    <FiTrash2
-                      title="Delete Course"
-                      className="tw-cursor-pointer tw-text-red-500"
-                      onClick={() => onDelete(course._id)}
-                    />
-                  )}
                 </div>
               </td>
             </tr>

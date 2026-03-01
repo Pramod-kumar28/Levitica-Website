@@ -41,7 +41,7 @@ export const batchApi = api.injectEndpoints({
     // ✅ ADD BATCH
     addBatch: builder.mutation({
       query: (newBatchData) => ({
-        url: "/admin/batchs/newbatch",
+        url: "/admin/batchs/",
         method: "POST",
         body: newBatchData,
       }),

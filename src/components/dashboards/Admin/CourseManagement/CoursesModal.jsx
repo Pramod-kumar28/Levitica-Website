@@ -5,36 +5,33 @@ import { useCourseHandlers } from './courseshooks.js';
 import { FiX, FiSave } from 'react-icons/fi';
 
 const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
+  console.log(course)
   const { handleAddCourseSubmit, handleUpdateCourseSubmit } = useCourseHandlers();
   const isEdit = mode === 'edit';
 
   const initialValues = isEdit
     ? {
-        id: course._id,
-        name: course.name || '',
-        shortdescription: course.shortdescription || '',
-        instructor: course.instructor || '',
-        duration: course.duration || '',
-        price: course.price || '',
-        category: course.category || '',
-        thumbnail: course.thumbnail || '',
-      }
+      id: course._id,
+      name: course.name ?? '',
+      shortdescription: course.shortdescription ?? '',
+      duration: course.duration ?? '',
+      price: course.price ?? '', // ✅ FIXED
+      category: course.category ?? '',
+      thumbnail: course.thumbnail ?? '',
+    }
     : {
-        name: '',
-        shortdescription: '',
-        instructor: '',
-        duration: '',
-        price: '',
-        category: '',
-        thumbnail: '',
-      };
-
+      name: '',
+      shortdescription: '',
+      duration: '',
+      price: '',
+      category: '',
+      thumbnail: '',
+    };
   const onSubmitFn = isEdit ? handleUpdateCourseSubmit : handleAddCourseSubmit;
 
   const validationSchema = Yup.object({
     name: Yup.string().required('Course name is required'),
     shortdescription: Yup.string().required('Short description is required'),
-    instructor: Yup.string().required('Instructor is required'),
     duration: Yup.string().required('Duration is required'),
     price: Yup.number()
       .typeError('Price must be a number')
@@ -84,7 +81,7 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={async (values, actions) => {
-                console.log(values ,"from course modal")
+
                 try {
                   await onSubmitFn(values);
                   if (!isEdit) actions.resetForm();
@@ -104,9 +101,9 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                       label: 'Thumbnail URL',
                       placeholder: 'https://image-url.com',
                     },
-                    { name: 'instructor', label: 'Instructor', placeholder: 'John Doe' },
                     { name: 'duration', label: 'Duration', placeholder: '8 weeks' },
                     { name: 'price', label: 'Price (₹)', placeholder: '1999' },
+                    { name: 'category', label: 'Category', placeholder: 'Web Development' },
                   ].map(({ name, label, placeholder }) => (
                     <div key={name}>
                       <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
@@ -144,22 +141,7 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                     />
                   </div>
 
-                  {/* Category */}
-                  <div>
-                    <label className="tw-mb-1 tw-block tw-text-sm tw-font-medium tw-text-slate-700">
-                      Category
-                    </label>
-                    <Field
-                      as="select"
-                      name="category"
-                      className="tw-w-full tw-rounded-lg tw-border tw-border-slate-300 tw-bg-white tw-px-3 tw-py-2 tw-text-sm focus:tw-border-indigo-500 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-indigo-500/20"
-                    />
-                    <ErrorMessage
-                      name="category"
-                      component="p"
-                      className="tw-mt-1 tw-text-xs tw-text-rose-600"
-                    />
-                  </div>
+
 
                   {/* Submit */}
                   <button
@@ -173,8 +155,8 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                         ? 'Updating...'
                         : 'Adding...'
                       : isEdit
-                      ? 'Update Course'
-                      : 'Add Course'}
+                        ? 'Update Course'
+                        : 'Add Course'}
                   </button>
                 </Form>
               )}

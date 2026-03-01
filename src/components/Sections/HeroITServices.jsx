@@ -7,7 +7,7 @@ import {
   FaCloud,
   FaBrain,
   FaAws,
-  FaGoogle,
+ 
 } from "react-icons/fa";
 import HeroWrapper from "./HeroWrapper";
 

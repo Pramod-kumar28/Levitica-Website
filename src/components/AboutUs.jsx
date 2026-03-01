@@ -5,20 +5,14 @@ import {
   FaBrain,
   FaShieldAlt,
   FaChartLine,
-  FaGlobe,
   FaHandshake,
   FaCloud,
   FaGraduationCap,
   FaLightbulb,
   FaCode,
-  FaServer,
-  FaMobileAlt,
-  FaPaintBrush,
   FaRobot,
-  FaNetworkWired,
   FaChalkboardTeacher,
   FaUserTie,
-  FaAward,
   FaHeart,
   FaRegClock,
   FaSyncAlt,
@@ -30,7 +24,6 @@ import {
   FaLeaf,
   FaBalanceScale,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import AboutUsLottie from "./lottie/AboutUsLottie";
 import ConsultingCTA from "./Sections/CallToActionSection";
 
@@ -124,32 +117,7 @@ const industries = [
   { name: "Startups", icon: <FaRocket />, color: "tw-bg-purple-100 tw-text-purple-600" },
 ];
 
-const services = [
-  {
-    category: "Development",
-    items: [
-      { name: "Web Development", icon: <FaCode />, color: "tw-text-blue-500" },
-      { name: "Mobile Apps", icon: <FaMobileAlt />, color: "tw-text-purple-500" },
-      { name: "UI/UX Design", icon: <FaPaintBrush />, color: "tw-text-pink-500" },
-    ],
-  },
-  {
-    category: "Technology",
-    items: [
-      { name: "AI & ML Solutions", icon: <FaRobot />, color: "tw-text-amber-500" },
-      { name: "Cloud Services", icon: <FaCloud />, color: "tw-text-cyan-500" },
-      { name: "DevOps", icon: <FaNetworkWired />, color: "tw-text-emerald-500" },
-    ],
-  },
-  {
-    category: "Business Solutions",
-    items: [
-      { name: "IT Training", icon: <FaChalkboardTeacher />, color: "tw-text-red-500" },
-      { name: "Staffing", icon: <FaUserTie />, color: "tw-text-indigo-500" },
-      { name: "Consulting", icon: <FaAward />, color: "tw-text-orange-500" },
-    ],
-  },
-];
+
 
 const AboutUs = () => {
   return (

@@ -2,30 +2,13 @@ import { Link } from "react-router-dom";
 import { 
   FaClock, FaCalendarAlt, FaSyncAlt, FaEnvelope, FaCalendarCheck, 
   FaHourglassHalf, FaExclamationTriangle, FaUser, FaVideo, 
-  FaGraduationCap, FaAward, FaEye, FaEdit, FaTrashAlt, FaPauseCircle, 
+  FaGraduationCap, FaAward, 
   FaDownload, FaBan, FaChartLine, FaCreditCard, FaGift, FaShieldAlt, 
   FaBell, FaChartBar, FaLock, FaUserCheck, FaCommentDots, FaPercent, 
   FaPlayCircle, FaFileInvoice, FaShareAlt, FaUserCircle, FaUsers, 
   FaHandshake, FaGavel, FaBriefcase, FaLightbulb,
-  FaRightLong, FaLongArrowAltRight, FaSignInAlt, FaUserPlus, FaRegClock,
-  FaRegCalendarAlt, FaRegCalendarCheck, FaRegHourglass, FaRegUser,
-  FaRegPlayCircle, FaRegFileAlt, FaRegCreditCard, FaRegChartBar,
-  FaRegBell, FaRegCommentDots, FaRegHandshake, FaRegGavel, FaRegEye,
-  FaRegEdit, FaRegTrashAlt, FaRegPauseCircle, FaRegDownload, FaRegBan,
-  FaRegChartLine, FaRegGift, FaRegShieldAlt, FaRegLock, FaRegUserCheck,
-  FaRegVideo, FaRegGraduationCap, FaRegAward, FaRegCalendarAlt as FaRegCalendar,
-  FaCheckCircle, FaInfoCircle, FaQuestionCircle, FaTimesCircle,
-  FaChevronRight, FaChevronLeft, FaChevronDown, FaChevronUp,
-  FaStar, FaHeart, FaBookmark, FaShare, FaThumbsUp, FaThumbsDown,
-  FaSearch, FaFilter, FaSort, FaPrint, FaUndo, FaRedo,
-  FaCloudUploadAlt, FaCloudDownloadAlt, FaFilePdf, FaFileWord,
-  FaFileExcel, FaFilePowerpoint, FaFileImage, FaFileArchive,
-  FaFileCode, FaFileAlt, FaFolder, FaFolderOpen, FaTrash,
-  FaPlus, FaMinus, FaTimes, FaCheck, FaPen, FaPencilAlt,
-  FaPhone, FaMobile, FaTabletAlt, FaLaptop, FaDesktop,
-  FaWifi, FaBluetooth, FaBatteryFull, FaBatteryHalf, FaBatteryEmpty,
-  FaPlug, FaMicrochip, FaMemory, FaHdd, FaSdCard,
-  FaUsb, FaEthernet, FaServer, FaDatabase, FaCloud
+ FaLongArrowAltRight, FaSignInAlt, FaUserPlus, 
+ 
 } from "react-icons/fa";
 
 import { FaListCheck } from "react-icons/fa6"; 

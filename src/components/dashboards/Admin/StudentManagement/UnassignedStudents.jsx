@@ -61,7 +61,7 @@ const UnassignedStudents = () => {
     })) || []
     : [];
 
-    console.log(availableBatches,'iam batches')
+   
 
 
   const handleAssign = async (payload) => {

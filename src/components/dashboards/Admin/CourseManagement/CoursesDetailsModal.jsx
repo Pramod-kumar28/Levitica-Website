@@ -39,12 +39,9 @@ import {
   FiX,
   FiSave,
   FiAlertCircle,
-  FiClock,
-  FiGrid,
-  FiEdit2
+ 
 } from "react-icons/fi";
 import {
-  BsGripVertical,
   BsArrowsMove,  // Changed from BsArrowUpDown
   BsInfoCircle
 } from "react-icons/bs";
@@ -71,7 +68,7 @@ const CurriculumAutosaveWatcher = ({ curriculum, courseId, updateCurriculum, ena
 };
 
 const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
-  console.log(initialData,'iam data when edit')
+
   const isEdit = Boolean(initialData);
 
   const [addDetails] = useAddCourseDetailsMutation();
@@ -149,7 +146,7 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
               validationSchema={CourseDetailsSchema}
               enableReinitialize
               onSubmit={async (values, { setSubmitting }) => {
-                console.log("Course details values:", values);
+                
                 try {
                   if (isEdit) {
                     await updateDetails({ courseId, body: values }).unwrap();

@@ -113,8 +113,6 @@ const AppRouter = () => {
         <Route path="terms" element={<Terms />} />
         <Route path="knowledge-base" element={<KnowledgeBase />} />
         <Route path="forums" element={<Forums />} />
-
-        <Route path="*" element={<ErrorPage />} />
       </Route>
 
       {/* Login / Signup (navbar only) */}

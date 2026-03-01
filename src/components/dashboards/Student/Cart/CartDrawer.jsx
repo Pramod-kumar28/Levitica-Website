@@ -36,7 +36,7 @@ export default function CartDrawer({ isOpen, onClose }) {
   });
 
   const freeCourse = freeData?.data?.[0];
-  console.log(freeCourse)
+
 
   const {
     handleRemoveFromCart,

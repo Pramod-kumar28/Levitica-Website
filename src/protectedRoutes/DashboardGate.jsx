@@ -6,7 +6,7 @@ import AuthBootstrap from "./AuthRestore";
 
 const DashboardGate = () => {
   const { authChecked } = useSelector((state) => state.auth);
-  console.log(authChecked, "iamchec");
+ 
 
   return (
     <>

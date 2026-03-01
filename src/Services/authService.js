@@ -115,7 +115,6 @@ export const {
   useSignupMutation,
   useChangePasswordMutation,
   useVerifyAuthQuery,
-  useLazyVerifyAuthQuery,
   useRefreshTokenMutation,
   useSendVerificationEmailMutation,
   useVerifyEmailQuery,

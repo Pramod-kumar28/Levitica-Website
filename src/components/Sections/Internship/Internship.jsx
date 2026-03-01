@@ -11,7 +11,7 @@ const Internships = () => {
   useGetAllInternshipsDomainsQuery({ isActive: true });
 
 const domains = data?.data || [];
-console.log("domains in internships ", domains)
+
 
 
   /* 🔒 Prevent body scroll when mobile modal is open */
@@ -87,9 +87,7 @@ console.log("domains in internships ", domains)
             <div className="tw-absolute tw-bottom-0 tw-left-0 tw-right-0 tw-bg-white tw-rounded-t-3xl tw-max-h-[90vh] tw-flex tw-flex-col tw-animate-slide-up">
               {/* Header */}
               <div className="tw-flex tw-items-center tw-justify-between tw-p-5 tw-border-b">
-                <h3 className="tw-text-lg tw-font-semibold tw-text-gray-900">
-                  Payment Details
-                </h3>
+                
                 <button
                   onClick={() => setShowPaymentForm(false)}
                   className="tw-p-2 tw-rounded-full hover:tw-bg-gray-100 tw-transition"

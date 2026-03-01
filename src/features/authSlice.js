@@ -16,7 +16,7 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       const { user } = action.payload;
-      console.log(action.payload, 'iam payload')
+  
       state.user = user;
       state.isAuthenticated = true;
       state.authChecked = true;
@@ -35,6 +35,9 @@ const authSlice = createSlice({
       state.lastRefreshed = null;
     },
 
+    setAuthChecked: (state, action) => {
+      state.authChecked = action.payload;
+    },
 
     // 👇 ADD THIS ACTION for token refresh
     tokenRefreshed: (state) => {
@@ -63,7 +66,8 @@ export const {
   logout,
   tokenRefreshed,
   updateToken,
-  clearError
+  clearError,
+  setAuthChecked
 } = authSlice.actions;
 
 export default authSlice.reducer;

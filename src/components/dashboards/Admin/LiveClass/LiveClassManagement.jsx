@@ -18,13 +18,14 @@ import {
   FiDownload,
   FiPlus,
   FiRefreshCw,
+  FiCopy,
 } from "react-icons/fi";
 
 
 const AdminLiveClasses = () => {
   const { data, isLoading, error, refetch } = useGetMeetingsQuery();
   const [deleteMeeting] = useDeleteMeetingMutation();
-   const { openModal } = useModal();
+  const { openModal } = useModal();
 
   const [starting, setStarting] = useState(false);
   const [activeTab, setActiveTab] = useState("cards");
@@ -36,52 +37,67 @@ const AdminLiveClasses = () => {
   const meetings = data?.liveClasses || [];
 
   /* ---------------- helpers ---------------- */
-const handleStartClass = async (id) => {
-  try {
-    setStarting(true);
-    window.location.href = `${process.env.REACT_APP_LOCAL_API_URL}/api/zoom/start/${id}`;
-  } finally {
-    setStarting(false);
-  }
-};
+  const handleStartClass = async (id) => {
+    try {
+      setStarting(true);
+      window.location.href = `${process.env.REACT_APP_LOCAL_API_URL}/admin/zoom/start/${id}`;
+    } finally {
+      setStarting(false);
+    }
+  };
 
-const handleEdit = (liveClass) => {
-  openModal(MODAL_TYPES.EDIT_MEETING, {
-    initialData: liveClass,
-  });
-};
+  const handleEdit = (liveClass) => {
+    openModal(MODAL_TYPES.EDIT_MEETING, {
+      initialData: liveClass,
+    });
+  };
 
+  const handleCopy = async (url) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Joining link copied to clipboard ✅");
+    } catch (error) {
+      toast.error("Failed to copy link ❌");
+      console.error(error);
+    }
+  };
 
+  const handleDelete = (meetingId) => {
+    toast((t) => (
+      <div className="tw-flex tw-flex-col tw-gap-3">
+        <p className="tw-font-medium">
+          Are you sure you want to delete this live class?
+        </p>
 
-const handleDelete = (meetingId) => {
-  toast((t) => (
-    <div className="tw-flex tw-flex-col tw-gap-3">
-      <p className="tw-font-medium">
-        Are you sure you want to delete this live class?
-      </p>
+        <div className="tw-flex tw-justify-end tw-gap-2">
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="tw-px-3 tw-py-1 tw-rounded tw-bg-gray-200"
+          >
+            Cancel
+          </button>
 
-      <div className="tw-flex tw-justify-end tw-gap-2">
-        <button
-          onClick={() => toast.dismiss(t.id)}
-          className="tw-px-3 tw-py-1 tw-rounded tw-bg-gray-200"
-        >
-          Cancel
-        </button>
+          <button
+            onClick={async () => {
+              try {
+                toast.dismiss(t.id);
 
-        <button
-          onClick={async () => {
-            toast.dismiss(t.id);
-            await deleteMeeting(meetingId);
-          }}
-          className="tw-px-3 tw-py-1 tw-rounded tw-bg-red-600 tw-text-white"
-        >
-          Delete
-        </button>
+                await deleteMeeting(meetingId);
+
+                toast.success("Class deleted successfully ");
+              } catch (error) {
+                toast.error("Failed to delete class ");
+
+              }
+            }}
+            className="tw-px-3 tw-py-1 tw-rounded tw-bg-red-600 tw-text-white"
+          >
+            Delete
+          </button>
+        </div>
       </div>
-    </div>
-  ), { duration: 6000 });
-};
-
+    ), { duration: 6000 });
+  };
 
   const filteredMeetings = meetings.filter((m) => {
     const matchSearch =
@@ -96,7 +112,7 @@ const handleDelete = (meetingId) => {
     const matchDate =
       !dateFilter ||
       new Date(m.startTime).toDateString() ===
-        new Date(dateFilter).toDateString();
+      new Date(dateFilter).toDateString();
 
     return matchSearch && matchStatus && matchDate;
   });
@@ -155,146 +171,146 @@ const handleDelete = (meetingId) => {
   /* ---------------- UI ---------------- */
 
   return (
-   <div className="tw-space-y-8">
-    
+    <div className="tw-space-y-8">
 
-  {/* ===== Page Header ===== */}
-  <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-4">
-    <div>
-      <h1 className="tw-text-3xl tw-font-bold tw-text-gray-900">
-        Live Classes
-      </h1>
-      <p className="tw-mt-1 tw-text-sm tw-text-gray-500">
-        Manage, schedule and monitor all Zoom live sessions
-      </p>
-    </div>
 
-    <div className="tw-flex tw-gap-2">
-      <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium hover:tw-bg-gray-50">
-        <FiDownload />
-        Export
-      </button>
+      {/* ===== Page Header ===== */}
+      <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between tw-gap-4">
+        <div>
+          <h1 className="tw-text-3xl tw-font-bold tw-text-gray-900">
+            Live Classes
+          </h1>
+          <p className="tw-mt-1 tw-text-sm tw-text-gray-500">
+            Manage, schedule and monitor all Zoom live sessions
+          </p>
+        </div>
 
-      <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-blue-600 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-700"
-       onClick={() => openModal(MODAL_TYPES.CREATE_MEETING)}>
-        <FiPlus />
-        Create Class
-      </button>
-    </div>
-  </div>
+        <div className="tw-flex tw-gap-2">
+          <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium hover:tw-bg-gray-50">
+            <FiDownload />
+            Export
+          </button>
 
-  {/* ===== Filters Card ===== */}
-  <div className="tw-rounded-xl tw-border tw-border-gray-200 tw-bg-white tw-p-4 tw-shadow-sm">
-    <div className="tw-grid tw-gap-4 md:tw-grid-cols-4">
-
-      {/* Search */}
-      <div className="tw-relative">
-        <FiSearch className="tw-absolute tw-left-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-gray-400" />
-        <input
-          className="tw-w-full tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-pl-10 tw-pr-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
-          placeholder="Search class, course, or batch"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+          <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-blue-600 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-700"
+            onClick={() => openModal(MODAL_TYPES.CREATE_MEETING)}>
+            <FiPlus />
+            Create Class
+          </button>
+        </div>
       </div>
 
-      {/* Status */}
-      <select
-        className="tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-px-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
-        value={statusFilter}
-        onChange={(e) => setStatusFilter(e.target.value)}
-      >
-        <option value="all">All Status</option>
-        <option value="scheduled">Upcoming</option>
-        <option value="ongoing">Live</option>
-        <option value="completed">Completed</option>
-      </select>
+      {/* ===== Filters Card ===== */}
+      <div className="tw-rounded-xl tw-border tw-border-gray-200 tw-bg-white tw-p-4 tw-shadow-sm">
+        <div className="tw-grid tw-gap-4 md:tw-grid-cols-4">
 
-      {/* Date */}
-      <input
-        type="date"
-        className="tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-px-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
-        value={dateFilter}
-        onChange={(e) => setDateFilter(e.target.value)}
-      />
+          {/* Search */}
+          <div className="tw-relative">
+            <FiSearch className="tw-absolute tw-left-3 tw-top-1/2 -tw-translate-y-1/2 tw-text-gray-400" />
+            <input
+              className="tw-w-full tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-pl-10 tw-pr-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
+              placeholder="Search class, course, or batch"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
 
-      {/* Clear */}
-      <button
-        onClick={() => {
-          setSearchTerm("");
-          setStatusFilter("all");
-          setDateFilter("");
-        }}
-        className="tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded-lg tw-border tw-border-gray-300 tw-bg-gray-50 tw-py-2 tw-text-sm tw-font-medium hover:tw-bg-gray-100"
-      >
-        <FiFilter />
-        Clear
-      </button>
+          {/* Status */}
+          <select
+            className="tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-px-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="all">All Status</option>
+            <option value="scheduled">Upcoming</option>
+            <option value="ongoing">Live</option>
+            <option value="completed">Completed</option>
+          </select>
+
+          {/* Date */}
+          <input
+            type="date"
+            className="tw-rounded-lg tw-border tw-border-gray-300 tw-py-2 tw-px-3 tw-text-sm focus:tw-border-blue-500 focus:tw-outline-none"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+          />
+
+          {/* Clear */}
+          <button
+            onClick={() => {
+              setSearchTerm("");
+              setStatusFilter("all");
+              setDateFilter("");
+            }}
+            className="tw-flex tw-items-center tw-justify-center tw-gap-2 tw-rounded-lg tw-border tw-border-gray-300 tw-bg-gray-50 tw-py-2 tw-text-sm tw-font-medium hover:tw-bg-gray-100"
+          >
+            <FiFilter />
+            Clear
+          </button>
+        </div>
+      </div>
+
+      {/* ===== View Toggle & Count ===== */}
+      <div className="tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-center sm:tw-justify-between tw-gap-3">
+        <p className="tw-text-sm tw-text-gray-500">
+          Showing <span className="tw-font-medium tw-text-gray-900">{filteredMeetings.length}</span> of{" "}
+          <span className="tw-font-medium tw-text-gray-900">{meetings.length}</span> classes
+        </p>
+
+        <div className="tw-inline-flex tw-rounded-lg tw-border tw-border-gray-300 tw-bg-gray-50 tw-p-1">
+          <button
+            onClick={() => setActiveTab("cards")}
+            className={`tw-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-3 tw-py-1.5 tw-text-sm tw-font-medium ${activeTab === "cards"
+              ? "tw-bg-white tw-shadow tw-text-blue-600"
+              : "tw-text-gray-500 hover:tw-text-gray-700"
+              }`}
+          >
+            <FiGrid />
+            Cards
+          </button>
+
+          <button
+            onClick={() => setActiveTab("table")}
+            className={`tw-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-3 tw-py-1.5 tw-text-sm tw-font-medium ${activeTab === "table"
+              ? "tw-bg-white tw-shadow tw-text-blue-600"
+              : "tw-text-gray-500 hover:tw-text-gray-700"
+              }`}
+          >
+            <FiList />
+            Table
+          </button>
+        </div>
+      </div>
+
+      {/* ===== Content ===== */}
+      <AnimatePresence mode="wait">
+        {activeTab === "cards" ? (
+          <CardsView
+            filteredMeetings={filteredMeetings}
+            handleStartClass={handleStartClass}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            deletingId={deletingId}
+            formatDate={formatDate}
+            formatTime={formatTime}
+            StatusBadge={StatusBadge}
+            handleCopy={handleCopy}
+          />
+        ) : (
+          <TableView
+            filteredMeetings={filteredMeetings}
+            handleStartClass={handleStartClass}
+            handleEdit={handleEdit}
+            handleDelete={handleDelete}
+            deletingId={deletingId}
+            formatDate={formatDate}
+            formatTime={formatTime}
+            StatusBadge={StatusBadge}
+            handleCopy={handleCopy}
+          />
+        )}
+      </AnimatePresence>
+
     </div>
-  </div>
-
-  {/* ===== View Toggle & Count ===== */}
-  <div className="tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-center sm:tw-justify-between tw-gap-3">
-    <p className="tw-text-sm tw-text-gray-500">
-      Showing <span className="tw-font-medium tw-text-gray-900">{filteredMeetings.length}</span> of{" "}
-      <span className="tw-font-medium tw-text-gray-900">{meetings.length}</span> classes
-    </p>
-
-    <div className="tw-inline-flex tw-rounded-lg tw-border tw-border-gray-300 tw-bg-gray-50 tw-p-1">
-      <button
-        onClick={() => setActiveTab("cards")}
-        className={`tw-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-3 tw-py-1.5 tw-text-sm tw-font-medium ${
-          activeTab === "cards"
-            ? "tw-bg-white tw-shadow tw-text-blue-600"
-            : "tw-text-gray-500 hover:tw-text-gray-700"
-        }`}
-      >
-        <FiGrid />
-        Cards
-      </button>
-
-      <button
-        onClick={() => setActiveTab("table")}
-        className={`tw-flex tw-items-center tw-gap-2 tw-rounded-md tw-px-3 tw-py-1.5 tw-text-sm tw-font-medium ${
-          activeTab === "table"
-            ? "tw-bg-white tw-shadow tw-text-blue-600"
-            : "tw-text-gray-500 hover:tw-text-gray-700"
-        }`}
-      >
-        <FiList />
-        Table
-      </button>
-    </div>
-  </div>
-
-  {/* ===== Content ===== */}
-  <AnimatePresence mode="wait">
-    {activeTab === "cards" ? (
-      <CardsView
-        filteredMeetings={filteredMeetings}
-        handleStartClass={handleStartClass}
-         handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        deletingId={deletingId}
-        formatDate={formatDate}
-        formatTime={formatTime}
-        StatusBadge={StatusBadge}
-      />
-    ) : (
-      <TableView
-        filteredMeetings={filteredMeetings}
-        handleStartClass={handleStartClass}
-         handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        deletingId={deletingId}
-        formatDate={formatDate}
-        formatTime={formatTime}
-        StatusBadge={StatusBadge}
-      />
-    )}
-  </AnimatePresence>
-
-</div>
 
   );
 };
@@ -309,6 +325,7 @@ const CardsView = ({
   formatDate,
   formatTime,
   StatusBadge,
+  handleCopy
 }) => (
   <div className="tw-grid md:tw-grid-cols-3 tw-gap-6">
     {filteredMeetings.map((m) => (
@@ -342,7 +359,7 @@ const CardsView = ({
         </div>
 
         {/* Actions */}
-        <div className="tw-mt-auto tw-pt-4 tw-flex tw-gap-2">
+        <div className="tw-mt-auto tw-pt-4 tw-flex tw-gap-2 tw-flex-wrap">
           {(m.status === "scheduled" || m.status === "ongoing") && (
             <button
               onClick={() => handleStartClass(m._id)}
@@ -353,9 +370,20 @@ const CardsView = ({
             </button>
           )}
 
+          {/* 🔹 NEW COPY BUTTON */}
+          {m.zoomJoinUrl && (
+            <button
+              onClick={() => handleCopy(m.zoomJoinUrl)}
+              className="tw-rounded-lg tw-border tw-border-gray-300 tw-px-3 tw-text-gray-600 hover:tw-bg-gray-50"
+              title="Copy Joining Link"
+            >
+              <FiCopy />
+            </button>
+          )}
+
           <button
             onClick={() => handleEdit(m)}
-            className="tw-rounded-lg tw-border tw-border-gray-300 tw-px-3 tw-text-gray-600 hover:tw-bg-gray-50 hover:tw-text-gray-800"
+            className="tw-rounded-lg tw-border tw-border-gray-300 tw-px-3 tw-text-gray-600 hover:tw-bg-gray-50"
             title="Edit class"
           >
             <FiEdit />
@@ -386,6 +414,7 @@ const TableView = ({
   formatDate,
   formatTime,
   StatusBadge,
+  handleCopy
 }) => (
   <div className="tw-bg-white tw-border tw-rounded-xl tw-overflow-x-auto">
     <table className="tw-w-full tw-text-sm">
@@ -426,6 +455,7 @@ const TableView = ({
             {/* Actions */}
             <td className="tw-p-3">
               <div className="tw-flex tw-items-center tw-justify-center tw-gap-2">
+
                 {(m.status === "scheduled" || m.status === "ongoing") && (
                   <button
                     onClick={() => handleStartClass(m._id)}
@@ -433,6 +463,17 @@ const TableView = ({
                     title="Start / Join"
                   >
                     <FiPlay />
+                  </button>
+                )}
+
+                {/* 🔹 NEW COPY BUTTON */}
+                {m.zoomJoinUrl && (
+                  <button
+                    onClick={() => handleCopy(m.zoomJoinUrl)}
+                    className="tw-rounded-md tw-border tw-border-gray-300 tw-p-2 tw-text-gray-600 hover:tw-bg-gray-100"
+                    title="Copy Joining Link"
+                  >
+                    <FiCopy />
                   </button>
                 )}
 

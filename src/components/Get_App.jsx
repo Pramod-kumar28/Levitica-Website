@@ -1,6 +1,6 @@
 const AppDownloadButtons = () => {
   return (
-    <section className="tw-bg-gradient-to-br tw-from-slate-800 tw-to-black tw-py-24">
+    <section className="tw-bg-gradient-to-br tw-from-slate-800 tw-to-black tw-py-20">
       <div className="tw-max-w-6xl tw-mx-auto tw-px-4 tw-text-center">
 
         <h2 className="tw-text-white tw-text-3xl md:tw-text-4xl tw-font-semibold tw-mb-12">
@@ -65,9 +65,8 @@ const AppDownloadButtons = () => {
 
 const GetApp = () => {
   return (
-    <div className="main pt-100">
-
-      {/* HERO – untouched */}
+    <div className="">
+      {/* HERO */}
       <section
         className="hero-section ptb-100 gradient-overlay"
         style={{ background: "url('img/header-bg-5.jpg') no-repeat center center / cover" }}
@@ -76,10 +75,13 @@ const GetApp = () => {
           className="hero-bottom-shape-two"
           style={{ background: "url('img/hero-bottom-shape.svg') no-repeat bottom center" }}
         />
-        <div className=" tw-backdrop-blur-sm tw-max-w-5xl tw-mx-auto tw-text-center tw-mt-20">
+        <div className="tw-backdrop-blur-sm tw-max-w-5xl tw-mx-auto tw-text-center tw-mt-20">
           <h1 className="tw-text-white tw-text-4xl tw-font-bold">
-            Download DCM App
+            Download the DCM Learning App
           </h1>
+          <p className="tw-text-white tw-mt-4 tw-text-lg tw-opacity-90">
+            Learn smarter, track progress faster, and stay connected anywhere.
+          </p>
         </div>
       </section>
 
@@ -87,27 +89,50 @@ const GetApp = () => {
       <section className="tw-py-24">
         <div className="tw-max-w-6xl tw-mx-auto tw-grid lg:tw-grid-cols-2 tw-gap-12 tw-px-4">
 
+          {/* Text Content */}
           <div>
-            <h2 className="tw-text-3xl tw-font-bold tw-mb-4">
-              Manage Your Business Faster
+            <h2 className="tw-text-3xl tw-font-bold tw-mb-6">
+              Everything You Need to Learn — In Your Pocket
             </h2>
-            <p className="tw-text-slate-600 tw-mb-4">
-              Objectively deliver professional value with diverse web-readiness.
-              Collaboratively transition wireless customer service.
+
+            <p className="tw-text-slate-600 tw-mb-5">
+              The DCM mobile app is designed to give students a seamless learning experience
+              anytime, anywhere. Whether you’re commuting, taking a break, or studying at home,
+              the app ensures uninterrupted access to your courses, live sessions, assignments,
+              and performance tracking tools. No more waiting to open a laptop — your entire
+              learning journey is now just one tap away.
             </p>
+
+            <p className="tw-text-slate-600 tw-mb-5">
+              With real-time notifications, you’ll never miss important announcements,
+              class updates, or assignment deadlines. The app keeps you connected with
+              instructors and classmates, allowing you to participate in discussions,
+              clarify doubts instantly, and stay engaged with your learning community.
+            </p>
+
+            <p className="tw-text-slate-600 tw-mb-5">
+              Our intuitive interface is built for speed and simplicity. You can easily
+              track your progress, revisit recorded sessions, download study materials,
+              and monitor your course completion milestones — all in a smooth,
+              distraction-free environment optimized for mobile devices.
+            </p>
+
             <p className="tw-text-slate-600">
-              Holistically foster extensible users through clicks-and-mortar strategies.
+              Whether you are preparing for your career, upgrading your skills,
+              or mastering a new technology, the DCM App empowers you to learn
+              consistently and efficiently. Take control of your education and
+              experience learning without limits.
             </p>
           </div>
 
-          <div className="tw-flex tw-justify-center">
+          {/* Image */}
+          <div className="tw-flex tw-justify-center tw-items-center">
             <img
               src="/img/downloaddesign.png"
-              alt="download"
-              className="tw-max-w-sm"
+              alt="DCM App Preview"
+              className="tw-max-w-sm tw-w-full"
             />
           </div>
-
         </div>
       </section>
 

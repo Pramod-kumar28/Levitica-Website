@@ -11,11 +11,11 @@ export const useJoinLiveClass = () => {
     try {
       setErrorMessage('');
       const result = await joinLiveClass(classId).unwrap();
-      console.log(result,"iam result")
+     
 
       if (result) {
         // ✅ Redirect to Zoom
-        console.log("iaminn")
+     
         window.open(result.join, '_blank', 'noopener,noreferrer');
         return { success: true, zoomUrl: result.join };
       }

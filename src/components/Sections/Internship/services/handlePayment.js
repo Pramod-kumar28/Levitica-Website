@@ -97,7 +97,7 @@ export const usePayment = () => {
 
       toast.success('Payment successful!');
 
-      navigate('/payment-success', {
+      navigate('/internships/payment-success', {
         replace: true,
         state: {
           paymentData: {

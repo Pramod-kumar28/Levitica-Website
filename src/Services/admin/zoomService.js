@@ -25,7 +25,7 @@ export const zoomApi = api.injectEndpoints({
     // ✅ START LIVE CLASS
     startLiveClass: builder.mutation({
       query: (id) => ({
-        url: `/admin/zoom/zoom/start/${id}`,
+        url: `/admin/zoom/start/${id}`,
         method: "GET",
       }),
       invalidatesTags: ["Meeting"],

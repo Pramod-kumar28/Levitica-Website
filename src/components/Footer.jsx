@@ -40,7 +40,7 @@ const Footer = () => {
     <footer className="tw-bg-gradient-to-b tw-from-slate-950 tw-to-slate-900 tw-text-white">
 
       {/* TOP SECTION */}
-      <div className="tw-max-w-7xl tw-mx-auto tw-px-6 tw-py-20 tw-text-white">
+      <div className="tw-max-w-7xl tw-mx-auto tw-px-6 tw-py-16 tw-text-white">
         <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-5 tw-gap-12">
 
           {/* LINK COLUMNS */}

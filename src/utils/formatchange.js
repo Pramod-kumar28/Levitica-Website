@@ -17,7 +17,7 @@
 export  const flattenEnrollments=(arr)=> {
 
     return arr?.flatMap(entry => {
-      console.log("entry",entry)
+     
       const {_id, user, enrolledCourses } = entry;
       return enrolledCourses.map(courseEntry => ({
         enrollment_id:_id,

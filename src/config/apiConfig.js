@@ -8,8 +8,8 @@ export const createApiService = ({
   // Performance options
   keepUnusedDataFor = 60,
   refetchOnMountOrArgChange = false,
-  refetchOnFocus = true,
-  refetchOnReconnect = true,
+  refetchOnFocus =false,
+  refetchOnReconnect = false,
 }) => ({
   reducerPath,
   baseQuery: createBaseQueryWithReauth(baseUrl),

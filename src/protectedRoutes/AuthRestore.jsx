@@ -1,26 +1,30 @@
 // components/auth/AuthBootstrap.jsx
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useLazyVerifyAuthQuery } from "../Services/authService";
-import { login, logout } from "../features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useVerifyAuthQuery } from "../Services/authService";
+import { login, logout, setAuthChecked } from "../features/authSlice";
 
 const AuthBootstrap = () => {
   const dispatch = useDispatch();
-  const [triggerVerify, result] = useLazyVerifyAuthQuery();
+  const { authChecked } = useSelector((state) => state.auth);
 
-  // 🔑 Always attempt restore ONCE on mount
-  useEffect(() => {
-    triggerVerify();
-  }, [triggerVerify]);
+  // 🚀 Only run if not already checked
+  const { data, isSuccess, isError } = useVerifyAuthQuery(undefined, {
+    skip: authChecked,               // 🔥 prevents repeat calls
+    refetchOnMountOrArgChange: false,
+    refetchOnFocus: false,
+    refetchOnReconnect: false,
+  });
 
-  // 🔑 Resolve auth state
   useEffect(() => {
-    if (result.isSuccess && result.data?.verified && result.data?.user) {
-      dispatch(login({ user: result.data.user }));
-    } else if (result.isSuccess || result.isError) {
+    if (isSuccess && data?.verified && data?.user) {
+      dispatch(login({ user: data.user }));
+      dispatch(setAuthChecked(true));
+    } else if (isSuccess || isError) {
       dispatch(logout());
+      dispatch(setAuthChecked(true));
     }
-  }, [result, dispatch]);
+  }, [isSuccess, isError, data, dispatch]);
 
   return null;
 };

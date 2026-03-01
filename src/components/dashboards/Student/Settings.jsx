@@ -9,6 +9,7 @@ import { useChangePasswordMutation } from '../../../Services/authService';
 
 
 import { Settings } from "lucide-react";
+import toast from 'react-hot-toast';
 
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -300,6 +301,8 @@ const SecurityTab = () => {
           currentPassword: values.currentPassword,
           newPassword: values.newPassword,
         }).unwrap();
+        
+        toast.success("Password changed successfully");
 
         resetForm();
         setShow(false);

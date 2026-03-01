@@ -24,7 +24,7 @@ const GenericTable = ({
   onRemove,
   getRowId = (row) => row.id,
 }) => {
-  console.log(data,"iam data")
+ 
 const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedBatch, setSelectedBatch] = useState("");
   const [rowSelection, setRowSelection] = useState({});

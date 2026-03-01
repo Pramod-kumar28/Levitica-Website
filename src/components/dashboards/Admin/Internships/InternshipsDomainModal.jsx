@@ -11,6 +11,7 @@ import {
   useCreateInternshipsDomainMutation,
   useUpdateInternshipsDomainMutation,
 } from "../../../../Services/admin/internshipsDomainService";
+import toast from "react-hot-toast";
 
 const InternshipsDomainModal = ({
   handleClose,
@@ -61,14 +62,16 @@ const InternshipsDomainModal = ({
   });
 
   const handleSubmit = async (values) => {
-    console.log(values,"from internships modal")
+    
     if (isEdit) {
       await updateDomain({
         id: domain._id,
         updatedData: values,
       }).unwrap();
+      toast.success("Domain updated successfully");
     } else {
       await createDomain(values).unwrap();
+      toast.success("Domain created successfully");
     }
     handleClose();
   };
@@ -171,9 +174,9 @@ const InternshipsDomainModal = ({
                     {({ push, remove }) => (
                       <div className="tw-space-y-3">
                         <div className="tw-flex tw-items-center tw-justify-between">
-                          <h4 className="tw-font-medium tw-flex tw-items-center tw-gap-2">
+                          <div className="tw-font-medium tw-text-md tw-flex tw-items-center tw-gap-2">
                             <FiClock /> Durations
-                          </h4>
+                          </div>
                           <button
                             type="button"
                             onClick={() => push({ days: "", fee: "" })}

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ContactUsForm from "./ContactForm";
 
 const ContactUs = () => {
@@ -48,9 +49,9 @@ const ContactUs = () => {
                 Seamlessly deliver next-generation digital initiatives with our expert team.
               </p>
 
-              <button className="btn outline-btn tw-mt-6">
-                Get Directions →
-              </button>
+              <Link  to="/services" className="btn outline-btn tw-mt-6">
+                View Services →
+              </Link>
 
               <hr className="tw-my-10" />
 
@@ -59,8 +60,8 @@ const ContactUs = () => {
               </h5>
 
               <address className="tw-not-italic tw-text-slate-600 tw-leading-relaxed">
-                Office #407, 4th Floor, Jain Sadguru Image's Capital Park, <br />
-                Ayyappa Society, Madhapur, Hyderabad, Telangana 500081
+                2nd Floor, Vittal Rao Nagar, Sriram Plaza, <br />
+                Madhapur, Hyderabad, Telangana 500081
               </address>
 
               <div className="tw-mt-4 tw-text-slate-700">
@@ -84,7 +85,7 @@ const ContactUs = () => {
       {/* ===== MAP ===== */}
       <div className="tw-w-full">
         <iframe
-         title="DCM Technologies Office Location Map"
+          title="DCM Technologies Office Location Map"
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.2660901615855!2d78.38363917414267!3d17.44697380108786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb910838be5b35%3A0xfa8c53166a450046!2sDesign%20Career%20Metrics%20Pvt%20Ltd!5e0!3m2!1sen!2sin!4v1758168750472!5m2!1sen!2sin"
           width="100%"
           height="450"

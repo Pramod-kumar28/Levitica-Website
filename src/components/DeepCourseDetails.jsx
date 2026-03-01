@@ -14,7 +14,7 @@ import {
 
 
 const CourseDetails = () => {
-  const { courseId, category } = useParams();
+  const { courseId, } = useParams();
 
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -29,12 +29,12 @@ const CourseDetails = () => {
   const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(course)
+  
   useEffect(() => {
     const fetchCourseData = () => {
       try {
         // Get course data based on URL parameter
-        console.log(courseId, "iamcoid")
+    
         const courseKey = courseId || 'java-full-stack';
         const courseData = coursesData[courseKey];
 
@@ -55,7 +55,7 @@ const CourseDetails = () => {
   }, [courseId, navigate]);
 
   const handleCourseChange = (slug) => {
-    console.log(slug)
+    
 
     navigate(`/trainings/${slug}`);
   };

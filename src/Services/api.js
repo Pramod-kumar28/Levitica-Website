@@ -21,5 +21,6 @@ export const api = createApi(
       "InternshipDomain",
       "StudentReports"
     ],
+    
   })
 );
