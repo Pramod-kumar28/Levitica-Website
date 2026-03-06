@@ -129,7 +129,7 @@ const LiveClasses = () => {
     .map(cls => ({ id: cls.batch._id, name: cls.batch.batchName })) || [])];
 
   return (
-    <div className="tw-space-y-8 tw-p-6">
+    <div className="tw-space-y-8 lg:tw-p-6 tw-p-1">
       {/* Header */}
       <div>
         <h1 className="tw-text-2xl tw-font-bold tw-text-gray-900">Live Classes</h1>

@@ -23,7 +23,6 @@ const LoginForm = () => {
           toast.error(response.error.data?.message || "Login failed");
           return;
         }
-
         dispatch(
           login({
             user: response.data.user,

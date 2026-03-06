@@ -5,7 +5,6 @@ import { loadRazorpay } from '../../../../utils/loadRazorpay';
 
 import {
   useCreateInternshipOrderMutation,
-  useVerifyInternshipPaymentMutation,
 } from '../../../../Services/paymentServices/internshipsServices';
 
 export const usePayment = () => {
@@ -13,7 +12,7 @@ export const usePayment = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [createOrder] = useCreateInternshipOrderMutation();
-  const [verifyPayment] = useVerifyInternshipPaymentMutation();
+
 
   const handlePayment = async (formData) => {
     setIsLoading(true);
@@ -44,9 +43,12 @@ export const usePayment = () => {
         description: `Payment for Internship - ${formData.domain}`,
         image: '/img/dcm-logo2.jpg',
         order_id: order.id,
+        handler: async function (response) {
 
-        handler: async (response) => {
-          await handleVerifyPayment(response, formData, order.id);
+          navigate(
+            `/internships/payment-success?orderId=${response.razorpay_order_id}&paymentId=${response.razorpay_payment_id}&signature=${response.razorpay_signature}`
+          );
+
         },
 
         prefill: {
@@ -78,55 +80,6 @@ export const usePayment = () => {
     }
   };
 
-  const handleVerifyPayment = async (razorpayResponse, formData, orderId) => {
-    try {
-      const verificationPayload = {
-        razorpay_order_id: orderId,
-        razorpay_payment_id: razorpayResponse.razorpay_payment_id,
-        razorpay_signature: razorpayResponse.razorpay_signature,
-        formData,
-      };
-
-      const verificationResponse = await verifyPayment(
-        verificationPayload
-      ).unwrap();
-
-      if (!verificationResponse.success) {
-        throw new Error(verificationResponse.message);
-      }
-
-      toast.success('Payment successful!');
-
-      navigate('/internships/payment-success', {
-        replace: true,
-        state: {
-          paymentData: {
-            paymentId: razorpayResponse.razorpay_payment_id,
-            orderId,
-            student: {
-              name: formData.name,
-              email: formData.email,
-              rollNumber: formData.rollNumber,
-            },
-            phone: formData.phone,
-            collegeName: formData.collegeName,
-            collegeCode: formData.collegeCode,
-            department: formData.department,
-            semester: formData.semester,
-            domain: formData.domain,
-            program: formData.program,
-            amount: formData.amount,
-            accessTime: Date.now(),
-          },
-        },
-      });
-
-    } catch (error) {
-      toast.error(error.message || 'Payment verification failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return {
     handlePayment,

@@ -1,27 +1,40 @@
-export const normalizeCoursePayments = (payments = []) =>
-  payments.map((p) => ({
-    id: p._id,
+export const normalizeCoursePayments = (transactions = []) => {
+  return transactions.map((t) => ({
+    orderId: t.orderId,
+    paymentId: t.paymentId,
+
+    name: t.user?.name,
+    email: t.user?.email,
+
+    title: t.courses?.map((c) => c.name).join(", "),
+    type: "Course",
+
+    amount: t.amount,
+    status: t.status,
+
+    paymentMode: t.paymentMode || "unknown",
+    appUsed: t.appUsed || "-",
+
+    createdAt: t.createdAt,
+  }));
+};
+export const normalizeInternshipPayments = (payments = []) => {
+  return payments.map((p) => ({
     orderId: p.orderId,
     paymentId: p.paymentId,
-    name: p.user?.name,
-    email: p.user?.email,
-    title: p.courses?.map((c) => c.name).join(", "),
-    amount: p.amount,
-    status: p.status,
-    type: "Course",
-    createdAt: p.createdAt,
-  }));
 
-export const normalizeInternshipPayments = (payments = []) =>
-  payments.map((p) => ({
-    id: p._id,
-    orderId: p.razorpayOrderId,
-    paymentId: p.razorpayPaymentId,
     name: p.name,
     email: p.email,
-    title: p.domain, // internship domain
+
+    title: p.title,
+    type: "Internship",
+
     amount: p.amount,
     status: p.status,
-    type: "Internship",
+
+    paymentMode: p.paymentMode || "unknown",
+    appUsed: p.appUsed || "-",
+
     createdAt: p.createdAt,
   }));
+};

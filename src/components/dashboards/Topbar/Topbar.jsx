@@ -8,6 +8,7 @@ import { useSidebarStore } from "../Sidebar/useSidebarStore";
 
 const Topbar = () => {
   const { user } = useSelector((state) => state.auth);
+  console.log(user)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -40,8 +41,18 @@ const Topbar = () => {
           onClick={() => setOpen(!open)}
           className="tw-flex tw-items-center tw-gap-2"
         >
-          <div className="tw-w-8 tw-h-8 tw-rounded-full tw-bg-blue-600 tw-text-white tw-flex tw-items-center tw-justify-center">
-            {user?.name?.[0]?.toUpperCase()}
+          <div className="tw-w-8 tw-h-8 tw-rounded-full tw-overflow-hidden tw-flex tw-items-center tw-justify-center tw-bg-blue-600 tw-text-white">
+            {user?.image ? (
+              <img
+                src={user.image}
+                alt={user?.name || "User"}
+                className="tw-w-full tw-h-full tw-object-cover"
+              />
+            ) : (
+              <span>
+                {user?.name?.[0]?.toUpperCase() || "U"}
+              </span>
+            )}
           </div>
           <FiChevronDown size={14} />
         </button>

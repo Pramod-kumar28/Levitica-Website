@@ -1,53 +1,48 @@
-import { useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { useSignupMutation } from '../../../../Services/authService';
-import { FiUser, FiMail, FiLock, FiX } from 'react-icons/fi';
+import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { FiUser, FiMail, FiLock, FiX } from "react-icons/fi";
+import { useCreateAdminMutation } from "../../../../Services/admin/admincreationServices";
 
 const CreateAdminForm = () => {
   const [alertType, setAlertType] = useState(null);
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
-  const [triggerSignup, { isLoading }] = useSignupMutation();
+  const [createAdmin, { isLoading }] = useCreateAdminMutation();
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      password: '',
-      role: 'admin',
+      name: "",
+      email: "",
+      password: "",
     },
     validationSchema: Yup.object({
-      name: Yup.string().required('Name is required'),
+      name: Yup.string().required("Name is required"),
       email: Yup.string()
-        .email('Invalid email format')
-        .required('Email is required'),
+        .email("Invalid email format")
+        .required("Email is required"),
       password: Yup.string()
-        .min(6, 'Password must be at least 6 characters')
-        .required('Password is required'),
+        .min(6, "Password must be at least 6 characters")
+        .required("Password is required"),
     }),
-    onSubmit: async values => {
+    onSubmit: async (values) => {
       try {
-        const response = await triggerSignup({
-          ...values,
-          role: 'admin',
-        }).unwrap();
+        const response = await createAdmin(values).unwrap();
 
-        setAlertType('success');
+        setAlertType("success");
         setAlertMessage(
-          response?.message || 'Admin account created successfully!'
+          response?.message || "Admin account created successfully!"
         );
         setShowAlert(true);
         formik.resetForm();
       } catch (error) {
         const message =
-          error?.data?.error ||
           error?.data?.message ||
-          error?.message ||
-          'Admin creation failed. Please try again.';
+          error?.data?.error ||
+          "Admin creation failed. Please try again.";
 
-        setAlertType('error');
+        setAlertType("error");
         setAlertMessage(message);
         setShowAlert(true);
       }
@@ -71,9 +66,9 @@ const CreateAdminForm = () => {
         {showAlert && (
           <div
             className={`tw-mb-4 tw-flex tw-items-start tw-justify-between tw-gap-4 tw-rounded-xl tw-border tw-p-4 ${
-              alertType === 'success'
-                ? 'tw-border-emerald-200 tw-bg-emerald-50 tw-text-emerald-700'
-                : 'tw-border-rose-200 tw-bg-rose-50 tw-text-rose-700'
+              alertType === "success"
+                ? "tw-border-emerald-200 tw-bg-emerald-50 tw-text-emerald-700"
+                : "tw-border-rose-200 tw-bg-rose-50 tw-text-rose-700"
             }`}
           >
             <p className="tw-text-sm">{alertMessage}</p>
@@ -90,25 +85,25 @@ const CreateAdminForm = () => {
         <form onSubmit={formik.handleSubmit} className="tw-space-y-5">
           {[
             {
-              name: 'name',
-              label: 'Full Name',
-              placeholder: 'Admin name',
+              name: "name",
+              label: "Full Name",
+              placeholder: "Admin name",
               icon: FiUser,
-              type: 'text',
+              type: "text",
             },
             {
-              name: 'email',
-              label: 'Email Address',
-              placeholder: 'admin@example.com',
+              name: "email",
+              label: "Email Address",
+              placeholder: "admin@example.com",
               icon: FiMail,
-              type: 'email',
+              type: "email",
             },
             {
-              name: 'password',
-              label: 'Password',
-              placeholder: 'Create a secure password',
+              name: "password",
+              label: "Password",
+              placeholder: "Create a secure password",
               icon: FiLock,
-              type: 'password',
+              type: "password",
             },
           ].map(({ name, label, placeholder, icon: Icon, type }) => (
             <div key={name}>
@@ -141,7 +136,7 @@ const CreateAdminForm = () => {
             disabled={!formik.isValid || isLoading}
             className="tw-flex tw-w-full tw-items-center tw-justify-center tw-rounded-xl tw-bg-indigo-600 tw-py-3 tw-text-sm tw-font-semibold tw-text-white tw-transition hover:tw-bg-indigo-700 disabled:tw-cursor-not-allowed disabled:tw-opacity-60"
           >
-            {isLoading ? 'Creating Admin...' : 'Create Admin Account'}
+            {isLoading ? "Creating Admin..." : "Create Admin Account"}
           </button>
         </form>
       </div>

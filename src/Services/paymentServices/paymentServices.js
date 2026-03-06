@@ -11,6 +11,12 @@ export const paymentsApi = api.injectEndpoints({
       }),
       providesTags: ["Payments"],
     }),
+    // payment history
+    getMyPayments: builder.query({
+      query: () => "/api/payments/my",
+      providesTags: ["Payments"],
+    }),
+
 
     // ✅ CREATE ORDER
     createOrder: builder.mutation({
@@ -38,6 +44,7 @@ export const paymentsApi = api.injectEndpoints({
 });
 
 export const {
+  useGetMyPaymentsQuery,
   useGetRazorpayConfigQuery,
   useCreateOrderMutation,
   useVerifyPaymentMutation,

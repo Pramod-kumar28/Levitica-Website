@@ -11,12 +11,14 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { MODAL_TYPES, useModal } from "../Modals/ModalContext";
 
 const StudentsTable = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const { openModal } = useModal()
 
   const {
     data: studentsData,
@@ -157,7 +159,12 @@ const StudentsTable = () => {
                 studentsData.students.map((student) => (
                   <tr
                     key={student._id}
-                    className="tw-border-t hover:tw-bg-gray-50"
+                    onClick={() =>
+                      openModal(MODAL_TYPES.VIEW_STUDENT_DETAILS, {
+                        userId: student._id,
+                      })
+                    }
+                    className="tw-border-t hover:tw-bg-gray-50 tw-cursor-pointer"
                   >
                     <td className="tw-px-4 tw-py-3">
                       {student.name || "Not Provided"}
@@ -170,11 +177,10 @@ const StudentsTable = () => {
                     </td>
                     <td className="tw-px-4 tw-py-3">
                       <span
-                        className={`tw-text-xs tw-font-medium tw-px-3 tw-py-1 tw-rounded-full ${
-                          student.emailVerified
-                            ? "tw-bg-green-100 tw-text-green-700"
-                            : "tw-bg-yellow-100 tw-text-yellow-700"
-                        }`}
+                        className={`tw-text-xs tw-font-medium tw-px-3 tw-py-1 tw-rounded-full ${student.emailVerified
+                          ? "tw-bg-green-100 tw-text-green-700"
+                          : "tw-bg-yellow-100 tw-text-yellow-700"
+                          }`}
                       >
                         {student.emailVerified ? "Verified" : "Pending"}
                       </span>

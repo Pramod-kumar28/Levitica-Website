@@ -23,7 +23,7 @@ const DashboardLayout = () => {
           <Sidebar/>
 
          {/* MAIN CONTENT  */}
-          <main className="tw-flex-1 tw-overflow-y-auto tw-p-6">
+          <main className="tw-flex-1 tw-overflow-y-auto lg:tw-p-6 tw-p-4">
             <Suspense fallback={<Loader message="Loading module..." />}>
               <ScrollToTop />
               <Outlet />

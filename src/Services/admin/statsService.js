@@ -15,7 +15,7 @@ export const statsApi = api.injectEndpoints({
     // ✅ CREATE USER (affects stats)
     createUser: builder.mutation({
       query: (data) => ({
-        url: "/admin/stats/create-user",
+        url: "/admin/user/create-user",
         method: "POST",
         body: data,
       }),

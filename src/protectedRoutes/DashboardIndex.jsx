@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 const DashboardIndex = () => {
   const role = useSelector((state) => state.auth.user?.role);
 
-  if (role === "admin") {
+  if (role === "admin" || role === "superadmin") {
     return <Navigate to="admin" replace />;
   }
 

@@ -1,42 +1,51 @@
-import CreateAdminForm from './CreateAdminForm';
+import CreateAdminForm from "./CreateAdminForm";
+import AdminTable from "./AdminTable";
+import { FiShield, FiUsers, FiBook, FiLayers } from 'react-icons/fi';
+
 
 const SuperAdminPage = () => {
   return (
-    <div className="content-page">
-      <div className="content">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-12">
-              <div className="page-title-box">
-                <h4 className="page-title">Super Admin Controls</h4>
-              </div>
-            </div>
+    <div className="">
+      <h1 className="tw-text-2xl tw-font-bold tw-mb-6">
+        Super Admin Controls
+      </h1>
+
+      <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6">
+        <CreateAdminForm />
+
+        <div className="tw-rounded-2xl tw-border tw-border-slate-200 tw-bg-white tw-shadow-sm">
+          <div className="tw-border-b tw-border-slate-200 tw-p-6">
+            <h2 className="tw-text-lg tw-font-semibold tw-text-slate-900">
+              Admin Management
+            </h2>
+            <p className="tw-mt-1 tw-text-sm tw-text-slate-500">
+              Capabilities granted to admin users
+            </p>
           </div>
-          
-          <div className="row">
-            <div className="col-lg-6">
-              <CreateAdminForm />
-            </div>
-            <div className="col-lg-6">
-              <div className="card">
-                <div className="card-header">
-                  <h4 className="card-title">Admin Management</h4>
-                </div>
-                <div className="card-body">
-                  <p>From this panel, you can create new admin accounts that will have access to the admin dashboard.</p>
-                  <p>Admins will be able to:</p>
-                  <ul>
-                    <li>Manage students</li>
-                    <li>Create and manage courses</li>
-                    <li>Assign students to batches</li>
-                    <li>View system reports</li>
-                  </ul>
-                </div>
+
+          <div className="tw-space-y-4 tw-p-6">
+            {[
+              { icon: FiUsers, label: 'Manage students' },
+              { icon: FiBook, label: 'Create & manage courses' },
+              { icon: FiLayers, label: 'Assign students to batches' },
+              { icon: FiShield, label: 'View system reports' },
+            ].map(({ icon: Icon, label }) => (
+              <div
+                key={label}
+                className="tw-flex tw-items-center tw-gap-3 tw-rounded-xl tw-border tw-border-slate-100 tw-bg-slate-50 tw-p-3"
+              >
+                <Icon className="tw-h-5 tw-w-5 tw-text-indigo-600" />
+                <span className="tw-text-sm tw-font-medium tw-text-slate-800">
+                  {label}
+                </span>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
+
+      {/* Admin Table */}
+      <AdminTable />
     </div>
   );
 };

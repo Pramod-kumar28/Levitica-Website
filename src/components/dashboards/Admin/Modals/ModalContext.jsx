@@ -6,6 +6,7 @@ import BatchModal from "../Batchs/BatchModal";
 import CourseDetailsModal from "../CourseManagement/CoursesDetailsModal";
 import InternshipsDomainModal from "../Internships/InternshipsDomainModal";
 import BatchStudentsModal from "../Batchs/BatchStudentsModal";
+import StudentDetailsModal from "../../Student/StudentDetailsModal";
 
 const ModalContext = createContext();
 
@@ -20,7 +21,8 @@ export const MODAL_TYPES = {
   EDIT_COURSE_DETAILS: "EDIT_COURSE_DETAILS",
   ADD_INTERNSHIP_DOMAIN: "ADD_INTERNSHIPS_DOMAIN",
   EDIT_INTERNSHIP_DOMAIN: "EDIT_INTERNSHIP_DOMAIN",
-  VIEW_BATCH_STUDENTS: "VIEW_BATCH_STUDENTS"
+  VIEW_BATCH_STUDENTS: "VIEW_BATCH_STUDENTS",
+  VIEW_STUDENT_DETAILS: "VIEW_STUDENT_DETAILS"
 };
 
 export const ModalProvider = ({ children }) => {
@@ -68,7 +70,7 @@ export const ModalProvider = ({ children }) => {
             >
               {/* ================= Modal Content ================= */}
 
-              
+
               {/* LIVE CLASSES CREATE AND EDIT */}
               {modalType === MODAL_TYPES.CREATE_MEETING && (
                 <LiveClassForm
@@ -156,6 +158,13 @@ export const ModalProvider = ({ children }) => {
                   handleClose={closeModal}
                 />
 
+              )}
+              {/* view student Details */}
+              {modalType === MODAL_TYPES.VIEW_STUDENT_DETAILS && (
+                <StudentDetailsModal
+                  userId={modalProps.userId}
+                  handleClose={closeModal}
+                />
               )}
 
 

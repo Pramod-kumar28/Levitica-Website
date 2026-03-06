@@ -7,7 +7,7 @@ import {
   FaHome,
   FaBookOpen,
   FaVideo,
- 
+
   FaUsers,
   FaLayerGroup,
   FaUserPlus,
@@ -20,7 +20,8 @@ const Sidebar = () => {
   const { isOpen, closeSidebar } = useSidebarStore();
   const role = useSelector((state) => state.auth.user?.role);
   const { modalType } = useModal();
- 
+  console.log("User Role in Sidebar:", role);
+
 
   if (modalType) return null;
 
@@ -29,7 +30,7 @@ const Sidebar = () => {
       label: "Dashboard",
       icon: <FaHome size={20} />,
       path: "/dashboard",
-      roles: ["student", "admin"],
+      roles: ["student", "admin", 'superadmin'],
     },
     {
       label: "Browse Courses",
@@ -52,50 +53,59 @@ const Sidebar = () => {
     {
       label: "Settings",
       icon: <FaCog size={20} />,
-      path: "/dashboard/student/settings",
+      path: `/dashboard/student/settings`,
       roles: ["student"],
     },
+
     {
       label: "Students",
       icon: <FaUsers size={20} />,
       path: "/dashboard/admin/students",
-      roles: ["admin"],
+      roles: ["admin", 'superadmin'],
     },
     {
       label: "Courses",
       icon: <FaBookOpen size={20} />,
       path: "/dashboard/admin/courses",
-      roles: ["admin"],
-    },
-    {
-      label: "Payments",
-      icon: <FaCreditCard size={20} />,
-      path: "/dashboard/admin/payments",
-      roles: ["admin"],
-    },
-    {
-      label: "Live Classes",
-      icon: <FaVideo size={20} />,
-      path: "/dashboard/admin/zoom",
-      roles: ["admin"],
+      roles: ["admin", 'superadmin'],
     },
     {
       label: "Batches",
       icon: <FaLayerGroup size={20} />,
       path: "/dashboard/admin/batchs",
-      roles: ["admin"],
+      roles: ["admin", 'superadmin'],
+    },
+    {
+      label: "Live Classes",
+      icon: <FaVideo size={20} />,
+      path: "/dashboard/admin/zoom",
+      roles: ["admin", 'superadmin'],
     },
     {
       label: "Internships",
       icon: <FaCertificate size={20} />,
       path: "/dashboard/admin/internships",
-      roles: ["admin"],
+      roles: ["admin", 'superadmin'],
     },
+
+    {
+      label: "Payments",
+      icon: <FaCreditCard size={20} />,
+      path: "/dashboard/admin/payments",
+      roles: ["admin", 'superadmin'],
+    },
+
     {
       label: "Add Admin",
       icon: <FaUserPlus size={20} />,
       path: "/dashboard/admin/addadmin",
-      roles: ["admin"],
+      roles: ["superadmin"],
+    },
+    {
+      label: "Settings",
+      icon: <FaCog size={20} />,
+      path: `/dashboard/admin/settings`,
+      roles: ['admin', "superadmin"],
     },
   ].filter((item) => item.roles.includes(role));
 
@@ -131,6 +141,7 @@ const Sidebar = () => {
     tw-backdrop-blur-xl
     tw-border-r tw-border-white/10
     tw-shadow-xl
+    tw-overflow-y-auto
   `}
       >
         <nav className="tw-p-3 tw-space-y-2">

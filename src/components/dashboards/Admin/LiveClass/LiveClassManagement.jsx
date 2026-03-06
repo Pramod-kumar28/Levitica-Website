@@ -186,10 +186,6 @@ const AdminLiveClasses = () => {
         </div>
 
         <div className="tw-flex tw-gap-2">
-          <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-border tw-border-gray-300 tw-bg-white tw-px-4 tw-py-2 tw-text-sm tw-font-medium hover:tw-bg-gray-50">
-            <FiDownload />
-            Export
-          </button>
 
           <button className="tw-flex tw-items-center tw-gap-2 tw-rounded-lg tw-bg-blue-600 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-text-white hover:tw-bg-blue-700"
             onClick={() => openModal(MODAL_TYPES.CREATE_MEETING)}>

@@ -51,6 +51,12 @@ const authSlice = createSlice({
       state.lastRefreshed = Date.now();
     },
 
+     updateUserImage: (state, action) => {
+      if (state.user) {
+        state.user.image = action.payload;
+      }
+    },
+
     // Optional: Clear auth errors
     clearError: (state) => {
       state.error = null;
@@ -67,6 +73,7 @@ export const {
   tokenRefreshed,
   updateToken,
   clearError,
+  updateUserImage,
   setAuthChecked
 } = authSlice.actions;
 

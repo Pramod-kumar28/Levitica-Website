@@ -26,12 +26,20 @@ export const assignApi = api.injectEndpoints({
       }),
       providesTags: ["Enrollments"],
     }),
+    getStudentEnrollments: builder.query({
+      query: (userId) => ({
+        url: `/student/enrollments/${userId}`,
+        method: "GET",
+      }),
+      providesTags: ["Enrollments"],
+    }),
   }),
 
   overrideExisting: false, // safer for code splitting
 });
 
 export const {
+  useGetStudentEnrollmentsQuery,
   useLazyGetUnassignedEnrollmentsQuery,
   useAssignStudentsToBatchMutation,
   useGetAssignedEnrollmentsQuery,

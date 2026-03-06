@@ -39,7 +39,7 @@ const CommonCourseDetails = () => {
   const { openModal } = useModal();
   const dispatch = useDispatch();
   const [expandedWeeks, setExpandedWeeks] = useState([]);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+
 
   const { data, isLoading } = useGetCourseByIdQuery(id);
   const course = data?.data;
@@ -78,10 +78,7 @@ const CommonCourseDetails = () => {
     );
   };
 
-  const toggleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
-    toast.success(isBookmarked ? "Removed from bookmarks" : "Added to bookmarks");
-  };
+
 
   const handleShare = () => {
     navigator.clipboard?.writeText(window.location.href);
@@ -267,7 +264,7 @@ const CommonCourseDetails = () => {
 
                 {/* Action Buttons */}
                 <div className="tw-space-y-3">
-                  {role === "admin" ? (
+                  {role === "admin" || role==='superadmin'? (
                     <button
                       onClick={handleEdit}
                       className="tw-w-full tw-inline-flex tw-items-center tw-justify-center tw-gap-2 tw-px-6 tw-py-3 tw-bg-blue-600 tw-text-white tw-rounded-xl hover:tw-bg-blue-700 tw-transition-colors tw-duration-200 tw-font-medium"
@@ -314,7 +311,7 @@ const CommonCourseDetails = () => {
             <h2 className="tw-font-bold tw-text-xl md:tw-text-2xl tw-text-gray-900 tw-mb-4">
               Course Description
             </h2>
-            <p className="tw-text-gray-700  lg:tw-text-lg tw-text-sm">
+            <p className="tw-text-gray-700  lg:tw-text-base tw-text-sm">
               {details.description}
             </p>
           </div>

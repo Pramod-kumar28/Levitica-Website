@@ -17,10 +17,9 @@ const PaymentOverview = () => {
   const [activeTab, setActiveTab] = useState("course");
   const [page, setPage] = useState(1);
 
-  // =============================
-  // Fetch APIs (Lazy per tab)
-  // =============================
 
+  // Fetch APIs (Lazy per tab)
+  
   const {
     data: courseData,
     isLoading: courseLoading,
@@ -40,10 +39,9 @@ const PaymentOverview = () => {
   const isLoading =
     activeTab === "course" ? courseLoading : internshipLoading;
 
-  // =============================
+ 
   // Normalize Data
-  // =============================
-
+ 
   const normalizedData = useMemo(() => {
     if (activeTab === "course") {
       return normalizeCoursePayments(
@@ -55,9 +53,7 @@ const PaymentOverview = () => {
     );
   }, [activeTab, courseData, internshipData]);
 
-  // =============================
-  // Stats (Corrected)
-  // =============================
+    // Stats 
 
   const stats = useMemo(() => {
     const total =
@@ -80,9 +76,9 @@ const PaymentOverview = () => {
     };
   }, [activeTab, normalizedData, courseData, internshipData]);
 
-  // =============================
+  
   // Pagination Helpers
-  // =============================
+  
 
   const totalPages =
     activeTab === "course"

@@ -47,9 +47,9 @@ const EnrolledCourseCard = ({ course, index }) => {
       {/* Header */}
       <div className="tw-my-3 tw-border-b tw-flex tw-items-start tw-justify-between">
         <div>
-          <h3 className="tw-font-semibold tw-m-0 tw-text-gray-900 tw-line-clamp-1">
+          <h4 className="tw-font-semibold tw-m-0 tw-text-gray-900 tw-line-clamp-1">
             {course.courseName}
-          </h3>
+          </h4>
 
           <div className="tw-mt-1">
             {course.batchName ? (
@@ -155,7 +155,7 @@ const MyCourseList = () => {
   const enrolledCourses = enrolledSummaryData?.data || [];
 
   return (
-    <div className="tw-max-w-7xl tw-mx-auto tw-px-4 tw-py-6">
+    <div className="tw-max-w-7xl tw-mx-auto md:tw-px-4 tw-px-1 tw-py-6">
       {/* Header */}
       <motion.div
         initial={{ y: 40, opacity: 0 }}

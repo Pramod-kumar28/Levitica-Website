@@ -108,17 +108,8 @@ const AssignedStudents = () => {
       {/* ================= TABLE ================= */}
       {isSuccess && results.length > 0 && (
         <div className="tw-bg-white tw-border tw-rounded-xl tw-shadow-sm">
-          <div className="tw-flex tw-items-center tw-justify-between tw-p-4 tw-border-b">
-            <h3 className="tw-font-semibold tw-flex tw-items-center tw-gap-2">
-              <Info className="tw-text-blue-600" />
-              Assigned Students Record
-            </h3>
-            <span className="tw-text-sm tw-bg-green-100 tw-text-green-700 tw-px-3 tw-py-1 tw-rounded-full">
-              {results.length} records
-            </span>
-          </div>
 
-          <div className="tw-p-4">
+          <div >
             <GenericTable
               data={results}
               showAssignControls={false}

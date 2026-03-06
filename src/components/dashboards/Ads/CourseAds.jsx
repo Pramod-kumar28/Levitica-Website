@@ -36,7 +36,7 @@ const CourseAdsCarousel = () => {
         autoplay={{ delay: 4000, disableOnInteraction: false }}
         loop
         pagination={{ clickable: true }}
-        className="tw-h-[180px] sm:tw-h-[240px] md:tw-h-[300px]"
+        className="tw-h-[200px] sm:tw-h-[240px] md:tw-h-[300px]"
       >
         {randomCourses.map((course) => {
           const isFree = course.price === 0;
@@ -56,7 +56,7 @@ const CourseAdsCarousel = () => {
                   <div className="tw-px-4 sm:tw-px-6 tw-max-w-lg">
 
                     {/* Category */}
-                    <p className="tw-text-[11px] sm:tw-text-xs tw-text-yellow-400 tw-mb-1 tw-uppercase">
+                    <p className="tw-text-[11px] sm:tw-text-xs tw-text-yellow-400 tw-uppercase">
                       {course.category}
                     </p>
 
@@ -66,7 +66,7 @@ const CourseAdsCarousel = () => {
                     </h2>
 
                     {/* Short Description */}
-                    <p className="tw-mt-1 tw-text-[11px] sm:tw-text-sm tw-text-white/90 tw-line-clamp-2">
+                    <p className=" tw-text-[11px] sm:tw-text-sm tw-text-white/90 tw-line-clamp-2">
                       {course.shortdescription}
                     </p>
 
@@ -89,7 +89,7 @@ const CourseAdsCarousel = () => {
                     </div>
 
                     {/* Buttons */}
-                    <div className="tw-mt-3 tw-flex tw-gap-2 tw-flex-wrap">
+                    <div className="tw-mt-2 tw-flex tw-gap-2 tw-flex-wrap">
                       <button
                         onClick={() =>
                           navigate(`/dashboard/course/${course._id}`)

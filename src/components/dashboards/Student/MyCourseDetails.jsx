@@ -25,6 +25,7 @@ const StudentEnrolledCourseDetails = () => {
   const { courseId } = useParams();
   const { data, isLoading } =
     useGetStudentEnrolledCoursedetailsQuery(courseId);
+    
   
   const [expandedModules, setExpandedModules] = useState([]);
 

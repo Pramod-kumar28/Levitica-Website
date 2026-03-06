@@ -29,8 +29,8 @@ export default function MyLearnings() {
             <PiGraduationCapBold className="tw-text-blue-600" size={20} />
           </div>
           <div>
-            <h3 className="tw-text-lg tw-font-semibold">My Learning</h3>
-            <p className="tw-text-sm tw-text-gray-500">
+            <div className="tw-text-lg tw-text-black tw-font-semibold">My Learning</div>
+            <p className=" tw-text-xs md:tw-text-sm tw-text-gray-500">
               Pick up where you left off
             </p>
           </div>

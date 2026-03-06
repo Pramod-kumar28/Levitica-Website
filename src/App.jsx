@@ -18,7 +18,7 @@ import CourseDetail from './components/CoursesDetails';
 import Services from './components/Services';
 import ServiceDetails from './components/ServicesDetails';
 import GetApp from './components/Get_App';
-import ErrorPage from './components/ErrorPage';
+
 
 // Auth
 import Login from './components/Login';
@@ -30,8 +30,7 @@ import EmailVerification from './utils/EmailVerification';
 // Student
 import CourseCatalog from './components/dashboards/Student/CourseCatelog';
 import LiveClasses from './components/dashboards/Student/LiveClasses';
-import ClassResources from './components/dashboards/Student/ClassResources';
-import AskQuestions from './components/dashboards/Student/AskQuestions';
+
 import SettingsPage from './components/dashboards/Student/Settings';
 
 // Admin
@@ -39,11 +38,11 @@ import AssignStudents from './components/dashboards/Admin/StudentManagement/Stud
 import StudentsTable from './components/dashboards/Admin/StudentManagement/AllStudentTable';
 import UnassignedStudents from './components/dashboards/Admin/StudentManagement/UnassignedStudents';
 import AssignedStudents from './components/dashboards/Admin/StudentManagement/AssignedStudents';
-import AddAdmin from './components/dashboards/Admin/AddAdmin/AddAdmin';
 import AdminLiveClasses from './components/dashboards/Admin/LiveClass/LiveClassManagement';
 import AdminDashboard from './components/dashboards/Admin/AdminDashboard';
 import CoursesManagement from './components/dashboards/Admin/CourseManagement/CoursesManagement';
 import BatchManagement from './components/dashboards/Admin/Batchs/BatchManagement';
+import SuperAdminPage from './components/dashboards/Admin/AddAdmin/SuperAdminPage.jsx';
 
 
 import Internship from './components/Sections/Internship/Internship';
@@ -81,7 +80,7 @@ const AuthLayout = () => (
 const NoFooterLayout = () => (
   <>
     <Navbar />
-  
+
     <Outlet />
   </>
 );
@@ -134,7 +133,7 @@ const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
 
           <Route index element={<DashboardIndex />} />
-          <Route element={<ProtectedRoute allowedRoles={["student", "admin"]} />}>
+          <Route element={<ProtectedRoute allowedRoles={["student", "admin","superadmin"]} />}>
             <Route element={<DashboardLayout />}>
               <Route path="course/:id" element={<CommonCourseDetails />} />
             </Route>
@@ -153,14 +152,7 @@ const AppRouter = () => {
               <Route path="browsercourses" element={<CourseCatalog />} />
               <Route path="mycourses" element={<MyCourseList />} />
               <Route path="mycourses/:courseId" element={<StudentEnrolledCourseDetails />} />
-
-
               <Route path="live-session" element={<LiveClasses />} />
-              <Route path="class-resources" element={<ClassResources />} />
-              {/* <Route path="course/:id" element={<CommonCourseDetails />} /> */}
-
-              <Route path="ask-questions" element={<AskQuestions />} />
-              {/* <Route path="book-session" element={<BookOneOnOne />} /> */}
               <Route path="settings" element={<SettingsPage />} />
             </Route>
           </Route>
@@ -169,13 +161,14 @@ const AppRouter = () => {
           <Route
             path="admin"
             element={
-              <ProtectedRoute allowedRoles={["admin"]} />
+              <ProtectedRoute allowedRoles={["admin", "superadmin"]} />
             }
           >
             <Route element={<DashboardLayout />}>
               <Route index element={<AdminDashboard />} />
-              <Route path="addadmin" element={<AddAdmin />} />
+              <Route path="addadmin" element={<SuperAdminPage />} />
               <Route path="payments" element={<PaymentOverview />} />
+               <Route path="settings" element={<SettingsPage />} />
 
 
               <Route path="courses" element={<CoursesManagement />} />

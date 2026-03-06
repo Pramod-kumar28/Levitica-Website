@@ -21,6 +21,18 @@ export const studentReportsApi = api.injectEndpoints({
         responseHandler: (response) => response.blob(),
         cache: "no-cache",
       }),
+
+
+    }),
+
+    downloadPaymentsExcel: builder.mutation({
+      query: (filters = {}) => ({
+        url: "/admin/student-reports/payments/excel",
+        method: "GET",
+        params: filters,
+        responseHandler: (response) => response.blob(),
+        cache: "no-cache",
+      }),
     }),
 
   }),
@@ -29,6 +41,7 @@ export const studentReportsApi = api.injectEndpoints({
 });
 
 export const {
+  useDownloadPaymentsExcelMutation,
   useDownloadStudentsExcelMutation,
   useGetStudentsQuery,
 } = studentReportsApi;
