@@ -19,35 +19,34 @@ const ProfileSidebar = ({ user, activeTab, onTabChange }) => {
     <aside className="tw-w-full tw-flex tw-flex-col tw-bg-white tw-rounded-2xl tw-shadow-sm tw-border">
 
       {/* Profile Header */}
-   {/* Profile Header */}
-<div className="tw-relative tw-w-full tw-h-40 tw-rounded-t-2xl tw-overflow-hidden tw-bg-gradient-to-br tw-from-blue-50 tw-to-white">
+      <div className="tw-relative tw-w-full tw-h-40 tw-rounded-t-2xl tw-overflow-hidden tw-bg-gradient-to-br tw-from-blue-50 tw-to-white">
 
-  {user?.image ? (
-    <img
-      src={user.image}
-      alt={user?.name || "User"}
-      className="tw-w-full tw-h-full tw-object-cover"
-    />
-  ) : (
-    <div className="tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center tw-bg-gradient-to-br tw-from-blue-600 tw-to-indigo-600 tw-text-white tw-text-5xl tw-font-semibold">
-      {user?.name?.charAt(0)?.toUpperCase() || "U"}
-    </div>
-  )}
+        {user?.image ? (
+          <img
+            src={user.image}
+            alt={user?.name || "User"}
+            className="tw-w-full tw-h-full tw-object-cover"
+          />
+        ) : (
+          <div className="tw-w-full tw-h-full tw-flex tw-items-center tw-justify-center tw-bg-gradient-to-br tw-from-blue-600 tw-to-indigo-600 tw-text-white tw-text-5xl tw-font-semibold">
+            {user?.name?.charAt(0)?.toUpperCase() || "U"}
+          </div>
+        )}
 
-  {/* Overlay for readability */}
-  <div className="tw-absolute tw-inset-0 tw-bg-black/30"></div>
+        {/* Overlay for readability */}
+        <div className="tw-absolute tw-inset-0 tw-bg-black/30"></div>
 
-  {/* User Info */}
-  <div className="tw-absolute tw-bottom-4 tw-left-4 tw-text-white">
-    <h2 className="tw-text-lg tw-font-semibold">
-      {user?.name || "User"}
-    </h2>
+        {/* User Info */}
+        <div className="tw-absolute tw-bottom-4 tw-left-4 tw-text-white">
+          <h2 className="tw-text-lg tw-font-semibold">
+            {user?.name || "User"}
+          </h2>
 
-    <span className="tw-inline-block tw-mt-1 tw-text-[11px] tw-font-medium tw-px-2 tw-py-0.5 tw-rounded-full tw-bg-white/20">
-      {user?.role || "Student"}
-    </span>
-  </div>
-</div>
+          <span className="tw-inline-block tw-mt-1 tw-text-[11px] tw-font-medium tw-px-2 tw-py-0.5 tw-rounded-full tw-bg-white/20">
+            {user?.role || "Student"}
+          </span>
+        </div>
+      </div>
 
       {/* Navigation */}
       <nav className="tw-flex-1 tw-p-4 tw-space-y-2">

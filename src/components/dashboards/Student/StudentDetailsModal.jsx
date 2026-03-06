@@ -40,7 +40,7 @@ const StudentDetailsModal = ({ userId, handleClose }) => {
   }
 
   return (
-    <div className="tw-max-h-[85vh] tw-overflow-y-auto">
+    <div className="tw-max-h-[90vh] tw-overflow-y-auto">
       
       {/* ================= STICKY HEADER ================= */}
       <div className="tw-sticky tw-top-0 tw-bg-white tw-border-b tw-px-6 tw-py-4 tw-flex tw-items-center tw-justify-between tw-z-10">

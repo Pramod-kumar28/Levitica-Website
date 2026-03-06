@@ -19,24 +19,25 @@ const GenericTable = ({
   showAssignControls = false,
   showBatchColumn = false,
   isAssignedView = false,
+  isAssigning,
   onAssignBatch,
   onCourseChange,
   onRemove,
   getRowId = (row) => row.id,
 }) => {
- 
-const [selectedCourse, setSelectedCourse] = useState("");
+
+  const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedBatch, setSelectedBatch] = useState("");
   const [rowSelection, setRowSelection] = useState({});
 
   /* ---------------- Filter ---------------- */
- const filteredData = useMemo(() => {
-  if (!selectedCourse) return data;
+  const filteredData = useMemo(() => {
+    if (!selectedCourse) return data;
 
-  return data.filter(
-    (s) => s.courseId === selectedCourse
-  );
-}, [data, selectedCourse]);
+    return data.filter(
+      (s) => s.courseId === selectedCourse
+    );
+  }, [data, selectedCourse]);
 
 
   /* ---------------- Columns ---------------- */
@@ -149,10 +150,19 @@ const [selectedCourse, setSelectedCourse] = useState("");
             <div className="tw-flex tw-gap-2">
               <button
                 onClick={handleBulkAssign}
-                disabled={!selectedBatch || selectedRows.length === 0}
+                disabled={!selectedBatch || selectedRows.length === 0 || isAssigning}
                 className="tw-bg-blue-600 hover:tw-bg-blue-700 tw-text-white tw-px-4 tw-py-2 tw-rounded-lg tw-flex tw-items-center tw-gap-2 disabled:tw-opacity-50"
               >
-                <FiUsers /> Assign
+                {isAssigning ? (
+                  <>
+                    <span className="tw-animate-spin tw-w-4 tw-h-4 tw-border-2 tw-border-white tw-border-t-transparent tw-rounded-full"></span>
+                    Assigning...
+                  </>
+                ) : (
+                  <>
+                    <FiUsers /> Assign
+                  </>
+                )}
               </button>
 
               <button
