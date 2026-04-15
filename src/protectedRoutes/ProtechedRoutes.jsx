@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Loader from "../components/dashboards/common/Loader";
+import Loader from '@/dashboard/common/Loader';
 
 const ProtectedRoute = ({ allowedRoles }) => {
   const { user, isAuthenticated, authChecked } = useSelector(

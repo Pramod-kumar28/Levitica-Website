@@ -1306,7 +1306,7 @@ export const coursesData = {
   "seo-fundamentals": {
     "id": 101,
     "title": "SEO Fundamentals",
-    "image": "/img/seo-search-svgrepo-com.svg",
+    "image": "/img/browser-seo-and-web-svgrepo-com.svg",
     "description": "Learn search engine optimization techniques, keyword research, on-page and off-page SEO strategies. Master Google ranking factors and analytics tools.",
     "fullDescription": [
       "Comprehensive understanding of search engine algorithms and ranking factors",
@@ -1348,7 +1348,7 @@ export const coursesData = {
   "social-media-marketing": {
     "id": 102,
     "title": "Social Media Marketing",
-    "image": "/img/social-media-svgrepo-com.svg",
+    "image": "/img/undraw_social-expert_wfam.svg",
     "description": "Master platform-specific strategies for Facebook, Instagram, LinkedIn and Twitter. Learn content creation, community management and paid advertising.",
     "fullDescription": [
       "Platform-specific strategies for Facebook, Instagram, LinkedIn, Twitter, and emerging platforms",
@@ -1390,7 +1390,7 @@ export const coursesData = {
   "content-marketing": {
     "id": 103,
     "title": "Content Marketing Strategy",
-    "image": "/img/content-marketing-svgrepo-com.svg",
+    "image": "/img/networking-monitor-svgrepo-com.svg",
     "description": "Learn to create compelling content that drives engagement and conversions. Master blogging, video content, email campaigns and content calendars.",
     "fullDescription": [
       "Strategic content planning aligned with business objectives and audience needs",
@@ -1432,7 +1432,7 @@ export const coursesData = {
   "google-ads-ppc": {
     "id": 104,
     "title": "Google Ads & PPC",
-    "image": "/img/google-ads-svgrepo-com.svg",
+    "image": "/img/google-svgrepo-com.svg",
     "description": "Master pay-per-click advertising on Google Ads. Learn campaign setup, keyword bidding, ad copywriting, and conversion tracking for maximum ROI.",
     "fullDescription": [
       "Complete Google Ads platform mastery including Search, Display, Video, and Shopping campaigns",
@@ -1474,7 +1474,7 @@ export const coursesData = {
   "marketing-analytics": {
     "id": 105,
     "title": "Marketing Analytics",
-    "image": "/img/analytics-svgrepo-com.svg",
+    "image": "/img/stats-marketing-svgrepo-com.svg",
     "description": "Learn to measure and analyze marketing performance using Google Analytics and other tools. Master data interpretation, reporting and optimization strategies.",
     "fullDescription": [
       "Complete Google Analytics 4 setup and implementation",
@@ -1516,7 +1516,7 @@ export const coursesData = {
   "email-marketing-automation": {
     "id": 106,
     "title": "Email Marketing Automation",
-    "image": "/img/email-marketing-svgrepo-com.svg",
+    "image": "/img/undraw_message-sent_785q.svg",
     "description": "Master email campaign strategies, automation workflows, segmentation and performance tracking. Learn to build effective lead nurturing sequences.",
     "fullDescription": [
       "End-to-end email marketing strategy development and implementation",
@@ -1573,75 +1573,3 @@ export const allCoursesList = [
   { title: "React-Native", slug: "app-development/react-native" },
   { title: "Flutter", slug: "app-development/flutter" }
 ]
-
-
-// for courses catalog
- // Sample course data based on your schema
-  // const courses = [
-  //   {
-  //     _id: '1',
-  //     name: "Advanced JavaScript Live Course",
-  //     thumbnail: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'><rect fill='%238e44ad' width='400' height='200'/><text fill='%23ffffff' font-family='Arial' font-size='20' x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>JavaScript</text></svg>",
-  //     description: "Master modern JavaScript with advanced patterns, async programming, and complex concepts in live sessions.",
-  //     instructor: "Sarah Johnson",
-  //     category: "Development",
-  //     duration: "8 weeks",
-  //     price: 89.99,
-  //     totalLessons: 24
-  //   },
-  //   {
-  //     _id: '2',
-  //     name: "Machine Learning Fundamentals",
-  //     thumbnail: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'><rect fill='%2327ae60' width='400' height='200'/><text fill='%23ffffff' font-family='Arial' font-size='20' x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>ML Fundamentals</text></svg>",
-  //     description: "Learn the core concepts of machine learning and build your first predictive models with expert guidance.",
-  //     instructor: "Michael Chen",
-  //     category: "Data Science",
-  //     duration: "10 weeks",
-  //     price: 94.99,
-  //     totalLessons: 32
-  //   },
-  //   {
-  //     _id: '3',
-  //     name: "UI/UX Design Masterclass",
-  //     thumbnail: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'><rect fill='%23e67e22' width='400' height='200'/><text fill='%23ffffff' font-family='Arial' font-size='20' x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>UI/UX Design</text></svg>",
-  //     description: "Create stunning user interfaces and experiences with professional design techniques in interactive sessions.",
-  //     instructor: "Emma Wilson",
-  //     category: "Design",
-  //     duration: "6 weeks",
-  //     price: 79.99,
-  //     totalLessons: 28
-  //   },
-  //   {
-  //     _id: '4',
-  //     name: "Digital Marketing Live Workshop",
-  //     thumbnail: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'><rect fill='%233498db' width='400' height='200'/><text fill='%23ffffff' font-family='Arial' font-size='20' x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>Marketing</text></svg>",
-  //     description: "Learn SEO, social media marketing, email campaigns, and analytics to grow any business with live guidance.",
-  //     instructor: "David Miller",
-  //     category: "Marketing",
-  //     duration: "8 weeks",
-  //     price: 84.99,
-  //     totalLessons: 36
-  //   },
-  //   {
-  //     _id: '5',
-  //     name: "Business Strategy & Leadership",
-  //     thumbnail: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'><rect fill='%232c3e50' width='400' height='200'/><text fill='%23ffffff' font-family='Arial' font-size='20' x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>Business</text></svg>",
-  //     description: "Develop strategic thinking and leadership skills to advance your career and business with expert mentors.",
-  //     instructor: "Jennifer Lee",
-  //     category: "Business",
-  //     duration: "7 weeks",
-  //     price: 99.99,
-  //     totalLessons: 26
-  //   },
-  //   {
-  //     _id: '6',
-  //     name: "React Native Mobile Development",
-  //     thumbnail: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'><rect fill='%239b59b6' width='400' height='200'/><text fill='%23ffffff' font-family='Arial' font-size='20' x='50%' y='50%' dominant-baseline='middle' text-anchor='middle'>React Native</text></svg>",
-  //     description: "Build cross-platform mobile applications using React Native and modern development tools in live coding sessions.",
-  //     instructor: "Alex Rodriguez",
-  //     category: "Development",
-  //     duration: "9 weeks",
-  //     price: 109.99,
-  //     totalLessons: 38
-  //   }
-  // ];

@@ -2,8 +2,8 @@ import {
   useGetRazorpayConfigQuery,
   useCreateOrderMutation,
   useVerifyPaymentMutation
-} from "../Services/paymentServices/paymentServices";
-import { loadRazorpay } from "../utils/loadRazorpay";
+} from '@/Services/paymentServices/paymentServices';
+import { loadRazorpay } from '@/utils/loadRazorpay';
 import { toast } from "react-hot-toast";
 
 export const useCheckoutHandler = () => {

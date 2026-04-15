@@ -1,5 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { createApiService } from "../config/apiConfig";
+import { createApiService } from '@/config/apiConfig';
 
 export const api = createApi(
   createApiService({
@@ -19,7 +19,8 @@ export const api = createApi(
       "Stats",
       "Internship",
       "InternshipDomain",
-      "StudentReports"
+      "StudentReports",
+      "Promos"
     ],
     
   })

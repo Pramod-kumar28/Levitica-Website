@@ -1,7 +1,7 @@
 // components/auth/DashboardGate.jsx
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Loader from "../components/dashboards/common/Loader";
+import Loader from '@/dashboard/common/Loader';
 import AuthBootstrap from "./AuthRestore";
 
 const DashboardGate = () => {

@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { api } from "../Services/api";
+import { api } from '@/Services/api';
 
-import authSliceReducer from "../features/authSlice";
-import cartSliceReducer from "../features/cartSlice";
-import { cartPersistMiddleware } from "../middleware/cartPersistMiddleware";
+import authSliceReducer from '@/features/authSlice';
+import cartSliceReducer from '@/features/cartSlice';
+import { cartPersistMiddleware } from '@/middleware/cartPersistMiddleware';
 import rtkLogger from "./rtkLogger";
 
 const store = configureStore({
@@ -19,7 +19,7 @@ const store = configureStore({
       cartPersistMiddleware,
       rtkLogger
     ),
-  devTools: process.env.NODE_ENV !== "production",
+  devTools: import.meta.env.VITE_ENV !== "production",
 });
 
 setupListeners(store.dispatch);

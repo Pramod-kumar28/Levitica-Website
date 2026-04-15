@@ -4,60 +4,61 @@ import { Outlet } from 'react-router-dom';
 import './App.css'
 
 // Layouts
-import Navbar from './components/Navbar';
-import Footer from "./components/Footer";
+import Navbar from '@/pages/public/Navbar';
+import Footer from '@/pages/public/Footer';
 
 
 // Public pages
-import HomePage from './components/HomePage';
-import AboutUs from './components/AboutUs';
-import ContactUs from './components/Contact';
-import Trainings from './components/Trainings';
+import HomePage from '@/pages/public/HomePage';
+import AboutUs from '@/pages/public/AboutUs';
+import ContactUs from '@/pages/public/Contact';
+import Trainings from '@/pages/public/Trainings';
 
-import CourseDetail from './components/CoursesDetails';
-import Services from './components/Services';
-import ServiceDetails from './components/ServicesDetails';
-import GetApp from './components/Get_App';
+import CourseDetail from '@/pages/public/CoursesDetails';
+import Services from '@/pages/public/Services';
+import ServiceDetails from '@/pages/public/ServicesDetails';
+import GetApp from '@/pages/public/Get_App';
 
 
 // Auth
-import Login from './components/Login';
-import Signup from './components/Signup';
-import ForgotPassword from './components/Forgotpassword';
-import ChangePassword from './components/ChangePassword';
-import EmailVerification from './utils/EmailVerification';
+import Login from '@/pages/public/Login';
+import Signup from '@/pages/public/Signup';
+import ForgotPassword from '@/pages/public/Forgotpassword';
+import ChangePassword from '@/pages/public/ChangePassword';
+import EmailVerification from '@/utils/EmailVerification';
 
 // Student
-import CourseCatalog from './components/dashboards/Student/CourseCatelog';
-import LiveClasses from './components/dashboards/Student/LiveClasses';
+import CourseCatalog from '@/dashboard/Student/CourseCatelog';
+import LiveClasses from '@/dashboard/Student/LiveClasses';
 
-import SettingsPage from './components/dashboards/Student/Settings';
+import SettingsPage from '@/dashboard/Student/Settings';
 
 // Admin
-import AssignStudents from './components/dashboards/Admin/StudentManagement/StudentsManagement';
-import StudentsTable from './components/dashboards/Admin/StudentManagement/AllStudentTable';
-import UnassignedStudents from './components/dashboards/Admin/StudentManagement/UnassignedStudents';
-import AssignedStudents from './components/dashboards/Admin/StudentManagement/AssignedStudents';
-import AdminLiveClasses from './components/dashboards/Admin/LiveClass/LiveClassManagement';
-import AdminDashboard from './components/dashboards/Admin/AdminDashboard';
-import CoursesManagement from './components/dashboards/Admin/CourseManagement/CoursesManagement';
-import BatchManagement from './components/dashboards/Admin/Batchs/BatchManagement';
-import SuperAdminPage from './components/dashboards/Admin/AddAdmin/SuperAdminPage.jsx';
+import AssignStudents from '@/dashboard/Admin/StudentManagement/StudentsManagement';
+import StudentsTable from '@/dashboard/Admin/StudentManagement/AllStudentTable';
+import UnassignedStudents from '@/dashboard/Admin/StudentManagement/UnassignedStudents';
+import AssignedStudents from '@/dashboard/Admin/StudentManagement/AssignedStudents';
+import AdminLiveClasses from '@/dashboard/Admin/LiveClass/LiveClassManagement';
+import AdminDashboard from '@/dashboard/Admin/AdminDashboard';
+import CoursesManagement from '@/dashboard/Admin/CourseManagement/CoursesManagement';
+import BatchManagement from '@/dashboard/Admin/Batchs/BatchManagement';
+import SuperAdminPage from '@/dashboard/Admin/AddAdmin/SuperAdminPage.jsx';
 
 
-import Internship from './components/Sections/Internship/Internship';
-import PaymentSuccess from './components/Sections/Internship/PaymentSuccessPage';
-import { Privacy, Refund, Terms, KnowledgeBase, Forums } from './components/Sections/AllTermsPolicy';
-import DashboardLayout from './components/dashboards/Dashboard';
-import DashboardIndex from './protectedRoutes/DashboardIndex';
-import ProtectedRoute from './protectedRoutes/ProtechedRoutes';
-import StudentDashboard from './components/dashboards/Student/StudentDashboard';
-import MyCourseList from './components/dashboards/Student/MyCoursesList';
-import CommonCourseDetails from './components/dashboards/common/CommonCourseDetails';
-import DashboardGate from './protectedRoutes/DashboardGate.jsx';
-import InternshipsDomainManagement from './components/dashboards/Admin/Internships/InternshipsManagement.jsx';
-import PaymentOverview from './components/dashboards/Admin/Payments/PaymentOverview.jsx';
-import StudentEnrolledCourseDetails from './components/dashboards/Student/MyCourseDetails.jsx';
+import Internship from '@/pages/public/Sections/Internship/Internship';
+import PaymentSuccess from '@/pages/public/Sections/Internship/PaymentSuccessPage';
+import { Privacy, Refund, Terms, KnowledgeBase, Forums } from '@/pages/public/Sections/AllTermsPolicy';
+import DashboardLayout from '@/dashboard/Dashboard';
+import DashboardIndex from '@/protectedRoutes/DashboardIndex';
+import ProtectedRoute from '@/protectedRoutes/ProtechedRoutes';
+import StudentDashboard from '@/dashboard/Student/StudentDashboard';
+import MyCourseList from '@/dashboard/Student/MyCoursesList';
+import CommonCourseDetails from '@/dashboard/common/CommonCourseDetails';
+import DashboardGate from '@/protectedRoutes/DashboardGate.jsx';
+import InternshipsDomainManagement from '@/dashboard/Admin/Internships/InternshipsManagement.jsx';
+import PaymentOverview from '@/dashboard/Admin/Payments/PaymentOverview.jsx';
+import StudentEnrolledCourseDetails from '@/dashboard/Student/MyCourseDetails.jsx';
+import PromoCodeManagement from '@/dashboard/Admin/promoCodeManagement/PromoCodeManagement.jsx';
 
 /* ---------------- Layout wrappers ---------------- */
 
@@ -105,7 +106,7 @@ const AppRouter = () => {
         <Route path="contact-us" element={<ContactUs />} />
         <Route path="about-us" element={<AboutUs />} />
 
-        <Route path="dcm-app" element={<GetApp />} />
+        <Route path="app" element={<GetApp />} />
 
         <Route path="privacy" element={<Privacy />} />
         <Route path="refund" element={<Refund />} />
@@ -133,7 +134,7 @@ const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
 
           <Route index element={<DashboardIndex />} />
-          <Route element={<ProtectedRoute allowedRoles={["student", "admin","superadmin"]} />}>
+          <Route element={<ProtectedRoute allowedRoles={["student", "admin", "superadmin"]} />}>
             <Route element={<DashboardLayout />}>
               <Route path="course/:id" element={<CommonCourseDetails />} />
             </Route>
@@ -168,7 +169,10 @@ const AppRouter = () => {
               <Route index element={<AdminDashboard />} />
               <Route path="addadmin" element={<SuperAdminPage />} />
               <Route path="payments" element={<PaymentOverview />} />
-               <Route path="settings" element={<SettingsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path='promocode' element={
+                <PromoCodeManagement />
+              } />
 
 
               <Route path="courses" element={<CoursesManagement />} />

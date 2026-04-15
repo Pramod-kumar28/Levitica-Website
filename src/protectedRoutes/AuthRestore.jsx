@@ -1,8 +1,8 @@
 // components/auth/AuthBootstrap.jsx
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useVerifyAuthQuery } from "../Services/authService";
-import { login, logout, setAuthChecked } from "../features/authSlice";
+import { useVerifyAuthQuery } from '@/Services/authService';
+import { login, logout, setAuthChecked } from '@/features/authSlice';
 
 const AuthBootstrap = () => {
   const dispatch = useDispatch();

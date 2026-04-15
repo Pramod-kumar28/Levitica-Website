@@ -786,7 +786,7 @@ Our focus is on driving business value through scalable architecture, performanc
   id: 15,
   title: "Digital Marketing Services",
   slug: "digital-marketing",
-  image: "/img/svg/marketing-strategy.svg",
+  image: "/img/basic.svg",
   description:
     `End-to-end digital marketing solutions designed to increase online visibility, drive qualified traffic, and generate measurable business growth.
 We combine data-driven strategies, creative execution, and continuous optimization to deliver superior ROI.
@@ -928,14 +928,14 @@ export const allServices =   [
     "HR Operations & Payroll Management",
     "Business Development & Consulting (BDE Services)",
     "CA & Financial Services",
-    "In-House Projects & Consulting",
+    "In House Projects & Consulting",
     "Soft Skills & Online Training"
 ]  
 
 
 export const contactInfo = {
-  address: "Office #407 &409 4th Floor, Jain Sadguru Image's Capital Park, Madhapur,Hyderabad",
-  phone: "(+91) 7337572543",
-  email: "info@designcareermetrics.com",
+  address: "2nd Floor, Vittal Rao Nagar, Madhapur, Sriram Plaza, Hyderabad, Telangana – 500081",
+  phone: "(+91) 9032503559",
+  email: "info@leviticatechnologies.com",
   supportHours: "24/7"
 }

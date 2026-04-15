@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      if (t === 'dark') document.documentElement.classList.add('dark');
+    })();
+  </script>
+  <meta charset="utf-8" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="/favicon.ico" />
+
+  <!-- Mobile Responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#000000" />
+  <!-- Robots Meta -->
+  <meta name="robots" content="index, follow">
+
+  <!-- Primary SEO -->
+  <title>Levitica Technologies - Web Development, Cloud & IT Consulting</title>
+
+  <meta name="title" content="Levitica Technologies - Web Development, Cloud & IT Consulting">
+  <meta name="description"
+    content="Levitica Technologies Pvt Ltd provides web development, mobile app development, cloud solutions, IT consulting, and edutech services to help businesses grow digitally.">
+  <meta name="keywords"
+    content="web development, mobile app development, cloud services, IT consulting, software company India, edutech platform, Levitica Technologies">
+  <meta name="author" content="Levitica Technologies Pvt Ltd">
+  <!-- Geo SEO -->
+  <meta name="geo.region" content="IN">
+  <meta name="geo.placename" content="India">
+  <meta name="geo.position" content="17.3850;78.4867">
+  <meta name="ICBM" content="17.3850, 78.4867">
+
+  <!-- Open Graph (Social Sharing) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Levitica Technologies - Digital & IT Solutions">
+  <meta property="og:description" content="Build websites, mobile apps, and cloud solutions with expert IT consulting.">
+  <meta property="og:image" content="/preview.png">
+  <meta property="og:url" content="https://leviticatechnologies.com">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Levitica Technologies">
+  <meta name="twitter:description" content="Web, App & Cloud Solutions for Businesses">
+  <meta name="twitter:image" content="/preview.png">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://leviticatechnologies.com" />
+
+  <!-- Apple -->
+  <link rel="apple-touch-icon" href="/logo192.png" />
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Structured Data (SEO BOOST) -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Levitica Technologies Pvt Ltd",
+  "url": "https://leviticatechnologies.com",
+  "logo": "https://leviticatechnologies.com/img/leviticalogo.png",
+  "description": "Web development, mobile app development, cloud solutions, IT consulting and edutech services.",
+  "areaServed": "IN",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support"
+  },
+  "sameAs": []
+}
+</script>
+
+</head>
+
+<body data-menu-color="light" data-sidebar="default">
+
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+
+  <!-- React Root -->
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+
+  <!-- Facebook Pixel -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ?
+          n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = '2.0';
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '1253625522938767');
+    fbq('track', 'PageView');
+  </script>
+
+  <!-- No JS fallback -->
+  <noscript>
+    <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1253625522938767&ev=PageView&noscript=1" />
+  </noscript>
+
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 
-import { useGetCoursesQuery } from '../Services/sharedServices/courses.Services';
+import { useGetCoursesQuery } from '@/Services/sharedServices/courses.Services';
 
 export const useCourses = () => {
   const {

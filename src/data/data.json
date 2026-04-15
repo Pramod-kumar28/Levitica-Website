@@ -38,7 +38,7 @@
   },
   {
   "title": "Digital Marketing",
-  "img": "/img/digital-marketing-svgrepo-com.svg",
+  "img": "/img/basic.svg",
   "description": "Master digital marketing essentials, including SEO, social media strategy, PPC campaigns, and content marketing. Drive growth through analytics, conversion optimization, and data-driven strategies.",
   "path": "/trainings/digital-marketing"
 },
@@ -267,115 +267,38 @@
     {
       "title": "SEO Fundamentals",
       "description": "Learn search engine optimization techniques, keyword research, on-page and off-page SEO strategies. Master Google ranking factors and analytics tools.",
-      "img": "/img/seo-search-svgrepo-com.svg",
+      "img": "/img/browser-seo-and-web-svgrepo-com.svg",
       "path": "/trainings/digital-marketing/seo-fundamentals"
     },
     {
       "title": "Social Media Marketing",
       "description": "Master platform-specific strategies for Facebook, Instagram, LinkedIn and Twitter. Learn content creation, community management and paid advertising.",
-      "img": "/img/social-media-svgrepo-com.svg",
+      "img": "/img/undraw_social-expert_wfam.svg",
       "path": "/trainings/digital-marketing/social-media-marketing"
     },
     {
       "title": "Content Marketing Strategy",
       "description": "Learn to create compelling content that drives engagement and conversions. Master blogging, video content, email campaigns and content calendars.",
-      "img": "/img/content-marketing-svgrepo-com.svg",
+      "img": "/img/networking-monitor-svgrepo-com.svg",
       "path": "/trainings/digital-marketing/content-marketing"
     },
     {
       "title": "Google Ads & PPC",
       "description": "Master pay-per-click advertising on Google Ads. Learn campaign setup, keyword bidding, ad copywriting, and conversion tracking for maximum ROI.",
-      "img": "/img/google-ads-svgrepo-com.svg",
+      "img": "/img/google-svgrepo-com.svg",
       "path": "/trainings/digital-marketing/google-ads-ppc"
     },
     {
       "title": "Marketing Analytics",
       "description": "Learn to measure and analyze marketing performance using Google Analytics and other tools. Master data interpretation, reporting and optimization strategies.",
-      "img": "/img/analytics-svgrepo-com.svg",
+      "img": "/img/stats-marketing-svgrepo-com.svg",
       "path": "/trainings/digital-marketing/marketing-analytics"
     },
     {
       "title": "Email Marketing Automation",
       "description": "Master email campaign strategies, automation workflows, segmentation and performance tracking. Learn to build effective lead nurturing sequences.",
-      "img": "/img/email-marketing-svgrepo-com.svg",
+      "img": "/img/undraw_message-sent_785q.svg",
       "path": "/trainings/digital-marketing/email-marketing-automation"
     }
-  ],
-  "paidCourses": [
-  {
-    "title": "Advanced Data Science Bootcamp",
-    "description": "An intensive program covering Python, Machine Learning, Deep Learning, and AI applications. Ideal for professionals looking to upskill in data-driven decision-making.",
-    "img":"/img/sciencedata.png",
-    "duration": "50 days",
-    "mainPrice": 10000,
-    "perday": "₹100/day",
-    "offer": "50%OFF",
-    "gst": "Final ₹5000(including GST ₹500)",
-    "finalPrice": 5000
-    
-  },
-  {
-    "title": "Full Stack Web Development",
-    "description": "Comprehensive training in HTML, CSS, JavaScript, React, Node.js, and databases, designed to help you become a job-ready full stack developer.",
-    "img":"/img/fullstack.png",
-    "duration": "40 days",
-    "pricePerDay": 1800,
-    "mainPrice": 2000,
-    "perday": "₹25/day",
-    "discount": "10%",
-    "offer": "50%OFF",
-    "finalPrice": "₹1000",
-    "gst":"Final ₹1000(including GST ₹50)"
-  },
-  {
-    "title": "Business Leadership Mastery",
-    "description": "A leadership-focused course covering strategic planning, team management, and organizational growth to prepare you for senior leadership roles.",
-    "img": "/img/business.png",
-    "duration": "20 days",
-    "mainPrice": 1600,
-    "perday": "₹40/day",
-    "offer": " 50%OFF",
-    "gst": "Final ₹800(including GST ₹40)",
-    "finalPrice": "₹800"
-  },
-  
-  {
-    "title": "UI/UX Design Pro",
-    "description": "A hands-on course in design principles, wireframing, prototyping, and usability testing with tools like Figma and Adobe XD.",
-    "img":"/img/designpro.png",
-    "duration": "15 days",
-    "mainPrice": 3000,
-    "perday": "₹100/day",
-    "offer": "50%OFF",
-    "gst": "Final ₹1500 (including GST ₹85)",
-    "finalPrice": "₹1500"
-  },
-  {
-    "title": "Cybersecurity Fundamentals",
-    "description": "Learn ethical hacking, penetration testing, and network security essentials to protect organizations from cyber threats.",
-    "img": "/img/cyber.png",
-    "duration": "40 days",
-    "mainPrice": 4000,
-    "perday": "₹50/day",
-    "offer": "50%OFF",
-    "gst": "Final ₹2000 (including GST ₹200)",
-    "finalPrice": "₹2000"
-  },
-  {
-    "title": "Digital Marketing Masterclass",
-    "description": "A complete guide to digital marketing strategies, including SEO, SEM, social media marketing, and content creation.",
-    "img": "/img/digital.png",
-    "duration": "30 days",
-    "mainPrice": 3600,
-    "perday": "₹60/day",
-    "offer": "50%OFF",
-    "gst": "Final ₹1800 (including GST ₹90)",
-    "finalPrice": "₹1800"
-  }
-
-
-  
-
-  
-]
+  ]
 }

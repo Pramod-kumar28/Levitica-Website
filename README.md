@@ -1,6 +1,6 @@
-# 🎓 DCM Course Selling Platform
+# 🎓 Levitica Technologies Course Selling Platform
 
-DCM is a full-stack web application designed to help educators and institutions sell courses online. It features a responsive UI, secure backend, and seamless user experience for both learners and admins.
+Levitica Technologies is a full-stack web application designed to help educators and institutions sell courses online. It features a responsive UI, secure backend, and seamless user experience for both learners and admins.
 
 ## 🚀 Features
 
@@ -22,7 +22,7 @@ DCM is a full-stack web application designed to help educators and institutions 
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/YourUsername/DCM-Platform.git
-cd DCM-Platform
+git clone https://github.com/YourUsername/Levitica Technologies-Platform.git
+cd Levitica Technologies-Platform
 
-npm install# DCM-Platform
+npm install# Levitica Technologies-Platform

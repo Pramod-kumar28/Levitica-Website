@@ -1,11 +1,11 @@
 // config/baseQueryWithReauth.js
 import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { logout } from "../features/authSlice";
+import { logout } from '@/features/authSlice';
 
 const BASE_URL =
-  process.env.REACT_APP_ENV === "production"
-    ? process.env.REACT_APP_PROD_API_URL
-    : process.env.REACT_APP_LOCAL_API_URL
+  import.meta.env.VITE_ENV === "production"
+    ? import.meta.env.VITE_PROD_API_URL
+    : import.meta.env.VITE_LOCAL_API_URL
 
 //  shared refresh lock
 let refreshPromise = null;

@@ -1,5 +1,5 @@
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useVerifyEmailQuery } from '../Services/authService.js';
+import { useVerifyEmailQuery } from '@/Services/authService.js';
 import { useEffect, useState } from 'react';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
@@ -9,12 +9,13 @@ export default function EmailVerification() {
   const ivfm = params.get('ivfm');
   const id = params.get('id');
   const [countdown, setCountdown] = useState(3);
+  console.log('EmailVerification rendered with:', { ivfm, id });
 
   const { data, error, isLoading, isSuccess } = useVerifyEmailQuery(
     { ivfm, id },
     { skip: !ivfm || !id }
   );
-
+console.log('useVerifyEmailQuery state:', { data, error, isLoading, isSuccess });
   useEffect(() => {
     if (isSuccess) {
       const timer = setInterval(() => {
@@ -38,23 +39,23 @@ export default function EmailVerification() {
 
   const Card = ({ icon, title, message, variant }) => {
     const variants = {
-      success: 'tw-text-green-600 tw-border-green-300',
-      danger: 'tw-text-red-600 tw-border-red-300',
-      info: 'tw-text-blue-600 tw-border-blue-300',
+      success: 'text-green-600 border-green-300',
+      danger: 'text-red-600 border-red-300',
+      info: 'text-blue-600 border-blue-300',
     };
 
     return (
-      <div className="tw-min-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-100 tw-px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
         <div
-          className={`tw-bg-white tw-border tw-rounded-xl tw-shadow-lg tw-max-w-md tw-w-full tw-p-6 tw-text-center ${variants[variant]}`}
+          className={`bg-white border rounded-xl shadow-lg max-w-md w-full p-6 text-center ${variants[variant]}`}
         >
-          <div className="tw-flex tw-justify-center tw-mb-4">
+          <div className="flex justify-center mb-4">
             {icon}
           </div>
-          <h2 className="tw-text-xl tw-font-semibold tw-mb-2">
+          <h2 className="text-xl font-semibold mb-2">
             {title}
           </h2>
-          <p className="tw-text-gray-600">
+          <p className="text-gray-600">
             {message}
           </p>
         </div>
@@ -77,13 +78,13 @@ export default function EmailVerification() {
 
   if (isLoading) {
     return (
-      <div className="tw-min-h-screen tw-flex tw-items-center tw-justify-center tw-bg-gray-100">
-        <div className="tw-bg-white tw-rounded-xl tw-shadow-md tw-p-6 tw-text-center tw-max-w-sm tw-w-full">
-          <Loader2 className="tw-animate-spin tw-mx-auto tw-mb-4 tw-text-blue-600" size={40} />
-          <h2 className="tw-text-lg tw-font-semibold">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white rounded-xl shadow-md p-6 text-center max-w-sm w-full">
+          <Loader2 className="animate-spin mx-auto mb-4 text-blue-600" size={40} />
+          <h2 className="text-lg font-semibold">
             Verifying your email…
           </h2>
-          <p className="tw-text-gray-500 tw-mt-1">
+          <p className="text-gray-500 mt-1">
             Please wait while we confirm your account.
           </p>
         </div>

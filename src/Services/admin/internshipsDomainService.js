@@ -1,4 +1,4 @@
-import { api } from "../api";
+import { api } from '@/Services/api';
 
 export const internshipsDomainApi = api.injectEndpoints({
   endpoints: (builder) => ({

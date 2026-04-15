@@ -1,17 +1,17 @@
 {
   "services": [
-   {
-  "title": "IT Services & Solutions",
-  "img": "/img/svg/429-error.svg",
-  "description": "Comprehensive IT services including software development, cloud solutions, infrastructure management, cybersecurity, and ongoing technical support.",
-  "path": "/services/it-services"
-},
-{
-  "title": "Digital Marketing Services",
-  "img": "/img/digital-marketing-services.svg",
-  "description": "Data-driven digital marketing strategies for SEO, social media, PPC, and content marketing that increase visibility and drive measurable business growth.",
-  "path": "/services/digital-marketing"
-},
+    {
+      "title": "IT Services & Solutions",
+      "img": "/img/svg/429-error.svg",
+      "description": "Comprehensive IT services including software development, cloud solutions, infrastructure management, cybersecurity, and ongoing technical support.",
+      "path": "/services/it-services"
+    },
+    {
+      "title": "Digital Marketing Services",
+      "img": "/img/basic.svg",
+      "description": "Data-driven digital marketing strategies for SEO, social media, PPC, and content marketing that increase visibility and drive measurable business growth.",
+      "path": "/services/digital-marketing"
+    },
     {
       "title": "Manpower & Staffing Solutions",
       "img": "/img/Manpower-Support.webp",
@@ -61,7 +61,7 @@
       "path": "/services/ca-and-financial-services"
     },
     {
-      "title": "In-House Projects & Consulting",
+      "title": "In House Projects & Consulting",
       "img": "/img/In-House Projects & Consulting.svg",
       "description": "Hands-on project development and consulting services to deliver practical business and technical solutions.",
       "path": "/services/in-house-projects-and-consulting"

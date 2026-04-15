@@ -1,6 +1,6 @@
 // hooks/useJoinLiveClass.js
 import { useState } from 'react';
-import { useJoinLiveClassMutation } from '../Services/student/liveClassServices';
+import { useJoinLiveClassMutation } from '@/Services/student/liveClassServices';
 
 
 export const useJoinLiveClass = () => {
