@@ -20,7 +20,7 @@ import {
   Eye,
 } from "lucide-react";
 import { MODAL_TYPES, useModal } from '@/dashboard/Admin/Modals/ModalContext';
-import { Button } from '@/components/ui/Button'; // Import your custom Button component
+import { Button } from '@/components/ui/button'; // Import your custom Button component
 
 const StudentsTable = () => {
   const [search, setSearch] = useState("");

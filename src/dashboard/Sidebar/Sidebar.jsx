@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useModal } from "../Admin/Modals/ModalContext";
 import { useSidebarStore } from "./useSidebarStore";
-import { Button } from "@/components/ui/Button";
 import {
   FaHome,
   FaBookOpen,
@@ -144,16 +143,18 @@ const Sidebar = () => {
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           w-64
 
-          bg-card
+          bg-gradient-to-b
+          from-blue-900
+          to-indigo-900
           shadow-xl
           flex flex-col
           overflow-hidden
         `}
       >
         {/* Fixed User Profile Section - No Scroll */}
-        <div className={`shrink-0 px-3 pt-4 pb-3 border-b border-border ${!isOpen && "flex justify-center"}`}>
+        <div className={`shrink-0 px-3 pt-4 pb-3 border-b border-white/10 ${!isOpen && "flex justify-center"}`}>
           <div className={`flex items-center ${isOpen ? "gap-3" : "flex-col gap-1"}`}>
-            <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-muted text-muted-foreground shrink-0 ring-2 ring-border">
+            <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-white/20 text-white shrink-0 ring-2 ring-white/30">
               {user?.image ? (
                 <img
                   src={user.image}
@@ -161,17 +162,17 @@ const Sidebar = () => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-sm font-bold text-foreground">
+                <span className="text-sm font-bold">
                   {user?.name?.[0]?.toUpperCase() || "U"}
                 </span>
               )}
             </div>
             {isOpen && (
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">
+                <p className="text-sm font-semibold text-white truncate">
                   {user?.name || "User"}
                 </p>
-                <p className="text-[11px] text-muted-foreground capitalize">{role}</p>
+                <p className="text-[11px] text-blue-200/80 capitalize">{role}</p>
               </div>
             )}
           </div>
@@ -194,8 +195,8 @@ const Sidebar = () => {
                 rounded-xl px-3 py-2.5
                 text-sm font-medium transition-all
                 ${isActive
-                  ? "bg-primary/20 text-primary-foreground"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  ? "bg-white/20 text-white"
+                  : "text-blue-100 hover:bg-white/10 hover:text-white"
                 }
               `}
             >
@@ -203,8 +204,8 @@ const Sidebar = () => {
                 flex items-center justify-center
                 w-9 h-9
                 rounded-lg
-                bg-muted
-                group-hover:bg-accent
+                bg-white/10
+                group-hover:bg-white/20
                 shrink-0
               ">
                 {item.icon}

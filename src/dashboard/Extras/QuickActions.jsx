@@ -2,7 +2,7 @@ import { Book, BookOpen, User, Users, Video } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useModal, MODAL_TYPES } from '@/dashboard/Admin/Modals/ModalContext';
 import { useState } from 'react';
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 const QuickActions = () => {
   const { openModal, modalType } = useModal(); // Get modalType

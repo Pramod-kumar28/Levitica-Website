@@ -13,7 +13,7 @@ const DashboardLayout = () => {
 
   return (
     <ModalProvider>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-base-200">
         {/* SIDEBAR — fixed floating on the left */}
         <Sidebar />
 
