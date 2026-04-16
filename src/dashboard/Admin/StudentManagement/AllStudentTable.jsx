@@ -20,7 +20,7 @@ import {
   Eye,
 } from "lucide-react";
 import { MODAL_TYPES, useModal } from '@/dashboard/Admin/Modals/ModalContext';
-import { Button } from '@/components/ui/button'; // Import your custom Button component
+ // Import your custom Button component
 
 const StudentsTable = () => {
   const [search, setSearch] = useState("");
@@ -82,9 +82,9 @@ const StudentsTable = () => {
             </p>
           </div>
         </div>
-        <Button variant="error" size="sm" onClick={refetch}>
+        <button onClick={refetch}>
           Retry
-        </Button>
+        </button>
       </div>
     );
   }
@@ -114,8 +114,8 @@ const StudentsTable = () => {
               </div>
             </div>
 
-            <Button
-              variant="primary"
+            <button
+             
               onClick={handleDownloadExcel}
               disabled={downloadLoading || isLoading}
             >
@@ -130,7 +130,7 @@ const StudentsTable = () => {
                   Export Excel
                 </>
               )}
-            </Button>
+            </button>
           </div>
 
           {/* Stats Cards */}
@@ -297,8 +297,8 @@ const StudentsTable = () => {
                         )}
                       </td>
                       <td className="text-center">
-                        <Button
-                          variant="outline"
+                        <button
+                       
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -309,7 +309,7 @@ const StudentsTable = () => {
                         >
                           <Eye size={14} className="mr-1" />
                           View
-                        </Button>
+                        </button>
                       </td>
                     </tr>
                   ))
@@ -335,15 +335,15 @@ const StudentsTable = () => {
               </div>
 
               <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
+                <button
+                 
                   size="sm"
                   onClick={() => setCurrentPage((p) => p - 1)}
                   disabled={currentPage === 1}
                 >
                   <ChevronLeft size={16} />
                   Previous
-                </Button>
+                </button>
 
                 <div className="flex items-center gap-1">
                   {Array.from({ length: Math.min(5, studentsData.totalPages) }, (_, i) => {
@@ -359,27 +359,27 @@ const StudentsTable = () => {
                     }
 
                     return (
-                      <Button
+                      <button
                         key={pageNum}
-                        variant={currentPage === pageNum ? "primary" : "outline"}
+                      
                         size="sm"
                         onClick={() => setCurrentPage(pageNum)}
                       >
                         {pageNum}
-                      </Button>
+                      </button>
                     );
                   })}
                 </div>
 
-                <Button
-                  variant="outline"
+                <button
+                
                   size="sm"
                   onClick={() => setCurrentPage((p) => p + 1)}
                   disabled={currentPage === studentsData.totalPages}
                 >
                   Next
                   <ChevronRight size={16} />
-                </Button>
+                </button>
               </div>
             </div>
           </div>

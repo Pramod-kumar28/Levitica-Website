@@ -1,57 +1,29 @@
-import { motion } from "framer-motion"
-import { Card, CardContent } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-
-const toneStyles = {
-  primary: "bg-primary/10 text-primary",
-  secondary: "bg-secondary text-secondary-foreground",
-  accent: "bg-accent/10 text-accent",
-  info: "bg-muted text-muted-foreground",
-}
-
-const StatCard = ({ label, count, tone = "primary", icon: Icon }) => {
-  return (
-    <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 200, damping: 15 }}
+import { motion } from "framer-motion";
+ 
+const toneMap = {
+  indigo: "tw-text-indigo-600 tw-bg-indigo-50",
+  emerald: "tw-text-emerald-600 tw-bg-emerald-50",
+  amber: "tw-text-amber-600 tw-bg-amber-50",
+  blue: "tw-text-blue-600 tw-bg-blue-50",
+};
+ 
+const StatCard = ({ label, count, tone }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    className="tw-rounded-xl tw-border tw-border-slate-200 tw-bg-white tw-p-4 tw-shadow-sm"
+  >
+    <div
+      className={`tw-inline-flex tw-rounded-lg tw-px-3 tw-py-1 tw-text-sm tw-font-semibold ${toneMap[tone]}`}
     >
-      <Card className="relative overflow-hidden border-border/50 bg-card/60 backdrop-blur">
-
-        {/* 🔥 subtle gradient glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent pointer-events-none" />
-
-        <CardContent className="p-5 space-y-4 relative z-10">
-
-          {/* ===== HEADER ===== */}
-          <div className="flex items-center justify-between">
-
-            {/* BIG BADGE */}
-            <div
-              className={cn(
-                "px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide",
-                toneStyles[tone]
-              )}
-            >
-              {label}
-            </div>
-
-            {/* ICON */}
-            {Icon && (
-              <div className="flex items-center justify-center size-9 rounded-lg bg-muted/50">
-                <Icon size={18} />
-              </div>
-            )}
-          </div>
-
-          {/* ===== VALUE ===== */}
-          <div className="text-3xl md:text-4xl font-bold tracking-tight">
-            {count}
-          </div>
-
-        </CardContent>
-      </Card>
-    </motion.div>
-  )
-}
-
-export default StatCard
+      {label}
+    </div>
+    <div className="tw-mt-3 tw-text-3xl tw-font-bold tw-text-slate-900">
+      {count}
+    </div>
+  </motion.div>
+);
+ 
+export default StatCard;
+ 
+ 

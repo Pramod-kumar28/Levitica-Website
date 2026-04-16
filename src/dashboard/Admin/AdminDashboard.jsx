@@ -99,7 +99,7 @@ const AdminDashboard = () => {
               <option>Last 6 Months</option>
             </select>
           </div>
-          <StatsCharts data={statsData} />
+          {/* <StatsCharts data={statsData} /> */}
         </div>
 
         {/* ===== Quick User Creation ===== */}
