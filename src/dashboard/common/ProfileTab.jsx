@@ -10,8 +10,11 @@ import {
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { login, updateUserImage } from '@/features/authSlice';
+import { useTheme } from '@/context/ThemeContext';
 
-const ProfileTab = ({ user }) => {
+const ProfileTab = ({ user, isDark: isDarkProp }) => {
+  const { theme } = useTheme();
+  const isDark = isDarkProp !== undefined ? isDarkProp : theme === 'dark';
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(user?.image || null);
   const [showCropModal, setShowCropModal] = useState(false);
@@ -141,26 +144,27 @@ const ProfileTab = ({ user }) => {
     fileInputRef.current?.click();
   };
 
-  const inputClass =
-    "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
+  const inputClass = isDark
+    ? "w-full border border-slate-600 rounded-lg px-4 py-2 text-sm bg-slate-700 text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400"
+    : "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
 
-  const errorClass = "text-red-500 text-xs mt-1";
+  const errorClass = isDark ? "text-red-400 text-xs mt-1" : "text-red-500 text-xs mt-1";
 
   return (
     <>
       <div className="max-w-2xl space-y-6">
-        <h2 className="text-xl font-semibold">
+        <h2 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>
           Profile Information
         </h2>
 
         <form
           onSubmit={formik.handleSubmit}
-          className="bg-gray-50 border rounded-xl p-6 space-y-6"
+          className={`${isDark ? 'bg-slate-700 border-slate-600' : 'bg-gray-50 border-gray-200'} border rounded-xl p-6 space-y-6`}
         >
           {/* Avatar Section */}
           <div className="flex items-center gap-6">
             <div
-              className="w-20 h-20 rounded-full overflow-hidden bg-gray-200 cursor-pointer"
+              className={`w-20 h-20 rounded-full overflow-hidden ${isDark ? 'bg-slate-600' : 'bg-gray-200'} cursor-pointer`}
               onClick={triggerFileInput}
             >
               {preview ? (
@@ -177,26 +181,26 @@ const ProfileTab = ({ user }) => {
             </div>
 
             <div className="flex-1">
-              <p className="font-medium text-lg">{user?.name}</p>
-              <p className="text-sm text-gray-600">{user?.email}</p>
+              <p className={`font-medium text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>{user?.name}</p>
+              <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>{user?.email}</p>
 
               <div className="flex gap-3 mt-2">
                 <button
                   type="button"
                   onClick={triggerFileInput}
-                  className="text-sm text-blue-600 font-medium"
+                  className={`text-sm font-medium ${isDark ? 'text-indigo-400 hover:text-indigo-300' : 'text-blue-600 hover:text-blue-700'}`}
                 >
                   Change Photo
                 </button>
 
                 {selectedFile && (
                   <>
-                    <span className="text-gray-400">•</span>
+                    <span className={isDark ? 'text-slate-500' : 'text-gray-400'}>•</span>
                     <button
                       type="button"
                       onClick={handleSavePhoto}
                       disabled={isSavingImage}
-                      className="text-sm text-green-600 font-medium disabled:opacity-50"
+                      className={`text-sm font-medium disabled:opacity-50 ${isDark ? 'text-emerald-400 hover:text-emerald-300' : 'text-green-600 hover:text-green-700'}`}
                     >
                       {isSavingImage ? "Saving..." : "Save Photo"}
                     </button>
@@ -205,12 +209,12 @@ const ProfileTab = ({ user }) => {
 
                 {preview && !selectedFile && (
                   <>
-                    <span className="text-gray-400">•</span>
+                    <span className={isDark ? 'text-slate-500' : 'text-gray-400'}>•</span>
                     <button
                       type="button"
                       onClick={handleRemoveImage}
                       disabled={isDeletingImage}
-                      className="text-sm text-red-600 font-medium disabled:opacity-50"
+                      className={`text-sm font-medium disabled:opacity-50 ${isDark ? 'text-red-400 hover:text-red-300' : 'text-red-600 hover:text-red-700'}`}
                     >
                       {isDeletingImage ? "Removing..." : "Remove"}
                     </button>
@@ -230,7 +234,7 @@ const ProfileTab = ({ user }) => {
 
           {/* Name */}
           <div>
-            <label className="block mb-1 text-sm font-medium">
+            <label className={`block mb-1 text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
               Full Name
             </label>
             <input
@@ -244,13 +248,15 @@ const ProfileTab = ({ user }) => {
 
           {/* Email */}
           <div>
-            <label className="block mb-1 text-sm font-medium">
+            <label className={`block mb-1 text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
               Email
             </label>
             <input
               {...formik.getFieldProps("email")}
               disabled
-              className={`${inputClass} bg-gray-100`}
+              className={`${inputClass} ${
+                isDark ? 'bg-slate-600 text-slate-300' : 'bg-gray-100 text-gray-600'
+              }`}
             />
           </div>
 
@@ -260,7 +266,11 @@ const ProfileTab = ({ user }) => {
             <button
               type="submit"
               disabled={isSavingInfo}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg disabled:opacity-50"
+              className={`px-6 py-2 rounded-lg disabled:opacity-50 text-white font-medium transition ${
+                isDark
+                  ? 'bg-indigo-600 hover:bg-indigo-700'
+                  : 'bg-blue-600 hover:bg-blue-700'
+              }`}
             >
               {isSavingInfo ? "Saving..." : "Save Changes"}
             </button>
@@ -271,7 +281,9 @@ const ProfileTab = ({ user }) => {
       {/* Crop Modal */}
       {showCropModal && cropImage && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6">
+          <div className={`rounded-xl p-6 ${
+            isDark ? 'bg-slate-800' : 'bg-white'
+          }`}>
             <AvatarEditor
               ref={editorRef}
               image={cropImage}
@@ -298,13 +310,19 @@ const ProfileTab = ({ user }) => {
             <div className="flex justify-end gap-3 mt-4">
               <button
                 onClick={() => setShowCropModal(false)}
-                className="px-4 py-2 text-gray-700"
+                className={`px-4 py-2 rounded-lg transition ${
+                  isDark
+                    ? 'text-slate-300 hover:bg-slate-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveCrop}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                className={`px-4 py-2 text-white rounded-lg transition ${
+                  isDark ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-blue-600 hover:bg-blue-700'
+                }`}
               >
                 Save
               </button>

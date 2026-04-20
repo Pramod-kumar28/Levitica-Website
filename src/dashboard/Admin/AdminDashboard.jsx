@@ -8,10 +8,12 @@ import StatsCharts from '@/dashboard/Extras/StatsCharts';
 import { useTheme } from '@/context/ThemeContext';
 import { FiUsers, FiBook, FiGrid, FiTrendingUp, FiAlertTriangle, FiBarChart2, FiSettings, FiZap, FiLock, FiCheck } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
 const AdminDashboard = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const { user } = useSelector((state) => state.auth);
   
   const { data: stats, isLoading, error } = useGetStatsQuery();
 
@@ -127,7 +129,7 @@ const AdminDashboard = () => {
               <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2 ${
                 isDark ? 'text-blue-400' : 'text-white'
               }`}>
-                Admin Dashboard
+                Welcome, {user?.name || 'Admin'}!
               </h1>
               <p className={`text-xs sm:text-sm flex items-center gap-2 ${
                 isDark ? 'text-blue-300' : 'text-blue-100'

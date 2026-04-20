@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { logout } from '@/features/authSlice';
 import { useDispatch } from "react-redux";
 import { FaRupeeSign } from "react-icons/fa6";
+import { useTheme } from '@/context/ThemeContext';
 
-const ProfileSidebar = ({ user, activeTab, onTabChange }) => {
+const ProfileSidebar = ({ user, activeTab, onTabChange, isDark: isDarkProp }) => {
+  const { theme } = useTheme();
+  const isDark = isDarkProp !== undefined ? isDarkProp : theme === 'dark';
   const navigate = useNavigate();
   const dispatch = useDispatch()
 
@@ -16,10 +19,14 @@ const ProfileSidebar = ({ user, activeTab, onTabChange }) => {
   ];
 
   return (
-    <aside className="w-full flex flex-col bg-white rounded-2xl shadow-sm border">
+    <aside className={`w-full flex flex-col rounded-2xl shadow-sm border ${
+      isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'
+    }`}>
 
       {/* Profile Header */}
-      <div className="relative w-full h-40 rounded-t-2xl overflow-hidden bg-gradient-to-br from-blue-50 to-white">
+      <div className={`relative w-full h-40 rounded-t-2xl overflow-hidden bg-gradient-to-br ${
+        isDark ? 'from-slate-700 to-slate-600' : 'from-blue-50 to-white'
+      }`}>
 
         {user?.image ? (
           <img
@@ -70,13 +77,21 @@ const ProfileSidebar = ({ user, activeTab, onTabChange }) => {
                 transition-all
                 duration-200
                 ${isActive
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-black"
+                  ? isDark
+                    ? "bg-indigo-600 text-white shadow-sm"
+                    : "bg-blue-600 text-white shadow-sm"
+                  : isDark
+                    ? "text-slate-300 hover:bg-slate-700 hover:text-slate-100"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-black"
                 }
               `}
             >
               <span
-                className={`transition ${isActive ? "text-white" : "text-gray-500"
+                className={`transition ${isActive
+                  ? "text-white"
+                  : isDark
+                    ? "text-slate-400"
+                    : "text-gray-500"
                   }`}
               >
                 {item.icon}
@@ -88,13 +103,15 @@ const ProfileSidebar = ({ user, activeTab, onTabChange }) => {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t">
+      <div className={`p-4 border-t ${
+        isDark ? 'border-slate-700' : 'border-slate-200'
+      }`}>
         <button
           onClick={() => {
             dispatch(logout());
             navigate("/login");
           }}
-          className="
+          className={`
             w-full
             flex
             items-center
@@ -102,12 +119,14 @@ const ProfileSidebar = ({ user, activeTab, onTabChange }) => {
             gap-2
             text-sm
             font-medium
-            text-red-600
-            hover:bg-red-50
             py-3
             rounded-xl
             transition
-          "
+            ${isDark
+              ? 'text-red-400 hover:bg-red-900'
+              : 'text-red-600 hover:bg-red-50'
+            }
+          `}
         >
           <LogOut size={18} />
           <span>Log Out</span>

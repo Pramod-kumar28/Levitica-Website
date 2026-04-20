@@ -277,20 +277,21 @@ export default BatchManagement;
 
 
 const BatchCards = ({ batches, isDark, onEdit, onDelete ,onViewStudents}) => (
-  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
     {batches.map((batch) => (
-      <div
+      <motion.div
         key={batch._id}
-        className={`rounded-xl border p-5 shadow-sm hover:shadow-md transition ${
+        whileHover={{ translateY: -4, scale: 1.02 }}
+        className={`rounded-xl border p-4 sm:p-5 shadow-sm hover:shadow-md transition ${
           isDark
             ? 'bg-slate-800 border-slate-700'
             : 'bg-white border-slate-200'
         }`}
       >
         {/* ===== HEADER ===== */}
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className={`font-semibold lg:text-xl text-lg transition-colors ${
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-3">
+          <div className="flex-1 min-w-0">
+            <h3 className={`font-semibold text-base sm:text-lg lg:text-xl transition-colors truncate ${
               isDark
                 ? 'text-slate-100'
                 : 'text-slate-900'
@@ -353,8 +354,8 @@ const BatchCards = ({ batches, isDark, onEdit, onDelete ,onViewStudents}) => (
         </div>
 
         {/* ===== FOOTER ===== */}
-        <div className="mt-5 flex items-center justify-between">
-          <div className="flex gap-2">
+        <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2">
+          <div className="flex gap-1.5 sm:gap-2">
             <ActionBtn isDark={isDark} icon={FiUsers} onClick={() => onViewStudents(batch._id)} />
             <ActionBtn isDark={isDark} icon={FiEdit} onClick={() => onEdit(batch)} />
             <ActionBtn
@@ -365,7 +366,7 @@ const BatchCards = ({ batches, isDark, onEdit, onDelete ,onViewStudents}) => (
             />
           </div>
 
-          <span className={`text-xs transition-colors ${
+          <span className={`text-xs transition-colors truncate ${
             isDark
               ? 'text-slate-500'
               : 'text-slate-400'
@@ -373,7 +374,7 @@ const BatchCards = ({ batches, isDark, onEdit, onDelete ,onViewStudents}) => (
             #{batch._id}
           </span>
         </div>
-      </div>
+      </motion.div>
     ))}
   </div>
 );
@@ -540,63 +541,66 @@ const BatchTable = ({
         ? 'bg-slate-800 border-slate-700'
         : 'bg-white border-slate-200'
     }`}>
-      <table className="w-full text-sm">
-        <thead className={`transition-colors ${
-          isDark
-            ? 'bg-slate-700 text-slate-300'
-            : 'bg-slate-50 text-slate-600'
-        }`}>
-          {table.getHeaderGroups().map((hg) => (
-            <tr key={hg.id}>
-              {hg.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="p-4 text-left font-semibold"
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+      {/* Responsive table wrapper with horizontal scroll on mobile */}
+      <div className="overflow-x-auto">
+        <table className="w-full text-xs sm:text-sm">
+          <thead className={`transition-colors ${
+            isDark
+              ? 'bg-slate-700 text-slate-300'
+              : 'bg-slate-50 text-slate-600'
+          }`}>
+            {table.getHeaderGroups().map((hg) => (
+              <tr key={hg.id}>
+                {hg.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="p-2 sm:p-4 text-left font-semibold whitespace-nowrap"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
 
-        <tbody className={`divide-y transition-colors ${
-          isDark
-            ? 'divide-slate-700'
-            : 'divide-slate-200'
-        }`}>
-          {table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className={`transition-colors ${
-                isDark
-                  ? 'hover:bg-slate-700'
-                  : 'hover:bg-slate-50'
-              }`}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-4 align-top">
-                  {flexRender(
-                    cell.column.columnDef.cell,
-                    cell.getContext()
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <tbody className={`divide-y transition-colors ${
+            isDark
+              ? 'divide-slate-700'
+              : 'divide-slate-200'
+          }`}>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className={`transition-colors ${
+                  isDark
+                    ? 'hover:bg-slate-700'
+                    : 'hover:bg-slate-50'
+                }`}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="p-2 sm:p-4 align-top whitespace-nowrap">
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* PAGINATION */}
-      <div className={`flex justify-between items-center p-4 border-t transition-colors ${
+      {/* PAGINATION - Mobile responsive */}
+      <div className={`flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 p-3 sm:p-4 border-t transition-colors ${
         isDark
           ? 'border-slate-700'
           : 'border-slate-200'
       }`}>
-        <span className={`text-sm transition-colors ${
+        <span className={`text-xs sm:text-sm transition-colors ${
           isDark
             ? 'text-slate-400'
             : 'text-slate-600'
@@ -604,11 +608,11 @@ const BatchTable = ({
           Page {page} of {pagination?.totalPages}
         </span>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full sm:w-auto">
           <button
             disabled={page === 1}
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
-            className={`rounded-lg px-3 py-1 transition-colors disabled:opacity-50 border ${
+            className={`flex-1 sm:flex-none rounded-lg px-3 py-2 text-xs sm:text-sm transition-colors disabled:opacity-50 border ${
               isDark
                 ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
                 : 'border-slate-300 text-slate-600 hover:bg-slate-50'
@@ -620,7 +624,7 @@ const BatchTable = ({
           <button
             disabled={page === pagination?.totalPages}
             onClick={() => setPage((p) => p + 1)}
-            className={`rounded-lg px-3 py-1 transition-colors disabled:opacity-50 border ${
+            className={`flex-1 sm:flex-none rounded-lg px-3 py-2 text-xs sm:text-sm transition-colors disabled:opacity-50 border ${
               isDark
                 ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
                 : 'border-slate-300 text-slate-600 hover:bg-slate-50'

@@ -81,39 +81,42 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
     : addStatus.isLoading;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
-        className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+        key="modal-backdrop"
+        className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 sm:p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
       >
         <motion.div
+          key="modal-content"
           initial={{ scale: 0.96, y: 24, opacity: 0 }}
           animate={{ scale: 1, y: 0, opacity: 1 }}
           exit={{ scale: 0.96, y: 24, opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className={`w-full max-w-lg rounded-2xl shadow-2xl transition-colors ${
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className={`w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-2xl shadow-2xl transition-colors ${
             isDark
               ? 'bg-slate-800 border border-slate-700'
               : 'bg-white'
           }`}
         >
           {/* ================= HEADER ================= */}
-          <div className={`flex items-start justify-between border-b p-6 transition-colors ${
+          <div className={`flex items-start justify-between border-b p-4 sm:p-6 transition-colors ${
             isDark
               ? 'border-slate-700'
               : 'border-slate-200'
           }`}>
-            <div>
-              <h2 className={`text-lg font-semibold transition-colors ${
+            <div className="flex-1 min-w-0">
+              <h2 className={`text-base sm:text-lg font-semibold transition-colors ${
                 isDark
                   ? 'text-slate-100'
                   : 'text-slate-900'
               }`}>
                 {isEdit ? "Edit Batch" : "Create New Batch"}
               </h2>
-              <p className={`mt-1 text-sm transition-colors ${
+              <p className={`mt-1 text-xs sm:text-sm transition-colors ${
                 isDark
                   ? 'text-slate-400'
                   : 'text-slate-500'
@@ -121,7 +124,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                 Manage batch details and lifecycle
               </p>
             </div>
-            <button onClick={handleClose} className={`p-2 rounded-lg transition-colors ${
+            <button onClick={handleClose} className={`flex-shrink-0 p-2 rounded-lg transition-colors ml-2 ${
               isDark
                 ? 'hover:bg-slate-700 text-slate-400'
                 : 'hover:bg-slate-100 text-slate-600'
@@ -131,35 +134,35 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
           </div>
 
           {/* ================= FORM ================= */}
-          <div className={`p-6 transition-colors ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
+          <div className={`p-3 sm:p-4 transition-colors ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
               {({ values, setFieldValue }) => (
-                <Form className="space-y-5">
+                <Form className="space-y-3 sm:space-y-3.5">
                   {/* Batch Name */}
                   <div>
-                    <label className={`block text-sm font-medium mb-2 transition-colors ${
+                    <label className={`block text-xs font-medium mb-1 transition-colors ${
                       isDark
                         ? 'text-slate-300'
                         : 'text-slate-700'
                     }`}>Batch Name</label>
                     <Field 
                       name="batchName" 
-                      className={`w-full px-4 py-2.5 rounded-lg border transition-colors ${
+                      className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
                         isDark
                           ? 'bg-slate-700 border-slate-600 text-slate-100 placeholder-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20'
                           : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
                       }`}
                     />
-                    <ErrorMessage name="batchName" component="p" className={`mt-1 text-sm ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                    <ErrorMessage name="batchName" component="p" className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`} />
                   </div>
 
                   {/* Course */}
                   <div>
-                    <label className={`block text-sm font-medium mb-2 transition-colors ${
+                    <label className={`block text-xs font-medium mb-1 transition-colors ${
                       isDark
                         ? 'text-slate-300'
                         : 'text-slate-700'
@@ -168,7 +171,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       <Field 
                         as="select" 
                         name="courseId" 
-                        className={`w-full px-4 py-2.5 rounded-lg border transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
                           isDark
                             ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
                             : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
@@ -182,13 +185,13 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                         ))}
                       </Field>
                     </div>
-                    <ErrorMessage name="courseId" component="p" className={`mt-1 text-sm ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                    <ErrorMessage name="courseId" component="p" className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`} />
                   </div>
 
                   {/* Dates */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
-                      <label className={`block text-sm font-medium mb-2 transition-colors ${
+                      <label className={`block text-xs font-medium mb-1 transition-colors ${
                         isDark
                           ? 'text-slate-300'
                           : 'text-slate-700'
@@ -196,7 +199,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       <Field 
                         type="date" 
                         name="startDate" 
-                        className={`w-full px-4 py-2.5 rounded-lg border transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
                           isDark
                             ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
                             : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
@@ -204,7 +207,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       />
                     </div>
                     <div>
-                      <label className={`block text-sm font-medium mb-2 transition-colors ${
+                      <label className={`block text-xs font-medium mb-1 transition-colors ${
                         isDark
                           ? 'text-slate-300'
                           : 'text-slate-700'
@@ -212,7 +215,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       <Field 
                         type="date" 
                         name="endDate" 
-                        className={`w-full px-4 py-2.5 rounded-lg border transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
                           isDark
                             ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
                             : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
@@ -223,7 +226,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
 
                   {/* STATUS DROPDOWN */}
                   <div>
-                    <label className={`block text-sm font-medium mb-2 transition-colors ${
+                    <label className={`block text-xs font-medium mb-1 transition-colors ${
                       isDark
                         ? 'text-slate-300'
                         : 'text-slate-700'
@@ -231,7 +234,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                     <Field
                       as="select"
                       name="status"
-                      className={`w-full px-4 py-2.5 rounded-lg border transition-colors ${
+                      className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
                         isDark
                           ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
                           : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
@@ -255,12 +258,12 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
                     </Field>
-                    <ErrorMessage name="status" component="p" className={`mt-1 text-sm ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                    <ErrorMessage name="status" component="p" className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`} />
                   </div>
                   {/* COMPLETED AT (Conditional) */}
                   {values.status === "completed" && (
                     <div>
-                      <label className={`block text-sm font-medium mb-2 transition-colors ${
+                      <label className={`block text-xs font-medium mb-1 transition-colors ${
                         isDark
                           ? 'text-slate-300'
                           : 'text-slate-700'
@@ -268,7 +271,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       <Field
                         type="date"
                         name="completedAt"
-                        className={`w-full px-4 py-2.5 rounded-lg border transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
                           isDark
                             ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
                             : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
@@ -277,7 +280,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       <ErrorMessage
                         name="completedAt"
                         component="p"
-                        className={`mt-1 text-sm ${isDark ? 'text-red-400' : 'text-red-600'}`}
+                        className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`}
                       />
                     </div>
                   )}
@@ -287,7 +290,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`w-full py-3 rounded-xl font-medium transition-all ${
+                    className={`w-full py-2 rounded-xl font-medium text-sm transition-all ${
                       isDark
                         ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white disabled:opacity-60'
                         : 'bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white disabled:opacity-60'
@@ -297,13 +300,13 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                   </button>
 
                   {/* Tip */}
-                  <div className={`flex gap-2 border p-3 rounded-lg transition-colors ${
+                  <div className={`flex gap-2 border p-2 rounded-lg transition-colors ${
                     isDark
                       ? 'bg-blue-900/30 border-blue-700/50 text-blue-300'
                       : 'bg-indigo-50 border-indigo-200 text-indigo-700'
                   }`}>
                     <FiCheckCircle className={`flex-shrink-0 mt-0.5 ${isDark ? 'text-blue-400' : 'text-indigo-600'}`} />
-                    <p className="text-sm">
+                    <p className="text-xs">
                       Completed batches won’t allow new student assignments.
                     </p>
                   </div>
