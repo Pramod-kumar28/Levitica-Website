@@ -1,6 +1,7 @@
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from '@/context/ThemeContext';
 import {
   FiX,
   FiPlus,
@@ -22,6 +23,8 @@ const InternshipsDomainModal = ({
   domain = {},
 }) => {
   const isEdit = mode === "edit";
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const [createDomain, { isLoading: isCreating }] =
     useCreateInternshipsDomainMutation();

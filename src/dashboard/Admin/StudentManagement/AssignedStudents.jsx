@@ -35,18 +35,20 @@ const AssignedStudents = () => {
   /* ------------------ Error ------------------ */
   if (isError) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-xl p-6 flex items-start gap-4">
-        <AlertTriangle className="text-red-500 mt-1" />
+      <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-xl p-6 flex items-start gap-4">
+        <div className="p-3 bg-red-100 rounded-lg">
+          <AlertTriangle className="text-red-600 w-6 h-6" />
+        </div>
         <div className="flex-1">
-          <h4 className="font-semibold text-red-600">
+          <h4 className="font-semibold text-red-900">
             Failed to load assigned students
           </h4>
-          <p className="text-sm text-red-500">
+          <p className="text-sm text-red-700 mt-1">
             {error?.data?.message || "Unknown error occurred"}
           </p>
           <button
             onClick={refetch}
-            className="mt-4 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
+            className="mt-4 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-colors"
           >
             <RefreshCcw size={16} />
             Retry
@@ -61,22 +63,24 @@ const AssignedStudents = () => {
       {/* ================= HEADER ================= */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
-            <Users className="text-blue-600" />
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-2">
+            <div className="p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg">
+              <Users className="text-blue-600 w-6 h-6" />
+            </div>
             Assigned Students
           </h2>
-          <p className="text-gray-500">
-            Students who have been successfully assigned to batches
+          <p className="text-slate-600 mt-2">
+            Students successfully assigned to batches
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+          <div className="bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 px-5 py-2.5 rounded-full text-sm font-bold border border-emerald-200">
             {results.length} Assigned
           </div>
           <button
             onClick={refetch}
-            className="inline-flex items-center gap-2 border rounded-lg px-4 py-2 hover:bg-gray-50"
+            className="inline-flex items-center gap-2 border border-slate-300 rounded-lg px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-semibold transition-colors"
           >
             <RefreshCcw size={16} />
             Refresh

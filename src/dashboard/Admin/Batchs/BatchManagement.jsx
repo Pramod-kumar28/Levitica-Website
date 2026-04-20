@@ -4,6 +4,7 @@ import {
   useDeleteBatchMutation,
 } from '@/Services/admin/batchdetailsService';
 import { useModal, MODAL_TYPES } from '@/dashboard/Admin/Modals/ModalContext';
+import { useTheme } from '@/context/ThemeContext';
 import { AnimatePresence, motion } from "framer-motion";
 import toast from "react-hot-toast";
 import {
@@ -40,6 +41,8 @@ const STATUS_TABS = [
 
 const BatchManagement = () => {
   const { openModal } = useModal();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const [view, setView] = useState("cards");
   const [page, setPage] = useState(1);
@@ -85,19 +88,35 @@ const BatchManagement = () => {
   }
 
   return (
-    <div className=" space-y-8 py-3">
+    <div className={`space-y-8 py-3 px-6 rounded-xl transition-colors ${
+      isDark
+        ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen'
+        : 'bg-white'
+    }`}>
       {/* HEADER */}
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center pt-6">
         <div>
-          <h1 className="text-2xl font-bold">Batch Management</h1>
-          <p className="text-sm text-slate-500">
+          <h1 className={`text-2xl font-bold transition-colors ${
+            isDark
+              ? 'text-slate-100'
+              : 'text-slate-900'
+          }`}>Batch Management</h1>
+          <p className={`text-sm transition-colors ${
+            isDark
+              ? 'text-slate-400'
+              : 'text-slate-500'
+          }`}>
             {pagination?.total || batches.length} total batches
           </p>
         </div>
 
         <button
           onClick={() => openModal(MODAL_TYPES.CREATE_BATCH)}
-          className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg"
+          className={`flex items-center gap-2 text-white px-4 py-2 rounded-lg transition-colors ${
+            isDark
+              ? 'bg-indigo-600 hover:bg-indigo-500'
+              : 'bg-indigo-600 hover:bg-indigo-700'
+          }`}
         >
           <FiPlus /> Create Batch
         </button>
@@ -110,10 +129,15 @@ const BatchManagement = () => {
               setStatus(tab.key);
               setPage(1);
             }}
-            className={`px-4 py-2 rounded-lg text-sm ${status === tab.key
-                ? "bg-indigo-600 text-white"
-                : "bg-white border"
-              }`}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              status === tab.key
+                ? isDark
+                  ? 'bg-indigo-600 text-white hover:bg-indigo-500'
+                  : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                : isDark
+                  ? 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
+                  : 'bg-white border text-slate-900 hover:bg-slate-50'
+            }`}
           >
             {tab.label}
           </button>
@@ -131,10 +155,15 @@ const BatchManagement = () => {
           <button
             key={key}
             onClick={() => setView(key)}
-            className={`px-3 py-2 rounded-lg ${view === key
-              ? "bg-indigo-600 text-white"
-              : "bg-white border"
-              }`}
+            className={`px-3 py-2 rounded-lg transition-colors ${
+              view === key
+                ? isDark
+                  ? 'bg-indigo-600 text-white hover:bg-indigo-500'
+                  : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                : isDark
+                  ? 'bg-slate-700 border-slate-600 text-slate-200 hover:bg-slate-600'
+                  : 'bg-white border text-slate-900 hover:bg-slate-50'
+            }`}
           >
             <Icon />
           </button>
@@ -142,6 +171,7 @@ const BatchManagement = () => {
       </div>
 
       {/* CONTENT */}
+      <div className="pb-6">
       <AnimatePresence mode="wait">
         {view === "cards" ? (
           <motion.div
@@ -152,6 +182,7 @@ const BatchManagement = () => {
           >
             <BatchCards
               batches={batches}
+              isDark={isDark}
               onEdit={(batch) =>
                 openModal(MODAL_TYPES.CREATE_BATCH, {
                   mode: "edit",
@@ -173,6 +204,7 @@ const BatchManagement = () => {
           >
             <BatchTable
               batches={batches}
+              isDark={isDark}
               pagination={pagination}
               page={page}
               setPage={setPage}
@@ -190,6 +222,7 @@ const BatchManagement = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 };
@@ -199,21 +232,33 @@ export default BatchManagement;
 /* ================= CARDS ================= */
 
 
-const BatchCards = ({ batches, onEdit, onDelete ,onViewStudents}) => (
+const BatchCards = ({ batches, isDark, onEdit, onDelete ,onViewStudents}) => (
   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
     {batches.map((batch) => (
       <div
         key={batch._id}
-        className="rounded-xl border bg-white p-5 shadow-sm hover:shadow-md transition"
+        className={`rounded-xl border p-5 shadow-sm hover:shadow-md transition ${
+          isDark
+            ? 'bg-slate-800 border-slate-700'
+            : 'bg-white border-slate-200'
+        }`}
       >
         {/* ===== HEADER ===== */}
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="font-semibold lg:text-xl text-lg text-slate-900">
+            <h3 className={`font-semibold lg:text-xl text-lg transition-colors ${
+              isDark
+                ? 'text-slate-100'
+                : 'text-slate-900'
+            }`}>
               {batch.batchName}
             </h3>
 
-            <div className="mt-1 flex items-center gap-1 text-xs text-slate-500">
+            <div className={`mt-1 flex items-center gap-1 text-xs transition-colors ${
+              isDark
+                ? 'text-slate-400'
+                : 'text-slate-500'
+            }`}>
               <FiBookOpen size={12} />
               {batch.courseId?.name || "Unknown Course"}
             </div>
@@ -221,10 +266,14 @@ const BatchCards = ({ batches, onEdit, onDelete ,onViewStudents}) => (
 
           {/* STATUS */}
           <span
-            className={`rounded-full px-2 py-0.5 text-xs font-medium
+            className={`rounded-full px-2 py-0.5 text-xs font-medium transition-colors
               ${batch.status === "active"
-                ? "bg-emerald-50 text-emerald-600"
-                : "bg-rose-50 text-rose-600"
+                ? isDark
+                  ? 'bg-emerald-900/30 text-emerald-400'
+                  : 'bg-emerald-50 text-emerald-600'
+                : isDark
+                  ? 'bg-rose-900/30 text-rose-400'
+                  : 'bg-rose-50 text-rose-600'
               }
             `}
           >
@@ -233,7 +282,11 @@ const BatchCards = ({ batches, onEdit, onDelete ,onViewStudents}) => (
         </div>
 
         {/* ===== DATES ===== */}
-        <div className="mt-4 space-y-1 text-xs text-slate-500">
+        <div className={`mt-4 space-y-1 text-xs transition-colors ${
+          isDark
+            ? 'text-slate-400'
+            : 'text-slate-500'
+        }`}>
           <div className="flex items-center gap-1">
             <FiCalendar size={12} />
             <span>
@@ -258,17 +311,21 @@ const BatchCards = ({ batches, onEdit, onDelete ,onViewStudents}) => (
         {/* ===== FOOTER ===== */}
         <div className="mt-5 flex items-center justify-between">
           <div className="flex gap-2">
-            
-               <ActionBtn icon={FiUsers} onClick={() => onViewStudents(batch._id)} />
-            <ActionBtn icon={FiEdit} onClick={() => onEdit(batch)} />
+            <ActionBtn isDark={isDark} icon={FiUsers} onClick={() => onViewStudents(batch._id)} />
+            <ActionBtn isDark={isDark} icon={FiEdit} onClick={() => onEdit(batch)} />
             <ActionBtn
+              isDark={isDark}
               icon={FiTrash2}
               danger
               onClick={() => onDelete(batch._id, batch.batchName)}
             />
           </div>
 
-          <span className="text-xs text-slate-400">
+          <span className={`text-xs transition-colors ${
+            isDark
+              ? 'text-slate-500'
+              : 'text-slate-400'
+          }`}>
             #{batch._id}
           </span>
         </div>
@@ -282,6 +339,7 @@ const BatchCards = ({ batches, onEdit, onDelete ,onViewStudents}) => (
 
 const BatchTable = ({
   batches,
+  isDark,
   pagination,
   page,
   setPage,
@@ -294,7 +352,11 @@ const BatchTable = ({
       accessorKey: "batchName",
       header: "Batch",
       cell: (info) => (
-        <p className="font-medium text-slate-900">
+        <p className={`font-medium transition-colors ${
+          isDark
+            ? 'text-slate-200'
+            : 'text-slate-900'
+        }`}>
           {info.getValue()}
         </p>
       ),
@@ -305,7 +367,11 @@ const BatchTable = ({
       header: "Course",
       accessorFn: (row) => row.courseId?.name ?? "Unknown",
       cell: (info) => (
-        <span className="bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full text-xs">
+        <span className={`px-2 py-1 rounded-full text-xs transition-colors ${
+          isDark
+            ? 'bg-indigo-900/30 text-indigo-400'
+            : 'bg-indigo-50 text-indigo-600'
+        }`}>
           {info.getValue()}
         </span>
       ),
@@ -317,7 +383,11 @@ const BatchTable = ({
       cell: ({ row }) => {
         const { startDate, endDate } = row.original;
         return (
-          <div className="text-xs text-slate-600 space-y-1">
+          <div className={`text-xs space-y-1 transition-colors ${
+            isDark
+              ? 'text-slate-400'
+              : 'text-slate-600'
+          }`}>
             <div className="flex items-center gap-1">
               <FiCalendar size={12} />
               <span>
@@ -345,16 +415,16 @@ const BatchTable = ({
         const status = row.original.status;
 
         const statusStyles = {
-          active: "bg-emerald-50 text-emerald-600",
-          completed: "bg-blue-50 text-blue-600",
-          cancelled: "bg-rose-50 text-rose-600",
-          inactive: "bg-slate-100 text-slate-600",
+          active: isDark ? "bg-emerald-900/30 text-emerald-400" : "bg-emerald-50 text-emerald-600",
+          completed: isDark ? "bg-blue-900/30 text-blue-400" : "bg-blue-50 text-blue-600",
+          cancelled: isDark ? "bg-rose-900/30 text-rose-400" : "bg-rose-50 text-rose-600",
+          inactive: isDark ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600",
         };
 
         return (
           <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold capitalize
-          ${statusStyles[status] || "bg-gray-100 text-gray-600"}
+            className={`rounded-full px-3 py-1 text-xs font-semibold capitalize transition-colors
+          ${statusStyles[status] || isDark ? "bg-gray-700 text-gray-300" : "bg-gray-100 text-gray-600"}
         `}
           >
             {status}
@@ -421,9 +491,17 @@ const BatchTable = ({
   });
 
   return (
-    <div className="bg-white border rounded-xl overflow-hidden">
+    <div className={`border rounded-xl overflow-hidden transition-colors ${
+      isDark
+        ? 'bg-slate-800 border-slate-700'
+        : 'bg-white border-slate-200'
+    }`}>
       <table className="w-full text-sm">
-        <thead className="bg-slate-50 text-slate-600">
+        <thead className={`transition-colors ${
+          isDark
+            ? 'bg-slate-700 text-slate-300'
+            : 'bg-slate-50 text-slate-600'
+        }`}>
           {table.getHeaderGroups().map((hg) => (
             <tr key={hg.id}>
               {hg.headers.map((header) => (
@@ -441,11 +519,19 @@ const BatchTable = ({
           ))}
         </thead>
 
-        <tbody>
+        <tbody className={`divide-y transition-colors ${
+          isDark
+            ? 'divide-slate-700'
+            : 'divide-slate-200'
+        }`}>
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="border-t hover:bg-slate-50"
+              className={`transition-colors ${
+                isDark
+                  ? 'hover:bg-slate-700'
+                  : 'hover:bg-slate-50'
+              }`}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="p-4 align-top">
@@ -461,8 +547,16 @@ const BatchTable = ({
       </table>
 
       {/* PAGINATION */}
-      <div className="flex justify-between items-center p-4 border-t">
-        <span className="text-sm text-slate-600">
+      <div className={`flex justify-between items-center p-4 border-t transition-colors ${
+        isDark
+          ? 'border-slate-700'
+          : 'border-slate-200'
+      }`}>
+        <span className={`text-sm transition-colors ${
+          isDark
+            ? 'text-slate-400'
+            : 'text-slate-600'
+        }`}>
           Page {page} of {pagination?.totalPages}
         </span>
 
@@ -470,7 +564,11 @@ const BatchTable = ({
           <button
             disabled={page === 1}
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
-            className="border rounded-lg px-3 py-1 disabled:opacity-50"
+            className={`rounded-lg px-3 py-1 transition-colors disabled:opacity-50 border ${
+              isDark
+                ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
+                : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+            }`}
           >
             Prev
           </button>
@@ -478,7 +576,11 @@ const BatchTable = ({
           <button
             disabled={page === pagination?.totalPages}
             onClick={() => setPage((p) => p + 1)}
-            className="border rounded-lg px-3 py-1 disabled:opacity-50"
+            className={`rounded-lg px-3 py-1 transition-colors disabled:opacity-50 border ${
+              isDark
+                ? 'border-slate-600 text-slate-300 hover:bg-slate-700'
+                : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+            }`}
           >
             Next
           </button>
@@ -492,13 +594,18 @@ const BatchTable = ({
 
 /* ================= SHARED ================= */
 
-const ActionBtn = ({ icon: Icon, onClick, danger }) => (
+const ActionBtn = ({ icon: Icon, onClick, danger, isDark }) => (
   <button
     onClick={onClick}
-    className={`p-2 rounded-lg ${danger
-      ? "text-rose-600 hover:bg-rose-50"
-      : "text-slate-600 hover:bg-slate-100"
-      }`}
+    className={`p-2 rounded-lg transition-colors ${
+      danger
+        ? isDark
+          ? 'text-rose-400 hover:bg-rose-900/30'
+          : 'text-rose-600 hover:bg-rose-50'
+        : isDark
+          ? 'text-slate-400 hover:bg-slate-700'
+          : 'text-slate-600 hover:bg-slate-100'
+    }`}
   >
     <Icon size={16} />
   </button>

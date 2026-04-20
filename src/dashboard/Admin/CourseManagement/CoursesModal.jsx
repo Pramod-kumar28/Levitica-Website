@@ -2,10 +2,12 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCourseHandlers } from './courseshooks.js';
+import { useTheme } from '@/context/ThemeContext';
 import { FiX, FiSave } from 'react-icons/fi';
 
 const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
- 
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const { handleAddCourseSubmit, handleUpdateCourseSubmit } = useCourseHandlers();
   const isEdit = mode === 'edit';
 
@@ -53,15 +55,31 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.96, opacity: 0, y: 20 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="w-full max-w-xl overflow-hidden rounded-2xl bg-white shadow-2xl"
+          className={`w-full max-w-xl overflow-hidden rounded-2xl shadow-2xl transition-colors ${
+            isDark
+              ? 'bg-slate-800 border border-slate-700'
+              : 'bg-white'
+          }`}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+          <div className={`flex items-center justify-between border-b px-6 py-4 transition-colors ${
+            isDark
+              ? 'border-slate-700'
+              : 'border-slate-200'
+          }`}>
             <div>
-              <h2 className="text-lg font-semibold text-slate-900">
+              <h2 className={`text-lg font-semibold transition-colors ${
+                isDark
+                  ? 'text-slate-100'
+                  : 'text-slate-900'
+              }`}>
                 {isEdit ? 'Edit Course' : 'Add New Course'}
               </h2>
-              <p className="mt-1 text-sm text-slate-500">
+              <p className={`mt-1 text-sm transition-colors ${
+                isDark
+                  ? 'text-slate-400'
+                  : 'text-slate-500'
+              }`}>
                 {isEdit
                   ? 'Update course information'
                   : 'Create a new course for the platform'}
@@ -69,7 +87,11 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
             </div>
             <button
               onClick={onSuccess}
-              className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+              className={`rounded-lg p-2 transition ${
+                isDark
+                  ? 'text-slate-400 hover:bg-slate-700 hover:text-slate-200'
+                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+              }`}
             >
               <FiX className="h-5 w-5" />
             </button>
@@ -106,25 +128,41 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                     { name: 'category', label: 'Category', placeholder: 'Web Development' },
                   ].map(({ name, label, placeholder }) => (
                     <div key={name}>
-                      <label className="mb-1 block text-sm font-medium text-slate-700">
+                      <label className={`mb-1 block text-sm font-medium transition-colors ${
+                        isDark
+                          ? 'text-slate-300'
+                          : 'text-slate-700'
+                      }`}>
                         {label}
                       </label>
                       <Field
                         name={name}
                         placeholder={placeholder}
-                        className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                        className={`w-full rounded-lg border px-3 py-2 text-sm transition focus:outline-none focus:ring-2 ${
+                          isDark
+                            ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-indigo-400 focus:ring-indigo-500/30'
+                            : 'border-slate-300 text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-indigo-500/20'
+                        }`}
                       />
                       <ErrorMessage
                         name={name}
                         component="p"
-                        className="mt-1 text-xs text-rose-600"
+                        className={`mt-1 text-xs transition-colors ${
+                          isDark
+                            ? 'text-rose-400'
+                            : 'text-rose-600'
+                        }`}
                       />
                     </div>
                   ))}
 
                   {/* shortdescription */}
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-slate-700">
+                    <label className={`mb-1 block text-sm font-medium transition-colors ${
+                      isDark
+                        ? 'text-slate-300'
+                        : 'text-slate-700'
+                    }`}>
                       Short Description
                     </label>
                     <Field
@@ -132,12 +170,20 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                       name="shortdescription"
                       rows={3}
                       placeholder="Course overview..."
-                      className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                      className={`w-full rounded-lg border px-3 py-2 text-sm transition focus:outline-none focus:ring-2 ${
+                        isDark
+                          ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-indigo-400 focus:ring-indigo-500/30'
+                          : 'border-slate-300 text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-indigo-500/20'
+                      }`}
                     />
                     <ErrorMessage
                       name="shortdescription"
                       component="p"
-                      className="mt-1 text-xs text-rose-600"
+                      className={`mt-1 text-xs transition-colors ${
+                        isDark
+                          ? 'text-rose-400'
+                          : 'text-rose-600'
+                      }`}
                     />
                   </div>
 
@@ -147,7 +193,11 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+                    className={`mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-70 ${
+                      isDark
+                        ? 'bg-indigo-600 text-white hover:bg-indigo-500'
+                        : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                    }`}
                   >
                     <FiSave />
                     {isSubmitting
