@@ -20,9 +20,11 @@ import {
   Eye,
 } from "lucide-react";
 import { MODAL_TYPES, useModal } from '@/dashboard/Admin/Modals/ModalContext';
- // Import your custom Button component
+import { useTheme } from '@/context/ThemeContext';
 
 const StudentsTable = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
@@ -95,38 +97,50 @@ const StudentsTable = () => {
   const pendingStudents = studentsData?.students?.filter(s => !s.emailVerified).length || 0;
 
   return (
-    <div className="space-y-6 p-4 md:p-6 max-w-7xl mx-auto">
+    <div className={`space-y-4 md:space-y-6 p-2 sm:p-3 md:p-6`}>
       {/* ================= HEADER SECTION ================= */}
-      <div className="card bg-gradient-to-r from-primary/10 to-secondary/10 border-primary/20">
-        <div className="card-body">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-primary/20 rounded-xl">
-                <Users className="w-8 h-8 text-primary" />
+      <div className={`rounded-2xl p-6 sm:p-8 shadow-2xl border overflow-hidden relative transition-colors ${
+        isDark
+          ? 'bg-gradient-to-br from-slate-800 via-blue-800 to-indigo-900 border-blue-700/40'
+          : 'bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 border-blue-700/30'
+      }`}>
+        {/* Background decorative elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl -z-0"></div>
+        
+        <div className="relative z-10">
+          <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 mb-6 sm:mb-8`}>
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+              <div className={`p-2.5 sm:p-4 rounded-xl shadow-lg flex-shrink-0 ${ 
+                isDark
+                  ? 'bg-gradient-to-br from-blue-500 to-indigo-600'
+                  : 'bg-gradient-to-br from-blue-400 to-indigo-500'
+              }`}>
+                <Users className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
               </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  Student Management
+              <div className="min-w-0">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white truncate">
+                  All Students
                 </h1>
-                <p className="text-base-content/70 mt-1">
-                  Manage and monitor all registered students
+                <p className="text-blue-100 mt-1 text-xs sm:text-sm font-medium truncate">
+                  Overview of registered students
                 </p>
               </div>
             </div>
 
             <button
-             
               onClick={handleDownloadExcel}
               disabled={downloadLoading || isLoading}
+              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap text-sm sm:text-base flex-shrink-0"
             >
               {downloadLoading ? (
                 <>
-                  <Loader2 className="animate-spin mr-2" size={18} />
+                  <Loader2 className="animate-spin" size={18} />
                   Generating...
                 </>
               ) : (
                 <>
-                  <FileSpreadsheet size={18} className="mr-2" />
+                  <FileSpreadsheet size={18} />
                   Export Excel
                 </>
               )}
@@ -134,38 +148,46 @@ const StudentsTable = () => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
-            <div className="bg-base-100 rounded-xl p-4 border border-base-300">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/20 hover:border-white/40 transition-all duration-300 group">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-base-content/60 text-sm">Total Students</p>
-                  <p className="text-2xl font-bold text-primary">
+                  <p className="text-blue-100 text-sm font-medium">Total Students</p>
+                  <p className="text-4xl font-bold text-white mt-2">
                     {totalStudents}
                   </p>
                 </div>
-                <Users className="w-8 h-8 text-primary/40" />
+                <div className="p-3 bg-white/10 group-hover:bg-white/20 rounded-lg transition-all duration-300">
+                  <Users className="w-6 h-6 text-blue-300" />
+                </div>
               </div>
             </div>
-            <div className="bg-base-100 rounded-xl p-4 border border-base-300">
+            
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/20 hover:border-green-400/40 transition-all duration-300 group">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-base-content/60 text-sm">Verified</p>
-                  <p className="text-2xl font-bold text-success">
+                  <p className="text-green-100 text-sm font-medium">Verified</p>
+                  <p className="text-4xl font-bold text-green-300 mt-2">
                     {verifiedStudents}
                   </p>
                 </div>
-                <CheckCircle className="w-8 h-8 text-success/40" />
+                <div className="p-3 bg-green-500/20 group-hover:bg-green-500/30 rounded-lg transition-all duration-300">
+                  <CheckCircle className="w-6 h-6 text-green-300" />
+                </div>
               </div>
             </div>
-            <div className="bg-base-100 rounded-xl p-4 border border-base-300">
+            
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/20 hover:border-amber-400/40 transition-all duration-300 group">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-base-content/60 text-sm">Pending</p>
-                  <p className="text-2xl font-bold text-warning">
+                  <p className="text-amber-100 text-sm font-medium">Pending</p>
+                  <p className="text-4xl font-bold text-amber-300 mt-2">
                     {pendingStudents}
                   </p>
                 </div>
-                <Clock className="w-8 h-8 text-warning/40" />
+                <div className="p-3 bg-amber-500/20 group-hover:bg-amber-500/30 rounded-lg transition-all duration-300">
+                  <Clock className="w-6 h-6 text-amber-300" />
+                </div>
               </div>
             </div>
           </div>
@@ -173,72 +195,136 @@ const StudentsTable = () => {
       </div>
 
       {/* ================= SEARCH BAR ================= */}
-      <div className="card">
-        <div className="card-body p-4 md:p-6">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-base-content/40 w-5 h-5" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search students by name, email or phone number..."
-              className="input pl-12 pr-12"
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2"
-              >
-                <XCircle className="text-base-content/40 hover:text-error transition-colors w-5 h-5" />
-              </button>
-            )}
-          </div>
+      <div className={`rounded-xl shadow-md border p-3 sm:p-4 md:p-6 transition-colors ${
+        isDark
+          ? 'bg-slate-800 border-slate-700'
+          : 'bg-white border-slate-200'
+      }`}>
+        <div className="relative group">
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-colors ${
+            isDark
+              ? 'text-slate-500 group-focus-within:text-blue-400'
+              : 'text-slate-400 group-focus-within:text-blue-500'
+          }`} />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name, email, phone..."
+            className={`w-full pl-12 pr-12 py-2.5 sm:py-3 border rounded-lg focus:outline-none transition-all text-sm sm:text-base ${
+              isDark
+                ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30'
+                : 'bg-white border-slate-200 text-slate-900 placeholder-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
+            }`}
+          />
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className={`absolute right-4 top-1/2 transform -translate-y-1/2 transition-colors ${
+                isDark
+                  ? 'text-slate-500 hover:text-red-400'
+                  : 'text-slate-400 hover:text-red-500'
+              }`}
+            >
+              <XCircle className="w-5 h-5" />
+            </button>
+          )}
         </div>
       </div>
 
       {/* ================= STUDENTS TABLE ================= */}
-      <div className="card overflow-hidden">
+      <div className={`rounded-xl shadow-md border overflow-hidden transition-colors ${
+        isDark
+          ? 'bg-slate-800 border-slate-700'
+          : 'bg-white border-slate-200'
+      }`}>
         <div className="overflow-x-auto">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <Loader2 className="animate-spin w-12 h-12 text-primary" />
-              <p className="mt-4 text-base-content/60">Loading students...</p>
+              <Loader2 className={`animate-spin w-12 h-12 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+              <p className={`mt-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Loading students...</p>
             </div>
           ) : (
-            <table className="table table-zebra w-full">
+            <table className="w-full">
               <thead>
-                <tr>
-                  <th className="text-base font-semibold py-4">
+                <tr className={`border-b transition-colors ${
+                  isDark
+                    ? 'bg-slate-700 border-slate-600'
+                    : 'bg-gradient-to-r from-slate-50 to-blue-50 border-slate-200'
+                }`}>
+                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
+                    isDark
+                      ? 'text-slate-300'
+                      : 'text-slate-700'
+                  }`}>
                     <div className="flex items-center gap-2">
-                      <User size={16} />
+                      <User size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
                       Student Details
                     </div>
                   </th>
-                  <th className="text-base font-semibold">
+                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
+                    isDark
+                      ? 'text-slate-300'
+                      : 'text-slate-700'
+                  }`}>
                     <div className="flex items-center gap-2">
-                      <Mail size={16} />
+                      <Mail size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
                       Email
                     </div>
                   </th>
-                  <th className="text-base font-semibold">
+                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
+                    isDark
+                      ? 'text-slate-300'
+                      : 'text-slate-700'
+                  }`}>
                     <div className="flex items-center gap-2">
-                      <Phone size={16} />
+                      <Phone size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
                       Mobile
                     </div>
                   </th>
-                  <th className="text-base font-semibold">Status</th>
-                  <th className="text-base font-semibold text-center">Action</th>
+                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
+                    isDark
+                      ? 'text-slate-300'
+                      : 'text-slate-700'
+                  }`}>Status</th>
+                  <th className={`text-center px-6 py-4 font-semibold transition-colors ${
+                    isDark
+                      ? 'text-slate-300'
+                      : 'text-slate-700'
+                  }`}>Action</th>
                 </tr>
               </thead>
 
-              <tbody>
+              <tbody className={`divide-y transition-colors ${
+                isDark
+                  ? 'divide-slate-700'
+                  : 'divide-slate-200'
+              }`}>
                 {studentsData?.students?.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="text-center py-12">
-                      <div className="flex flex-col items-center gap-2">
-                        <Users className="w-12 h-12 text-base-content/20" />
-                        <p className="text-base-content/60">No students found</p>
-                        <p className="text-sm text-base-content/40">
+                    <td colSpan={5} className={`text-center py-16 px-6 transition-colors ${
+                      isDark
+                        ? 'bg-slate-700'
+                        : 'bg-white'
+                    }`}>
+                      <div className="flex flex-col items-center gap-3">
+                        <div className={`p-4 rounded-full transition-colors ${
+                          isDark
+                            ? 'bg-slate-600'
+                            : 'bg-slate-100'
+                        }`}>
+                          <Users className={`w-8 h-8 ${
+                            isDark
+                              ? 'text-slate-400'
+                              : 'text-slate-400'
+                          }`} />
+                        </div>
+                        <p className={`font-medium transition-colors ${
+                          isDark
+                            ? 'text-slate-400'
+                            : 'text-slate-600'
+                        }`}>No students found</p>
+                        <p className="text-sm text-slate-500">
                           Try adjusting your search criteria
                         </p>
                       </div>
@@ -248,66 +334,105 @@ const StudentsTable = () => {
                   studentsData.students.map((student) => (
                     <tr
                       key={student._id}
-                      className="group cursor-pointer hover:bg-base-200/50 transition-colors"
+                      className={`transition-colors duration-200 group ${
+                        isDark
+                          ? 'hover:bg-slate-700/50'
+                          : 'hover:bg-blue-50/30'
+                      }`}
                     >
-                      <td className="py-3">
+                      <td className={`px-6 py-4 transition-colors ${
+                        isDark
+                          ? 'text-slate-300'
+                          : 'text-slate-900'
+                      }`}>
                         <div className="flex items-center gap-3">
-                          <div className="avatar placeholder">
-                            <div className="bg-primary/10 text-primary rounded-full w-10 h-10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                              <span className="font-bold text-sm">
-                                {student.name?.[0]?.toUpperCase() || "U"}
-                              </span>
-                            </div>
+                          <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow">
+                            {student.name?.[0]?.toUpperCase() || "U"}
                           </div>
                           <div>
-                            <div className="font-semibold text-base-content">
+                            <div className={`font-semibold transition-colors ${
+                              isDark
+                                ? 'text-slate-100'
+                                : 'text-slate-900'
+                            }`}>
                               {student.name || "Not Provided"}
                             </div>
-                            <div className="text-xs text-base-content/50 font-mono">
+                            <div className={`text-xs font-mono transition-colors ${
+                              isDark
+                                ? 'text-slate-400'
+                                : 'text-slate-500'
+                            }`}>
                               ID: {student._id?.slice(-8) || "N/A"}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td className={`px-6 py-4 transition-colors ${
+                        isDark
+                          ? 'text-slate-300'
+                          : 'text-slate-700'
+                      }`}>
                         <div className="flex items-center gap-2">
-                          <Mail size={14} className="text-base-content/40 shrink-0" />
+                          <Mail size={14} className={`shrink-0 transition-colors ${
+                            isDark
+                              ? 'text-slate-500'
+                              : 'text-slate-400'
+                          }`} />
                           <span className="text-sm break-all">{student.email}</span>
                         </div>
                       </td>
-                      <td>
+                      <td className={`px-6 py-4 transition-colors ${
+                        isDark
+                          ? 'text-slate-300'
+                          : 'text-slate-700'
+                      }`}>
                         <div className="flex items-center gap-2">
-                          <Phone size={14} className="text-base-content/40 shrink-0" />
+                          <Phone size={14} className={`shrink-0 transition-colors ${
+                            isDark
+                              ? 'text-slate-500'
+                              : 'text-slate-400'
+                          }`} />
                           <span className="font-mono text-sm">
                             {student.mobile || "—"}
                           </span>
                         </div>
                       </td>
-                      <td>
+                      <td className="px-6 py-4">
                         {student.emailVerified ? (
-                          <div className="badge badge-success gap-2">
-                            <CheckCircle size={12} />
+                          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                            isDark
+                              ? 'bg-green-900/30 text-green-300'
+                              : 'bg-green-100 text-green-800'
+                          }`}>
+                            <CheckCircle size={14} />
                             Verified
-                          </div>
+                          </span>
                         ) : (
-                          <div className="badge badge-warning gap-2">
-                            <Clock size={12} />
+                          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                            isDark
+                              ? 'bg-amber-900/30 text-amber-300'
+                              : 'bg-amber-100 text-amber-800'
+                          }`}>
+                            <Clock size={14} />
                             Pending
-                          </div>
+                          </span>
                         )}
                       </td>
-                      <td className="text-center">
+                      <td className="text-center px-6 py-4">
                         <button
-                       
-                          size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
                             openModal(MODAL_TYPES.VIEW_STUDENT_DETAILS, {
                               userId: student._id,
                             });
                           }}
+                          className={`px-4 py-2 text-white font-medium rounded-lg flex items-center gap-1.5 transition-colors inline-flex mx-auto shadow-sm hover:shadow-md ${
+                            isDark
+                              ? 'bg-blue-600 hover:bg-blue-500'
+                              : 'bg-blue-600 hover:bg-blue-700'
+                          }`}
                         >
-                          <Eye size={14} className="mr-1" />
+                          <Eye size={14} />
                           View
                         </button>
                       </td>
@@ -322,65 +447,91 @@ const StudentsTable = () => {
 
       {/* ================= PAGINATION ================= */}
       {studentsData?.totalPages > 1 && (
-        <div className="card">
-          <div className="card-body p-4">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-sm text-base-content/60">
-                Showing {(currentPage - 1) * limit + 1}–
-                {Math.min(currentPage * limit, totalStudents)} of{" "}
-                <span className="font-semibold text-base-content">
-                  {totalStudents}
-                </span>{" "}
-                students
+        <div className={`rounded-xl shadow-md border p-4 sm:p-6 transition-colors ${
+          isDark
+            ? 'bg-slate-800 border-slate-700'
+            : 'bg-white border-slate-200'
+        }`}>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className={`text-sm transition-colors ${
+              isDark
+                ? 'text-slate-400'
+                : 'text-slate-600'
+            }`}>
+              Showing <span className={`font-semibold ${
+                isDark
+                  ? 'text-slate-200'
+                  : 'text-slate-900'
+              }`}>{(currentPage - 1) * limit + 1}–{Math.min(currentPage * limit, totalStudents)}</span> of{" "}
+              <span className={`font-semibold ${
+                isDark
+                  ? 'text-slate-200'
+                  : 'text-slate-900'
+              }`}>
+                {totalStudents}
+              </span>{" "}
+              students
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-end">
+              <button
+                onClick={() => setCurrentPage((p) => p - 1)}
+                disabled={currentPage === 1}
+                className={`px-3 py-2 rounded-lg border font-medium flex items-center gap-1 transition-colors ${
+                  isDark
+                    ? 'border-slate-600 text-slate-300 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                    : 'border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+              >
+                <ChevronLeft size={16} />
+                Previous
+              </button>
+
+              <div className="flex items-center gap-1">
+                {Array.from({ length: Math.min(5, studentsData.totalPages) }, (_, i) => {
+                  let pageNum;
+                  if (studentsData.totalPages <= 5) {
+                    pageNum = i + 1;
+                  } else if (currentPage <= 3) {
+                    pageNum = i + 1;
+                  } else if (currentPage >= studentsData.totalPages - 2) {
+                    pageNum = studentsData.totalPages - 4 + i;
+                  } else {
+                    pageNum = currentPage - 2 + i;
+                  }
+
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
+                        pageNum === currentPage
+                          ? isDark
+                            ? 'bg-blue-600 text-white shadow-md hover:bg-blue-500'
+                            : 'bg-blue-600 text-white shadow-md hover:bg-blue-700'
+                          : isDark
+                            ? 'border border-slate-600 text-slate-300 hover:bg-slate-700'
+                            : 'border border-slate-200 text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                })}
               </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                 
-                  size="sm"
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                  disabled={currentPage === 1}
-                >
-                  <ChevronLeft size={16} />
-                  Previous
-                </button>
-
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: Math.min(5, studentsData.totalPages) }, (_, i) => {
-                    let pageNum;
-                    if (studentsData.totalPages <= 5) {
-                      pageNum = i + 1;
-                    } else if (currentPage <= 3) {
-                      pageNum = i + 1;
-                    } else if (currentPage >= studentsData.totalPages - 2) {
-                      pageNum = studentsData.totalPages - 4 + i;
-                    } else {
-                      pageNum = currentPage - 2 + i;
-                    }
-
-                    return (
-                      <button
-                        key={pageNum}
-                      
-                        size="sm"
-                        onClick={() => setCurrentPage(pageNum)}
-                      >
-                        {pageNum}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <button
-                
-                  size="sm"
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                  disabled={currentPage === studentsData.totalPages}
-                >
-                  Next
-                  <ChevronRight size={16} />
-                </button>
-              </div>
+              <button
+                onClick={() => setCurrentPage((p) => p + 1)}
+                disabled={currentPage === studentsData.totalPages}
+                className={`px-3 py-2 rounded-lg border font-medium flex items-center gap-1 transition-colors ${
+                  isDark
+                    ? 'border-slate-600 text-slate-300 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                    : 'border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                }`}
+              >
+                Next
+                <ChevronRight size={16} />
+              </button>
             </div>
           </div>
         </div>

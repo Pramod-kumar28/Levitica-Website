@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCourseHandlers } from "./courseshooks";
 import { useCourses } from '@/hooks/useCourses';
 import { MODAL_TYPES, useModal } from '@/dashboard/Admin/Modals/ModalContext';
+import { useTheme } from '@/context/ThemeContext';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,12 +12,14 @@ import {
   FiEye,
   FiGrid,
   FiList,
-  
+  FiBookOpen,
 } from "react-icons/fi";
 
 const CoursesManagement = () => {
   const { courses = [] } = useCourses();
   const { openModal } = useModal();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const { handleDeleteCourse } = useCourseHandlers();
 
   const [view, setView] = useState("cards");
@@ -24,59 +27,111 @@ const CoursesManagement = () => {
 
 
   return (
-    <div className=" space-y-6 py-3">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Course Management
-          </h1>
-          <p className="text-gray-500">
-            Manage courses and their batches
+    <div className={`space-y-6 sm:space-y-8 py-3 px-3 sm:px-4 md:px-6 rounded-xl transition-colors ${
+      isDark
+        ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen'
+        : 'bg-white'
+    }`}>
+      {/* ===== Page Header with Gradient ===== */}
+      <div className={`rounded-xl sm:rounded-3xl p-4 sm:p-6 md:p-8 transition-all duration-300 ${
+        isDark
+          ? 'bg-slate-800'
+          : 'bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500'
+      }`}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+          <div>
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2 ${
+              isDark ? 'text-blue-400' : 'text-white'
+            }`}>
+              Course Management
+            </h1>
+            <p className={`text-xs sm:text-sm flex items-center gap-2 ${
+              isDark ? 'text-blue-300' : 'text-blue-100'
+            }`}>
+              <FiBookOpen className="w-4 h-4" />
+              Manage courses and their batches
+            </p>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => openModal(MODAL_TYPES.ADD_COURSE, { mode: "add" })}
+            className={`flex items-center gap-2 rounded-lg sm:rounded-xl px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center sm:justify-start ${
+              isDark
+                ? 'bg-blue-600 hover:bg-blue-500 text-white'
+                : 'bg-white text-blue-600'
+            }`}
+          >
+            <FiPlus className="w-5 h-5" />
+            Add Course
+          </motion.button>
+        </div>
+      </div>
+
+      {/* ===== View Toggle & Stats ===== */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+        <div className={`bg-gradient-to-r from-blue-50 to-cyan-50 border rounded-xl px-4 py-3 sm:py-4 transition-colors ${
+          isDark
+            ? 'from-blue-900/40 to-cyan-900/40 border-blue-800/50'
+            : 'from-blue-50 to-cyan-50 border-blue-200'
+        }`}>
+          <p className={`text-xs sm:text-sm ${
+            isDark ? 'text-blue-300' : 'text-slate-700'
+          }`}>
+            <span className={`font-bold ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>{courses.length}</span>
+            <span className={isDark ? 'text-blue-400' : 'text-slate-600'}> total courses</span>
           </p>
         </div>
 
-        <button
-          onClick={() => openModal(MODAL_TYPES.ADD_COURSE, { mode: "add" })}
-          className="flex items-center gap-2 bg-blue-600 text-white
-                     px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          <FiPlus />
-          Add Course
-        </button>
-      </div>
-
-      {/* View Toggle */}
-      <div className="flex justify-between items-center">
-        <span className="text-sm text-gray-500">
-          {courses.length} total courses
-        </span>
-
-        <div className="flex bg-gray-100 rounded-lg p-1">
-          <button
+        <div className={`inline-flex rounded-lg border p-1 shadow-sm transition-colors ${
+          isDark
+            ? 'bg-blue-800 border-blue-700'
+            : 'bg-slate-100 border-slate-300'
+        }`}>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
             onClick={() => setView("cards")}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md
-              ${view === "cards" ? "bg-white shadow" : ""}`}
+            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium transition-all ${
+              view === "cards" 
+                ? isDark
+                  ? 'bg-blue-600 text-white shadow'
+                  : 'bg-white text-slate-900 shadow'
+                : isDark
+                  ? 'text-slate-300 hover:text-slate-100'
+                  : 'text-slate-600 hover:text-slate-900'
+            }`}
           >
-            <FiGrid /> Cards
-          </button>
-          <button
+            <FiGrid className="w-4 h-4" />
+            <span className="hidden sm:inline">Cards</span>
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
             onClick={() => setView("table")}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md
-              ${view === "table" ? "bg-white shadow" : ""}`}
+            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium transition-all ${
+              view === "table" 
+                ? isDark
+                  ? 'bg-blue-600 text-white shadow'
+                  : 'bg-white text-slate-900 shadow'
+                : isDark
+                  ? 'text-slate-300 hover:text-slate-100'
+                  : 'text-slate-600 hover:text-slate-900'
+            }`}
           >
-            <FiList /> Table
-          </button>
+            <FiList className="w-4 h-4" />
+            <span className="hidden sm:inline">Table</span>
+          </motion.button>
         </div>
       </div>
 
 
       {/* Content */}
-      <AnimatePresence mode="wait">
+      <div className="px-6 pb-6">
+        <AnimatePresence mode="wait">
         {view === "cards" ? (
           <CoursesCardView
             courses={courses}
-
+            isDark={isDark}
             onEdit={(course) =>
               openModal(MODAL_TYPES.ADD_COURSE, { mode: "edit", course })
             }
@@ -93,6 +148,7 @@ const CoursesManagement = () => {
         ) : (
           <CoursesTableView
             courses={courses}
+            isDark={isDark}
             onEdit={(course) =>
               openModal(MODAL_TYPES.ADD_COURSE, { mode: "edit", course })
             }
@@ -108,6 +164,7 @@ const CoursesManagement = () => {
           />
         )}
       </AnimatePresence>
+      </div>
 
 
     </div>
@@ -121,6 +178,7 @@ export default CoursesManagement;
 
 const CoursesCardView = ({
   courses,
+  isDark,
   onEdit,
   onDelete,
 
@@ -135,36 +193,60 @@ const CoursesCardView = ({
           key={course._id}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-xl border p-5 shadow-sm hover:shadow-md"
+          className={`rounded-xl border p-5 shadow-sm hover:shadow-md transition-all ${
+            isDark
+              ? 'bg-slate-800 border-slate-700'
+              : 'bg-white border-slate-200'
+          }`}
         >
           <div className="relative h-40">
             <img
               src={course.thumbnail}
               alt={course.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded"
             />
           </div>
           {/* Header */}
           <div className="flex justify-between mt-3">
 
             <div>
-              <h3 className="font-semibold text-lg">{course.name}</h3>
-              <p className="text-sm text-gray-500">
+              <h3 className={`font-semibold text-lg transition-colors ${
+                isDark
+                  ? 'text-slate-100'
+                  : 'text-gray-900'
+              }`}>{course.name}</h3>
+              <p className={`text-sm transition-colors ${
+                isDark
+                  ? 'text-slate-400'
+                  : 'text-gray-500'
+              }`}>
                 {course.category}
               </p>
             </div>
-            <span className="text-blue-600 font-semibold">
+            <span className={`font-semibold transition-colors ${
+              isDark
+                ? 'text-blue-400'
+                : 'text-blue-600'
+            }`}>
               {course.price === 0 ? "Free" : `₹${course.price}`}
             </span>
           </div>
 
           {/* Meta */}
-          <p className="text-sm text-gray-600 mt-3 line-clamp-2">
+          <p className={`text-sm mt-3 line-clamp-2 transition-colors ${
+            isDark
+              ? 'text-slate-400'
+              : 'text-gray-600'
+          }`}>
             {course.shortdescription || "No  Short description added yet"}
           </p>
 
           <div className="flex justify-between items-center mt-4">
-            <span className="text-xs text-gray-500">
+            <span className={`text-xs transition-colors ${
+              isDark
+                ? 'text-slate-500'
+                : 'text-gray-500'
+            }`}>
               {course.duration}
             </span>
 
@@ -173,7 +255,11 @@ const CoursesCardView = ({
               {/* Edit course */}
               <FiEdit
                 title="Edit Course"
-                className="text-blue-600 cursor-pointer"
+                className={`cursor-pointer transition-colors ${
+                  isDark
+                    ? 'text-blue-400 hover:text-blue-300'
+                    : 'text-blue-600 hover:text-blue-700'
+                }`}
                 onClick={() => onEdit(course)}
               />
 
@@ -181,7 +267,11 @@ const CoursesCardView = ({
               {course.details ? (
                 <FiEye
                   title="View Details"
-                  className="text-green-600 cursor-pointer"
+                  className={`cursor-pointer transition-colors ${
+                    isDark
+                      ? 'text-green-400 hover:text-green-300'
+                      : 'text-green-600 hover:text-green-700'
+                  }`}
                   onClick={() =>
                     navigate(`/dashboard/course/${course._id}`)
                   }
@@ -189,7 +279,11 @@ const CoursesCardView = ({
               ) : (
                 <FiPlus
                   title="Add Details"
-                  className="text-green-600 cursor-pointer"
+                  className={`cursor-pointer transition-colors ${
+                    isDark
+                      ? 'text-green-400 hover:text-green-300'
+                      : 'text-green-600 hover:text-green-700'
+                  }`}
                   onClick={() =>
                     openModal(MODAL_TYPES.ADD_COURSE_DETAILS, {
                       courseId: course._id,
@@ -204,7 +298,11 @@ const CoursesCardView = ({
 
               <FiTrash2
                 title="Delete Course"
-                className="text-red-500 cursor-pointer"
+                className={`cursor-pointer transition-colors ${
+                  isDark
+                    ? 'text-red-400 hover:text-red-300'
+                    : 'text-red-500 hover:text-red-600'
+                }`}
                 onClick={() => onDelete(course._id)}
               />
 
@@ -219,6 +317,7 @@ const CoursesCardView = ({
 
 const CoursesTableView = ({
   courses,
+  isDark,
   onEdit,
   onDelete,
 
@@ -227,10 +326,22 @@ const CoursesTableView = ({
   const { openModal } = useModal();
 
   return (
-    <div className="bg-white rounded-xl border overflow-hidden">
+    <div className={`rounded-xl border overflow-hidden transition-colors ${
+      isDark
+        ? 'bg-slate-800 border-slate-700'
+        : 'bg-white border-slate-200'
+    }`}>
       <table className="w-full">
-        <thead className="bg-gray-50">
-          <tr className="text-left text-sm text-gray-500">
+        <thead className={`transition-colors ${
+          isDark
+            ? 'bg-slate-700'
+            : 'bg-gray-50'
+        }`}>
+          <tr className={`text-left text-sm transition-colors ${
+            isDark
+              ? 'text-slate-400'
+              : 'text-gray-500'
+          }`}>
             <th className="p-4">Course</th>
             <th>Category</th>
             <th>Duration</th>
@@ -239,20 +350,51 @@ const CoursesTableView = ({
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className={`divide-y transition-colors ${
+          isDark
+            ? 'divide-slate-700'
+            : 'divide-slate-200'
+        }`}>
           {courses.map((course) => (
-            <tr key={course._id} className="border-t">
+            <tr 
+              key={course._id} 
+              className={`transition-colors ${
+                isDark
+                  ? 'hover:bg-slate-700'
+                  : 'hover:bg-gray-50'
+              }`}
+            >
               {/* Course */}
               <td className="p-4">
-                <div className="font-medium">{course.name}</div>
-                <div className="text-xs text-gray-500 line-clamp-1">
+                <div className={`font-medium transition-colors ${
+                  isDark
+                    ? 'text-slate-100'
+                    : 'text-gray-900'
+                }`}>{course.name}</div>
+                <div className={`text-xs line-clamp-1 transition-colors ${
+                  isDark
+                    ? 'text-slate-400'
+                    : 'text-gray-500'
+                }`}>
                   {course.shortdescription || "No short description added"}
                 </div>
               </td>
 
-              <td>{course.category}</td>
-              <td>{course.duration}</td>
-              <td className="font-semibold">₹{course.price}</td>
+              <td className={`transition-colors ${
+                isDark
+                  ? 'text-slate-300'
+                  : 'text-gray-900'
+              }`}>{course.category}</td>
+              <td className={`transition-colors ${
+                isDark
+                  ? 'text-slate-300'
+                  : 'text-gray-900'
+              }`}>{course.duration}</td>
+              <td className={`font-semibold transition-colors ${
+                isDark
+                  ? 'text-slate-300'
+                  : 'text-gray-900'
+              }`}>₹{course.price}</td>
 
               {/* Actions */}
               <td className="p-4">
@@ -260,7 +402,11 @@ const CoursesTableView = ({
                   {/* Edit course */}
                   <FiEdit
                     title="Edit Course"
-                    className="cursor-pointer text-blue-600"
+                    className={`cursor-pointer transition-colors ${
+                      isDark
+                        ? 'text-blue-400 hover:text-blue-300'
+                        : 'text-blue-600 hover:text-blue-700'
+                    }`}
                     onClick={() => onEdit(course)}
                   />
 
@@ -268,7 +414,11 @@ const CoursesTableView = ({
                   {course.details ? (
                     <FiEye
                       title="View Details"
-                      className="cursor-pointer text-green-600"
+                      className={`cursor-pointer transition-colors ${
+                        isDark
+                          ? 'text-green-400 hover:text-green-300'
+                          : 'text-green-600 hover:text-green-700'
+                      }`}
                       onClick={() =>
                         navigate(
                           `/dashboard/course/${course._id}/`
@@ -278,7 +428,11 @@ const CoursesTableView = ({
                   ) : (
                     <FiPlus
                       title="Add Details"
-                      className="cursor-pointer text-green-600"
+                      className={`cursor-pointer transition-colors ${
+                        isDark
+                          ? 'text-green-400 hover:text-green-300'
+                          : 'text-green-600 hover:text-green-700'
+                      }`}
                       onClick={() =>
                         openModal(MODAL_TYPES.ADD_COURSE_DETAILS, {
                           courseId: course._id,
@@ -293,7 +447,11 @@ const CoursesTableView = ({
 
                   <FiTrash2
                     title="Delete Course"
-                    className="cursor-pointer text-red-500"
+                    className={`cursor-pointer transition-colors ${
+                      isDark
+                        ? 'text-red-400 hover:text-red-300'
+                        : 'text-red-500 hover:text-red-600'
+                    }`}
                     onClick={() => onDelete(course._id)}
                   />
 

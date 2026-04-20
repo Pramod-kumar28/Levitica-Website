@@ -1,14 +1,22 @@
-import React, { useMemo } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCourses } from '@/hooks/useCourses';
+import { useTheme } from '@/context/ThemeContext';
+
+const getPosition = (index, current, total) => {
+  if (index === current) return "center";
+  if (index === (current - 1 + total) % total) return "left";
+  if (index === (current + 1) % total) return "right";
+  return "hidden";
+};
 
 const CourseAdsCarousel = () => {
   const navigate = useNavigate();
   const { courses = [], isLoading } = useCourses();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   // Better randomization
   const randomCourses = useMemo(() => {
@@ -22,100 +30,122 @@ const CourseAdsCarousel = () => {
     return shuffled.slice(0, 5);
   }, [courses]);
 
+  useEffect(() => {
+    if (paused || !randomCourses.length) return;
+
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % randomCourses.length);
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [paused, randomCourses.length]);
+
   if (isLoading)
     return (
-      <div className="h-[180px] sm:h-[240px] flex items-center justify-center">
+      <div className="h-[220px] md:h-[300px] flex items-center justify-center">
         <p className="text-sm text-gray-500">Loading courses...</p>
       </div>
     );
 
   return (
-    <div className="w-full rounded-xl overflow-hidden">
-      <Swiper
-        modules={[Autoplay, Pagination]}
-        autoplay={{ delay: 4000, disableOnInteraction: false }}
-        loop
-        pagination={{ clickable: true }}
-        className="h-[200px] sm:h-[240px] md:h-[300px]"
-      >
-        {randomCourses.map((course) => {
-          const isFree = course.price === 0;
-          const originalPrice = isFree ? 0 : course.price + 5000;
+    <div
+      className="relative h-[340px] sm:h-[380px] flex items-center justify-center overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {randomCourses.map((course, index) => {
+        const position = getPosition(index, current, randomCourses.length);
+        const isFree = course.price === 0;
+        const originalPrice = isFree ? 0 : course.price + 5000;
 
-          return (
-            <SwiperSlide key={course._id}>
-              <div
-                className="h-full w-full bg-cover bg-center relative"
-                style={{ backgroundImage: `url(${course.thumbnail})` }}
-              >
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/80" />
-
-                {/* Content */}
-                <div className="relative h-full flex items-center">
-                  <div className="px-4 sm:px-6 max-w-lg">
-
-                    {/* Category */}
-                    <p className="text-[11px] sm:text-xs text-yellow-400 uppercase">
-                      {course.category}
-                    </p>
-
-                    {/* Title */}
-                    <h2 className="text-sm sm:text-lg md:text-2xl font-semibold text-white leading-snug">
-                      {course.name}
-                    </h2>
-
-                    {/* Short Description */}
-                    <p className=" text-[11px] sm:text-sm text-white/90 line-clamp-2">
-                      {course.shortdescription}
-                    </p>
-
-                    {/* Price */}
-                    <div className="mt-2 flex items-center gap-2">
-                      {isFree ? (
-                        <span className="text-sm font-semibold text-green-400">
-                          Free
-                        </span>
-                      ) : (
-                        <>
-                          <span className="text-sm sm:text-base font-semibold text-white">
-                            ₹{course.price}
-                          </span>
-                          <span className="line-through text-white/60 text-[10px] sm:text-xs">
-                            ₹{originalPrice}
-                          </span>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="mt-2 flex gap-2 flex-wrap">
-                      <button
-                        onClick={() =>
-                          navigate(`/dashboard/course/${course._id}`)
-                        }
-                        className="bg-white text-black text-[11px] sm:text-xs font-medium px-3 py-1.5 rounded-md hover:bg-gray-100"
-                      >
-                        {isFree ? "Start" : "Enroll"}
-                      </button>
-
-                      <button
-                        onClick={() =>
-                          navigate("/dashboard/student/browsercourses")
-                        }
-                        className="border border-white text-white text-[11px] sm:text-xs px-3 py-1.5 rounded-md hover:bg-white/10"
-                      >
-                        Browse
-                      </button>
-                    </div>
-
-                  </div>
+        return (
+          <div
+            key={course._id}
+            className={`
+              absolute will-change-transform
+              transition-all duration-700 ease-in-out
+              ${
+                position === "center" &&
+                "z-20 scale-100 sm:scale-110 opacity-100"
+              }
+              ${
+                position === "left" &&
+                "z-10 -translate-x-[400px] sm:-translate-x-[500px] scale-95 opacity-50 blur-sm"
+              }
+              ${
+                position === "right" &&
+                "z-10 translate-x-[400px] sm:translate-x-[500px] scale-95 opacity-50 blur-sm"
+              }
+              ${
+                position === "hidden" &&
+                "opacity-0 pointer-events-none scale-75"
+              }
+            `}
+          >
+            <div className={`${isDark ? 'bg-slate-800' : 'bg-white'} rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 w-[300px] sm:w-[340px] border ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+              <div className="relative">
+                <img
+                  src={course.thumbnail}
+                  alt={course.name}
+                  loading="lazy"
+                  className="h-44 w-full object-cover"
+                />
+                <div className="absolute top-3 right-3 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-full">
+                  {course.category}
                 </div>
               </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+              <div className="p-5">
+                <h3 className={`font-bold text-base mt-1 line-clamp-2 ${isDark ? 'text-slate-100' : 'text-gray-900'}`}>
+                  {course.name}
+                </h3>
+                <p className={`mt-2 text-xs line-clamp-2 ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>
+                  {course.shortdescription}
+                </p>
+                
+                {/* Price */}
+                <div className={`mt-4 flex items-center gap-2 pb-3 border-b ${isDark ? 'border-slate-700' : 'border-gray-200'}`}>
+                  {isFree ? (
+                    <span className="text-sm font-bold text-green-500">
+                      Free Access
+                    </span>
+                  ) : (
+                    <>
+                      <span className={`text-lg font-bold ${isDark ? 'text-slate-100' : 'text-gray-900'}`}>
+                        ₹{course.price}
+                      </span>
+                      <span className={`line-through text-sm ${isDark ? 'text-slate-500' : 'text-gray-400'}`}>
+                        ₹{originalPrice}
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {/* Buttons */}
+                <div className="mt-4 flex gap-2">
+                  <button
+                    onClick={() => navigate(`/dashboard/course/${course._id}`)}
+                    className={`${isDark ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'} text-white text-xs font-semibold px-3 py-2 rounded-lg hover:shadow-lg transition-all duration-200 flex-1`}
+                  >
+                    {isFree ? "Start" : "Enroll"}
+                  </button>
+                  <button
+                    onClick={() => navigate("/dashboard/student/browsercourses")}
+                    className={`border-2 text-xs font-semibold px-3 py-2 rounded-lg transition-all duration-200 flex-1 ${
+                      isDark 
+                        ? 'border-blue-500 text-blue-400 hover:bg-blue-500/10' 
+                        : 'border-blue-600 text-blue-600 hover:bg-blue-50'
+                    }`}
+                    onClick={() => navigate("/dashboard/student/browsercourses")}
+                    className="border-2 border-blue-600 text-blue-600 text-xs font-semibold px-3 py-2 rounded-lg hover:bg-blue-50 transition-all duration-200 flex-1"
+                  >
+                    Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

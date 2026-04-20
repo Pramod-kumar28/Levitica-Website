@@ -9,6 +9,7 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from '@/context/ThemeContext';
 
 import {
   SortableContext,
@@ -68,6 +69,8 @@ const CurriculumAutosaveWatcher = ({ curriculum, courseId, updateCurriculum, ena
 };
 
 const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const isEdit = Boolean(initialData);
 
@@ -113,27 +116,55 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.96, opacity: 0, y: 20 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-2xl max-h-[90vh] overflow-y-auto"
+          className={`w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto transition-colors ${
+            isDark
+              ? 'bg-slate-800 border border-slate-700'
+              : 'bg-white'
+          }`}
         >
           <div className="p-6 space-y-8">
-            <div className="border-b pb-4 sticky top-0 bg-white z-20">
+            <div className={`border-b pb-4 sticky top-0 z-20 transition-colors ${
+              isDark
+                ? 'border-slate-700 bg-slate-800'
+                : 'border-slate-200 bg-white'
+            }`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-100 rounded-lg">
-                    <RiFileList3Line className="w-6 h-6 text-indigo-600" />
+                  <div className={`p-2 rounded-lg transition-colors ${
+                    isDark
+                      ? 'bg-indigo-900/30'
+                      : 'bg-indigo-100'
+                  }`}>
+                    <RiFileList3Line className={`w-6 h-6 transition-colors ${
+                      isDark
+                        ? 'text-indigo-400'
+                        : 'text-indigo-600'
+                    }`} />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-800">
+                    <h2 className={`text-2xl font-bold transition-colors ${
+                      isDark
+                        ? 'text-slate-100'
+                        : 'text-gray-800'
+                    }`}>
                       {isEdit ? "Edit Course Details" : "Create New Course"}
                     </h2>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className={`text-sm mt-1 transition-colors ${
+                      isDark
+                        ? 'text-slate-400'
+                        : 'text-gray-500'
+                    }`}>
                       {isEdit ? "Update your course information" : "Fill in all required information for your course"}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={onSuccess}
-                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                  className={`p-2 rounded-lg transition-colors ${
+                    isDark
+                      ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-700'
+                      : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+                  }`}
                   aria-label="Close modal"
                 >
                   <FiX className="w-5 h-5" />
@@ -179,14 +210,30 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                       transition={{ delay: 0.1 }}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-50 rounded-lg">
-                          <FiBook className="w-5 h-5 text-blue-600" />
+                        <div className={`p-2 rounded-lg transition-colors ${
+                          isDark
+                            ? 'bg-blue-900/30'
+                            : 'bg-blue-50'
+                        }`}>
+                          <FiBook className={`w-5 h-5 transition-colors ${
+                            isDark
+                              ? 'text-blue-400'
+                              : 'text-blue-600'
+                          }`} />
                         </div>
                         <div>
-                          <label className="label text-lg font-semibold text-gray-800">
+                          <label className={`label text-lg font-semibold transition-colors ${
+                            isDark
+                              ? 'text-slate-200'
+                              : 'text-gray-800'
+                          }`}>
                             Course Description
                           </label>
-                          <p className="text-sm text-gray-500">
+                          <p className={`text-sm transition-colors ${
+                            isDark
+                              ? 'text-slate-400'
+                              : 'text-gray-500'
+                          }`}>
                             What will students learn in this course?
                           </p>
                         </div>
@@ -197,16 +244,28 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                           name="description"
                           rows={4}
                           placeholder="Describe the course content, teaching methods, and what makes this course unique..."
-                          className="input min-h-[120px] resize-y focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                          className={`min-h-[120px] resize-y rounded-lg border px-3 py-2 transition focus:outline-none focus:ring-2 ${
+                            isDark
+                              ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400 focus:ring-blue-500/30'
+                              : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-blue-200'
+                          }`}
                         />
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <div className={`flex items-center gap-2 text-sm transition-colors ${
+                          isDark
+                            ? 'text-slate-400'
+                            : 'text-gray-500'
+                        }`}>
                           <BsInfoCircle className="w-4 h-4" />
                           <span>Be specific about outcomes and benefits</span>
                         </div>
                         <ErrorMessage
                           name="description"
                           component="div"
-                          className="text-sm text-red-500 mt-1 flex items-center gap-1"
+                          className={`text-sm mt-1 flex items-center gap-1 transition-colors ${
+                            isDark
+                              ? 'text-rose-400'
+                              : 'text-red-500'
+                          }`}
                         >
                           {msg => (
                             <>
@@ -226,14 +285,30 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                       transition={{ delay: 0.15 }}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-green-50 rounded-lg">
-                          <FiTarget className="w-5 h-5 text-green-600" />
+                        <div className={`p-2 rounded-lg transition-colors ${
+                          isDark
+                            ? 'bg-green-900/30'
+                            : 'bg-green-50'
+                        }`}>
+                          <FiTarget className={`w-5 h-5 transition-colors ${
+                            isDark
+                              ? 'text-green-400'
+                              : 'text-green-600'
+                          }`} />
                         </div>
                         <div>
-                          <label className="label text-lg font-semibold text-gray-800">
+                          <label className={`label text-lg font-semibold transition-colors ${
+                            isDark
+                              ? 'text-slate-200'
+                              : 'text-gray-800'
+                          }`}>
                             Learning Objectives
                           </label>
-                          <p className="text-sm text-gray-500">
+                          <p className={`text-sm transition-colors ${
+                            isDark
+                              ? 'text-slate-400'
+                              : 'text-gray-500'
+                          }`}>
                             What will students be able to do after completing this course?
                           </p>
                         </div>

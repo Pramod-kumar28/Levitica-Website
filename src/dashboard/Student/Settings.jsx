@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { Eye, EyeOff } from "lucide-react";
 import { FiSettings, FiLock, FiAlertCircle, FiCheckCircle, FiX, FiSave } from "react-icons/fi";
+import { useTheme } from '@/context/ThemeContext';
 
 import ProfileSidebar from './ProfileSideBar';
 import { useChangePasswordMutation } from '@/Services/authService';
@@ -15,6 +16,8 @@ import PaymentTab from './PaymentHistory';
 const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState("profile");
   const { user } = useSelector((state) => state.auth);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -30,8 +33,8 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="">
-      <div className="max-w-7xl mx-auto py-6 sm:py-10">
+    <div className={`${isDark ? 'bg-slate-900 min-h-screen' : ''}`}>
+      <div className="max-w-7xl mx-auto py-6 sm:py-10 px-4">
 
         {/* Premium Header */}
         <div className="mb-8 sm:mb-12">
@@ -40,8 +43,8 @@ const SettingsPage = () => {
               <FiSettings className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Account Settings</h1>
-              <p className="text-sm sm:text-base text-slate-600 mt-2">
+              <h1 className={`text-3xl sm:text-4xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Account Settings</h1>
+              <p className={`text-sm sm:text-base ${isDark ? 'text-slate-400' : 'text-slate-600'} mt-2`}>
                 Manage your profile, security, and account preferences.
               </p>
             </div>
@@ -52,16 +55,17 @@ const SettingsPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 sm:gap-8">
 
           {/* Sidebar */}
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-4 sm:p-6 h-fit lg:sticky lg:top-8">
+          <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border rounded-2xl shadow-lg p-4 sm:p-6 h-fit lg:sticky lg:top-8 transition-colors`}>
             <ProfileSidebar
               user={user}
               activeTab={activeTab}
               onTabChange={setActiveTab}
+              isDark={isDark}
             />
           </div>
 
           {/* Content Card */}
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 sm:p-8 transition-all duration-300">
+          <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border rounded-2xl shadow-lg p-6 sm:p-8 transition-all duration-300`}>
             {renderTabContent()}
           </div>
         </div>
@@ -80,6 +84,8 @@ const SecurityTab = () => {
   const [show, setShow] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [changePassword, { isLoading }] = useChangePasswordMutation();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const formik = useFormik({
     initialValues: {
@@ -117,24 +123,27 @@ const SecurityTab = () => {
     },
   });
 
-  const inputClass =
-    "w-full border border-slate-300 rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-slate-50 placeholder-slate-500 transition focus:bg-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 hover:border-slate-400";
+  const inputClass = isDark
+    ? "w-full border border-slate-600 rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-slate-700 placeholder-slate-400 text-white transition focus:bg-slate-600 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 hover:border-slate-500"
+    : "w-full border border-slate-300 rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-slate-50 placeholder-slate-500 transition focus:bg-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 hover:border-slate-400";
 
-  const errorClass = "text-rose-600 text-sm mt-2 flex items-center gap-1.5 font-medium";
+  const errorClass = isDark
+    ? "text-red-400 text-sm mt-2 flex items-center gap-1.5 font-medium"
+    : "text-rose-600 text-sm mt-2 flex items-center gap-1.5 font-medium";
 
   return (
     <div className="max-w-md space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="space-y-2">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-lg bg-red-100 flex items-center justify-center">
-            <FiLock className="h-5 w-5 text-red-600" />
+          <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${isDark ? 'bg-red-950' : 'bg-red-100'}`}>
+            <FiLock className={`h-5 w-5 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+          <h2 className={`text-xl sm:text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
             Security Settings
           </h2>
         </div>
-        <p className="text-slate-600 text-sm">
+        <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
           Keep your account secure by updating your password regularly
         </p>
       </div>
@@ -150,11 +159,11 @@ const SecurityTab = () => {
       ) : (
         <form
           onSubmit={formik.handleSubmit}
-          className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6 shadow-lg"
+          className={`${isDark ? 'bg-slate-700 border-slate-600' : 'bg-gradient-to-br from-slate-50 to-slate-100 border-slate-200'} border rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6 shadow-lg`}
         >
           {/* Current Password */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">
+            <label className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               Current Password
             </label>
             <div className="relative">
@@ -167,7 +176,7 @@ const SecurityTab = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-3.5 text-slate-500 hover:text-slate-700"
+                className={`absolute right-4 top-3.5 transition ${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-700'}`}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -183,7 +192,7 @@ const SecurityTab = () => {
 
           {/* New Password */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">
+            <label className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               New Password
             </label>
             <input
@@ -202,7 +211,7 @@ const SecurityTab = () => {
 
           {/* Confirm Password */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-700">
+            <label className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
               Confirm Password
             </label>
             <input
@@ -221,7 +230,7 @@ const SecurityTab = () => {
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-3 pt-4 border-t border-slate-200">
+          <div className={`flex gap-3 pt-4 border-t ${isDark ? 'border-slate-600' : 'border-slate-200'}`}>
             <button
               type="submit"
               disabled={isLoading}
@@ -234,7 +243,11 @@ const SecurityTab = () => {
             <button
               type="button"
               onClick={() => setShow(false)}
-              className="flex-1 flex items-center justify-center gap-2 border-2 border-slate-300 hover:border-slate-400 hover:bg-slate-100 py-3 sm:py-3.5 rounded-xl text-sm font-semibold text-slate-700 transition"
+              className={`flex-1 flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl text-sm font-semibold transition ${
+                isDark
+                  ? 'border-2 border-slate-500 hover:border-slate-400 hover:bg-slate-600 text-slate-100'
+                  : 'border-2 border-slate-300 hover:border-slate-400 hover:bg-slate-100 text-slate-700'
+              }`}
             >
               <FiX className="h-4.5 w-4.5" />
               Cancel

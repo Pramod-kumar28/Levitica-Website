@@ -1,6 +1,10 @@
 import { FiTrendingUp, FiDollarSign, FiCheck } from "react-icons/fi";
+import { useTheme } from '@/context/ThemeContext';
 
 const PaymentStatsCards = ({ stats }) => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   const cards = [
     {
       icon: FiTrendingUp,
@@ -8,7 +12,9 @@ const PaymentStatsCards = ({ stats }) => {
       value: stats.total,
       gradient: "from-blue-500 to-cyan-500",
       bgLight: "bg-blue-50",
+      bgDark: "bg-slate-800",
       textColor: "text-blue-600",
+      textColorDark: "text-blue-400",
     },
     {
       icon: FiDollarSign,
@@ -16,7 +22,9 @@ const PaymentStatsCards = ({ stats }) => {
       value: `₹${stats.totalRevenue.toLocaleString()}`,
       gradient: "from-emerald-500 to-teal-500",
       bgLight: "bg-emerald-50",
+      bgDark: "bg-slate-800",
       textColor: "text-emerald-600",
+      textColorDark: "text-emerald-400",
     },
     {
       icon: FiCheck,
@@ -24,7 +32,9 @@ const PaymentStatsCards = ({ stats }) => {
       value: stats.paidCount || 0,
       gradient: "from-purple-500 to-pink-500",
       bgLight: "bg-purple-50",
+      bgDark: "bg-slate-800",
       textColor: "text-purple-600",
+      textColorDark: "text-purple-400",
     },
   ];
 
@@ -35,11 +45,17 @@ const PaymentStatsCards = ({ stats }) => {
         return (
           <div
             key={idx}
-            className={`relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 ${card.bgLight} border border-opacity-10 border-gray-300`}
+            className={`relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border ${
+              isDark
+                ? `${card.bgDark} border-slate-700 hover:border-blue-500/50`
+                : `${card.bgLight} border-opacity-10 border-gray-300`
+            }`}
           >
             {/* Gradient Background */}
             <div
-              className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${card.gradient} opacity-5 rounded-full -mr-12 -mt-12`}
+              className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${card.gradient} ${
+                isDark ? 'opacity-10' : 'opacity-5'
+              } rounded-full -mr-12 -mt-12`}
               style={{ transform: "translate(30%, -30%)" }}
             ></div>
 
@@ -52,19 +68,23 @@ const PaymentStatsCards = ({ stats }) => {
               </div>
 
               {/* Label */}
-              <p className="text-xs sm:text-sm font-medium text-gray-600 mb-2 tracking-wide uppercase">
+              <p className={`text-xs sm:text-sm font-medium mb-2 tracking-wide uppercase ${
+                isDark ? 'text-slate-400' : 'text-gray-600'
+              }`}>
                 {card.label}
               </p>
 
               {/* Value */}
-              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+              <h3 className={`text-2xl sm:text-3xl font-bold mb-1 ${
+                isDark ? 'text-white' : 'text-gray-900'
+              }`}>
                 {card.value}
               </h3>
 
               {/* Trend Indicator */}
               <div className="flex items-center gap-2">
                 <div className={`h-1 w-12 bg-gradient-to-r ${card.gradient} rounded-full`}></div>
-                <span className={`text-xs font-semibold ${card.textColor}`}>Active</span>
+                <span className={`text-xs font-semibold ${isDark ? card.textColorDark : card.textColor}`}>Active</span>
               </div>
             </div>
           </div>

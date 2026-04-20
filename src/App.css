@@ -2121,8 +2121,114 @@ button.filter-btn:focus {
 }
 
 /*=========================================
-            12. BLOG SECTION CSS
+            DARK MODE DATE INPUT STYLES
 ============================================*/
+
+/* Dark mode styling for date input calendar picker */
+input[type="date"] {
+  color-scheme: light;
+}
+
+/* When in dark mode (using data attribute or class) */
+body.dark-mode input[type="date"],
+.dark-theme input[type="date"],
+[data-theme="dark"] input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Webkit specific styles for date inputs - dark mode */
+@supports (color-scheme: dark) {
+  input[type="date"]:is(.bg-slate-700, [style*="bg-slate-700"]) {
+    color-scheme: dark;
+  }
+}
+
+/* Dark mode date input styling via CSS variables */
+:root[data-theme="dark"] input[type="date"],
+:root.dark input[type="date"] {
+  color-scheme: dark;
+}
+
+/* Alternative approach for themed components */
+input[type="date"].dark-input,
+.dark-mode input[type="date"] {
+  color-scheme: dark;
+  background-color: #1e293b;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+input[type="date"].dark-input::-webkit-calendar-picker-indicator,
+.dark-mode input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.1);
+}
+
+input[type="date"].dark-input::placeholder,
+.dark-mode input[type="date"]::placeholder {
+  color: #94a3b8;
+}
+
+/* Ensure focus states work in dark mode */
+input[type="date"].dark-input:focus,
+.dark-mode input[type="date"]:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+/*=========================================
+       DARK MODE SELECT/DROPDOWN STYLES
+============================================*/
+
+/* Dark mode styling for select dropdowns */
+select.dark-input,
+.dark-mode select,
+select[style*="bg-slate-700"] {
+  color-scheme: dark;
+  background-color: #1e293b;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+/* Dark mode select hover state */
+select.dark-input:hover,
+.dark-mode select:hover {
+  border-color: #64748b;
+  background-color: #334155;
+}
+
+/* Dark mode select focus state */
+select.dark-input:focus,
+.dark-mode select:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+  background-color: #1e293b;
+}
+
+/* Dark mode select option styling */
+select.dark-input option,
+.dark-mode select option {
+  background-color: #1e293b;
+  color: #e2e8f0;
+}
+
+select.dark-input option:checked,
+.dark-mode select option:checked {
+  background: linear-gradient(#60a5fa, #60a5fa);
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* Dark mode select disabled state */
+select.dark-input:disabled,
+.dark-mode select:disabled {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #64748b;
+  opacity: 0.5;
+}
+
 .single-blog-card{
     margin-bottom: 25px;
 }

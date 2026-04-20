@@ -20,9 +20,8 @@ const Topbar = () => {
       className={`
     fixed top-0 right-0
     h-[70px]
-    bg-base-100/95 backdrop-blur-md
-    text-base-content
-    border-b border-base-300
+    backdrop-blur-md
+    border-b
     shadow-sm
     flex items-center justify-between
     px-4
@@ -30,6 +29,10 @@ const Topbar = () => {
     transition-all duration-300 ease-in-out
     ${isOpen ? 'left-64' : 'left-20'}
     max-lg:left-0
+    ${theme === 'dark'
+      ? 'bg-slate-800/95 border-slate-700 text-white'
+      : 'bg-white/95 border-gray-200 text-slate-900'
+    }
   `}
 
     >
@@ -37,7 +40,11 @@ const Topbar = () => {
       <div className="flex items-center gap-3">
         <button
           onClick={toggleSidebar}
-          className="p-2 rounded hover:bg-base-200 transition-colors"
+          className={`p-2 rounded transition-colors ${
+            theme === 'dark'
+              ? 'hover:bg-slate-700'
+              : 'hover:bg-gray-100'
+          }`}
         >
           <FiMenu size={22} />
         </button>
@@ -56,11 +63,15 @@ const Topbar = () => {
         {/* Theme Switcher */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-lg hover:bg-base-200 transition-colors"
+          className={`p-2 rounded-lg transition-colors ${
+            theme === 'dark'
+              ? 'hover:bg-slate-700'
+              : 'hover:bg-gray-100'
+          }`}
           title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
         >
           {theme === "light" ? (
-            <FiMoon size={20} className="text-base-content" />
+            <FiMoon size={20} className={theme === 'dark' ? 'text-slate-400' : 'text-slate-600'} />
           ) : (
             <FiSun size={20} className="text-yellow-400" />
           )}
@@ -88,14 +99,22 @@ const Topbar = () => {
         </button>
 
         {open && (
-          <div className="absolute top-16 right-4 bg-base-100 border border-base-200 rounded-xl shadow-lg z-50 min-w-[160px]">
+          <div className={`absolute top-16 right-4 border rounded-xl shadow-lg z-50 min-w-[160px] transition-colors ${
+            theme === 'dark'
+              ? 'bg-slate-700 border-slate-600'
+              : 'bg-white border-gray-200'
+          }`}>
             <button
               onClick={() => {
                 dispatch(logout());
                 navigate("/login");
                 setOpen(false);
               }}
-              className="flex items-center gap-2 px-5 py-3 text-error hover:bg-error/10 w-full text-left rounded-xl transition-all"
+              className={`flex items-center gap-2 px-5 py-3 w-full text-left rounded-xl transition-all ${
+                theme === 'dark'
+                  ? 'text-red-400 hover:bg-red-950/40'
+                  : 'text-red-600 hover:bg-red-50'
+              }`}
             >
               <FiLogOut size={16} /> Logout
             </button>

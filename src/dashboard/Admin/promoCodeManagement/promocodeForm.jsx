@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiSave } from "react-icons/fi";
+import { useTheme } from '@/context/ThemeContext';
 import {
   useCreatePromoMutation,
   useUpdatePromoMutation,
@@ -9,6 +10,8 @@ import {
 
 const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
   const isEdit = mode === "edit";
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const [createPromo, { isLoading: creating }] = useCreatePromoMutation();
   const [updatePromo, { isLoading: updating }] = useUpdatePromoMutation();
@@ -61,28 +64,50 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
   });
 
   const inputClass =
-    "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20";
+    isDark
+      ? "w-full rounded-lg border border-slate-600 bg-slate-700 px-3 py-2 text-sm text-slate-100 placeholder-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input"
+      : "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20";
 
   return (
     <AnimatePresence>
       <motion.div className="fixed inset-0 z-[1100] flex items-center justify-center bg-black/50 p-4">
-        <motion.div className="w-full max-w-2xl rounded-xl bg-white shadow-xl">
+        <motion.div className={`w-full max-w-2xl rounded-xl shadow-xl transition-colors ${
+          isDark
+            ? 'bg-slate-800 border border-slate-700'
+            : 'bg-white'
+        }`}>
 
           {/* HEADER */}
-          <div className="flex justify-between items-center border-b p-5">
+          <div className={`flex justify-between items-center border-b p-5 transition-colors ${
+            isDark
+              ? 'border-slate-700'
+              : 'border-slate-200'
+          }`}>
             <div>
-              <h2 className="text-lg font-semibold">
+              <h2 className={`text-lg font-semibold transition-colors ${
+                isDark
+                  ? 'text-slate-100'
+                  : 'text-slate-900'
+              }`}>
                 {isEdit ? "Edit Promo Code" : "Create Promo Code"}
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className={`text-sm transition-colors ${
+                isDark
+                  ? 'text-slate-400'
+                  : 'text-gray-500'
+              }`}>
                 Configure discount and influencer tracking
               </p>
             </div>
-            <FiX className="cursor-pointer" onClick={onSuccess} />
+            <FiX className={`cursor-pointer transition-colors ${
+              isDark
+                ? 'text-slate-400 hover:text-slate-300'
+                : 'text-slate-600 hover:text-slate-900'
+            }`} onClick={onSuccess} />
           </div>
 
           {/* FORM */}
-          <div className="p-6 max-h-[75vh] overflow-y-auto">
+          <div className={`p-6 max-h-[75vh] overflow-y-auto transition-colors ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -96,7 +121,11 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
 
                   {/* PROMO CODE */}
                   <div>
-                    <label className="text-sm font-medium">
+                    <label className={`text-sm font-medium transition-colors ${
+                      isDark
+                        ? 'text-slate-300'
+                        : 'text-slate-700'
+                    }`}>
                       Promo Code
                     </label>
                     <Field
@@ -104,21 +133,37 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
                       placeholder="e.g. SAMEER50"
                       className={`${inputClass} uppercase font-semibold`}
                     />
-                    <p className="text-xs text-gray-400">
+                    <p className={`text-xs transition-colors ${
+                      isDark
+                        ? 'text-slate-400'
+                        : 'text-gray-400'
+                    }`}>
                       Example: SAMEER50, NEWUSER20
                     </p>
-                    <ErrorMessage name="code" component="p" className="text-xs text-red-500" />
+                    <ErrorMessage name="code" component="p" className={`text-xs ${isDark ? 'text-red-400' : 'text-red-500'}`} />
                   </div>
 
                   {/* BASIC */}
                   <div className="grid md:grid-cols-2 gap-5">
                     <div>
-                      <label className="text-sm">Expiry Date</label>
-                      <Field type="date" name="expiryDate" className={inputClass} />
+                      <label className={`text-sm font-medium transition-colors ${
+                        isDark
+                          ? 'text-slate-300'
+                          : 'text-slate-700'
+                      }`}>Expiry Date</label>
+                      <Field 
+                        type="date" 
+                        name="expiryDate" 
+                        className={`${inputClass} ${isDark ? 'dark-input' : ''}`}
+                      />
                     </div>
 
                     <div>
-                      <label className="text-sm">Usage Limit</label>
+                      <label className={`text-sm font-medium transition-colors ${
+                        isDark
+                          ? 'text-slate-300'
+                          : 'text-slate-700'
+                      }`}>Usage Limit</label>
                       <Field
                         type="number"
                         name="usageLimit"
@@ -129,14 +174,22 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
                   </div>
 
                   {/* DISCOUNT */}
-                  <div className="border-t pt-5">
-                    <h3 className="text-sm font-semibold mb-4">
+                  <div className={`border-t pt-5 transition-colors ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+                    <h3 className={`text-sm font-semibold mb-4 transition-colors ${
+                      isDark
+                        ? 'text-slate-300'
+                        : 'text-slate-700'
+                    }`}>
                       Discount Settings
                     </h3>
 
                     <div className="grid md:grid-cols-3 gap-5">
                       <div>
-                        <label className="text-sm">Type</label>
+                        <label className={`text-sm font-medium transition-colors ${
+                          isDark
+                            ? 'text-slate-300'
+                            : 'text-slate-700'
+                        }`}>Type</label>
                         <Field as="select" name="discountType" className={inputClass}>
                           <option value="percentage">Percentage (%)</option>
                           <option value="flat">Flat (₹)</option>
@@ -144,7 +197,11 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
                       </div>
 
                       <div>
-                        <label className="text-sm">
+                        <label className={`text-sm font-medium transition-colors ${
+                          isDark
+                            ? 'text-slate-300'
+                            : 'text-slate-700'
+                        }`}>
                           Value ({values.discountType === "percentage" ? "%" : "₹"})
                         </label>
                         <Field
@@ -156,7 +213,11 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
                       </div>
 
                       <div>
-                        <label className="text-sm">Max Discount</label>
+                        <label className={`text-sm font-medium transition-colors ${
+                          isDark
+                            ? 'text-slate-300'
+                            : 'text-slate-700'
+                        }`}>Max Discount</label>
                         <Field
                           type="number"
                           name="maxDiscount"
@@ -166,50 +227,86 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
                       </div>
                     </div>
 
-                    <p className="text-xs text-gray-400 mt-2">
+                    <p className={`text-xs mt-2 transition-colors ${
+                      isDark
+                        ? 'text-slate-400'
+                        : 'text-gray-400'
+                    }`}>
                       Example: 20% or ₹500 discount
                     </p>
                   </div>
 
                   {/* RULES */}
-                  <div className="border-t pt-5">
-                    <h3 className="text-sm font-semibold mb-4">
+                  <div className={`border-t pt-5 transition-colors ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+                    <h3 className={`text-sm font-semibold mb-4 transition-colors ${
+                      isDark
+                        ? 'text-slate-300'
+                        : 'text-slate-700'
+                    }`}>
                       Usage Rules
                     </h3>
 
                     <div>
-                      <label className="text-sm">Minimum Purchase (₹)</label>
+                      <label className={`text-sm font-medium transition-colors ${
+                        isDark
+                          ? 'text-slate-300'
+                          : 'text-slate-700'
+                      }`}>Minimum Purchase (₹)</label>
                       <Field type="number" name="minPurchase" className={inputClass} />
-                      <p className="text-xs text-gray-400">
+                      <p className={`text-xs transition-colors ${
+                        isDark
+                          ? 'text-slate-400'
+                          : 'text-gray-400'
+                      }`}>
                         Default ₹1000 (promo won’t apply below this)
                       </p>
                     </div>
                   </div>
 
                   {/* INFLUENCER */}
-                  <div className="border-t pt-5">
-                    <h3 className="text-sm font-semibold mb-4">
+                  <div className={`border-t pt-5 transition-colors ${isDark ? 'border-slate-700' : 'border-slate-200'}`}>
+                    <h3 className={`text-sm font-semibold mb-4 transition-colors ${
+                      isDark
+                        ? 'text-slate-300'
+                        : 'text-slate-700'
+                    }`}>
                       Influencer Details
                     </h3>
 
                     <div className="grid md:grid-cols-3 gap-5">
                       <div>
-                        <label className="text-sm">Name</label>
+                        <label className={`text-sm font-medium transition-colors ${
+                          isDark
+                            ? 'text-slate-300'
+                            : 'text-slate-700'
+                        }`}>Name</label>
                         <Field name="influencerName" className={inputClass} />
                       </div>
 
                       <div>
-                        <label className="text-sm">Email</label>
+                        <label className={`text-sm font-medium transition-colors ${
+                          isDark
+                            ? 'text-slate-300'
+                            : 'text-slate-700'
+                        }`}>Email</label>
                         <Field name="influencerEmail" className={inputClass} />
                       </div>
 
                       <div>
-                        <label className="text-sm">Mobile</label>
+                        <label className={`text-sm font-medium transition-colors ${
+                          isDark
+                            ? 'text-slate-300'
+                            : 'text-slate-700'
+                        }`}>Mobile</label>
                         <Field name="influencerPhone" className={inputClass} />
                       </div>
                     </div>
 
-                    <p className="text-xs text-gray-400 mt-2">
+                    <p className={`text-xs mt-2 transition-colors ${
+                      isDark
+                        ? 'text-slate-400'
+                        : 'text-gray-400'
+                    }`}>
                       Used to track influencer performance
                     </p>
                   </div>
@@ -218,7 +315,11 @@ const PromoModal = ({ onSuccess, mode = "add", promo = {} }) => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
+                    className={`w-full flex items-center justify-center gap-2 py-3 rounded-lg transition-all font-medium ${
+                      isDark
+                        ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-700/50'
+                        : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-600/50'
+                    }`}
                   >
                     <FiSave />
                     {isLoading ? "Saving..." : isEdit ? "Update Promo" : "Create Promo"}

@@ -179,7 +179,7 @@ const Sidebar = () => {
         </div>
 
         {/* Scrollable Navigation Area - Only this scrolls */}
-        <nav className="flex-1 overflow-y-auto p-3 space-y-2 scrollbar-thin scrollbar-track-white/10 scrollbar-thumb-white/20 hover:scrollbar-thumb-white/30">
+        <nav className="flex-1 overflow-y-auto p-3 space-y-2 [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-transparent" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {menu.map((item) => (
             <NavLink
               key={item.path}
