@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useModal } from "../Admin/Modals/ModalContext";
 import { useSidebarStore } from "./useSidebarStore";
+import { useTheme } from "@/context/ThemeContext";
 import {
   FaHome,
   FaBookOpen,
@@ -18,6 +19,8 @@ import {
 const Sidebar = () => {
   const { isOpen, closeSidebar } = useSidebarStore();
   const { user } = useSelector((state) => state.auth);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const role = user?.role;
   const { modalType } = useModal();
 
@@ -144,17 +147,18 @@ const Sidebar = () => {
           w-64
 
           bg-gradient-to-b
-          from-blue-900
-          to-indigo-900
+          ${isDark ? 'from-slate-800 to-slate-700' : 'from-blue-900 to-indigo-900'}
           shadow-xl
           flex flex-col
           overflow-hidden
         `}
       >
         {/* Fixed User Profile Section - No Scroll */}
-        <div className={`shrink-0 px-3 pt-4 pb-3 border-b border-white/10 ${!isOpen && "flex justify-center"}`}>
+        <div className={`shrink-0 px-3 pt-4 pb-3 border-b ${isDark ? 'border-slate-600' : 'border-white/10'} ${!isOpen && "flex justify-center"}`}>
           <div className={`flex items-center ${isOpen ? "gap-3" : "flex-col gap-1"}`}>
-            <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-white/20 text-white shrink-0 ring-2 ring-white/30">
+            <div className={`w-10 h-10 rounded-full overflow-hidden flex items-center justify-center text-white shrink-0 ring-2 ${
+              isDark ? 'bg-slate-700 ring-slate-600' : 'bg-white/20 ring-white/30'
+            }`}>
               {user?.image ? (
                 <img
                   src={user.image}
@@ -172,7 +176,7 @@ const Sidebar = () => {
                 <p className="text-sm font-semibold text-white truncate">
                   {user?.name || "User"}
                 </p>
-                <p className="text-[11px] text-blue-200/80 capitalize">{role}</p>
+                <p className={`text-[11px] capitalize ${isDark ? 'text-slate-400' : 'text-blue-200/80'}`}>{role}</p>
               </div>
             )}
           </div>
@@ -195,19 +199,18 @@ const Sidebar = () => {
                 rounded-xl px-3 py-2.5
                 text-sm font-medium transition-all
                 ${isActive
-                  ? "bg-white/20 text-white"
-                  : "text-blue-100 hover:bg-white/10 hover:text-white"
+                  ? isDark ? 'bg-slate-600 text-white' : 'bg-white/20 text-white'
+                  : isDark ? 'text-slate-300 hover:bg-slate-700 hover:text-white' : 'text-blue-100 hover:bg-white/10 hover:text-white'
                 }
               `}
             >
-              <span className="
+              <span className={`
                 flex items-center justify-center
                 w-9 h-9
                 rounded-lg
-                bg-white/10
-                group-hover:bg-white/20
                 shrink-0
-              ">
+                ${isDark ? 'bg-slate-700 group-hover:bg-slate-600' : 'bg-white/10 group-hover:bg-white/20'}
+              `}>
                 {item.icon}
               </span>
 
