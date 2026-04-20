@@ -6,6 +6,7 @@ import {
   flexRender,
   createColumnHelper,
 } from "@tanstack/react-table";
+import { FiEdit2, FiTrash2, FiCheck, FiX, FiGrid, FiList, FiUsers } from "react-icons/fi";
 import {
   useGetAdminsQuery,
   useDeleteAdminMutation,
@@ -59,52 +60,64 @@ const AdminTable = () => {
               onChange={(e) =>
                 setEditData({ ...editData, name: e.target.value })
               }
-              className="border px-2 py-1 rounded w-full"
+              className="border border-slate-300 px-3 py-2 rounded-lg w-full focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
             />
           ) : (
-            row.original.name
+            <span className="font-medium text-slate-900">{row.original.name}</span>
           ),
       }),
       columnHelper.accessor("email", {
         header: "Email",
+        cell: ({ row }) => (
+          <span className="text-slate-600">{row.original.email}</span>
+        ),
       }),
       columnHelper.accessor("role", {
         header: "Role",
+        cell: ({ row }) => (
+          <span className="inline-block px-3 py-1 rounded-lg bg-indigo-100 text-indigo-800 text-xs font-semibold">
+            {row.original.role}
+          </span>
+        ),
       }),
       columnHelper.display({
         id: "actions",
         header: "Actions",
         cell: ({ row }) =>
           isSuperAdmin && (
-            <div className="flex gap-2">
+            <div className="flex gap-1 sm:gap-2 flex-wrap">
               {editRowId === row.original._id ? (
                 <>
                   <button
                     onClick={handleSave}
-                    className="bg-green-600 text-white px-3 py-1 rounded text-xs"
+                    className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition"
                   >
-                    Save
+                    <FiCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> 
+                    <span className="hidden sm:inline">Save</span>
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="bg-gray-400 text-white px-3 py-1 rounded text-xs"
+                    className="flex items-center gap-1 bg-slate-400 hover:bg-slate-500 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition"
                   >
-                    Cancel
+                    <FiX className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden sm:inline">Cancel</span>
                   </button>
                 </>
               ) : (
                 <>
                   <button
                     onClick={() => handleEditClick(row.original)}
-                    className="bg-blue-600 text-white px-3 py-1 rounded text-xs"
+                    className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition"
                   >
-                    Edit
+                    <FiEdit2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden sm:inline">Edit</span>
                   </button>
                   <button
                     onClick={() => handleDelete(row.original._id)}
-                    className="bg-red-600 text-white px-3 py-1 rounded text-xs"
+                    className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs font-medium transition"
                   >
-                    Delete
+                    <FiTrash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                    <span className="hidden sm:inline">Delete</span>
                   </button>
                 </>
               )}
@@ -121,88 +134,111 @@ const AdminTable = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (isLoading) return <p>Loading admins...</p>;
+  if (isLoading) return (
+    <div className="mt-6 sm:mt-8 rounded-2xl border border-slate-200 bg-white shadow-lg p-8 sm:p-12 text-center">
+      <div className="inline-flex h-10 w-10 sm:h-12 sm:w-12 animate-spin mb-4">
+        <FiUsers className="h-10 w-10 sm:h-12 sm:w-12 text-slate-400" />
+      </div>
+      <p className="text-slate-600 font-medium text-sm sm:text-base">Loading admin accounts...</p>
+    </div>
+  );
 
   return (
-    <div className="mt-6">
-      {/* 🔥 Toggle */}
-      <div className="flex justify-end mb-4">
-        <div className="bg-gray-100 p-1 rounded-lg flex">
+    <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-6">
+      {/* Premium Toggle */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="min-w-0">
+          <h3 className="text-base sm:text-lg font-bold text-slate-900">Admin Accounts</h3>
+          <p className="text-xs sm:text-sm text-slate-600 mt-1">Total admins: {admins.length}</p>
+        </div>
+        <div className="bg-slate-100 p-1 sm:p-1.5 rounded-lg sm:rounded-xl flex gap-0.5 sm:gap-1 shadow-sm flex-shrink-0">
           <button
             onClick={() => setViewMode("table")}
-            className={`px-4 py-1 rounded-md text-sm ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition ${
               viewMode === "table"
-                ? "bg-white shadow"
-                : "text-gray-500"
+                ? "bg-white text-slate-900 shadow-md"
+                : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            Table
+            <FiList className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> 
+            <span className="hidden sm:inline">Table</span>
           </button>
           <button
             onClick={() => setViewMode("card")}
-            className={`px-4 py-1 rounded-md text-sm ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition ${
               viewMode === "card"
-                ? "bg-white shadow"
-                : "text-gray-500"
+                ? "bg-white text-slate-900 shadow-md"
+                : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            Cards
+            <FiGrid className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Cards</span>
           </button>
         </div>
       </div>
 
-      <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
+      <div className="rounded-2xl border border-slate-200 bg-white shadow-lg overflow-hidden">
         {/* ================= TABLE VIEW ================= */}
-        {viewMode === "table" && (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-100">
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <th
-                        key={header.id}
-                        className="p-3 text-left font-semibold"
-                      >
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
+       {viewMode === "table" && (
+  <div className="w-full overflow-hidden rounded-xl border border-slate-200 bg-white">
+    
+    {/* SCROLL ONLY ON MOBILE */}
+    <div className="w-full overflow-x-auto">
+      <table className="min-w-[600px] w-full text-sm">
+        
+        {/* HEADER */}
+        <thead className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th
+                  key={header.id}
+                  className="px-3 sm:px-5 py-3 text-left font-semibold text-slate-700 text-[11px] sm:text-xs whitespace-nowrap"
+                >
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext()
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
 
-              <tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="border-b hover:bg-gray-50"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="p-3">
-                        {flexRender(
-                          cell.column.columnDef.cell ??
-                            cell.column.columnDef.accessorKey,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        {/* BODY */}
+        <tbody className="divide-y divide-slate-100">
+          {table.getRowModel().rows.map((row) => (
+            <tr
+              key={row.id}
+              className="hover:bg-slate-50 transition even:bg-slate-50/40"
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  key={cell.id}
+                  className="px-3 sm:px-5 py-3 text-slate-800 text-xs sm:text-sm whitespace-nowrap"
+                >
+                  {flexRender(
+                    cell.column.columnDef.cell ??
+                      cell.column.columnDef.accessorKey,
+                    cell.getContext()
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
 
+      </table>
+    </div>
+  </div>
+)}
         {/* ================= CARD VIEW ================= */}
         {viewMode === "card" && (
-          <div className="p-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {admins.map((admin) => (
               <div
                 key={admin._id}
-                className="border rounded-xl p-4 shadow-sm hover:shadow-md transition"
+                className="border border-slate-200 rounded-lg sm:rounded-xl p-4 sm:p-5 shadow-md hover:shadow-lg transition bg-gradient-to-br from-white to-slate-50"
               >
                 {editRowId === admin._id ? (
                   <input
@@ -210,50 +246,52 @@ const AdminTable = () => {
                     onChange={(e) =>
                       setEditData({ ...editData, name: e.target.value })
                     }
-                    className="border px-2 py-1 rounded w-full"
+                    className="border border-slate-300 px-3 py-2 rounded-lg w-full text-xs sm:text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 mb-3"
                   />
                 ) : (
-                  <p className="font-semibold">{admin.name}</p>
+                  <p className="font-bold text-slate-900 text-sm sm:text-base mb-1 truncate">{admin.name}</p>
                 )}
 
-                <p className="text-sm text-gray-500">
+                <p className="text-xs sm:text-sm text-slate-600 truncate mb-3">
                   {admin.email}
                 </p>
 
-                <p className="text-xs mt-1">
-                  Role: <span className="font-medium">{admin.role}</span>
-                </p>
+                <div className="mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-slate-200">
+                  <span className="inline-block px-2 sm:px-3 py-1 rounded-lg bg-indigo-100 text-indigo-800 text-xs font-semibold">
+                    {admin.role}
+                  </span>
+                </div>
 
                 {isSuperAdmin && (
-                  <div className="flex gap-2 mt-3">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {editRowId === admin._id ? (
                       <>
                         <button
                           onClick={handleSave}
-                          className="bg-green-600 text-white px-3 py-1 rounded text-xs"
+                          className="flex-1 min-w-[80px] flex items-center justify-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-medium transition"
                         >
-                          Save
+                          <FiCheck className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Save
                         </button>
                         <button
                           onClick={handleCancel}
-                          className="bg-gray-400 text-white px-3 py-1 rounded text-xs"
+                          className="flex-1 min-w-[80px] flex items-center justify-center gap-1 bg-slate-400 hover:bg-slate-500 text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-medium transition"
                         >
-                          Cancel
+                          <FiX className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Cancel
                         </button>
                       </>
                     ) : (
                       <>
                         <button
                           onClick={() => handleEditClick(admin)}
-                          className="bg-blue-600 text-white px-3 py-1 rounded text-xs"
+                          className="flex-1 min-w-[80px] flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-medium transition"
                         >
-                          Edit
+                          <FiEdit2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Edit
                         </button>
                         <button
                           onClick={() => handleDelete(admin._id)}
-                          className="bg-red-600 text-white px-3 py-1 rounded text-xs"
+                          className="flex-1 min-w-[80px] flex items-center justify-center gap-1 bg-red-600 hover:bg-red-700 text-white px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs font-medium transition"
                         >
-                          Delete
+                          <FiTrash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> Delete
                         </button>
                       </>
                     )}
@@ -265,8 +303,12 @@ const AdminTable = () => {
         )}
 
         {admins.length === 0 && (
-          <div className="p-6 text-center text-gray-500">
-            No admins found
+          <div className="p-8 sm:p-12 text-center">
+            <div className="inline-flex h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-slate-100 items-center justify-center mb-4">
+              <FiUsers className="h-6 w-6 sm:h-7 sm:w-7 text-slate-400" />
+            </div>
+            <p className="text-slate-600 font-medium text-sm sm:text-base">No admins found</p>
+            <p className="text-slate-500 text-xs sm:text-sm mt-1">Create your first admin account to get started</p>
           </div>
         )}
       </div>

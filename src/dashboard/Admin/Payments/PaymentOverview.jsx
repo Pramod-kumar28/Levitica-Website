@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { FiCreditCard, FiTrendingUp, FiLoader, FiBook, FiBriefcase } from "react-icons/fi";
 import {
   useGetTransactionQuery,
   useGetInternshipTransactionQuery,
@@ -86,35 +87,42 @@ const PaymentOverview = () => {
       : internshipData?.pagination?.totalPages;
 
   return (
-    <div className="space-y-8 ">
+    <div className="space-y-6 sm:space-y-8 py-4 sm:py-6">
 
-      {/* ================= Header ================= */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">
-          Payment Overview
-        </h1>
-        <p className="text-gray-500">
-          Manage course and internship payments, analyze revenue,
-          and monitor transaction status.
-        </p>
+      {/* ================= Header Section ================= */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
+            <FiCreditCard className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">
+              Payment Overview
+            </h1>
+            <p className="text-slate-600 text-sm sm:text-base">
+              Manage course & internship payments, analyze revenue data
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* ================= Global Analytics (Backend Driven) ================= */}
       <PaymentChart />
 
       {/* ================= Tab Buttons ================= */}
-      <div className="flex gap-4">
+      <div className="flex gap-3 sm:gap-4 flex-wrap">
         <button
           onClick={() => {
             setActiveTab("course");
             setPage(1);
           }}
-          className={`px-4 py-2 rounded-lg font-medium ${
+          className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 ${
             activeTab === "course"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-100"
+              ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl"
+              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
           }`}
         >
+          <FiBook className="hidden sm:block h-4 w-4 sm:h-5 sm:w-5" />
           Course Payments
         </button>
 
@@ -123,24 +131,39 @@ const PaymentOverview = () => {
             setActiveTab("internship");
             setPage(1);
           }}
-          className={`px-4 py-2 rounded-lg font-medium ${
+          className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm sm:text-base transition-all duration-300 ${
             activeTab === "internship"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-100"
+              ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg hover:shadow-xl"
+              : "bg-slate-100 text-slate-700 hover:bg-slate-200"
           }`}
         >
+          <FiBriefcase className="hidden sm:block h-4 w-4 sm:h-5 sm:w-5" />
           Internship Payments
         </button>
+
+        {/* Tab Indicator */}
+        <div className="ml-auto flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-slate-100 text-slate-600 text-xs sm:text-sm font-medium">
+          <FiTrendingUp className="h-4 w-4" />
+          <span>{normalizedData.length} transactions</span>
+        </div>
       </div>
 
       {/* ================= Stats Cards (Per Tab) ================= */}
       <PaymentStatsCards stats={stats} />
 
       {/* ================= Table ================= */}
-      <div className="bg-white rounded-xl shadow-sm">
+      <div>
         {isLoading ? (
-          <div className="text-center py-10">
-            Loading payments...
+          <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 sm:p-12">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <div className="h-12 w-12 animate-spin">
+                <FiLoader className="h-12 w-12 text-blue-600" />
+              </div>
+              <div className="text-center">
+                <p className="text-slate-900 font-semibold text-lg">Loading Payments</p>
+                <p className="text-slate-600 text-sm mt-1">Please wait while we fetch your data...</p>
+              </div>
+            </div>
           </div>
         ) : (
           <PaymentsTable data={normalizedData} />
@@ -148,28 +171,29 @@ const PaymentOverview = () => {
       </div>
 
       {/* ================= Pagination ================= */}
-      <div className="flex justify-end gap-4">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage((prev) => prev - 1)}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
+      {totalPages && totalPages > 1 && (
+        <div className="flex items-center justify-between sm:justify-center gap-2 sm:gap-4">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className="px-4 py-2 rounded-lg bg-slate-100 text-slate-700 font-semibold disabled:opacity-50 hover:bg-slate-200 transition"
+          >
+            Previous
+          </button>
 
-        <span className="self-center text-sm text-gray-500">
-          Page {page} of {totalPages || 1}
-        </span>
+          <span className="text-slate-600 font-medium text-sm">
+            Page {page} of {totalPages}
+          </span>
 
-        <button
-          disabled={page >= totalPages}
-          onClick={() => setPage((prev) => prev + 1)}
-          className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
-
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+            className="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold disabled:opacity-50 hover:bg-blue-700 transition"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

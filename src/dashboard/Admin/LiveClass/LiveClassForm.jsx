@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useGetBatchesByCourseQuery } from '@/Services/admin/batchdetailsService';
-import { FiX } from "react-icons/fi";
+import { FiX, FiBookOpen, FiUsers, FiClock, FiMail, FiPlay, FiEdit2, FiRotateCw, FiType, FiCheckCircle, FiVideo, FiCalendar } from "react-icons/fi";
 
 /* ---------------- Validation ---------------- */
 
@@ -104,7 +104,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 sm:p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -114,25 +114,45 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
           animate={{ scale: 1, y: 0, opacity: 1 }}
           exit={{ scale: 0.96, y: 20, opacity: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="w-full max-w-xl max-h-[90vh] overflow-hidden rounded-2xl bg-white shadow-2xl"
+          className="w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-2xl flex flex-col"
         >
-          {/* Header */}
-          <div className="flex items-start justify-between border-b px-6 py-4">
-            <div>
-              <h2 className="text-lg font-semibold">
-                {isEditMode ? "Edit Live Class" : "Schedule Live Class"}
-              </h2>
-              <p className="text-sm text-slate-500">
-                Configure class timing, batch, and Host details
-              </p>
+          {/* Gradient Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-4 sm:p-6 flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 sm:p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+                <FiVideo className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                  {isEditMode ? (
+                    <> 
+                      <FiEdit2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                      Edit Live Class
+                    </>
+                  ) : (
+                    <>
+                      <FiVideo className="w-5 h-5 sm:w-6 sm:h-6" />
+                      Schedule Live Class
+                    </>
+                  )}
+                </h2>
+                <p className="text-xs sm:text-sm text-blue-100 mt-0.5">
+                  Configure timing, batch, and host details
+                </p>
+              </div>
             </div>
-            <button onClick={onSuccess}>
-              <FiX />
-            </button>
+            <motion.button 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onSuccess}
+              className="p-1.5 sm:p-2 rounded-lg hover:bg-white/20 transition text-white"
+            >
+              <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
+            </motion.button>
           </div>
 
           {/* Body */}
-          <div className="p-6 overflow-y-auto max-h-[75vh]">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6">
             <Formik
               initialValues={initialValues}
               enableReinitialize
@@ -160,33 +180,44 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
               }}
             >
               {({ errors, touched, values, setFieldValue }) => (
-                <Form className="space-y-5">
+                <Form className="space-y-4 sm:space-y-5">
                   <FieldInput
                     name="title"
-                    label="Class Title"
+                    label={<div className="flex items-center gap-2"><FiType className="w-4 h-4" /> Class Title</div>}
+                    placeholder="e.g., Advanced JavaScript Basics"
                     errors={errors}
                     touched={touched}
                   />
 
-                  <FieldSelect
-                    name="recurrence"
-                    label="Class Type"
-                    options={[
-                      { value: "once", label: "One-time Class" },
-                      { value: "daily", label: "Daily Recurring Class" },
-                    ]}
-                    errors={errors}
-                    touched={touched}
-                  />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <FieldSelect
+                      name="recurrence"
+                      label={<div className="flex items-center gap-2"><FiRotateCw className="w-4 h-4" /> Class Type</div>}
+                      options={[
+                        { value: "once", label: "One-time Class" },
+                        { value: "daily", label: "Daily Recurring" },
+                      ]}
+                      errors={errors}
+                      touched={touched}
+                    />
+
+                    <FieldInput
+                      name="duration"
+                      type="number"
+                      label={<div className="flex items-center gap-2"><FiClock className="w-4 h-4" /> Duration (min)</div>}
+                      placeholder="60"
+                      errors={errors}
+                      touched={touched}
+                    />
+                  </div>
 
                   <FieldInput
                     name="startTime"
                     type="datetime-local"
-                    label="Start Time"
+                    label={<div className="flex items-center gap-2"><FiClock className="w-4 h-4" /> Start Time</div>}
                     errors={errors}
                     touched={touched}
                   />
-                  
 
                   {values.recurrence === "daily" && (
                     <motion.div
@@ -197,40 +228,32 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                       <FieldInput
                         name="endDate"
                         type="date"
-                        label="Recurrence End Date"
+                        label={<div className="flex items-center gap-2"><FiCalendar className="w-4 h-4" /> Recurrence End Date</div>}
                         errors={errors}
                         touched={touched}
                       />
                     </motion.div>
                   )}
-                  <FieldInput
-                    name="duration"
-                    type="number"
-                    label="Duration (minutes)"
-                    errors={errors}
-                    touched={touched}
-                  />
 
                   {/* Course & Batch */}
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     {/* Course */}
                     <div>
-                      <label className="text-sm font-medium">Course</label>
+                      <label className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <FiBookOpen className="w-4 h-4 text-blue-600" /> Course
+                      </label>
                       <Field
                         as="select"
                         name="courseId"
-                        className="w-full rounded-lg border p-2"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition"
                         onChange={(e) => {
                           const value = e.target.value;
                           setFieldValue("courseId", value);
-
                           if (!isEditMode) {
                             setFieldValue("batchId", "");
                           }
-
                           setSelectedCourseId(value);
                         }}
-
                       >
                         <option value="">Select Course</option>
                         {courses?.map((c) => (
@@ -239,21 +262,24 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                           </option>
                         ))}
                       </Field>
+                      {errors.courseId && touched.courseId && (
+                        <p className="text-xs text-red-500 mt-1">{errors.courseId}</p>
+                      )}
                     </div>
 
                     {/* Batch */}
                     <div>
-                      <label className="text-sm font-medium">Batch</label>
+                      <label className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+                        <FiUsers className="w-4 h-4 text-purple-600" /> Batch
+                      </label>
                       <Field
                         as="select"
                         name="batchId"
                         disabled={!values.courseId}
-                        className="w-full rounded-lg border p-2 disabled:bg-slate-100"
+                        className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition disabled:bg-gray-100 disabled:cursor-not-allowed"
                       >
                         <option value="">
-                          {values.courseId
-                            ? "Select Batch"
-                            : "Select Course First"}
+                          {values.courseId ? "Select Batch" : "Select Course First"}
                         </option>
                         {batchesByCourse?.data?.map((b) => (
                           <option key={b._id} value={b._id}>
@@ -261,31 +287,44 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                           </option>
                         ))}
                       </Field>
+                      {errors.batchId && touched.batchId && (
+                        <p className="text-xs text-red-500 mt-1">{errors.batchId}</p>
+                      )}
                     </div>
                   </div>
 
                   <FieldInput
                     name="hostEmail"
                     type="email"
-                    label="Host Email"
+                    label={<div className="flex items-center gap-2"><FiMail className="w-4 h-4" /> Host Email</div>}
+                    placeholder="admin@example.com"
                     errors={errors}
                     touched={touched}
                   />
 
-
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-indigo-600 text-white py-3 rounded-xl"
+                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-3 sm:py-4 rounded-lg sm:rounded-xl transition shadow-lg hover:shadow-xl disabled:shadow-none mt-2 sm:mt-4"
                   >
-                    {isLoading
-                      ? isEditMode
-                        ? "Updating..."
-                        : "Creating..."
-                      : isEditMode
-                        ? "Update Live Class"
-                        : "Create Live Class"}
-                  </button>
+                    {isLoading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity }}
+                          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                        />
+                        {isEditMode ? "Updating..." : "Creating..."}
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2">
+                        <FiPlay className="w-5 h-5" />
+                        {isEditMode ? "Update Live Class" : "Create Live Class"}
+                      </span>
+                    )}
+                  </motion.button>
 
 
                 </Form>
@@ -300,21 +339,32 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
 
 /* ---------------- Reusable Fields ---------------- */
 
-const FieldInput = ({ label, name, errors, touched, ...props }) => (
+const FieldInput = ({ label, name, errors, touched, placeholder, ...props }) => (
   <div>
-    <label className="text-sm font-medium">{label}</label>
-    <Field name={name} {...props} className="w-full border p-2" />
+    <label className="text-sm font-semibold text-gray-800 mb-2 block">{label}</label>
+    <Field 
+      name={name} 
+      {...props} 
+      placeholder={placeholder}
+      className="w-full rounded-lg border border-gray-300 px-3 sm:px-4 py-2.5 text-sm bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition placeholder-gray-400" 
+    />
     {errors[name] && touched[name] && (
-      <p className="text-xs text-red-500">{errors[name]}</p>
+      <p className="text-xs text-red-500 mt-1.5">{errors[name]}</p>
     )}
   </div>
 );
 
 const FieldSelect = ({ label, name, options, errors, touched }) => (
   <div>
-    <label className="text-sm font-medium">{label}</label>
-    <Field as="select" name={name} className="w-full border p-2">
-      <option value="">Select {label}</option>
+    <label className="text-sm font-semibold text-gray-800 mb-2 flex items-center gap-2">
+      {label}
+    </label>
+    <Field 
+      as="select" 
+      name={name} 
+      className="w-full rounded-lg border border-gray-300 px-3 sm:px-4 py-2.5 text-sm bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition cursor-pointer"
+    >
+      <option value="">Select Option</option>
       {options.map((o) => (
         <option key={o.value} value={o.value}>
           {o.label}
@@ -322,7 +372,7 @@ const FieldSelect = ({ label, name, options, errors, touched }) => (
       ))}
     </Field>
     {errors[name] && touched[name] && (
-      <p className="text-xs text-red-500">{errors[name]}</p>
+      <p className="text-xs text-red-500 mt-1.5">{errors[name]}</p>
     )}
   </div>
 );

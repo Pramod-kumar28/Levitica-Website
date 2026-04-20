@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
-import { Eye, EyeOff, Lock, Settings } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import { FiSettings, FiLock, FiAlertCircle, FiCheckCircle, FiX, FiSave } from "react-icons/fi";
 
 import ProfileSidebar from './ProfileSideBar';
 import { useChangePasswordMutation } from '@/Services/authService';
@@ -30,26 +31,28 @@ const SettingsPage = () => {
 
   return (
     <div className="">
-      <div className="max-w-7xl mx-auto   py-6 sm:py-10">
+      <div className="max-w-7xl mx-auto py-6 sm:py-10">
 
-        {/* Header */}
-        <div className="mb-6 sm:mb-10">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="bg-blue-100 text-blue-600 p-1.5 sm:p-2 rounded-lg">
-              <Settings size={18} className="sm:size-5" />
+        {/* Premium Header */}
+        <div className="mb-8 sm:mb-12">
+          <div className="flex items-center gap-4">
+            <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg">
+              <FiSettings className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
             </div>
-            <div className="text-2xl sm:text-3xl text-black font-semibold">Account Settings</div>
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900">Account Settings</h1>
+              <p className="text-sm sm:text-base text-slate-600 mt-2">
+                Manage your profile, security, and account preferences.
+              </p>
+            </div>
           </div>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">
-            Manage your profile, security, and account preferences.
-          </p>
         </div>
 
         {/* Main Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 sm:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 sm:gap-8">
 
           {/* Sidebar */}
-          <div className="bg-white border rounded-2xl shadow-sm p-3 sm:p-4 h-fit lg:sticky lg:top-8">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-4 sm:p-6 h-fit lg:sticky lg:top-8">
             <ProfileSidebar
               user={user}
               activeTab={activeTab}
@@ -58,7 +61,7 @@ const SettingsPage = () => {
           </div>
 
           {/* Content Card */}
-          <div className="bg-white border rounded-2xl shadow-sm p-4 sm:p-6 md:p-8 transition-all duration-300">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 sm:p-8 transition-all duration-300">
             {renderTabContent()}
           </div>
         </div>
@@ -115,100 +118,125 @@ const SecurityTab = () => {
   });
 
   const inputClass =
-    "w-full border border-gray-300 rounded-lg px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200";
+    "w-full border border-slate-300 rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-slate-50 placeholder-slate-500 transition focus:bg-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 hover:border-slate-400";
 
-  const errorClass = "text-red-500 text-xs mt-1";
+  const errorClass = "text-rose-600 text-sm mt-2 flex items-center gap-1.5 font-medium";
 
   return (
-    <div className="max-w-md space-y-4 sm:space-y-6">
-      <div>
-        <h2 className="text-base sm:text-lg font-semibold flex items-center gap-2">
-          <Lock size={16} className="sm:size-[18px]" /> Security
-        </h2>
-        <p className="text-xs sm:text-sm text-gray-500">
-          Update your account password
+    <div className="max-w-md space-y-6 sm:space-y-8">
+      {/* Header */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-lg bg-red-100 flex items-center justify-center">
+            <FiLock className="h-5 w-5 text-red-600" />
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+            Security Settings
+          </h2>
+        </div>
+        <p className="text-slate-600 text-sm">
+          Keep your account secure by updating your password regularly
         </p>
       </div>
 
       {!show ? (
         <button
           onClick={() => setShow(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm shadow-sm hover:shadow-md transition duration-200"
+          className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3.5 sm:py-4 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition duration-200"
         >
+          <FiLock className="h-5 w-5" />
           Change Password
         </button>
       ) : (
         <form
           onSubmit={formik.handleSubmit}
-          className="bg-gray-50 border rounded-lg sm:rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5 shadow-sm"
+          className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6 shadow-lg"
         >
           {/* Current Password */}
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Current Password"
-              {...formik.getFieldProps('currentPassword')}
-              className={inputClass}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-2 sm:top-2.5 text-gray-500 hover:text-black"
-            >
-              {showPassword ? <EyeOff size={14} className="sm:size-[18px]" /> : <Eye size={14} className="sm:size-[18px]" />}
-            </button>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">
+              Current Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter your current password"
+                {...formik.getFieldProps('currentPassword')}
+                className={inputClass}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-3.5 text-slate-500 hover:text-slate-700"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
             {formik.touched.currentPassword &&
               formik.errors.currentPassword && (
                 <p className={errorClass}>
+                  <FiAlertCircle className="h-4 w-4" />
                   {formik.errors.currentPassword}
                 </p>
               )}
           </div>
 
           {/* New Password */}
-          <div>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">
+              New Password
+            </label>
             <input
               type="password"
-              placeholder="New Password"
+              placeholder="Create a new password (8+ characters)"
               {...formik.getFieldProps('newPassword')}
               className={inputClass}
             />
             {formik.touched.newPassword && formik.errors.newPassword && (
-              <p className={errorClass}>{formik.errors.newPassword}</p>
+              <p className={errorClass}>
+                <FiAlertCircle className="h-4 w-4" />
+                {formik.errors.newPassword}
+              </p>
             )}
           </div>
 
           {/* Confirm Password */}
-          <div>
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">
+              Confirm Password
+            </label>
             <input
               type="password"
-              placeholder="Confirm Password"
+              placeholder="Confirm your new password"
               {...formik.getFieldProps('confirmPassword')}
               className={inputClass}
             />
             {formik.touched.confirmPassword &&
               formik.errors.confirmPassword && (
                 <p className={errorClass}>
+                  <FiAlertCircle className="h-4 w-4" />
                   {formik.errors.confirmPassword}
                 </p>
               )}
           </div>
 
           {/* Buttons */}
-          <div className="flex gap-2 sm:gap-3 pt-1 sm:pt-2">
+          <div className="flex gap-3 pt-4 border-t border-slate-200">
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm transition"
+              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-60 text-white py-3 sm:py-3.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg"
             >
-              {isLoading ? "Changing..." : "Update Password"}
+              <FiSave className="h-4.5 w-4.5" />
+              {isLoading ? "Updating..." : "Update Password"}
             </button>
 
             <button
               type="button"
               onClick={() => setShow(false)}
-              className="flex-1 border border-gray-300 hover:bg-gray-100 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm transition"
+              className="flex-1 flex items-center justify-center gap-2 border-2 border-slate-300 hover:border-slate-400 hover:bg-slate-100 py-3 sm:py-3.5 rounded-xl text-sm font-semibold text-slate-700 transition"
             >
+              <FiX className="h-4.5 w-4.5" />
               Cancel
             </button>
           </div>

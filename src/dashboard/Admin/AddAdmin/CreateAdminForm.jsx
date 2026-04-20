@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { FiUser, FiMail, FiLock, FiX } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiX, FiCheckCircle, FiAlertCircle, FiUserPlus } from "react-icons/fi";
 import { useCreateAdminMutation } from '@/Services/admin/admincreationServices';
 
 const CreateAdminForm = () => {
@@ -50,39 +50,53 @@ const CreateAdminForm = () => {
   });
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-      {/* Header */}
-      <div className="border-b border-slate-200 p-6">
-        <h2 className="text-lg font-semibold text-slate-900">
-          Create Admin Account
-        </h2>
-        <p className="mt-1 text-sm text-slate-500">
-          Grant administrative access to a new user
-        </p>
+    <div className="rounded-2xl border border-slate-200 bg-white shadow-lg overflow-hidden">
+      {/* Premium Header */}
+      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 sm:p-6">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm flex-shrink-0">
+            <FiUserPlus className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+          </div>
+          <div className="min-w-0">
+            <h2 className="text-lg sm:text-xl font-bold text-white truncate">
+              Create Admin Account
+            </h2>
+            <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-indigo-100 line-clamp-1">
+              Grant administrative access to a new user
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6">
         {/* Alert */}
         {showAlert && (
           <div
-            className={`mb-4 flex items-start justify-between gap-4 rounded-xl border p-4 ${
+            className={`mb-4 sm:mb-6 flex items-start justify-between gap-3 sm:gap-4 rounded-lg sm:rounded-xl border p-3 sm:p-4 backdrop-blur-sm text-xs sm:text-sm ${
               alertType === "success"
-                ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                : "border-rose-200 bg-rose-50 text-rose-700"
+                ? "border-emerald-300 bg-emerald-50 text-emerald-700 shadow-md"
+                : "border-rose-300 bg-rose-50 text-rose-700 shadow-md"
             }`}
           >
-            <p className="text-sm">{alertMessage}</p>
+            <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
+              {alertType === "success" ? (
+                <FiCheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mt-0.5 flex-shrink-0" />
+              ) : (
+                <FiAlertCircle className="h-4 w-4 sm:h-5 sm:w-5 mt-0.5 flex-shrink-0" />
+              )}
+              <p className="font-medium break-words">{alertMessage}</p>
+            </div>
             <button
               onClick={() => setShowAlert(false)}
-              className="text-current opacity-70 hover:opacity-100"
+              className="text-current opacity-70 hover:opacity-100 flex-shrink-0"
             >
-              <FiX />
+              <FiX className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </div>
         )}
 
         {/* Form */}
-        <form onSubmit={formik.handleSubmit} className="space-y-5">
+        <form onSubmit={formik.handleSubmit} className="space-y-4 sm:space-y-5">
           {[
             {
               name: "name",
@@ -107,11 +121,11 @@ const CreateAdminForm = () => {
             },
           ].map(({ name, label, placeholder, icon: Icon, type }) => (
             <div key={name}>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
+              <label className="mb-1.5 sm:mb-2 block text-xs sm:text-sm font-medium text-slate-700">
                 {label}
               </label>
-              <div className="relative">
-                <Icon className="pointer-events-none absolute left-3 top-2.5 h-5 w-5 text-slate-400" />
+              <div className="relative group">
+                <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-slate-400 group-focus-within:text-indigo-600 transition" />
                 <input
                   type={type}
                   name={name}
@@ -119,7 +133,7 @@ const CreateAdminForm = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values[name]}
-                  className="w-full rounded-lg border border-slate-300 px-10 py-2 text-sm transition focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full rounded-lg sm:rounded-xl border border-slate-300 px-9 sm:px-10 py-2 sm:py-2.5 text-xs sm:text-sm bg-slate-50 transition focus:bg-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 hover:border-slate-400"
                 />
               </div>
               {formik.touched[name] && formik.errors[name] && (
@@ -134,8 +148,9 @@ const CreateAdminForm = () => {
           <button
             type="submit"
             disabled={!formik.isValid || isLoading}
-            className="flex w-full items-center justify-center rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none mt-2 sm:mt-3"
           >
+            <FiUserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
             {isLoading ? "Creating Admin..." : "Create Admin Account"}
           </button>
         </form>

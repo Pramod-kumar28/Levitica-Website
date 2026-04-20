@@ -18,6 +18,9 @@ import {
   FiPlus,
   FiRefreshCw,
   FiCopy,
+  FiVideo,
+  FiRadio,
+  FiCheckCircle,
 } from "react-icons/fi";
 
 
@@ -54,9 +57,9 @@ const AdminLiveClasses = () => {
   const handleCopy = async (url) => {
     try {
       await navigator.clipboard.writeText(url);
-      toast.success("Joining link copied to clipboard ✅");
+      toast.success("Joining link copied to clipboard");
     } catch (error) {
-      toast.error("Failed to copy link ❌");
+      toast.error("Failed to copy link");
       console.error(error);
     }
   };
@@ -131,14 +134,34 @@ const AdminLiveClasses = () => {
     });
 
   const StatusBadge = ({ status }) => {
-    const map = {
-      ongoing: "bg-red-500",
-      completed: "bg-green-500",
-      scheduled: "bg-yellow-500",
+    const styles = {
+      ongoing: {
+        bg: "bg-gradient-to-r from-red-500 to-red-600",
+        text: "text-white",
+        pulse: "animate-pulse",
+        icon: <FiRadio className="w-3 h-3" />,
+        label: "Live"
+      },
+      completed: {
+        bg: "bg-gradient-to-r from-green-500 to-emerald-600",
+        text: "text-white",
+        pulse: "",
+        icon: <FiCheckCircle className="w-3 h-3" />,
+        label: "Completed"
+      },
+      scheduled: {
+        bg: "bg-gradient-to-r from-amber-500 to-orange-600",
+        text: "text-white",
+        pulse: "",
+        icon: <FiClock className="w-3 h-3" />,
+        label: "Upcoming"
+      },
     };
+    const style = styles[status] || styles.scheduled;
     return (
-      <span className={`text-white text-xs font-semibold px-3 py-1 rounded-full ${map[status]}`}>
-        {status.toUpperCase()}
+      <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${style.bg} ${style.text} ${style.pulse} inline-flex items-center gap-1.5 shadow-md`}>
+        {style.icon}
+        {style.label}
       </span>
     );
   };
@@ -147,22 +170,30 @@ const AdminLiveClasses = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center py-20 text-gray-500">
-        Loading live classes…
+      <div className="flex flex-col items-center justify-center py-20">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-blue-600 mb-4"
+        />
+        <p className="text-gray-600 font-medium">Loading live classes…</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center py-20">
-        <p className="text-red-600">Failed to load live classes</p>
-        <button
+      <div className="text-center py-12 bg-red-50 rounded-2xl border border-red-200">
+        <div className="text-5xl mb-3">⚠️</div>
+        <p className="text-red-700 font-semibold mb-4">Failed to load live classes</p>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={refetch}
-          className="mt-4 inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg"
+          className="inline-flex items-center gap-2 bg-red-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-red-700 transition"
         >
           <FiRefreshCw /> Retry
-        </button>
+        </motion.button>
       </div>
     );
   }
@@ -170,40 +201,48 @@ const AdminLiveClasses = () => {
   /* ---------------- UI ---------------- */
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
 
+      {/* ===== Page Header with Gradient ===== */}
+      <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 rounded-xl sm:rounded-3xl p-4 sm:p-8 shadow-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-1">
+              Live Classes
+            </h1>
+            <p className="text-blue-100 text-sm sm:text-base flex items-center gap-2">
+              <FiVideo className="w-4 h-4" />
+              Manage, schedule and monitor all Zoom sessions
+            </p>
+          </div>
 
-      {/* ===== Page Header ===== */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Live Classes
-          </h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Manage, schedule and monitor all Zoom live sessions
-          </p>
-        </div>
-
-        <div className="flex gap-2">
-
-          <button className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 rounded-xl sm:rounded-2xl bg-white text-blue-600 px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center sm:justify-start"
             onClick={() => openModal(MODAL_TYPES.CREATE_MEETING)}>
-            <FiPlus />
+            <FiPlus className="w-5 h-5" />
             Create Class
-          </button>
+          </motion.button>
         </div>
       </div>
 
       {/* ===== Filters Card ===== */}
-      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="grid gap-4 md:grid-cols-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-2xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm backdrop-blur-sm">
+        <h3 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <FiFilter className="w-4 h-4" /> Filter Classes
+        </h3>
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
 
           {/* Search */}
-          <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <div className="relative group">
+            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition w-4 h-4" />
             <input
-              className="w-full rounded-lg border border-gray-300 py-2 pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none"
-              placeholder="Search class, course, or batch"
+              className="w-full rounded-lg border border-gray-300 py-2.5 pl-10 pr-3 text-sm bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition"
+              placeholder="Search classes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -211,75 +250,114 @@ const AdminLiveClasses = () => {
 
           {/* Status */}
           <select
-            className="rounded-lg border border-gray-300 py-2 px-3 text-sm focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-gray-300 py-2.5 px-3 text-sm bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition cursor-pointer"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option value="all">All Status</option>
             <option value="scheduled">Upcoming</option>
-            <option value="ongoing">Live</option>
+            <option value="ongoing">Live Now</option>
             <option value="completed">Completed</option>
           </select>
 
           {/* Date */}
           <input
             type="date"
-            className="rounded-lg border border-gray-300 py-2 px-3 text-sm focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-gray-300 py-2.5 px-3 text-sm bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition cursor-pointer"
             value={dateFilter}
             onChange={(e) => setDateFilter(e.target.value)}
           />
 
           {/* Clear */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => {
               setSearchTerm("");
               setStatusFilter("all");
               setDateFilter("");
             }}
-            className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-gray-50 py-2 text-sm font-medium hover:bg-gray-100"
+            className="flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-gray-50 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
           >
-            <FiFilter />
+            <FiFilter className="w-4 h-4" />
             Clear
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
 
-      {/* ===== View Toggle & Count ===== */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <p className="text-sm text-gray-500">
-          Showing <span className="font-medium text-gray-900">{filteredMeetings.length}</span> of{" "}
-          <span className="font-medium text-gray-900">{meetings.length}</span> classes
-        </p>
+      {/* ===== View Toggle & Stats ===== */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+        <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-100 rounded-xl px-4 py-3 sm:py-4">
+          <p className="text-sm text-gray-700">
+            <span className="font-bold text-blue-600">{filteredMeetings.length}</span>
+            <span className="text-gray-600"> of </span>
+            <span className="font-bold text-blue-600">{meetings.length}</span>
+            <span className="text-gray-600"> live sessions</span>
+          </p>
+        </div>
 
-        <div className="inline-flex rounded-lg border border-gray-300 bg-gray-50 p-1">
-          <button
+        <div className="inline-flex rounded-xl border border-gray-200 bg-white p-1 shadow-sm">
+          <motion.button
+            whileHover={{ backgroundColor: "#f3f4f6" }}
             onClick={() => setActiveTab("cards")}
-            className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium ${activeTab === "cards"
-              ? "bg-white shadow text-blue-600"
-              : "text-gray-500 hover:text-gray-700"
+            className={`flex items-center gap-2 rounded-lg px-3 sm:px-4 py-2 text-sm font-medium transition ${activeTab === "cards"
+              ? "bg-blue-600 text-white shadow-md"
+              : "text-gray-600 hover:text-gray-900"
               }`}
           >
-            <FiGrid />
-            Cards
-          </button>
+            <FiGrid className="w-4 h-4" />
+            <span className="hidden sm:inline">Cards</span>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ backgroundColor: "#f3f4f6" }}
             onClick={() => setActiveTab("table")}
-            className={`flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium ${activeTab === "table"
-              ? "bg-white shadow text-blue-600"
-              : "text-gray-500 hover:text-gray-700"
+            className={`flex items-center gap-2 rounded-lg px-3 sm:px-4 py-2 text-sm font-medium transition ${activeTab === "table"
+              ? "bg-blue-600 text-white shadow-md"
+              : "text-gray-600 hover:text-gray-900"
               }`}
           >
-            <FiList />
-            Table
-          </button>
+            <FiList className="w-4 h-4" />
+            <span className="hidden sm:inline">Table</span>
+          </motion.button>
         </div>
       </div>
 
       {/* ===== Content ===== */}
       <AnimatePresence mode="wait">
-        {activeTab === "cards" ? (
+        {filteredMeetings.length === 0 ? (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="text-center py-16 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl border-2 border-dashed border-blue-200"
+          >
+            <motion.div 
+              animate={{ y: [0, -8, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="mb-4"
+            >
+              <FiVideo className="w-16 h-16 text-blue-400 mx-auto" />
+            </motion.div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No live classes found</h3>
+            <p className="text-gray-600 mb-6">
+              {searchTerm || statusFilter !== "all" || dateFilter
+                ? "Try adjusting your filters"
+                : "Create your first live class to get started"}
+            </p>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => openModal(MODAL_TYPES.CREATE_MEETING)}
+              className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+            >
+              <FiPlus className="w-5 h-5" /> Create Class
+            </motion.button>
+          </motion.div>
+        ) : activeTab === "cards" ? (
           <CardsView
+            key="cards"
             filteredMeetings={filteredMeetings}
             handleStartClass={handleStartClass}
             handleEdit={handleEdit}
@@ -292,6 +370,7 @@ const AdminLiveClasses = () => {
           />
         ) : (
           <TableView
+            key="table"
             filteredMeetings={filteredMeetings}
             handleStartClass={handleStartClass}
             handleEdit={handleEdit}
@@ -322,80 +401,117 @@ const CardsView = ({
   StatusBadge,
   handleCopy
 }) => (
-  <div className="grid md:grid-cols-3 gap-6">
-    {filteredMeetings.map((m) => (
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6"
+  >
+    {filteredMeetings.map((m, idx) => (
       <motion.div
         key={m._id}
-        whileHover={{ y: -4 }}
-        className="bg-white rounded-xl border p-5 flex flex-col shadow-sm hover:shadow-md transition"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: idx * 0.05 }}
+        whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+        className="bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col group"
       >
-        {/* Header */}
-        <div className="flex justify-between items-start">
-          <h3 className="font-semibold lg:text-xl text-lg text-gray-900">
-            {m.title}
-          </h3>
-          <StatusBadge status={m.status} />
-        </div>
+        {/* Status Header */}
+        <div className="h-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 group-hover:from-blue-700 group-hover:to-cyan-700 transition" />
 
-        {/* Meta */}
-        <div className="mt-3 space-y-2 text-sm text-gray-600">
-          <p className="flex items-center gap-2">
-            <FiBookOpen /> {m.course?.name}
-          </p>
-          <p className="flex items-center gap-2">
-            <FiUsers /> {m.batch?.batchName || "—"}
-          </p>
-          <p className="flex items-center gap-2">
-            <FiCalendar /> {formatDate(m.startTime)}
-          </p>
-          <p className="flex items-center gap-2">
-            <FiClock /> {formatTime(m.startTime)} • {m.duration} mins
-          </p>
-        </div>
+        {/* Content */}
+        <div className="p-4 sm:p-5 lg:p-6 flex flex-col h-full">
+          {/* Title & Status */}
+          <div className="flex justify-between items-start gap-2 mb-3">
+            <h3 className="font-bold text-base sm:text-lg lg:text-xl text-gray-900 line-clamp-2 flex-1">
+              {m.title}
+            </h3>
+            <StatusBadge status={m.status} />
+          </div>
 
-        {/* Actions */}
-        <div className="mt-auto pt-4 flex gap-2 flex-wrap">
-          {(m.status === "scheduled" || m.status === "ongoing") && (
-            <button
-              onClick={() => handleStartClass(m._id)}
-              className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-blue-600 py-2 text-sm font-medium text-white hover:bg-blue-700"
-            >
-              <FiPlay />
-              {m.status === "ongoing" ? "Join" : "Start"}
-            </button>
-          )}
+          {/* Meta Information */}
+          <div className="space-y-2 sm:space-y-2.5 flex-1 mb-4">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-700 bg-blue-50 rounded-lg p-2 sm:p-2.5">
+              <FiBookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 flex-shrink-0" />
+              <span className="font-medium truncate">{m.course?.name || "—"}</span>
+            </div>
 
-          {/* 🔹 NEW COPY BUTTON */}
-          {m.zoomJoinUrl && (
-            <button
-              onClick={() => handleCopy(m.zoomJoinUrl)}
-              className="rounded-lg border border-gray-300 px-3 text-gray-600 hover:bg-gray-50"
-              title="Copy Joining Link"
-            >
-              <FiCopy />
-            </button>
-          )}
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-700 bg-purple-50 rounded-lg p-2 sm:p-2.5">
+              <FiUsers className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-600 flex-shrink-0" />
+              <span className="font-medium truncate">{m.batch?.batchName || "No batch"}</span>
+            </div>
 
-          <button
-            onClick={() => handleEdit(m)}
-            className="rounded-lg border border-gray-300 px-3 text-gray-600 hover:bg-gray-50"
-            title="Edit class"
-          >
-            <FiEdit />
-          </button>
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
+              <div className="flex items-center gap-1.5 text-xs text-gray-700 bg-green-50 rounded-lg p-2 sm:p-2.5">
+                <FiCalendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-600 flex-shrink-0" />
+                <span className="font-medium truncate">{formatDate(m.startTime)}</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-gray-700 bg-orange-50 rounded-lg p-2 sm:p-2.5">
+                <FiClock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-600 flex-shrink-0" />
+                <span className="font-medium truncate">{formatTime(m.startTime)}</span>
+              </div>
+            </div>
 
-          <button
-            disabled={deletingId === m._id}
-            onClick={() => handleDelete(m._id)}
-            className="rounded-lg border border-red-200 px-3 text-red-600 hover:bg-red-50 disabled:opacity-50"
-            title="Delete class"
-          >
-            <FiTrash2 />
-          </button>
+            <div className="text-xs text-gray-600 bg-gray-100 rounded-lg p-2 sm:p-2.5 font-medium">
+              <FiClock className="inline w-3 h-3 mr-1" /> {m.duration} min
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="space-y-2 border-t border-gray-200 pt-3 sm:pt-4">
+            {(m.status === "scheduled" || m.status === "ongoing") && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => handleStartClass(m._id)}
+                className="w-full flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition"
+              >
+                <FiPlay className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span>{m.status === "ongoing" ? "Join" : "Start"}</span>
+              </motion.button>
+            )}
+
+            <div className="flex gap-1 sm:gap-1.5">
+              {m.zoomJoinUrl && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleCopy(m.zoomJoinUrl)}
+                  className="flex-1 p-1.5 sm:p-2 rounded-lg border-2 border-cyan-300 text-cyan-700 hover:bg-cyan-50 transition flex items-center justify-center gap-1"
+                  title="Copy link"
+                >
+                  <FiCopy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline text-xs">Copy</span>
+                </motion.button>
+              )}
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleEdit(m)}
+                className="flex-1 p-1.5 sm:p-2 rounded-lg border-2 border-blue-300 text-blue-700 hover:bg-blue-50 transition flex items-center justify-center gap-1"
+                title="Edit"
+              >
+                <FiEdit className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline text-xs">Edit</span>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                disabled={deletingId === m._id}
+                onClick={() => handleDelete(m._id)}
+                className="flex-1 p-1.5 sm:p-2 rounded-lg border-2 border-red-300 text-red-700 hover:bg-red-50 disabled:opacity-50 transition flex items-center justify-center gap-1"
+                title="Delete"
+              >
+                <FiTrash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline text-xs">Delete</span>
+              </motion.button>
+            </div>
+          </div>
         </div>
       </motion.div>
     ))}
-  </div>
+  </motion.div>
 );
 
 
@@ -411,90 +527,126 @@ const TableView = ({
   StatusBadge,
   handleCopy
 }) => (
-  <div className="bg-white border rounded-xl overflow-x-auto">
-    <table className="w-full text-sm">
-      <thead className="bg-gray-50">
-        <tr>
-          <th className="p-3 text-left">Title</th>
-          <th className="p-3">Course</th>
-          <th className="p-3">Batch</th>
-          <th className="p-3">Date</th>
-          <th className="p-3">Duration</th>
-          <th className="p-3">Status</th>
-          <th className="p-3 text-center">Actions</th>
-        </tr>
-      </thead>
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="rounded-xl sm:rounded-2xl border border-gray-200 bg-white shadow-lg overflow-hidden"
+  >
+  <div className="w-full overflow-x-auto">
+  <table className="w-full min-w-[600px] text-xs sm:text-sm">
+    
+    {/* HEADER */}
+    <thead>
+      <tr className="bg-gradient-to-r from-gray-50 to-gray-100 border-b border-gray-200">
+        <th className="px-3 py-3 text-left font-semibold">Title</th>
+        <th className="px-3 py-3 text-left font-semibold hidden sm:table-cell">Course</th>
+        <th className="px-3 py-3 text-left font-semibold hidden md:table-cell">Batch</th>
+        <th className="px-3 py-3 text-left font-semibold">Schedule</th>
+        <th className="px-3 py-3 text-center font-semibold hidden sm:table-cell">Duration</th>
+        <th className="px-3 py-3 text-center font-semibold">Status</th>
+        <th className="px-3 py-3 text-center font-semibold">Actions</th>
+      </tr>
+    </thead>
 
-      <tbody>
-        {filteredMeetings.map((m) => (
-          <tr
-            key={m._id}
-            className="border-t hover:bg-gray-50"
-          >
-            <td className="p-3 font-medium text-gray-900">
+    {/* BODY */}
+    <tbody className="divide-y divide-gray-200">
+      {filteredMeetings.map((m, idx) => (
+        <motion.tr
+          key={m._id}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.02 }}
+          className="hover:bg-blue-50 transition"
+        >
+
+          {/* TITLE + COURSE (STACK IN MOBILE) */}
+          <td className="px-3 py-3">
+            <div className="font-semibold text-gray-900 truncate">
               {m.title}
-            </td>
-            <td className="p-3">{m.course?.name}</td>
-            <td className="p-3">{m.batch?.batchName || "—"}</td>
-            <td className="p-3">
+            </div>
+
+            {/* show course in mobile */}
+            <div className="text-gray-500 text-[11px] sm:hidden">
+              {m.course?.name || "—"}
+            </div>
+          </td>
+
+          {/* COURSE */}
+          <td className="px-3 py-3 text-gray-700 hidden sm:table-cell">
+            {m.course?.name || "—"}
+          </td>
+
+          {/* BATCH */}
+          <td className="px-3 py-3 text-gray-700 hidden md:table-cell">
+            {m.batch?.batchName || "—"}
+          </td>
+
+          {/* SCHEDULE */}
+          <td className="px-3 py-3">
+            <div className="text-xs font-semibold">
               {formatDate(m.startTime)}
-              <div className="text-xs text-gray-500">
-                {formatTime(m.startTime)}
-              </div>
-            </td>
-            <td className="p-3">{m.duration} mins</td>
-            <td className="p-3">
-              <StatusBadge status={m.status} />
-            </td>
+            </div>
+            <div className="text-xs text-gray-500">
+              {formatTime(m.startTime)}
+            </div>
+          </td>
 
-            {/* Actions */}
-            <td className="p-3">
-              <div className="flex items-center justify-center gap-2">
+          {/* DURATION */}
+          <td className="px-3 py-3 text-center hidden sm:table-cell">
+            {m.duration}m
+          </td>
 
-                {(m.status === "scheduled" || m.status === "ongoing") && (
-                  <button
-                    onClick={() => handleStartClass(m._id)}
-                    className="rounded-md bg-blue-600 p-2 text-white hover:bg-blue-700"
-                    title="Start / Join"
-                  >
-                    <FiPlay />
-                  </button>
-                )}
+          {/* STATUS */}
+          <td className="px-3 py-3 text-center">
+            <StatusBadge status={m.status} />
+          </td>
 
-                {/* 🔹 NEW COPY BUTTON */}
-                {m.zoomJoinUrl && (
-                  <button
-                    onClick={() => handleCopy(m.zoomJoinUrl)}
-                    className="rounded-md border border-gray-300 p-2 text-gray-600 hover:bg-gray-100"
-                    title="Copy Joining Link"
-                  >
-                    <FiCopy />
-                  </button>
-                )}
+          {/* ACTIONS */}
+          <td className="px-3 py-3">
+            <div className="flex flex-wrap items-center justify-center gap-1">
 
+              {(m.status === "scheduled" || m.status === "ongoing") && (
                 <button
-                  onClick={() => handleEdit(m)}
-                  className="rounded-md border border-gray-300 p-2 text-gray-600 hover:bg-gray-100"
-                  title="Edit"
+                  onClick={() => handleStartClass(m._id)}
+                  className="p-2 rounded-lg bg-blue-600 text-white"
                 >
-                  <FiEdit />
+                  <FiPlay className="w-4 h-4" />
                 </button>
+              )}
 
+              {m.zoomJoinUrl && (
                 <button
-                  disabled={deletingId === m._id}
-                  onClick={() => handleDelete(m._id)}
-                  className="rounded-md border border-red-200 p-2 text-red-600 hover:bg-red-50 disabled:opacity-50"
-                  title="Delete"
+                  onClick={() => handleCopy(m.zoomJoinUrl)}
+                  className="p-2 rounded-lg border border-cyan-400 text-cyan-700"
                 >
-                  <FiTrash2 />
+                  <FiCopy className="w-4 h-4" />
                 </button>
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
+              )}
+
+              <button
+                onClick={() => handleEdit(m)}
+                className="p-2 rounded-lg border border-blue-400 text-blue-700"
+              >
+                <FiEdit className="w-4 h-4" />
+              </button>
+
+              <button
+                disabled={deletingId === m._id}
+                onClick={() => handleDelete(m._id)}
+                className="p-2 rounded-lg border border-red-400 text-red-700"
+              >
+                <FiTrash2 className="w-4 h-4" />
+              </button>
+
+            </div>
+          </td>
+
+        </motion.tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+  </motion.div>
 );
 
 

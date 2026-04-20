@@ -6,6 +6,7 @@ import {
   flexRender,
   createColumnHelper,
 } from "@tanstack/react-table";
+import { FiSearch, FiDownload, FiArrowUp, FiArrowDown } from "react-icons/fi";
 import { useDownloadPaymentsExcelMutation } from '@/Services/admin/studentReportsServices';
 
 
@@ -14,10 +15,10 @@ const columnHelper = createColumnHelper();
 
 // 🎨 Status Badge Styling
 const statusStyles = {
-  paid: "bg-green-100 text-green-700",
-  failed: "bg-red-100 text-red-700",
-  created: "bg-yellow-100 text-yellow-700",
-  attempted: "bg-blue-100 text-blue-700",
+  paid: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+  failed: "bg-red-100 text-red-700 border border-red-200",
+  created: "bg-amber-100 text-amber-700 border border-amber-200",
+  attempted: "bg-blue-100 text-blue-700 border border-blue-200",
 };
 
 const PaymentsTable = ({ data = [] }) => {
@@ -87,7 +88,7 @@ const PaymentsTable = ({ data = [] }) => {
       columnHelper.accessor("paymentMode", {
         header: "Mode",
         cell: (info) => (
-          <span className="text-gray-700 font-medium">
+          <span className="text-slate-700 font-semibold">
             {info.getValue()?.toUpperCase()}
           </span>
         ),
@@ -96,7 +97,7 @@ const PaymentsTable = ({ data = [] }) => {
       columnHelper.accessor("appUsed", {
         header: "App Used",
         cell: (info) => (
-          <span className="text-gray-600">
+          <span className="text-slate-600 text-sm">
             {info.getValue() || "-"}
           </span>
         ),
@@ -105,7 +106,7 @@ const PaymentsTable = ({ data = [] }) => {
       columnHelper.accessor("amount", {
         header: "Amount",
         cell: (info) => (
-          <span className="font-semibold text-gray-900">
+          <span className="font-bold text-slate-900">
             ₹{info.getValue()?.toLocaleString()}
           </span>
         ),
@@ -117,7 +118,7 @@ const PaymentsTable = ({ data = [] }) => {
           const value = info.getValue();
           return (
             <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${statusStyles[value] || "bg-gray-100 text-gray-600"
+              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold ${statusStyles[value] || "bg-slate-100 text-slate-600"
                 }`}
             >
               {value?.toUpperCase()}
@@ -129,7 +130,7 @@ const PaymentsTable = ({ data = [] }) => {
       columnHelper.accessor("createdAt", {
         header: "Date",
         cell: (info) => (
-          <span className="text-gray-500 text-sm">
+          <span className="text-slate-600 text-sm font-medium">
             {new Date(info.getValue()).toLocaleString("en-IN", {
               timeZone: "Asia/Kolkata",
             })}
@@ -171,108 +172,158 @@ const PaymentsTable = ({ data = [] }) => {
 
   // UI
   return (
-    <div className="bg-white border rounded-xl shadow-md overflow-x-auto ">
+    <div className="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
 
-      {/* 🔎 Filters */}
-      <div className="flex gap-4 p-5 border-b  flex-wrap items-center">        <input
-        type="text"
-        placeholder="Search payments..."
-        value={globalFilter}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-        className="border rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-        <select
-          value={titleFilter}
-          onChange={(e) => setTitleFilter(e.target.value)}
-          className="border rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">All Courses / Internships</option>
-          {uniqueTitles.map((title) => (
-            <option key={title} value={title}>
-              {title}
-            </option>
-          ))}
-        </select>
+      {/* 🔎 Filters Section */}
+      <div className="border-b border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center flex-wrap">
+          {/* Search Input */}
+          <div className="relative flex-1 min-w-[250px]">
+            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-5 w-5" />
+            <input
+              type="text"
+              placeholder="Search by name, email, order ID..."
+              value={globalFilter}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+            />
+          </div>
 
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded-lg px-4 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">All Status</option>
-          <option value="paid">Paid</option>
-          <option value="failed">Failed</option>
-          <option value="created">Created</option>
-          <option value="attempted">Attempted</option>
-        </select>
+          {/* Course/Domain Filter */}
+          <select
+            value={titleFilter}
+            onChange={(e) => setTitleFilter(e.target.value)}
+            className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          >
+            <option value="">All Courses / Internships</option>
+            {uniqueTitles.map((title) => (
+              <option key={title} value={title}>
+                {title}
+              </option>
+            ))}
+          </select>
 
-        <button
-          onClick={handleDownloadExcel}
-          className="ml-auto bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 transition"
-        >
-          Download Excel
-        </button>
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-4 py-2.5 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          >
+            <option value="">All Status</option>
+            <option value="paid">Paid</option>
+            <option value="failed">Failed</option>
+            <option value="created">Created</option>
+            <option value="attempted">Attempted</option>
+          </select>
+
+          {/* Download Button */}
+          <button
+            onClick={handleDownloadExcel}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold hover:shadow-lg transition-all active:scale-95"
+          >
+            <FiDownload className="h-4 w-4" /> Download
+          </button>
+        </div>
+
+        {/* Filter Summary */}
+        {(globalFilter || statusFilter || titleFilter) && (
+          <div className="mt-3 text-xs text-slate-600 font-medium">
+            Showing {filteredData.length} of {data.length} payments
+          </div>
+        )}
       </div>
 
       {/* 📋 Table */}
-      <table className="min-w-[1200px] text-sm ">
-        <thead className="bg-gray-100 text-gray-700">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                  className="p-4 text-left font-semibold cursor-pointer select-none hover:text-blue-600"
-                >
+    <div className="w-full overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+  
+  {/* SCROLL CONTAINER */}
+  <div className="w-full overflow-x-auto">
+    <table className="min-w-[700px] w-full text-sm">
+      
+      {/* HEADER */}
+      <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <th
+                key={header.id}
+                onClick={header.column.getToggleSortingHandler()}
+                className="px-4 sm:px-6 py-3 text-left font-semibold text-slate-800 text-[11px] sm:text-xs uppercase tracking-wide cursor-pointer select-none hover:bg-slate-100 transition"
+              >
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
                   )}
 
-                  {{
-                    asc: " 🔼",
-                    desc: " 🔽",
-                  }[header.column.getIsSorted()] ?? null}
-                </th>
+                  {header.column.getCanSort() && (
+                    <span className="text-slate-400">
+                      {header.column.getIsSorted() === "asc" && (
+                        <FiArrowUp className="h-3.5 w-3.5" />
+                      )}
+                      {header.column.getIsSorted() === "desc" && (
+                        <FiArrowDown className="h-3.5 w-3.5" />
+                      )}
+                    </span>
+                  )}
+                </div>
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+
+      {/* BODY */}
+      <tbody className="divide-y divide-slate-100">
+        {table.getRowModel().rows.length === 0 ? (
+          <tr>
+            <td
+              colSpan={columns.length}
+              className="text-center py-10 text-slate-500"
+            >
+              <div className="flex flex-col items-center gap-3">
+                <div className="h-14 w-14 rounded-full bg-slate-100 flex items-center justify-center">
+                  <FiSearch className="h-6 w-6 text-slate-400" />
+                </div>
+                <p className="font-medium text-sm">No payments found</p>
+                <p className="text-xs text-slate-400">
+                  Try adjusting your filters
+                </p>
+              </div>
+            </td>
+          </tr>
+        ) : (
+          table.getRowModel().rows.map((row) => (
+            <tr
+              key={row.id}
+              className="hover:bg-slate-50 transition even:bg-slate-50/40"
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  key={cell.id}
+                  className="px-4 sm:px-6 py-3 align-middle text-slate-700 whitespace-nowrap"
+                >
+                  {flexRender(
+                    cell.column.columnDef.cell ??
+                      cell.column.columnDef.accessorKey,
+                    cell.getContext()
+                  )}
+                </td>
               ))}
             </tr>
-          ))}
-        </thead>
+          ))
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>
 
-        <tbody>
-          {table.getRowModel().rows.length === 0 ? (
-            <tr>
-              <td
-                colSpan={columns.length}
-                className="text-center p-8 text-gray-500"
-              >
-                No payments found
-              </td>
-            </tr>
-          ) : (
-            table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="border-b hover:bg-gray-50 transition"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <td
-                    key={cell.id}
-                    className="p-4 align-middle"
-                  >
-                    {flexRender(
-                      cell.column.columnDef.cell ??
-                      cell.column.columnDef.accessorKey,
-                      cell.getContext()
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+      {/* Footer Info */}
+      {filteredData.length > 0 && (
+        <div className="px-4 sm:px-6 py-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-600 font-medium">
+          Displaying {table.getRowModel().rows.length} of {filteredData.length} payments
+        </div>
+      )}
     </div>
   );
 };
