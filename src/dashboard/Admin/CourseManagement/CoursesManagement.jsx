@@ -12,7 +12,7 @@ import {
   FiEye,
   FiGrid,
   FiList,
-  
+  FiBookOpen,
 } from "react-icons/fi";
 
 const CoursesManagement = () => {
@@ -27,82 +27,100 @@ const CoursesManagement = () => {
 
 
   return (
-    <div className={`space-y-6 py-3 rounded-xl transition-colors ${
+    <div className={`space-y-6 sm:space-y-8 py-3 px-3 sm:px-4 md:px-6 rounded-xl transition-colors ${
       isDark
         ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen'
         : 'bg-white'
     }`}>
-      {/* Header */}
-      <div className="flex justify-between items-center px-6 pt-6">
-        <div>
-          <h1 className={`text-2xl font-bold transition-colors ${
-            isDark
-              ? 'text-slate-100'
-              : 'text-gray-900'
+      {/* ===== Page Header with Gradient ===== */}
+      <div className={`rounded-xl sm:rounded-3xl p-4 sm:p-6 md:p-8 transition-all duration-300 ${
+        isDark
+          ? 'bg-slate-800'
+          : 'bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500'
+      }`}>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
+          <div>
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2 ${
+              isDark ? 'text-blue-400' : 'text-white'
+            }`}>
+              Course Management
+            </h1>
+            <p className={`text-xs sm:text-sm flex items-center gap-2 ${
+              isDark ? 'text-blue-300' : 'text-blue-100'
+            }`}>
+              <FiBookOpen className="w-4 h-4" />
+              Manage courses and their batches
+            </p>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => openModal(MODAL_TYPES.ADD_COURSE, { mode: "add" })}
+            className={`flex items-center gap-2 rounded-lg sm:rounded-xl px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center sm:justify-start ${
+              isDark
+                ? 'bg-blue-600 hover:bg-blue-500 text-white'
+                : 'bg-white text-blue-600'
+            }`}
+          >
+            <FiPlus className="w-5 h-5" />
+            Add Course
+          </motion.button>
+        </div>
+      </div>
+
+      {/* ===== View Toggle & Stats ===== */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+        <div className={`bg-gradient-to-r from-blue-50 to-cyan-50 border rounded-xl px-4 py-3 sm:py-4 transition-colors ${
+          isDark
+            ? 'from-blue-900/40 to-cyan-900/40 border-blue-800/50'
+            : 'from-blue-50 to-cyan-50 border-blue-200'
+        }`}>
+          <p className={`text-xs sm:text-sm ${
+            isDark ? 'text-blue-300' : 'text-slate-700'
           }`}>
-            Course Management
-          </h1>
-          <p className={`transition-colors ${
-            isDark
-              ? 'text-slate-400'
-              : 'text-gray-500'
-          }`}>
-            Manage courses and their batches
+            <span className={`font-bold ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>{courses.length}</span>
+            <span className={isDark ? 'text-blue-400' : 'text-slate-600'}> total courses</span>
           </p>
         </div>
 
-        <button
-          onClick={() => openModal(MODAL_TYPES.ADD_COURSE, { mode: "add" })}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors font-medium ${
-            isDark
-              ? 'bg-blue-600 text-white hover:bg-blue-500'
-              : 'bg-blue-600 text-white hover:bg-blue-700'
-          }`}
-        >
-          <FiPlus />
-          Add Course
-        </button>
-      </div>
-
-      {/* View Toggle */}
-      <div className="flex justify-between items-center px-6">
-        <span className={`text-sm transition-colors ${
+        <div className={`inline-flex rounded-lg border p-1 shadow-sm transition-colors ${
           isDark
-            ? 'text-slate-400'
-            : 'text-gray-500'
+            ? 'bg-blue-800 border-blue-700'
+            : 'bg-slate-100 border-slate-300'
         }`}>
-          {courses.length} total courses
-        </span>
-
-        <div className={`flex rounded-lg p-1 transition-colors ${
-          isDark
-            ? 'bg-slate-700'
-            : 'bg-gray-100'
-        }`}>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
             onClick={() => setView("cards")}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md transition-colors ${
+            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium transition-all ${
               view === "cards" 
                 ? isDark
-                  ? 'bg-slate-600 shadow'
-                  : 'bg-white shadow'
-                : ''
+                  ? 'bg-blue-600 text-white shadow'
+                  : 'bg-white text-slate-900 shadow'
+                : isDark
+                  ? 'text-slate-300 hover:text-slate-100'
+                  : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <FiGrid /> Cards
-          </button>
-          <button
+            <FiGrid className="w-4 h-4" />
+            <span className="hidden sm:inline">Cards</span>
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
             onClick={() => setView("table")}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-md transition-colors ${
+            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm font-medium transition-all ${
               view === "table" 
                 ? isDark
-                  ? 'bg-slate-600 shadow'
-                  : 'bg-white shadow'
-                : ''
+                  ? 'bg-blue-600 text-white shadow'
+                  : 'bg-white text-slate-900 shadow'
+                : isDark
+                  ? 'text-slate-300 hover:text-slate-100'
+                  : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <FiList /> Table
-          </button>
+            <FiList className="w-4 h-4" />
+            <span className="hidden sm:inline">Table</span>
+          </motion.button>
         </div>
       </div>
 

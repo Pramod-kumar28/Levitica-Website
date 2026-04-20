@@ -6,7 +6,7 @@ import CourseAdsCarousel from '@/dashboard/Ads/CourseAds';
 import WelcomeScreen from '@/dashboard/Student/WelcomeScreen';
 import StatsCharts from '@/dashboard/Extras/StatsCharts';
 import { useTheme } from '@/context/ThemeContext';
-import { FiUsers, FiBook, FiGrid, FiTrendingUp } from 'react-icons/fi';
+import { FiUsers, FiBook, FiGrid, FiTrendingUp, FiAlertTriangle, FiBarChart2, FiSettings, FiZap, FiLock, FiCheck } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const AdminDashboard = () => {
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
           : 'bg-red-50 border border-red-200 text-red-700'
       }`}>
         <div className="flex items-center gap-3">
-          <span className="text-2xl">⚠️</span>
+          <FiAlertTriangle className="w-6 h-6" />
           <div>
             <h3 className="font-bold">System Error</h3>
             <p className="text-sm opacity-80">Failed to sync dashboard metrics. Please refresh.</p>
@@ -109,34 +109,54 @@ const AdminDashboard = () => {
     <div className={`min-h-screen transition-colors ${
       isDark ? 'bg-slate-900' : 'bg-slate-50'
     }`}>
-      <div className="space-y-8 pb-16 px-4 md:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto w-full space-y-8">
+      <div className="space-y-8 pb-16 px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto w-full space-y-6 sm:space-y-8">
         
           {/* ===== HEADER ===== */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2"
+            className={`rounded-xl sm:rounded-3xl p-4 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 ${
+              isDark
+                ? 'bg-slate-800'
+                : 'bg-gradient-to-r from-blue-600 to-cyan-500'
+            }`}
           >
             <div>
-              <WelcomeScreen />
+              <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2 ${
+                isDark ? 'text-blue-400' : 'text-white'
+              }`}>
+                Admin Dashboard
+              </h1>
+              <p className={`text-xs sm:text-sm flex items-center gap-2 ${
+                isDark ? 'text-blue-300' : 'text-blue-100'
+              }`}>
+                <FiTrendingUp className="w-4 h-4" />
+                Manage platform operations and analytics
+              </p>
             </div>
-            <div className="flex gap-3 flex-wrap">
-              <button className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all hover:scale-105 shadow-lg ${
-                isDark
-                  ? 'bg-violet-600/80 hover:bg-violet-500 text-white shadow-violet-500/30'
-                  : 'bg-violet-500 hover:bg-violet-600 text-white shadow-violet-500/30'
-              }`}>
-                📊 Generate Report
-              </button>
-              <button className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all hover:scale-105 shadow-lg ${
-                isDark
-                  ? 'bg-cyan-600/80 hover:bg-cyan-500 text-white shadow-cyan-500/30'
-                  : 'bg-cyan-500 hover:bg-cyan-600 text-white shadow-cyan-500/30'
-              }`}>
-                ⚙️ System Settings
-              </button>
+            <div className="flex gap-2 sm:gap-3 flex-wrap">
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${
+                  isDark
+                    ? 'bg-blue-600 hover:bg-blue-500 text-white'
+                    : 'bg-white/20 hover:bg-white/30 text-white shadow-black/20'
+                }`}>
+                <FiBarChart2 className="w-4 h-4" /> Generate Report
+              </motion.button>
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm font-semibold transition-all shadow-lg flex items-center gap-2 ${
+                  isDark
+                    ? 'bg-blue-600 hover:bg-blue-500 text-white'
+                    : 'bg-white/20 hover:bg-white/30 text-white shadow-black/20'
+                }`}>
+                <FiSettings className="w-4 h-4" /> System Settings
+              </motion.button>
             </div>
           </motion.div>
 
@@ -209,7 +229,9 @@ const AdminDashboard = () => {
               }`}
             >
               <div className="flex items-center gap-2 mb-5">
-                <span className="text-2xl">⚡</span>
+                <FiZap className={`w-5 h-5 ${
+                  isDark ? 'text-blue-400' : 'text-blue-600'
+                }`} />
                 <h3 className={`text-sm font-bold uppercase tracking-wide ${
                   isDark ? 'text-blue-400' : 'text-blue-600'
                 }`}>
@@ -232,7 +254,9 @@ const AdminDashboard = () => {
             >
               <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center gap-2">
-                  <span className="text-2xl">📊</span>
+                  <FiBarChart2 className={`w-5 h-5 ${
+                    isDark ? 'text-slate-100' : 'text-slate-900'
+                  }`} />
                   <h2 className={`text-base font-bold ${
                     isDark ? 'text-slate-100' : 'text-slate-900'
                   }`}>
@@ -252,10 +276,10 @@ const AdminDashboard = () => {
               <div className={`h-56 rounded-xl flex items-center justify-center transition-all duration-300 ${
                 isDark ? 'bg-slate-700/40' : 'bg-slate-100'
               }`}>
-                <p className={`text-sm font-medium ${
+                <p className={`text-sm font-medium flex items-center gap-2 ${
                   isDark ? 'text-slate-400' : 'text-slate-500'
                 }`}>
-                  📈 Chart Analytics Coming Soon
+                  <FiTrendingUp className="w-4 h-4" /> Chart Analytics Coming Soon
                 </p>
               </div>
             </motion.div>
@@ -273,7 +297,9 @@ const AdminDashboard = () => {
             }`}
           >
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🔐</span>
+              <FiLock className={`w-5 h-5 ${
+                isDark ? 'text-emerald-400' : 'text-emerald-600'
+              }`} />
               <h2 className={`text-base font-bold ${
                 isDark ? 'text-emerald-400' : 'text-emerald-600'
               }`}>
@@ -286,12 +312,12 @@ const AdminDashboard = () => {
               Provision new administrative or student accounts instantly.
             </p>
             <UserCreationForm key={isDark} theme={isDark} />
-            <div className={`text-xs text-center mt-5 px-3 py-2 rounded-lg font-bold tracking-wide inline-block w-full ${
+            <div className={`text-xs text-center mt-5 px-3 py-2 rounded-lg font-bold tracking-wide inline-block w-full flex items-center justify-center gap-2 ${
               isDark 
                 ? 'bg-emerald-900/30 text-emerald-300 border border-emerald-700/50' 
                 : 'bg-emerald-100 text-emerald-700 border border-emerald-300'
             }`}>
-              ✓ Secure Entry • Encrypted Session
+              <FiCheck className="w-4 h-4" /> Secure Entry • Encrypted Session
             </div>
           </motion.div>
 
