@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Zap, TrendingUp } from "lucide-react";
 
 const WelcomeScreen = () => {
   const { user } = useSelector((state) => state.auth);
   const role = user?.role;
 
   const roleMessage = {
-    student: "Let’s continue building your skills and career 🚀",
-    admin: "Here’s an overview of today’s platform activity 📊",
+    student: "Let's continue building your skills and career",
+    admin: "Here's an overview of today's platform activity",
   };
 
   return (
@@ -27,16 +27,18 @@ const WelcomeScreen = () => {
       </div>
 
       {/* Greeting */}
-      <h1 className="text-2xl md:text-3xl font-bold text-foreground">
+      <h1 className="text-2xl md:text-3xl font-bold text-foreground flex items-center gap-2">
         Hi{" "}
         <span className="text-primary">
           {user?.name || "Learner"}
         </span>
-        👋
+        <span className="inline-flex"><Sparkles size={24} className="text-primary" /></span>
       </h1>
 
       {/* Subtext */}
-      <p className="text-sm md:text-base text-muted-foreground">
+      <p className="text-sm md:text-base text-muted-foreground flex items-center gap-2">
+        {role === 'student' && <Zap size={16} className="text-blue-600" />}
+        {role === 'admin' && <TrendingUp size={16} className="text-blue-600" />}
         {roleMessage[role] ||
           "Manage your account and explore new opportunities."}
       </p>
