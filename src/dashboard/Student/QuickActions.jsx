@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from '@/context/ThemeContext';
 import { FaVideo, FaCalendarAlt, FaBookOpen, FaArrowRight } from "react-icons/fa";
 import { FiZap } from "react-icons/fi";
 
 const QuickActionCards = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
 const quickActions = [
   {
@@ -43,15 +46,21 @@ const quickActions = [
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="rounded-xl p-6 transition-all duration-300 border shadow-lg hover:shadow-xl bg-white border-slate-200"
+      className={`rounded-xl p-6 transition-all duration-300 border shadow-lg hover:shadow-xl ${
+        isDark
+          ? 'bg-slate-800 border-slate-700 hover:shadow-slate-900/30'
+          : 'bg-white border-slate-200 hover:shadow-slate-200/50'
+      }`}
     >
       
       {/* Header */}
       <div className="flex items-center gap-2 mb-6">
-        <FiZap className="w-5 h-5 text-blue-600" />
+        <FiZap className={`w-5 h-5 transition-all ${isDark ? 'text-indigo-400' : 'text-blue-600'}`} />
         <div>
-          <h3 className="text-base font-bold uppercase tracking-wide text-blue-600">Quick Actions</h3>
-          <p className="text-xs text-gray-500">Manage your learning activities faster</p>
+          <h3 className={`text-base font-bold uppercase tracking-wide transition-all ${
+            isDark ? 'text-indigo-400' : 'text-blue-600'
+          }`}>Quick Actions</h3>
+          <p className={`text-xs transition-all ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>Manage your learning activities faster</p>
         </div>
       </div>
 
@@ -59,6 +68,10 @@ const quickActions = [
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {quickActions.map((item, index) => {
           const Icon = item.icon;
+          
+          // Dark mode card background variants
+          const darkCardBg = isDark ? 'bg-slate-700/40' : item.cardBg;
+          const darkCardBorder = isDark ? 'border-slate-600 hover:border-slate-500' : item.cardBorder;
 
           return (
             <motion.div
@@ -67,7 +80,7 @@ const quickActions = [
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: index * 0.1, duration: 0.4 }}
               whileHover={{ translateY: -8, scale: 1.03 }}
-              className={`group relative rounded-xl border ${item.cardBorder} ${item.cardBg} p-6 transition-all duration-300 hover:shadow-lg cursor-pointer`}
+              className={`group relative rounded-xl border ${darkCardBorder} ${darkCardBg} p-6 transition-all duration-300 hover:shadow-lg cursor-pointer`}
               onClick={item.action}
             >
               {/* Icon */}
@@ -88,16 +101,24 @@ const quickActions = [
 
               {/* Content */}
               <div className="mt-4">
-                <h4 className="text-sm font-bold text-slate-900">
+                <h4 className={`text-sm font-bold transition-all ${
+                  isDark ? 'text-slate-100' : 'text-slate-900'
+                }`}>
                   {item.title}
                 </h4>
-                <p className="text-xs text-slate-600 mt-1">
+                <p className={`text-xs mt-1 transition-all ${
+                  isDark ? 'text-slate-300' : 'text-slate-600'
+                }`}>
                   {item.desc}
                 </p>
               </div>
 
               {/* CTA */}
-              <div className="mt-4 flex items-center text-xs font-semibold text-blue-600 group-hover:text-blue-700 transition-colors">
+              <div className={`mt-4 flex items-center text-xs font-semibold transition-all ${
+                isDark
+                  ? 'text-indigo-400 group-hover:text-indigo-300'
+                  : 'text-blue-600 group-hover:text-blue-700'
+              }`}>
                 Open
                 <FaArrowRight
                   size={12}
