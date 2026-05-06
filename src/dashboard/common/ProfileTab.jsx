@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { motion } from "framer-motion";
 import AvatarEditor from "react-avatar-editor";
 import {
   useUpdateProfileInfoMutation,
@@ -11,6 +12,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { login, updateUserImage } from '@/features/authSlice';
 import { useTheme } from '@/context/ThemeContext';
+import { FiUser, FiMail, FiSave, FiCamera, FiTrash2, FiX, FiCheck } from "react-icons/fi";
 
 const ProfileTab = ({ user, isDark: isDarkProp }) => {
   const { theme } = useTheme();
@@ -35,19 +37,15 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
   const [deleteProfileImage, { isLoading: isDeletingImage }] =
     useDeleteProfileImageMutation();
 
-  // ------------------ FORM ------------------
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: user?.name || "",
       email: user?.email || "",
-
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Name is required"),
       email: Yup.string().email().required("Email is required"),
-
     }),
     onSubmit: async (values) => {
       try {
@@ -55,23 +53,21 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
           name: values.name,
         }).unwrap();
 
-        dispatch(login(res));   // update redux with new user data
-
+        dispatch(login(res));
         toast.success("Profile updated successfully");
       } catch (error) {
         console.error(error);
+        toast.error("Failed to update profile");
       }
     }
   });
-
-  // ------------------ IMAGE HANDLING ------------------
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("File too large (max 5MB)");
+      toast.error("File too large (max 5MB)");
       return;
     }
 
@@ -100,11 +96,13 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
         setPreview(canvas.toDataURL());
         setShowCropModal(false);
         setCropImage(null);
+        toast.success("Image cropped successfully");
       },
       "image/jpeg",
       0.9
     );
   };
+
   const handleSavePhoto = async () => {
     if (!selectedFile) return;
 
@@ -113,30 +111,27 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
       formData.append("profileImage", selectedFile);
 
       const res = await updateProfileImage(formData).unwrap();
-
       dispatch(updateUserImage(res.profileImage));
-
-      toast.success("Image uploaded");
-
+      toast.success("Profile photo updated successfully");
       setSelectedFile(null);
     } catch (error) {
       console.error(error);
+      toast.error("Failed to update photo");
     }
   };
-  
 
   const handleRemoveImage = async () => {
     try {
       await deleteProfileImage().unwrap();
-
       setSelectedFile(null);
       setPreview(null);
-
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+      toast.success("Profile photo removed");
     } catch (error) {
       console.error(error);
+      toast.error("Failed to remove photo");
     }
   };
 
@@ -145,26 +140,39 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
   };
 
   const inputClass = isDark
-    ? "w-full border border-slate-600 rounded-lg px-4 py-2 text-sm bg-slate-700 text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-400"
-    : "w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
+    ? "w-full border border-dark_border rounded-xl px-4 py-3 text-sm bg-darklight text-white placeholder-gray focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+    : "w-full border border-border rounded-xl px-4 py-3 text-sm bg-light text-midnight_text placeholder-gray focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition";
 
-  const errorClass = isDark ? "text-red-400 text-xs mt-1" : "text-red-500 text-xs mt-1";
+  const errorClass = isDark ? "text-rose-400 text-xs mt-1 flex items-center gap-1" : "text-rose-500 text-xs mt-1 flex items-center gap-1";
 
   return (
     <>
-      <div className="max-w-2xl space-y-6">
-        <h2 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          Profile Information
-        </h2>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <div className={`h-10 w-10 rounded-lg flex items-center justify-center`}>
+            <FiUser className={`h-5 w-5 text-primary`} />
+          </div>
+          <div>
+            <h2 className={`text-xl font-semibold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+              Profile Information
+            </h2>
+            <p className={`text-sm text-gray mt-0.5`}>
+              Update your personal details and profile photo
+            </p>
+          </div>
+        </div>
 
         <form
           onSubmit={formik.handleSubmit}
-          className={`${isDark ? 'bg-slate-700 border-slate-600' : 'bg-gray-50 border-gray-200'} border rounded-xl p-6 space-y-6`}
+          className={` p-6 space-y-6`}
         >
           {/* Avatar Section */}
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center gap-6 pb-4 border-b ${isDark ? 'border-dark_border' : 'border-border'}">
             <div
-              className={`w-20 h-20 rounded-full overflow-hidden ${isDark ? 'bg-slate-600' : 'bg-gray-200'} cursor-pointer`}
+              className={`relative w-24 h-24 rounded-full overflow-hidden cursor-pointer group ${
+                isDark ? 'bg-darkmode' : 'bg-section'
+              } shadow-lg`}
               onClick={triggerFileInput}
             >
               {preview ? (
@@ -174,51 +182,67 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-400 to-purple-500 text-white text-2xl font-semibold">
+                <div className="flex items-center justify-center h-full bg-gradient-to-br from-primary to-skyBlue text-white text-3xl font-semibold">
                   {user?.name?.charAt(0)?.toUpperCase() || "U"}
                 </div>
               )}
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <FiCamera className="text-white h-6 w-6" />
+              </div>
             </div>
 
-            <div className="flex-1">
-              <p className={`font-medium text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>{user?.name}</p>
-              <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-gray-600'}`}>{user?.email}</p>
+            <div className="flex-1 text-center sm:text-left">
+              <p className={`font-semibold text-lg ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+                {user?.name}
+              </p>
+              <p className={`text-sm text-gray mb-3`}>
+                {user?.email}
+              </p>
 
-              <div className="flex gap-3 mt-2">
+              <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                 <button
                   type="button"
                   onClick={triggerFileInput}
-                  className={`text-sm font-medium ${isDark ? 'text-indigo-400 hover:text-indigo-300' : 'text-blue-600 hover:text-blue-700'}`}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                    isDark
+                      ? 'bg-primary/20 text-primary hover:bg-primary/30'
+                      : 'bg-primary/10 text-primary hover:bg-primary/20'
+                  }`}
                 >
+                  <FiCamera className="h-3.5 w-3.5" />
                   Change Photo
                 </button>
 
                 {selectedFile && (
-                  <>
-                    <span className={isDark ? 'text-slate-500' : 'text-gray-400'}>•</span>
-                    <button
-                      type="button"
-                      onClick={handleSavePhoto}
-                      disabled={isSavingImage}
-                      className={`text-sm font-medium disabled:opacity-50 ${isDark ? 'text-emerald-400 hover:text-emerald-300' : 'text-green-600 hover:text-green-700'}`}
-                    >
-                      {isSavingImage ? "Saving..." : "Save Photo"}
-                    </button>
-                  </>
+                  <button
+                    type="button"
+                    onClick={handleSavePhoto}
+                    disabled={isSavingImage}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                      isDark
+                        ? 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
+                        : 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20'
+                    } disabled:opacity-50`}
+                  >
+                    <FiSave className="h-3.5 w-3.5" />
+                    {isSavingImage ? "Saving..." : "Save Photo"}
+                  </button>
                 )}
 
                 {preview && !selectedFile && (
-                  <>
-                    <span className={isDark ? 'text-slate-500' : 'text-gray-400'}>•</span>
-                    <button
-                      type="button"
-                      onClick={handleRemoveImage}
-                      disabled={isDeletingImage}
-                      className={`text-sm font-medium disabled:opacity-50 ${isDark ? 'text-red-400 hover:text-red-300' : 'text-red-600 hover:text-red-700'}`}
-                    >
-                      {isDeletingImage ? "Removing..." : "Remove"}
-                    </button>
-                  </>
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    disabled={isDeletingImage}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                      isDark
+                        ? 'bg-rose-500/20 text-rose-400 hover:bg-rose-500/30'
+                        : 'bg-rose-500/10 text-rose-600 hover:bg-rose-500/20'
+                    } disabled:opacity-50`}
+                  >
+                    <FiTrash2 className="h-3.5 w-3.5" />
+                    {isDeletingImage ? "Removing..." : "Remove"}
+                  </button>
                 )}
               </div>
             </div>
@@ -232,70 +256,105 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
             />
           </div>
 
-          {/* Name */}
+          {/* Name Field */}
           <div>
-            <label className={`block mb-1 text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
+            <label className={`block mb-2 text-sm font-medium ${isDark ? 'text-gray' : 'text-midnight_text'}`}>
               Full Name
             </label>
             <input
               {...formik.getFieldProps("name")}
               className={inputClass}
+              placeholder="Enter your full name"
             />
             {formik.touched.name && formik.errors.name && (
-              <p className={errorClass}>{formik.errors.name}</p>
+              <p className={errorClass}>
+                <FiX className="h-3 w-3" />
+                {formik.errors.name}
+              </p>
             )}
           </div>
 
-          {/* Email */}
+          {/* Email Field (Disabled) */}
           <div>
-            <label className={`block mb-1 text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>
-              Email
+            <label className={`block mb-2 text-sm font-medium ${isDark ? 'text-gray' : 'text-midnight_text'}`}>
+              Email Address
             </label>
-            <input
-              {...formik.getFieldProps("email")}
-              disabled
-              className={`${inputClass} ${
-                isDark ? 'bg-slate-600 text-slate-300' : 'bg-gray-100 text-gray-600'
-              }`}
-            />
+            <div className="relative">
+              <input
+                {...formik.getFieldProps("email")}
+                disabled
+                className={`${inputClass} ${
+                  isDark 
+                    ? 'bg-darkmode/50 text-gray cursor-not-allowed' 
+                    : 'bg-section/50 text-gray cursor-not-allowed'
+                }`}
+              />
+              <FiMail className={`absolute right-4 top-3.5 h-4 w-4 text-gray`} />
+            </div>
+            <p className={`text-xs text-gray mt-1`}>
+              Email cannot be changed. Contact support for assistance.
+            </p>
           </div>
 
-
-          {/* Save Profile Info */}
-          <div className="flex justify-end">
-            <button
+          {/* Save Button */}
+          <div className="flex justify-end pt-2 border-t ${isDark ? 'border-dark_border' : 'border-border'}">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={isSavingInfo}
-              className={`px-6 py-2 rounded-lg disabled:opacity-50 text-white font-medium transition ${
+              className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-xl disabled:opacity-50 text-white font-medium transition shadow-md hover:shadow-lg ${
                 isDark
-                  ? 'bg-indigo-600 hover:bg-indigo-700'
-                  : 'bg-blue-600 hover:bg-blue-700'
+                  ? 'bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary'
+                  : 'bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary'
               }`}
             >
+              <FiSave className="h-4 w-4" />
               {isSavingInfo ? "Saving..." : "Save Changes"}
-            </button>
+            </motion.button>
           </div>
         </form>
       </div>
 
       {/* Crop Modal */}
       {showCropModal && cropImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-          <div className={`rounded-xl p-6 ${
-            isDark ? 'bg-slate-800' : 'bg-white'
-          }`}>
-            <AvatarEditor
-              ref={editorRef}
-              image={cropImage}
-              width={250}
-              height={250}
-              border={50}
-              borderRadius={125}
-              scale={zoom}
-              rotate={rotation}
-            />
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className={`rounded-2xl p-6 shadow-2xl max-w-md w-full ${
+              isDark ? 'bg-semidark' : 'bg-white'
+            }`}
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+                Crop Profile Photo
+              </h3>
+              <button
+                onClick={() => setShowCropModal(false)}
+                className={`p-1 rounded-lg transition ${isDark ? 'hover:bg-darklight' : 'hover:bg-light'}`}
+              >
+                <FiX className={`h-5 w-5 ${isDark ? 'text-gray' : 'text-gray'}`} />
+              </button>
+            </div>
 
-            <div className="mt-4">
+            <div className="flex justify-center">
+              <AvatarEditor
+                ref={editorRef}
+                image={cropImage}
+                width={250}
+                height={250}
+                border={50}
+                borderRadius={125}
+                scale={zoom}
+                rotate={rotation}
+              />
+            </div>
+
+            <div className="mt-4 space-y-2">
+              <label className={`text-xs font-medium ${isDark ? 'text-gray' : 'text-midnight_text'}`}>
+                Zoom
+              </label>
               <input
                 type="range"
                 min="1"
@@ -303,31 +362,33 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
                 step="0.01"
                 value={zoom}
                 onChange={(e) => setZoom(parseFloat(e.target.value))}
-                className="w-full"
+                className="w-full h-1.5 rounded-lg appearance-none cursor-pointer bg-primary/20 accent-primary"
               />
             </div>
 
-            <div className="flex justify-end gap-3 mt-4">
+            <div className="flex justify-end gap-3 mt-6">
               <button
                 onClick={() => setShowCropModal(false)}
-                className={`px-4 py-2 rounded-lg transition ${
+                className={`px-4 py-2 rounded-lg font-medium transition ${
                   isDark
-                    ? 'text-slate-300 hover:bg-slate-700'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'text-gray hover:bg-darklight'
+                    : 'text-gray hover:bg-light'
                 }`}
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveCrop}
-                className={`px-4 py-2 text-white rounded-lg transition ${
-                  isDark ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-blue-600 hover:bg-blue-700'
+                className={`px-4 py-2 text-white rounded-lg font-medium transition shadow-md hover:shadow-lg ${
+                  isDark
+                    ? 'bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary'
+                    : 'bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary'
                 }`}
               >
-                Save
+                Apply Crop
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </>

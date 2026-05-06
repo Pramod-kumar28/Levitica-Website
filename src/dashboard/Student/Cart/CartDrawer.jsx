@@ -25,18 +25,15 @@ export default function CartDrawer({ isOpen, onClose }) {
   const items = useSelector(selectCartItems);
   const total = useSelector(selectCartTotal);
 
-  /* ================= FETCH CART ================= */
   const { data: cartData } = useGetCartQuery(userId, {
     skip: !userId || !isOpen,
   });
 
-  /* ================= FETCH FREE COURSE ================= */
   const { data: freeData } = useGetFreeCourseQuery(undefined, {
     skip: !isOpen,
   });
 
   const freeCourse = freeData?.data?.[0];
-
 
   const {
     handleRemoveFromCart,
@@ -48,14 +45,12 @@ export default function CartDrawer({ isOpen, onClose }) {
   const loading = removeStatus.isLoading || clearStatus.isLoading;
   const { handleCheckout } = useCheckoutHandler();
 
-  /* ================= SYNC CART ================= */
   useEffect(() => {
     if (cartData?.items) {
       dispatch(setCartItems(cartData.items));
     }
   }, [cartData, dispatch]);
 
-  /* ================= BUSINESS LOGIC ================= */
   const hasPaidItems = items.some((item) => item.price > 0);
 
   const displayItems =
@@ -68,7 +63,6 @@ export default function CartDrawer({ isOpen, onClose }) {
         ]
       : items;
 
-  /* ================= CHECKOUT ================= */
   const handleBuyNow = async () => {
     if (!user || items.length === 0) return;
 
@@ -85,7 +79,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* ===== OVERLAY ===== */}
+          {/* OVERLAY */}
           <motion.div
             className="fixed inset-0 bg-black/40 z-40"
             initial={{ opacity: 0 }}
@@ -94,33 +88,38 @@ export default function CartDrawer({ isOpen, onClose }) {
             onClick={onClose}
           />
 
-          {/* ===== DRAWER ===== */}
+          {/* DRAWER */}
           <motion.div
             className="
-              fixed top-0 right-0 h-full
+              fixed top-0 right-0
+              h-screen
               w-full sm:w-[420px]
-              bg-white z-50
+              bg-white dark:bg-semidark
+              border-l border-border dark:border-dark_border
+              z-50
               flex flex-col
             "
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
-            {/* ===== HEADER ===== */}
-            <div className="sticky top-0 bg-white z-10 border-b">
+
+            {/* HEADER */}
+            <div className="flex-shrink-0 bg-white dark:bg-semidark border-b border-border dark:border-dark_border">
               <div className="flex items-center justify-between p-5">
+
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
-                    <FiShoppingBag className="text-blue-600 text-lg" />
+                  <div className="w-10 h-10 rounded-xl bg-light dark:bg-darklight flex items-center justify-center">
+                    <FiShoppingBag className="text-primary text-lg" />
                   </div>
+
                   <div>
-                    <h2 className="text-xl font-bold">Your Cart</h2>
-                    <p className="text-xs text-gray-500">
+                    <h2 className="text-xl font-bold text-midnight_text dark:text-white">
+                      Your Cart
+                    </h2>
+                    <p className="text-xs text-gray">
                       {items.length > 0
-                        ? `${items.length} course${
-                            items.length > 1 ? "s" : ""
-                          } selected`
+                        ? `${items.length} course${items.length > 1 ? "s" : ""} selected`
                         : "No courses added yet"}
                     </p>
                   </div>
@@ -128,24 +127,25 @@ export default function CartDrawer({ isOpen, onClose }) {
 
                 <button
                   onClick={onClose}
-                  className="p-2 rounded-lg hover:bg-gray-100"
+                  className="p-2 rounded-lg hover:bg-light dark:hover:bg-darklight"
                 >
                   <FiX size={18} />
                 </button>
+
               </div>
             </div>
 
-            {/* ===== ITEMS ===== */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4">
+            {/* ITEMS (SCROLL AREA) */}
+            <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center">
-                  <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
-                    <FiShoppingBag size={36} className="text-gray-400" />
+                  <div className="w-20 h-20 rounded-full bg-light dark:bg-darklight flex items-center justify-center">
+                    <FiShoppingBag size={36} className="text-gray" />
                   </div>
-                  <h3 className="mt-6 text-lg font-semibold">
+                  <h3 className="mt-6 text-lg font-semibold text-midnight_text dark:text-white">
                     Your cart is empty
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-gray mt-1">
                     Browse courses and add them to your cart
                   </p>
                 </div>
@@ -154,40 +154,28 @@ export default function CartDrawer({ isOpen, onClose }) {
                   const isFree = item.price === 0;
 
                   return (
-                    <motion.div
+                    <div
                       key={item._id}
-                      initial={isFree ? { scale: 0.95, opacity: 0 } : false}
-                      animate={isFree ? { scale: 1, opacity: 1 } : false}
-                      transition={{ duration: 0.4 }}
                       className={`
                         flex gap-4
-                        border rounded-2xl
-                        p-4
-                        transition
-                        hover:shadow-sm
-                        ${
-                          isFree
-                            ? "bg-green-50 border-green-400 ring-2 ring-green-200"
-                            : ""
-                        }
+                        border border-border dark:border-dark_border
+                        rounded-2xl p-4
+                        bg-white dark:bg-darklight
+                        transition hover:shadow-deatail_shadow
+                        ${isFree ? "ring-2 ring-primary/20" : ""}
                       `}
                     >
-                      {/* IMAGE */}
-                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
+                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-light dark:bg-darkmode flex-shrink-0">
                         <img
-                          src={
-                            item?.thumbnail ||
-                            "/img/course-placeholder.png"
-                          }
+                          src={item?.thumbnail || "/img/course-placeholder.png"}
                           alt={item.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
 
-                      {/* INFO */}
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
-                          <h4 className="font-semibold text-sm leading-snug line-clamp-2">
+                          <h4 className="font-semibold text-sm text-midnight_text dark:text-white line-clamp-2">
                             {item.name}
                           </h4>
 
@@ -200,43 +188,40 @@ export default function CartDrawer({ isOpen, onClose }) {
                                   courseId: item._id,
                                 })
                               }
-                              className="text-gray-400 hover:text-red-500"
+                              className="text-gray hover:text-primary"
                             >
                               <FiTrash2 />
                             </button>
                           )}
                         </div>
 
-                        <p className="mt-2 text-base font-bold">
+                        <p className="mt-2 text-base font-bold text-midnight_text dark:text-white">
                           {isFree ? (
-                            <span className="text-green-600">
-                              FREE 🎁
-                            </span>
+                            <span className="text-primary">FREE 🎁</span>
                           ) : (
                             `₹${item.price}`
                           )}
                         </p>
                       </div>
-                    </motion.div>
+                    </div>
                   );
                 })
               )}
             </div>
 
-            {/* ===== FOOTER ===== */}
+            {/* FOOTER */}
             {items.length > 0 && (
-              <div className="sticky bottom-0 bg-white border-t p-5">
+              <div className="flex-shrink-0 bg-white dark:bg-semidark border-t border-border dark:border-dark_border p-5">
+
                 {hasPaidItems && (
-                  <p className="text-green-600 text-sm mb-2">
+                  <p className="text-primary text-sm mb-2">
                     🎉 Bonus course included for free!
                   </p>
                 )}
 
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-sm text-gray-500">
-                    Total Amount
-                  </span>
-                  <span className="text-2xl font-bold">
+                  <span className="text-sm text-gray">Total Amount</span>
+                  <span className="text-2xl font-bold text-midnight_text dark:text-white">
                     ₹{total}
                   </span>
                 </div>
@@ -246,18 +231,21 @@ export default function CartDrawer({ isOpen, onClose }) {
                   disabled={loading}
                   className="
                     w-full
-                    bg-blue-600 hover:bg-blue-700
+                    bg-primary hover:bg-skyBlue
                     text-white
                     font-semibold
                     rounded-xl
                     py-3.5
                     flex items-center justify-center gap-2
-                    disabled:opacity-60
+                    shadow-property
+                    hover:shadow-deatail_shadow
+                    transition-all
                   "
                 >
                   Proceed to Checkout
                   <FiArrowRight />
                 </button>
+
               </div>
             )}
           </motion.div>

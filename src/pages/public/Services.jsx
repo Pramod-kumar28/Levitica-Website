@@ -1,91 +1,131 @@
-import data from '@/data/services.json';
+import { useEffect } from "react";
+import data from "@/data/services.json";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Services = () => {
+
+  /* AOS INIT */
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      easing: "ease-out-cubic",
+      once: false,
+      offset: 80,
+    });
+  }, []);
+
   return (
     <div className="bg-white pt-20">
 
-      {/* HERO */}
-      <section
-        className="hero-section ptb-100 gradient-overlay py-28"
-        style={{
-          background: "url('/img/header-bg-5.jpg') center / cover no-repeat",
-        }}
-      >
-         <div
-            className="hero-bottom-shape-two"
-            style={{
-              background: "url('img/hero-bottom-shape.svg') no-repeat bottom center",
-            }}
-          ></div>
-      
-        <div className="relative  max-w-4xl mx-auto px-4 text-center py-5 border">
-          <h1 className="text-4xl md:text-5xl font-bold text-white">
+      {/* ================= HERO (PROPERTY STYLE) ================= */}
+      <section className="relative py-14 bg-gradient-to-b from-white from-10% dark:from-darkmode to-herobg to-90% dark:to-darklight">
+
+        <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto px-4 text-center">
+
+          <h1
+            data-aos="fade-up"
+            className="text-[32px] md:text-[48px] font-bold text-midnight_text leading-[1.2]"
+          >
             Our Services
           </h1>
+
+          <p
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="mt-4 text-gray max-w-2xl mx-auto text-base md:text-lg"
+          >
+            We offer a wide range of services to meet the needs of our clients.
+          </p>
+
+          <div
+            data-aos="fade-up"
+            data-aos-delay="200"
+            className="mt-6 flex justify-center items-center gap-2 text-sm text-gray"
+          >
+            <Link to="/" className="hover:text-primary transition">
+              Home
+            </Link>
+
+            <span>›</span>
+
+            <span className="text-midnight_text font-medium">
+              Services
+            </span>
+          </div>
+
         </div>
       </section>
 
-      {/* SERVICES LIST */}
-      <section className="bg-slate-50 py-24">
-        <div className="max-w-7xl mx-auto px-4">
+      {/* ================= SERVICES SECTION ================= */}
+      <section className="bg-section dark:bg-darkmode py-24 flex justify-center items-center">
+        <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto container px-4">
 
-          {/* Section header */}
+          {/* HEADER */}
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+            <h2
+              data-aos="fade-up"
+              className="text-3xl md:text-4xl font-bold text-midnight_text dark:text-white"
+            >
               We Provide Best Services
             </h2>
-            <p className="mt-4 text-slate-600">
-              Efficiently aggregate end-to-end core competencies without
-              maintainable ideas. Dynamically foster tactical solutions without
-              enabled value.
+
+            <p
+              data-aos="fade-up"
+              data-aos-delay="100"
+              className="mt-4 text-gray"
+            >
+              Efficiently aggregate end-to-end core competencies without maintainable ideas. Dynamically foster tactical solutions without enabled value.
             </p>
           </div>
 
-          {/* Grid */}
+          {/* GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
             {data?.services.map((service, index) => (
               <div
                 key={index}
-                className="
-                  group bg-white rounded-2xl p-8
-                  shadow-sm hover:shadow-xl
-                  transition flex flex-col
-                "
+                data-aos="fade-up"
+                data-aos-delay={index * 120}
+                className="group bg-white dark:bg-semidark rounded-xl p-6 shadow-property border border-lightgray hover:shadow-deatail_shadow transition flex flex-col h-full"
               >
+
+                {/* IMAGE */}
                 <img
                   src={service.img}
                   alt={service.title}
                   className="w-20 h-20 object-contain mb-6"
                 />
 
-                <h5 className="text-lg font-semibold text-slate-900">
+                {/* TITLE */}
+                <h5 className="text-lg font-semibold text-midnight_text dark:text-white">
                   {service.title}
                 </h5>
 
-                <p className="mt-3 text-slate-600 flex-grow">
+                {/* DESCRIPTION */}
+                <p className="mt-3 text-gray flex-grow">
                   {service.description}
                 </p>
 
+                {/* CTA */}
                 <Link
                   to={service.path}
-                  className="
-                    mt-6 inline-flex items-center gap-2
-                    text-indigo-600 font-medium
-                    hover:text-indigo-700
-                    transition
-                  "
+                  className="mt-6 inline-flex items-center gap-2 text-primary font-medium hover:underline"
                 >
                   Get More Info
                   <FaArrowRight className="text-sm group-hover:translate-x-1 transition" />
                 </Link>
+
               </div>
             ))}
+
           </div>
 
         </div>
       </section>
+
     </div>
   );
 };

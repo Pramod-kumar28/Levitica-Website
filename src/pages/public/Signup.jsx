@@ -3,44 +3,48 @@ import SignupForm from "./SignupForm";
 
 const SignupPage = () => {
   return (
-    <section className="hero-section hero-bg-2 ptb-100 full-screen">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+    <section className="pt-32 pb-32 bg-light dark:bg-darkmode">
 
-          {/* LEFT CONTENT */}
-<div className=" backdrop-blur-sm rounded-xl p-6 text-white space-y-4 max-w-xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-white ">
-              Create Your Account
-            </h1>
-            <p className="text-lg text-slate-200">
-              Keep your face always toward the sunshine and shadows will fall behind you.
-            </p>
-          </div>
+      <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
+        <div className="flex justify-center items-center text-center">
 
-          {/* RIGHT CARD */}
-          <div className="bg-white login-signup-card rounded-xl shadow-xl w-full max-w-md mx-auto">
-            <div className="px-8 py-10">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold">Create Account</h2>
-                <p className="text-slate-500">
-                  Made with love by developers for developers.
-                </p>
-              </div>
+          {/* CARD */}
+          <div className="max-w-lg w-full bg-white dark:bg-semidark px-8 py-14 sm:px-12 md:px-16 rounded-lg shadow-property">
 
-              <SignupForm />
+            {/* LOGO */}
+            <div className="mb-10 text-center mx-auto inline-block max-w-[160px]">
+              <img src="/img/leviticalogo.png" className="mx-auto" />
             </div>
+
+            {/* TITLE */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-midnight_text dark:text-white">
+                Create Account
+              </h2>
+              <p className="text-gray mt-2">
+                Made with love by developers for developers.
+              </p>
+            </div>
+
+            {/* FORM */}
+            <SignupForm />
 
             {/* FOOTER */}
-            <div className="border-t px-8 py-4 text-sm">
-              <span className="text-slate-600">Already have an account?</span>{" "}
-              <Link to="/login" className="text-blue-600 hover:underline">
-                Sign in
+            <div className="mt-8 text-sm text-gray">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="text-primary hover:underline"
+              >
+                Sign In
               </Link>
             </div>
+
           </div>
 
         </div>
       </div>
+
     </section>
   );
 };

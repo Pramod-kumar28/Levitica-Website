@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import {
   FaCheckCircle,
   FaBolt,
@@ -15,11 +19,21 @@ const ManpowerSection = ({ backgroundImage }) => {
 
   const isDark = Boolean(backgroundImage);
 
+  /* ✅ AOS INIT */
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      once: false,
+      easing: "ease-out-cubic",
+      offset: 80,
+    });
+  }, []);
+
   return (
     <section
       className={`relative py-24 ${
         isDark ? "text-white" : "bg-white text-slate-900"
-      }`}
+      } flex justify-center items-center`}
       style={
         backgroundImage
           ? {
@@ -34,17 +48,27 @@ const ManpowerSection = ({ backgroundImage }) => {
       )}
 
       <div className="relative max-w-5xl mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white">
+
+        {/* HEADING */}
+        <h2
+          data-aos="fade-up"
+          className="text-3xl md:text-4xl font-bold text-white"
+        >
           Empowering Businesses with People Who Make an Impact
         </h2>
 
-        <p className="mt-4 text-lg text-white/90 md:text-xl">
-          Professionals who are skilled, vetted, and deployment-ready — delivered
+        {/* DESCRIPTION */}
+        <p
+          data-aos="fade-up"
+          data-aos-delay="100"
+          className="mt-4 text-lg text-white/90 md:text-xl"
+        >
+          Professionals who are skilled, vetted, and deployment-ready delivered
           exactly when and where your business needs them. Not just manpower,
           but momentum.
         </p>
 
-        {/* Benefits */}
+        {/* BENEFITS */}
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
           {benefits.map((item, index) => {
             const Icon = item.icon;
@@ -52,6 +76,8 @@ const ManpowerSection = ({ backgroundImage }) => {
             return (
               <div
                 key={index}
+                data-aos="fade-up"
+                data-aos-delay={200 + index * 120}
                 className={`flex items-center gap-3 p-4 rounded-xl ${
                   isDark
                     ? "bg-white/10 backdrop-blur"
@@ -66,7 +92,7 @@ const ManpowerSection = ({ backgroundImage }) => {
         </div>
 
         {/* CTA */}
-        <div className="mt-12">
+        <div data-aos="fade-up" data-aos-delay="500" className="mt-12">
           <a
             href="contact-us"
             className={`btn ${
@@ -76,6 +102,7 @@ const ManpowerSection = ({ backgroundImage }) => {
             Get Support
           </a>
         </div>
+
       </div>
     </section>
   );

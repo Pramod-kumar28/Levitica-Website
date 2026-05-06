@@ -1,4 +1,6 @@
-import { motion } from 'framer-motion';
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const milestones = [
   { year: '2013', title: 'Company Founded', description: 'Established with a vision to transform businesses through intelligent technology solutions.' },
@@ -10,25 +12,38 @@ const milestones = [
 ];
 
 const Timeline = () => {
+
+  /* ✅ AOS INIT */
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      easing: "ease-out-cubic",
+      once: false,
+      offset: 80,
+    });
+  }, []);
+
   return (
     <section className="py-10 bg-gradient-to-br from-slate-50 via-blue-50/20 to-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* HEADER */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
+        <div
+          data-aos="fade-up"
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-4 md:mb-6 text-slate-900">
             Our Journey of Innovation
           </h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-600">
+
+          <p
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="text-lg md:text-xl max-w-3xl mx-auto text-slate-600"
+          >
             Key milestones in our evolution from startup to comprehensive technology partner
           </p>
-        </motion.div>
+        </div>
 
         {/* TIMELINE */}
         <div className="relative">
@@ -36,12 +51,10 @@ const Timeline = () => {
 
           <div className="space-y-8">
             {milestones.map((milestone, index) => (
-              <motion.div
+              <div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
+                data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
+                data-aos-delay={index * 120}
                 className={`relative flex ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'} justify-start`}
               >
 
@@ -67,7 +80,7 @@ const Timeline = () => {
                   <div className="w-3 h-3 bg-white rounded-full"></div>
                 </div>
 
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

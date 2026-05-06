@@ -46,108 +46,103 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="main">
-      <section className="hero-section full-screen gray-light-bg">
-        <div className="w-full min-h-screen grid lg:grid-cols-2">
+    <section className="pt-40 pb-32 bg-light dark:bg-darkmode">
 
-          {/* LEFT IMAGE */}
-          <div
-            className="hidden lg:block relative bg-cover bg-center"
-            style={{ backgroundImage: "url('/img/slider-img-1.jpg')" }}
-          >
-            <div className="absolute inset-0 gradient-overlay" />
-          </div>
+      <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
+        <div className="flex justify-center items-center text-center">
 
-          {/* RIGHT FORM */}
-          <div className="flex items-center justify-center px-6 md:px-12">
-            <div className="w-full max-w-md">
+          {/* CARD */}
+          <div className="max-w-lg w-full bg-white dark:bg-semidark px-8 py-14 sm:px-12 md:px-16 rounded-lg shadow-property">
 
-              <h1 className="text-3xl font-bold text-center mb-2">
+            {/* LOGO */}
+            <div className="mb-10 text-center mx-auto inline-block max-w-[160px]">
+              <img src="/img/leviticalogo.png" className="mx-auto" />
+            </div>
+
+            {/* TITLE */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-midnight_text dark:text-white">
                 Change Password
-              </h1>
-
-              <p className="text-center text-slate-500 mb-8">
+              </h2>
+              <p className="text-gray mt-2">
                 Enter your new password below
               </p>
-
-              <form onSubmit={handleSubmit} className="space-y-6">
-
-                {/* NEW PASSWORD (with toggle) */}
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    New Password
-                  </label>
-
-                  <div className="relative">
-                    <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="New password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      className="w-full pl-10 pr-10 py-3 border rounded-lg
-                                 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-blue-600"
-                    >
-                      {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </button>
-                  </div>
-                </div>
-
-                {/* CONFIRM PASSWORD (no toggle) */}
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Confirm Password
-                  </label>
-
-                  <div className="relative">
-                    <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-
-                    <input
-                      type="password"
-                      placeholder="Confirm password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border rounded-lg
-                                 focus:outline-none focus:tw:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-                </div>
-
-                {/* SUBMIT */}
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full bg-blue-600 hover:bg-blue-700
-                             text-white font-semibold py-3 rounded-lg
-                             transition disabled:opacity-60"
-                >
-                  {isLoading ? "Changing..." : "Change Password"}
-                </button>
-
-                <p className="text-center text-sm text-slate-500">
-                  Remember your password?{" "}
-                  <Link
-                    to="/login"
-                    className="text-blue-600 hover:underline"
-                  >
-                    Log in
-                  </Link>
-                </p>
-
-              </form>
             </div>
+
+            {/* FORM */}
+            <form onSubmit={handleSubmit} className="space-y-6 text-left">
+
+              {/* NEW PASSWORD */}
+              <div>
+                <label className="block text-sm font-medium mb-2 text-midnight_text dark:text-white">
+                  New Password
+                </label>
+
+                <div className="relative">
+                  <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray" />
+
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="New password"
+                    className="w-full pl-12 pr-12 py-3 rounded-md border border-border dark:border-dark_border bg-transparent text-midnight_text dark:text-white outline-none focus:border-primary"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray hover:text-primary"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
+
+              {/* CONFIRM PASSWORD */}
+              <div>
+                <label className="block text-sm font-medium mb-2 text-midnight_text dark:text-white">
+                  Confirm Password
+                </label>
+
+                <div className="relative">
+                  <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray" />
+
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm password"
+                    className="w-full pl-12 pr-4 py-3 rounded-md border border-border dark:border-dark_border bg-transparent text-midnight_text dark:text-white outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              {/* BUTTON */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition disabled:opacity-60"
+              >
+                {isLoading ? "Changing..." : "Change Password"}
+              </button>
+
+              {/* LINK */}
+              <p className="text-center text-sm text-gray">
+                Remember your password?{" "}
+                <Link to="/login" className="text-primary hover:underline">
+                  Log in
+                </Link>
+              </p>
+
+            </form>
+
           </div>
 
         </div>
-      </section>
-    </div>
+      </div>
+
+    </section>
   );
 };
 

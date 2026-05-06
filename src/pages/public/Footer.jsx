@@ -1,177 +1,114 @@
+import { Link } from "react-router-dom";
 import {
   FaFacebookF,
   FaLinkedinIn,
   FaYoutube,
-  FaMapMarkerAlt,
-  FaPhoneAlt,
-  FaEnvelope,
-
 } from "react-icons/fa";
-import { FaXTwitter } from 'react-icons/fa6';
-import { Link } from "react-router-dom";
-
-const socialLinks = [
-  {
-    name: "Facebook",
-    icon: FaFacebookF,
-    url: 'https://www.facebook.com/people/Levitica-Technologies/61556544303087',
-  },
-
-  {
-    name: "Twitter",
-    icon: FaXTwitter,
-    url: "https://x.com/levitica02?s=11",
-  },
-  {
-    name: "LinkedIn",
-    icon: FaLinkedinIn,
-    url: "https://www.linkedin.com/company/levitica-technologies-pvt-ltd",
-  },
-  {
-    name: 'YouTube',
-    icon: FaYoutube,
-    url: 'https://www.youtube.com/@leviticatechnologies',
-  },
-];
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-b from-slate-950 to-slate-900 text-white">
+    <footer className="bg-midnight_text text-white">
 
-      {/* TOP SECTION */}
-      <div className="max-w-7xl mx-auto px-6 py-16 text-white">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12">
+      {/* ===== TOP SECTION ===== */}
+      <div className="container mx-auto max-w-screen-xl px-4 py-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 items-center">
 
-          {/* LINK COLUMNS */}
-          {["QUICK LINKS", "COMPANY", "LEGAL", "SUPPORT"].map((category) => (
-            <div key={category}>
-              <h4 className="font-semibold text-lg mb-6 text-white">
-                {category}
-              </h4>
+          {/* LOGO */}
+          <div className="flex items-center">
+            <img src="/img/leviticalogo.png" className="h-14 object-contain" />
+          </div>
 
-              <ul className="space-y-3 text-sm text-white/80">
-                {getLinksByCategory(category).map((link, i) => (
-                  <li key={i}>
-                    <Link
-                      to={link.href}
-                      className="hover:text-white text-white/80 hover:underline transition-all"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* ADDRESS */}
+          <div>
+            <h4 className="text-lg text-white font-semibold mb-4">Address</h4>
+            <p className="text-gray leading-relaxed mb-4">
+              2nd Floor, Vittal Rao Nagar, Madhapur,<br />
+              Hyderabad, Telangana – 500081
+            </p>
+
+            <div className="flex gap-3">
+              <Social icon={FaFacebookF} />
+              <Social icon={FaXTwitter} />
+              <Social icon={FaLinkedinIn} />
+              <Social icon={FaYoutube} />
             </div>
-          ))}
+          </div>
 
-          {/* CONTACT SECTION */}
-          <div className="text-white">
-            <h4 className="font-semibold text-lg text-white mb-6">
-              Get In Touch
-            </h4>
-            <ul className="space-y-5 text-sm text-white/80">
-
-              <li className="flex gap-4">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <FaMapMarkerAlt className="text-indigo-400" size={16} />
-                </div>
-                <span>
-                  2nd Floor, Vittal Rao Nagar, Madhapur,
-                  Sriram Plaza, Hyderabad, Telangana – 500081
-                </span>
-              </li>
-
-              <li className="flex gap-4 items-center">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <FaEnvelope className="text-indigo-400" size={16} />
-                </div>
-                <span>hr@leviticatechnologies.com</span>
-              </li>
-
-              <li className="flex gap-4 items-center">
-                <div className="w-8 h-8 flex items-center justify-center">
-                  <FaPhoneAlt className="text-indigo-400" size={16} />
-                </div>
-                <span>+91 9032503559</span>
-              </li>
-
+          {/* QUICK LINKS */}
+          <div>
+            <h4 className="text-lg text-white font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-3 text-gray">
+              <li><Link to="/contact-us">Contact Support</Link></li>
+              <li><Link to="/services">Services</Link></li>
+              <li><Link to="/trainings">Trainings</Link></li>
+              <li><Link to="/about-us">About Us</Link></li>
             </ul>
           </div>
+
+          {/* POPULAR SEARCHES */}
+          <div>
+            <h4 className="text-lg text-white font-semibold mb-4">Popular Searches</h4>
+            <ul className="space-y-3 text-gray">
+              <li>Internships</li>
+              <li>Full Stack Development</li>
+              <li>AI & Machine Learning</li>
+              <li>Digital Marketing</li>
+            </ul>
+          </div>
+
         </div>
       </div>
 
-      {/* BOTTOM SECTION */}
-      <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      {/* ===== MIDDLE SECTION ===== */}
+      <div className="border-t border-dark_border py-8">
+        <div className="container mx-auto max-w-screen-xl px-4 flex flex-col lg:flex-row justify-between items-center gap-6">
 
-          <p className="text-sm text-white/70 text-center md:text-left">
-            © {new Date().getFullYear()}{" "}
-            <a
-              href="https://leviticatechnologies.com"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium hover:underline text-white"
-            >
-              Levitica Technologies
-            </a>
-            . All rights reserved.
-          </p>
+          {/* LEFT */}
+          <div className="flex flex-col md:flex-row gap-6 text-gray text-lg">
+            <p>
+              <span className="text-white font-medium">Phone :</span> +91 9032503559
+            </p>
+            <p>
+              <span className="text-white font-medium">Email :</span> hr@leviticatechnologies.com
+            </p>
+          </div>
 
-          {/* SOCIAL ICONS */}
-          <div className="flex gap-4">
-            {socialLinks.map(({ name, icon: Icon, url }) => (
-              <a
-                key={name}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={name}
-                className="
-                  w-10 h-10
-                  flex items-center justify-center
-                  rounded-full
-                  bg-white/10
-                  hover:bg-indigo-600
-                  hover:scale-110
-                  transition-all duration-300
-                "
-              >
-                <Icon size={20} className="text-white" />
-              </a>
-            ))}
+          {/* NEWSLETTER */}
+          <div className="flex items-center gap-3 w-full max-w-lg">
+            <span className="text-white font-semibold text-lg">
+              Newsletter
+            </span>
+
+            <div className="flex w-full">
+              <input
+                type="text"
+                placeholder="Email address"
+                className="w-full px-4 py-3 bg-white text-black focus:outline-none"
+              />
+              <button className="bg-primary px-6 py-3 hover:bg-blue-700">
+                Subscribe
+              </button>
+            </div>
           </div>
 
         </div>
+      </div>
+
+      {/* ===== BOTTOM ===== */}
+      <div className="border-t border-dark_border py-4 text-center text-gray text-sm">
+        © {new Date().getFullYear()} Levitica Technologies. All rights reserved.
       </div>
 
     </footer>
   );
 };
 
-// LINKS
-function getLinksByCategory(category) {
-  const links = {
-    "QUICK LINKS": [
-      { label: "Make Appointment", href: "/contact-us" },
-      { label: "Department Services", href: "/services" },
-    ],
-    COMPANY: [
-      { label: "About Our Services", href: "/about-us" },
-      { label: "Our Affiliates Program", href: "/#" },
-    ],
-    LEGAL: [
-      { label: "Privacy Policy", href: "/privacy" },
-      { label: "Refund Policy", href: "/refund" },
-      { label: "Terms of Service", href: "/terms" },
-    ],
-    SUPPORT: [
-      { label: "Contact", href: "/contact-us" },
-      { label: "Knowledge Base", href: "/knowledge-base" },
-      { label: "Forums", href: "/forums" },
-    ],
-  };
-
-  return links[category] || [];
-}
+/* SOCIAL ICON */
+const Social = ({ icon: Icon }) => (
+  <div className="w-9 h-9 flex items-center justify-center rounded-md bg-white/20 hover:bg-primary transition">
+    <Icon size={14} />
+  </div>
+);
 
 export default Footer;

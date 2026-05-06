@@ -20,8 +20,8 @@ const LiveClasses = () => {
 
   const [filteredClasses, setFilteredClasses] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [selectedCourse, setSelectedCourse] = useState('all'); // Add state
-  const [selectedBatch, setSelectedBatch] = useState('all'); // Add state
+  const [selectedCourse, setSelectedCourse] = useState('all');
+  const [selectedBatch, setSelectedBatch] = useState('all');
 
   const {
     data: liveClassesData,
@@ -34,7 +34,6 @@ const LiveClasses = () => {
 
   const { joinClass } = useJoinLiveClass();
 
-  /* 🔄 Update time every 30s */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
@@ -42,7 +41,6 @@ const LiveClasses = () => {
     return () => clearInterval(interval);
   }, []);
 
-  /* 🔍 Filtering */
   useEffect(() => {
     if (!liveClassesData?.liveClasses) return;
 
@@ -63,7 +61,6 @@ const LiveClasses = () => {
     setFilteredClasses(filtered);
   }, [liveClassesData, selectedCourse, selectedBatch]);
 
-  /* 🧠 Helpers */
   const formatTime = date =>
     new Date(date).toLocaleTimeString('en-US', {
       hour: '2-digit',
@@ -97,30 +94,28 @@ const LiveClasses = () => {
     return 'completed';
   };
 
-  /* ⏳ Loading */
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className={isDark ? 'text-slate-400' : 'text-gray-500'}>Loading live classes...</p>
+        <div className="relative">
+          <div className={`w-12 h-12 border-4 rounded-full animate-spin ${
+            isDark ? 'border-dark_border border-t-primary' : 'border-border border-t-primary'
+          }`}></div>
+        </div>
       </div>
     );
   }
 
-  /* ❌ Error */
   if (error) {
     return (
       <div className="text-center py-16">
-        <AlertCircle size={40} className={`mx-auto ${isDark ? 'text-red-500' : 'text-red-500'}`} />
-        <h3 className={`mt-4 font-semibold ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
+        <AlertCircle size={40} className={`mx-auto text-red-500`} />
+        <h3 className={`mt-4 font-semibold text-midnight_text dark:text-white`}>
           Failed to load classes
         </h3>
         <button
           onClick={refetch}
-          className={`mt-4 px-4 py-2 rounded-lg text-white ${
-            isDark
-              ? 'bg-indigo-600 hover:bg-indigo-700'
-              : 'bg-blue-600 hover:bg-blue-700'
-          }`}
+          className={`mt-4 px-4 py-2 rounded-lg text-white bg-primary hover:bg-skyBlue transition`}
         >
           Try Again
         </button>
@@ -128,7 +123,6 @@ const LiveClasses = () => {
     );
   }
 
-  // Extract unique courses and batches for filters
   const uniqueCourses = Array.from(
     new Map(
       (liveClassesData?.liveClasses || [])
@@ -145,53 +139,46 @@ const LiveClasses = () => {
   );
 
   return (
-    <div className={`min-h-screen p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8 ${
-      isDark ? 'bg-slate-900' : 'bg-gray-50'
-    }`}>
+    <div className={`min-h-screen p-4 sm:p-6 lg:px-5 lg:py-6 space-y-6 sm:space-y-8 `}>
 
-      {/* ===== Page Header with Gradient ===== */}
-      <div className={`rounded-xl sm:rounded-3xl p-4 sm:p-8 shadow-lg ${
-        isDark
-          ? 'bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800'
-          : 'bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500'
-      }`}>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* ===== Page Header ===== */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={``}
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-2">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-1">
+            <h1 className="text-3xl sm:text-4xl font-bold text-midnight_text dark:text-white mb-1">
               Live Classes
             </h1>
-            <p className={`text-sm sm:text-base flex items-center gap-2 ${
-              isDark ? 'text-slate-300' : 'text-blue-100'
-            }`}>
-              <Video className="w-4 h-4" />
+            <p className={`text-sm sm:text-base flex items-center gap-2 text-gray`}>
+              <Video className="w-4 h-4 text-primary" />
               Join your scheduled live sessions
             </p>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ===== Filters Card ===== */}
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`rounded-2xl border p-4 sm:p-6 shadow-sm backdrop-blur-sm ${
+        className={`rounded-2xl border p-4 sm:p-6 shadow-property hover:shadow-deatail_shadow transition ${
           isDark
-            ? 'bg-slate-800 border-slate-700'
-            : 'bg-white border-gray-200'
-        }`}>
-        <h3 className={`text-sm font-semibold mb-4 flex items-center gap-2 ${
-          isDark ? 'text-slate-200' : 'text-gray-900'
-        }`}>
-          <FiFilter className={`w-4 h-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+            ? 'bg-semidark border-dark_border'
+            : 'bg-white border-border'
+        }`}
+      >
+        {/* <div className="h-0.5 rounded-full mb-4 bg-gradient-to-r from-primary to-skyBlue" /> */}
+        <h3 className={`text-sm font-semibold mb-4 flex items-center gap-2 text-midnight_text dark:text-white`}>
+          <FiFilter className="w-4 h-4 text-primary" />
           Filter Classes
         </h3>
         <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
 
-          {/* Course Filter */}
           <div>
-            <label className={`block text-xs sm:text-sm font-medium mb-2 ${
-              isDark ? 'text-slate-300' : 'text-gray-700'
-            }`}>
+            <label className={`block text-xs sm:text-sm font-medium mb-2 text-gray`}>
               Filter by Course
             </label>
             <select
@@ -199,8 +186,8 @@ const LiveClasses = () => {
               onChange={(e) => setSelectedCourse(e.target.value)}
               className={`w-full rounded-lg border py-2.5 px-3 text-sm focus:ring-2 focus:outline-none transition cursor-pointer ${
                 isDark
-                  ? 'bg-slate-700 border-slate-600 text-slate-200 focus:border-blue-500 focus:ring-blue-500/20'
-                  : 'bg-gray-50 border-gray-300 focus:bg-white focus:border-blue-500 focus:ring-blue-500/20'
+                  ? 'bg-darklight border-dark_border text-white focus:border-primary focus:ring-primary/20'
+                  : 'bg-light border-border text-midnight_text focus:border-primary focus:ring-primary/20'
               }`}
             >
               <option value="all">All Courses</option>
@@ -212,11 +199,8 @@ const LiveClasses = () => {
             </select>
           </div>
 
-          {/* Batch Filter */}
           <div>
-            <label className={`block text-xs sm:text-sm font-medium mb-2 ${
-              isDark ? 'text-slate-300' : 'text-gray-700'
-            }`}>
+            <label className={`block text-xs sm:text-sm font-medium mb-2 text-gray`}>
               Filter by Batch
             </label>
             <select
@@ -224,8 +208,8 @@ const LiveClasses = () => {
               onChange={(e) => setSelectedBatch(e.target.value)}
               className={`w-full rounded-lg border py-2.5 px-3 text-sm focus:ring-2 focus:outline-none transition cursor-pointer ${
                 isDark
-                  ? 'bg-slate-700 border-slate-600 text-slate-200 focus:border-blue-500 focus:ring-blue-500/20'
-                  : 'bg-gray-50 border-gray-300 focus:bg-white focus:border-blue-500 focus:ring-blue-500/20'
+                  ? 'bg-darklight border-dark_border text-white focus:border-primary focus:ring-primary/20'
+                  : 'bg-light border-border text-midnight_text focus:border-primary focus:ring-primary/20'
               }`}
             >
               <option value="all">All Batches</option>
@@ -240,16 +224,16 @@ const LiveClasses = () => {
       </motion.div>
 
       {/* ===== Stats ===== */}
-      <div className={`border rounded-xl px-4 py-3 sm:py-4 ${
+      <div className={`rounded-xl border px-4 py-3 sm:py-4 ${
         isDark
-          ? 'bg-slate-700/50 border-slate-600'
-          : 'bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-100'
+          ? 'bg-darklight border-dark_border'
+          : 'bg-light border-border'
       }`}>
-        <p className={`text-sm ${isDark ? 'text-slate-300' : 'text-gray-700'}`}>
-          <span className={`font-bold ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>{filteredClasses.length}</span>
-          <span className={isDark ? 'text-slate-400' : 'text-gray-600'}> of </span>
-          <span className={`font-bold ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>{liveClassesData?.liveClasses?.length || 0}</span>
-          <span className={isDark ? 'text-slate-400' : 'text-gray-600'}> live sessions</span>
+        <p className={`text-sm text-gray`}>
+          <span className={`font-bold text-primary`}>{filteredClasses.length}</span>
+          <span> of </span>
+          <span className={`font-bold text-primary`}>{liveClassesData?.liveClasses?.length || 0}</span>
+          <span> live sessions</span>
         </p>
       </div>
 
@@ -266,47 +250,45 @@ const LiveClasses = () => {
               liveClass.duration
             );
 
-
             return (
               <motion.div
                 key={liveClass._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
-                className={`rounded-2xl border shadow-sm hover:shadow-xl transition overflow-hidden flex flex-col group ${
+                whileHover={{ y: -8 }}
+                className={`rounded-2xl border shadow-property hover:shadow-deatail_shadow transition-all duration-300 overflow-hidden flex flex-col group ${
                   isDark
-                    ? 'bg-slate-800 border-slate-700'
-                    : 'bg-white border-gray-200'
+                    ? 'bg-semidark border-dark_border'
+                    : 'bg-white border-border'
                 }`}
               >
-                {/* Status Header Bar */}
-                <div className={`h-1.5 bg-gradient-to-r transition group-hover:shadow-md ${
-                  isDark
-                    ? 'from-slate-700 to-slate-600 group-hover:from-slate-600 group-hover:to-slate-500'
-                    : 'from-blue-600 to-cyan-600 group-hover:from-blue-700 group-hover:to-cyan-700'
+                <div className={`h-1.5 bg-gradient-to-r transition-all duration-300 group-hover:shadow-md ${
+                  status === 'live' 
+                    ? 'from-red-500 to-rose-500'
+                    : status === 'upcoming'
+                    ? 'from-amber-500 to-orange-500'
+                    : status === 'completed'
+                    ? 'from-green-500 to-emerald-500'
+                    : 'from-gray-500 to-gray-600'
                 }`} />
 
-                {/* Content */}
                 <div className="p-4 sm:p-5 lg:p-6 flex flex-col h-full">
-                  {/* Title & Status Badge */}
                   <div className="flex justify-between items-start gap-2 mb-3">
-                    <h3 className={`font-bold text-base sm:text-lg lg:text-xl line-clamp-2 flex-1 ${
-                      isDark ? 'text-slate-100' : 'text-gray-900'
-                    }`}>
+                    <h3 className={`font-bold text-base sm:text-lg lg:text-xl line-clamp-2 flex-1 text-midnight_text dark:text-white`}>
                       {liveClass.title}
                     </h3>
                     <div>
                       {status === 'live' && (
-                        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-gradient-to-r from-red-500 to-red-600 text-white animate-pulse inline-flex items-center gap-1 shadow-md whitespace-nowrap">
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-gradient-to-r from-red-500 to-rose-500 text-white animate-pulse inline-flex items-center gap-1 shadow-md whitespace-nowrap">
                           LIVE
                         </span>
                       )}
                       {status === 'upcoming' && (
                         <span className={`text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 shadow-md whitespace-nowrap ${
                           isDark
-                            ? 'bg-amber-900/40 text-amber-300 border border-amber-700/30'
-                            : 'bg-amber-500 text-white'
+                            ? 'bg-amber-500/20 text-amber-400 border border-amber-500/20'
+                            : 'bg-amber-500/10 text-amber-600 border border-amber-500/20'
                         }`}>
                           Upcoming
                         </span>
@@ -314,8 +296,8 @@ const LiveClasses = () => {
                       {status === 'completed' && (
                         <span className={`text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 shadow-md whitespace-nowrap ${
                           isDark
-                            ? 'bg-green-900/40 text-green-300 border border-green-700/30'
-                            : 'bg-green-500 text-white'
+                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20'
+                            : 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20'
                         }`}>
                           Completed
                         </span>
@@ -323,82 +305,67 @@ const LiveClasses = () => {
                     </div>
                   </div>
 
-                  {/* Meta Information Boxes */}
                   <div className="space-y-2 sm:space-y-2.5 flex-1 mb-4">
-                    {/* Course */}
                     <div className={`flex items-center gap-2 text-xs sm:text-sm rounded-lg p-2 sm:p-2.5 ${
                       isDark
-                        ? 'bg-slate-700 text-slate-300'
-                        : 'bg-blue-50 text-gray-700'
+                        ? 'bg-darklight text-gray'
+                        : 'bg-light text-gray'
                     }`}>
-                      <BookOpen className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                        isDark ? 'text-blue-400' : 'text-blue-600'
-                      }`} />
-                      <span className="font-medium truncate">{liveClass.course?.name || "—"}</span>
+                      <BookOpen className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 text-primary`} />
+                      <span className="font-medium truncate text-midnight_text dark:text-white">{liveClass.course?.name || "—"}</span>
                     </div>
 
-                    {/* Batch */}
                     <div className={`flex items-center gap-2 text-xs sm:text-sm rounded-lg p-2 sm:p-2.5 ${
                       isDark
-                        ? 'bg-slate-700 text-slate-300'
-                        : 'bg-purple-50 text-gray-700'
+                        ? 'bg-darklight text-gray'
+                        : 'bg-light text-gray'
                     }`}>
-                      <User className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                        isDark ? 'text-purple-400' : 'text-purple-600'
-                      }`} />
-                      <span className="font-medium truncate">{liveClass.batch?.batchName || "—"}</span>
+                      <User className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 text-purple-500`} />
+                      <span className="font-medium truncate text-midnight_text dark:text-white">{liveClass.batch?.batchName || "—"}</span>
                     </div>
 
-                    {/* Date & Time Grid */}
                     <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
                       <div className={`flex items-center gap-1.5 text-xs rounded-lg p-2 sm:p-2.5 ${
                         isDark
-                          ? 'bg-slate-700 text-slate-300'
-                          : 'bg-green-50 text-gray-700'
+                          ? 'bg-darklight text-gray'
+                          : 'bg-light text-gray'
                       }`}>
-                        <Calendar className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                          isDark ? 'text-green-400' : 'text-green-600'
-                        }`} />
-                        <span className="font-medium truncate">
+                        <Calendar className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 text-emerald-500`} />
+                        <span className="font-medium truncate text-midnight_text dark:text-white">
                           {new Date(liveClass.startTime).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}
                         </span>
                       </div>
                       <div className={`flex items-center gap-1.5 text-xs rounded-lg p-2 sm:p-2.5 ${
                         isDark
-                          ? 'bg-slate-700 text-slate-300'
-                          : 'bg-orange-50 text-gray-700'
+                          ? 'bg-darklight text-gray'
+                          : 'bg-light text-gray'
                       }`}>
-                        <Clock className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                          isDark ? 'text-orange-400' : 'text-orange-600'
-                        }`} />
-                        <span className="font-medium truncate">{formatTime(liveClass.startTime)}</span>
+                        <Clock className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 text-orange-500`} />
+                        <span className="font-medium truncate text-midnight_text dark:text-white">{formatTime(liveClass.startTime)}</span>
                       </div>
                     </div>
 
-                    {/* Duration */}
                     <div className={`text-xs rounded-lg p-2 sm:p-2.5 font-medium ${
                       isDark
-                        ? 'bg-slate-700 text-slate-300'
-                        : 'bg-gray-100 text-gray-600'
+                        ? 'bg-darklight text-gray'
+                        : 'bg-light text-gray'
                     }`}>
-                      <Video className={`inline w-3 h-3 mr-1 ${isDark ? 'text-purple-400' : ''}`} /> {liveClass.duration} min
+                      <Video className={`inline w-3 h-3 mr-1 text-primary`} /> {liveClass.duration} min
                     </div>
 
-                    {/* Instructor */}
                     {liveClass.instructor?.name && (
                       <div className={`text-xs rounded-lg p-2 sm:p-2.5 font-medium ${
                         isDark
-                          ? 'bg-slate-700 text-indigo-300'
-                          : 'bg-indigo-50 text-indigo-700'
+                          ? 'bg-darklight text-indigo-400'
+                          : 'bg-light text-indigo-600'
                       }`}>
                         👨‍🏫 {liveClass.instructor.name}
                       </div>
                     )}
                   </div>
 
-                  {/* Action Buttons */}
                   <div className={`space-y-2 border-t pt-3 sm:pt-4 ${
-                    isDark ? 'border-slate-700' : 'border-gray-200'
+                    isDark ? 'border-dark_border' : 'border-border'
                   }`}>
                     {canJoin ? (
                       <motion.button
@@ -406,10 +373,10 @@ const LiveClasses = () => {
                         whileTap={{ scale: 0.98 }}
                         onClick={() => joinClass(liveClass._id)}
                         className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl py-2 sm:py-2.5 text-xs sm:text-sm font-semibold shadow-lg hover:shadow-xl transition ${
-                          isDark
-                            ? 'bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800'
-                            : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800'
-                        }`}
+                          status === 'live'
+                            ? 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700'
+                            : 'bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary'
+                        } text-white`}
                       >
                         <PlayCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         <span>Join Class</span>
@@ -419,8 +386,8 @@ const LiveClasses = () => {
                         disabled
                         className={`w-full py-2 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg border-2 ${
                           isDark
-                            ? 'text-amber-300 bg-amber-900/20 border-amber-700/30'
-                            : 'text-amber-700 bg-amber-50 border-amber-200'
+                            ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+                            : 'text-amber-600 bg-amber-500/10 border-amber-500/20'
                         }`}
                       >
                         Starts at {formatTime(liveClass.startTime)}
@@ -430,15 +397,13 @@ const LiveClasses = () => {
                         disabled
                         className={`w-full py-2 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg border-2 ${
                           isDark
-                            ? 'text-slate-500 bg-slate-700 border-slate-600'
-                            : 'text-gray-500 bg-gray-100 border-gray-200'
+                            ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+                            : 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20'
                         }`}
                       >
                         Completed
                       </button>
                     )}
-
-                  
                   </div>
                 </div>
               </motion.div>
@@ -446,11 +411,11 @@ const LiveClasses = () => {
           })
         ) : (
           <div className="col-span-full text-center py-16">
-            <Calendar size={48} className={`mx-auto ${isDark ? 'text-slate-600' : 'text-gray-400'}`} />
-            <h3 className={`mt-4 font-semibold ${isDark ? 'text-slate-200' : 'text-gray-900'}`}>
+            <Calendar size={48} className={`mx-auto text-gray`} />
+            <h3 className={`mt-4 font-semibold text-midnight_text dark:text-white`}>
               No Live Classes Found
             </h3>
-            <p className={`mt-2 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
+            <p className={`mt-2 text-gray`}>
               {selectedCourse !== 'all' || selectedBatch !== 'all'
                 ? 'No classes match your filters. Try different options.'
                 : 'Check back later for upcoming sessions'
@@ -462,11 +427,7 @@ const LiveClasses = () => {
                   setSelectedCourse('all');
                   setSelectedBatch('all');
                 }}
-                className={`mt-4 px-4 py-2 rounded-lg text-sm font-medium transition ${
-                  isDark
-                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                    : 'bg-blue-600 hover:bg-blue-700 text-white'
-                }`}
+                className={`mt-4 px-4 py-2 rounded-lg text-sm font-medium transition text-white bg-primary hover:bg-skyBlue`}
               >
                 Clear Filters
               </button>

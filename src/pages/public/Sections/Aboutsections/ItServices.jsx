@@ -1,93 +1,137 @@
-import { motion } from 'framer-motion';
-import { FaCode, FaRobot, FaCloud, FaDatabase, FaLaptopCode } from 'react-icons/fa6';
-import { FaMobileAlt } from 'react-icons/fa';
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+import {
+  FaCode,
+  FaRobot,
+  FaCloud,
+  FaDatabase,
+  FaLaptopCode,
+} from "react-icons/fa6";
+import { FaMobileAlt } from "react-icons/fa";
 
 const itServices = [
   {
     icon: <FaCode />,
-    title: 'Custom Software Development',
-    desc: 'Tailored enterprise software solutions that align perfectly with your business processes and goals.',
-    bgColor: 'from-blue-50 to-indigo-50',
-    iconColor: 'text-blue-600',
+    title: "Custom Software Development",
+    desc: "Tailored enterprise software solutions that align perfectly with your business processes and goals.",
+    gradient: "from-primary/15 to-primary/5",
+    iconColor: "text-primary",
   },
   {
     icon: <FaMobileAlt />,
-    title: 'Mobile App Development',
-    desc: 'Native and cross-platform mobile applications for iOS and Android with stunning UI/UX.',
-    bgColor: 'from-cyan-50 to-blue-50',
-    iconColor: 'text-cyan-600',
+    title: "Mobile App Development",
+    desc: "Native and cross-platform mobile applications for iOS and Android with stunning UI/UX.",
+    gradient: "from-gray/20 to-gray/5",
+    iconColor: "text-cyan",
   },
   {
     icon: <FaLaptopCode />,
-    title: 'Web Development',
-    desc: 'Responsive, high-performance websites and web applications using modern frameworks.',
-    bgColor: 'from-purple-50 to-pink-50',
-    iconColor: 'text-purple-600',
+    title: "Web Development",
+    desc: "Responsive, high-performance websites and web applications using modern frameworks.",
+    gradient: "from-skyBlue/20 to-skyBlue/5",
+    iconColor: "text-skyBlue",
   },
   {
     icon: <FaRobot />,
-    title: 'AI & Machine Learning',
-    desc: 'Intelligent systems that streamline operations, predict outcomes, and unlock new insights.',
-    bgColor: 'from-purple-50 to-pink-50',
-    iconColor: 'text-purple-600',
+    title: "AI & Machine Learning",
+    desc: "Intelligent systems that streamline operations, predict outcomes, and unlock new insights.",
+    gradient: "from-purple-200/40 to-purple-100/20",
+    iconColor: "text-purple-600",
   },
   {
     icon: <FaCloud />,
-    title: 'Cloud Transformation',
-    desc: 'Scalable cloud infrastructure and migration strategies for modern businesses.',
-    bgColor: 'from-cyan-50 to-blue-50',
-    iconColor: 'text-cyan-600',
+    title: "Cloud Transformation",
+    desc: "Scalable cloud infrastructure and migration strategies for modern businesses.",
+    gradient: "from-cyan/10 to-primary/10",
+    iconColor: "text-cyan",
   },
   {
     icon: <FaDatabase />,
-    title: 'Data Analytics & BI',
-    desc: 'Turn your data into actionable insights with advanced analytics and business intelligence.',
-    bgColor: 'from-emerald-50 to-teal-50',
-    iconColor: 'text-emerald-600',
+    title: "Data Analytics & BI",
+    desc: "Turn your data into actionable insights with advanced analytics and business intelligence.",
+    gradient: "from-emerald-200/40 to-emerald-100/20",
+    iconColor: "text-emerald-600",
   },
 ];
 
 const ItServices = () => {
+
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      easing: "ease-out-cubic",
+      once: false,
+      offset: 80,
+    });
+  }, []);
+
   return (
-    <section className=" py-8  md:py-10 bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-section dark:bg-darkmode py-24">
+      <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto px-4">
 
         {/* HEADER */}
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-slate-900">
-            <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              IT Services
-            </span>
+          <h2
+            data-aos="fade-up"
+            className="text-3xl md:text-4xl font-bold text-midnight_text dark:text-white"
+          >
+            IT Services
           </h2>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto text-slate-600">
+
+          <p
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="mt-4 text-gray max-w-2xl mx-auto"
+          >
             Comprehensive technology solutions to power your digital transformation
           </p>
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
           {itServices.map((service, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
-              className={`group bg-gradient-to-br ${service.bgColor} border border-slate-200 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}
+              data-aos="fade-up"
+              data-aos-delay={index * 120}
+              className={`
+                group relative overflow-hidden
+                rounded-xl p-6
+                border border-lightgray
+                transition duration-300
+                hover:-translate-y-2
+                hover:shadow-deatail_shadow
+                bg-gradient-to-br ${service.gradient}
+              `}
             >
-              <div className={`mb-6 text-3xl ${service.iconColor}`}>
+
+              {/* GLOW EFFECT */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-300 bg-gradient-to-br from-white/40 to-transparent"></div>
+
+              {/* ICON */}
+              <div className={`relative mb-5 text-3xl ${service.iconColor} transition duration-300 group-hover:scale-105 group-hover:rotate-3`}>
                 {service.icon}
               </div>
 
-              <h3 className="font-semibold text-xl mb-3 text-slate-800">
+              {/* TITLE */}
+              <h3 className="relative font-semibold text-lg text-midnight_text dark:text-white">
                 {service.title}
               </h3>
 
-              <p className="leading-relaxed text-slate-600">
+              {/* DESC */}
+              <p className="relative mt-3 text-gray">
                 {service.desc}
               </p>
-            </motion.div>
+
+              {/* BORDER GLOW */}
+              <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-primary/20 transition"></div>
+
+            </div>
           ))}
+
         </div>
       </div>
     </section>

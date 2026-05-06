@@ -1,148 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import {
   FaUsersCog,
   FaBuilding,
   FaBrain,
   FaGraduationCap,
   FaHospital,
-  FaChartLine,
-  FaFileInvoiceDollar,
-  FaRobot,
-  FaVideo,
-  FaHeartbeat,
-  FaCheckCircle,
-  FaArrowRight
+  FaCheckCircle
 } from "react-icons/fa";
-
-/* ---------- ICON SYSTEM (SAFE FOR TAILWIND) ---------- */
-const IconWrapper = ({ icon: Icon, bg, color, size = 20 }) => (
-  <div className={`p-2 ${bg} rounded-lg`}>
-    <Icon style={{ width: size, height: size }} className={color} />
-  </div>
-);
-
-const ColorfulIcons = {
-  blue: (p) => <IconWrapper {...p} bg="bg-blue-100" color="text-blue-600" />,
-  emerald: (p) => <IconWrapper {...p} bg="bg-emerald-100" color="text-emerald-600" />,
-  rose: (p) => <IconWrapper {...p} bg="bg-pink-100" color="text-pink-600" />,
-  amber: (p) => <IconWrapper {...p} bg="bg-yellow-100" color="text-yellow-600" />,
-  cyan: (p) => <IconWrapper {...p} bg="bg-cyan-100" color="text-cyan-600" />
-};
 
 const ProductsSection = () => {
   const [activeTab, setActiveTab] = useState("all");
 
-  /* ---------- PRODUCTS ---------- */
- const products = [
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      once: false,
+      easing: "ease-out-cubic",
+      offset: 80,
+      delay: 50
+    });
+  }, []);
+
+  const products = [
     {
       id: 1,
       title: "HRMS",
       subtitle: "Human Resource Management System",
       description:
-        "Cloud-based HR platform covering the complete employee lifecycle with automation and compliance. Streamline recruitment, onboarding, payroll processing, performance management, and employee engagement with AI-powered insights and real-time analytics. Our solution reduces manual HR tasks by 70% and improves employee satisfaction through intuitive self-service portals.",
+        "Cloud-based HR platform covering the complete employee lifecycle with automation and compliance.",
       features: [
         "HR lifecycle automation",
         "Payroll & compliance",
         "Performance tracking",
-        "Employee self-service",
-        "360-degree feedback system",
-        "Leave & attendance automation"
       ],
       icon: FaUsersCog,
-      secondaryIcon: FaChartLine,
-      iconColor: "blue",
-      textColor: "text-blue-600",
       category: ["hr", "enterprise"],
-      deployment: "Cloud / On-premise"
+      deployment: "Cloud",
+      image:
+        "https://images.unsplash.com/photo-1531403009284-440f080d1e12"
     },
     {
       id: 2,
       title: "Hostel & PG System",
       subtitle: "Property Management Platform",
       description:
-        "Smart solution for managing bookings, tenants, billing, and maintenance in hostels and PGs. Automate rent collection, track maintenance requests, manage inventory, and provide digital check-in/check-out experiences. Real-time occupancy dashboards and automated notifications keep property managers informed and tenants satisfied with seamless operations.",
+        "Smart solution for managing bookings, tenants, billing, and maintenance.",
       features: [
-        "Room & bed management",
+        "Room management",
         "Automated billing",
         "Tenant dashboards",
-        "Maintenance tracking",
-        "Digital agreement management",
-        "Visitor & security logging"
       ],
       icon: FaBuilding,
-      secondaryIcon: FaFileInvoiceDollar,
-      iconColor: "rose",
-      textColor: "text-pink-600",
       category: ["property"],
-      deployment: "Cloud-based"
+      deployment: "Cloud",
+      image: "/img/hostel.png"
     },
     {
       id: 3,
       title: "AI HR + CRM",
-      subtitle: "AI Business Automation",
+      subtitle: "AI Automation",
       description:
-        "AI-driven HR and CRM solution delivering predictive insights and automated workflows. Leverage machine learning algorithms for smart candidate matching, lead scoring, sentiment analysis, and process optimization. Transform business operations with intelligent automation that adapts to your company's unique needs and growth patterns.",
+        "AI-driven HR and CRM solution delivering predictive insights.",
       features: [
         "AI resume screening",
-        "Smart CRM pipelines",
+        "CRM pipelines",
         "Predictive analytics",
-        "Chatbot automation",
-        "Sentiment analysis engine",
-        "Workflow optimization tools"
       ],
       icon: FaBrain,
-      secondaryIcon: FaRobot,
-      iconColor: "emerald",
-      textColor: "text-emerald-600",
       category: ["ai", "enterprise"],
-      deployment: "SaaS"
+      deployment: "SaaS",
+      image:
+        "https://media.istockphoto.com/id/2078574728/photo/employee-profile-dashboard-advisor-using-employee-kpi-dashboard-on-screen-hr-attrition.webp?a=1&b=1&s=612x612&w=0&k=20&c=lnL3-5wLncOFhPpTO1IB8l2c9g6NbjqOY2E8kJ3qJ_k="
     },
     {
       id: 4,
       title: "DVSkillHub",
-      subtitle: "Learning Management System",
+      subtitle: "Learning Platform",
       description:
-        "Modern LMS for institutes and corporates with live classes and certification. Deliver engaging learning experiences through interactive content, gamification, and detailed progress tracking. Support blended learning models with seamless integration of online and offline educational resources for comprehensive skill development.",
+        "Modern LMS for institutes and corporates with live classes.",
       features: [
         "Course management",
         "Live classes",
         "Assessments",
-        "Certificates",
-        "Gamification & rewards",
-        "Progress analytics dashboard"
       ],
       icon: FaGraduationCap,
-      secondaryIcon: FaVideo,
-      iconColor: "amber",
-      textColor: "text-yellow-600",
       category: ["education"],
-      deployment: "Cloud "
+      deployment: "Cloud",
+      image:
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8b25saW5lJTIwZWR1Y2F0aW9ufGVufDB8fDB8fHww"
     },
     {
       id: 5,
-      title: "Hospital Management System",
-      subtitle: "Healthcare Operations Platform",
+      title: "Hospital System",
+      subtitle: "Healthcare Platform",
       description:
-        "End-to-end hospital digitization from patient records to billing and pharmacy. Improve patient care with electronic health records, appointment scheduling, inventory management, and insurance processing. HIPAA-compliant solution that enhances operational efficiency while ensuring data security and regulatory compliance.",
+        "Complete hospital digitization with records and billing.",
       features: [
-        "Electronic health records",
-        "Appointment scheduling",
-        "Billing & pharmacy",
-        "Doctor management",
-        "Laboratory integration",
-        "Insurance claim processing"
+        "Patient records",
+        "Appointments",
+        "Billing",
       ],
       icon: FaHospital,
-      secondaryIcon: FaHeartbeat,
-      iconColor: "cyan",
-      textColor: "text-cyan-600",
       category: ["healthcare"],
-      deployment: "Cloud /  White-label"
+      deployment: "Cloud",
+      image:
+        "https://media.istockphoto.com/id/1134679866/photo/doctor-working-in-hospital-writing-prescription-clipboard-working-an-laptop-on-desk-in.webp?a=1&b=1&s=612x612&w=0&k=20&c=R-VFqH-naNMbAC4jJabJXNO9RYOq4CKgAcYtevXCtzk="
     }
   ];
-  /* ---------- FILTER ---------- */
+
   const categories = [
     { id: "all", name: "All" },
     { id: "enterprise", name: "Enterprise" },
@@ -157,93 +126,88 @@ const ProductsSection = () => {
       ? products
       : products.filter((p) => p.category.includes(activeTab));
 
-  /* ---------- CARD ---------- */
   const ProductCard = ({ product }) => {
-    const Icon = ColorfulIcons[product.iconColor];
+    const Icon = product.icon;
 
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        whileHover={{ y: -4 }}
-        className="h-full border border-gray-200 rounded-2xl bg-white shadow-sm hover:shadow-lg transition-all"
-      >
-        <div className="flex flex-col h-full p-6">
-          {/* Header */}
-          <div className="flex items-start gap-3 mb-4">
-            <Icon icon={product.icon} />
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {product.title}
-              </h3>
-              <p className="text-xs text-gray-500">
-                {product.subtitle}
-              </p>
-            </div>
-          </div>
+      <div className="bg-white dark:bg-darklight rounded-lg shadow-property overflow-hidden group transition">
 
-          {/* Description */}
-          <p className="text-sm text-gray-600 mb-4">
+        {/* IMAGE */}
+        <div className="relative overflow-hidden">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="w-full h-[250px] object-cover group-hover:scale-125 duration-500"
+          />
+
+          <p className="absolute top-3 left-3 bg-white text-primary text-xs px-3 py-1 rounded-md">
+            {product.deployment}
+          </p>
+        </div>
+
+        {/* CONTENT */}
+        <div className="p-6">
+
+          <h3 className="text-lg font-semibold text-midnight_text dark:text-white group-hover:text-primary transition">
+            {product.title}
+          </h3>
+
+          <p className="text-sm text-gray mt-1">
+            {product.subtitle}
+          </p>
+
+          <p className="text-sm text-gray mt-3">
             {product.description}
           </p>
 
-          {/* Features */}
-          <ul className="space-y-2 mb-6">
+          <ul className="mt-4 space-y-1">
             {product.features.map((f, i) => (
-              <li key={i} className="flex gap-2">
-                <FaCheckCircle className={`mt-0.5 text-xs ${product.textColor}`} />
-                <span className="text-sm text-gray-700">{f}</span>
+              <li key={i} className="flex items-center gap-2 text-sm text-gray">
+                <FaCheckCircle className="text-primary text-xs" />
+                {f}
               </li>
             ))}
           </ul>
 
-          {/* Push footer to bottom */}
-          <div className="flex-grow" />
-
-          {/* Footer */}
-          <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-gray-500">
-              {product.deployment}
-            </span>
-
+          <div className="mt-5 flex justify-between items-center">
             <Link
               to={`/products/${product.title.toLowerCase().replace(/\s+/g, "-")}`}
-              className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700"
+              className="text-primary text-sm font-medium hover:underline"
             >
-              Learn More
-              <FaArrowRight className="ml-2 text-xs" />
+              View Details →
             </Link>
+
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Icon className="text-primary w-4 h-4" />
+            </div>
           </div>
+
         </div>
-      </motion.div>
+      </div>
     );
   };
 
-  /* ---------- RENDER ---------- */
   return (
-    <section className="py-12 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <h2 className="text-4xl font-bold text-gray-900">
-            Enterprise Software Solutions
-          </h2>
-          <p className="mt-4 text-gray-600 text-base">
-            Scalable, secure, and industry-ready platforms to power your business.
-          </p>
-        </div>
+    <section className="bg-light dark:bg-semidark flex justify-center items-center py-20">
+      <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto container px-4">
 
-        {/* Tabs */}
+        <h1
+          className="text-4xl font-bold mb-12 text-midnight_text dark:text-white text-center"
+          data-aos="fade-up"
+        >
+          Featured Products
+        </h1>
+
+        {/* TABS */}
         <div className="flex flex-wrap justify-center gap-3 mb-10">
           {categories.map((c) => (
             <button
               key={c.id}
               onClick={() => setActiveTab(c.id)}
-              className={`px-5 py-2 rounded-full text-sm font-medium ${
+              className={`px-5 py-2 rounded-full text-sm font-medium transition ${
                 activeTab === c.id
-                  ? "bg-blue-600 text-white"
-                  : "bg-white border border-gray-200 text-gray-700 hover:border-blue-300"
+                  ? "bg-primary text-white"
+                  : "bg-white dark:bg-darklight border border-lightgray text-gray hover:border-primary"
               }`}
             >
               {c.name}
@@ -251,27 +215,18 @@ const ProductsSection = () => {
           ))}
         </div>
 
-        {/* Grid */}
-       {/* Products Layout */}
-<div className="space-y-8">
-  {/* First Row – 3 Cards */}
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {filteredProducts.slice(0, 3).map((product) => (
-      <ProductCard key={product.id} product={product} />
-    ))}
-  </div>
-
-  {/* Second Row – 2 Cards Centered */}
-  {filteredProducts.length > 3 && (
-    <div className="flex justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full">
-        {filteredProducts.slice(3, 5).map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
-  )}
-</div>
+        {/* GRID */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProducts.map((product, index) => (
+            <div
+              key={product.id}
+              data-aos="fade-up"
+              data-aos-delay={index * 120}
+            >
+              <ProductCard product={product} />
+            </div>
+          ))}
+        </div>
 
       </div>
     </section>

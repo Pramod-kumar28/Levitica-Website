@@ -13,35 +13,46 @@ const WelcomeScreen = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="flex flex-col gap-3"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="flex flex-col gap-3 lg:px-4 lg:py-2"
     >
-      {/* Badge */}
-      <div className="inline-flex items-center gap-2 w-fit">
-        <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-          <Sparkles size={14} />
-          Welcome Back
-        </span>
-      </div>
 
       {/* Greeting */}
-      <h1 className="text-2xl md:text-3xl font-bold text-foreground flex items-center gap-2">
+      <h1 className="
+        text-2xl md:text-3xl font-bold
+        text-midnight_text dark:text-white
+        flex items-center gap-2
+      ">
         Hi{" "}
         <span className="text-primary">
           {user?.name || "Learner"}
         </span>
-        <span className="inline-flex"><Sparkles size={24} className="text-primary" /></span>
+
+        <span className="inline-flex">
+          <Sparkles size={22} className="text-primary" />
+        </span>
       </h1>
 
       {/* Subtext */}
-      <p className="text-sm md:text-base text-muted-foreground flex items-center gap-2">
-        {role === 'student' && <Zap size={16} className="text-blue-600" />}
-        {role === 'admin' && <TrendingUp size={16} className="text-blue-600" />}
+      <p className="
+        text-sm md:text-base
+        text-gray
+        flex items-center gap-2
+      ">
+        {role === "student" && (
+          <Zap size={16} className="text-primary" />
+        )}
+
+        {role === "admin" && (
+          <TrendingUp size={16} className="text-primary" />
+        )}
+
         {roleMessage[role] ||
           "Manage your account and explore new opportunities."}
       </p>
+
     </motion.div>
   );
 };

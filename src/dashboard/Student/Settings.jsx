@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
+import { motion } from 'framer-motion';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { Eye, EyeOff } from "lucide-react";
@@ -33,29 +34,33 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className={`${isDark ? 'bg-slate-900 min-h-screen' : ''}`}>
-      <div className="max-w-7xl mx-auto py-6 sm:py-10 px-4">
+    <div className={`min-h-screen p-4 sm:p-6 lg:p-4`}>
+      <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
 
         {/* Premium Header */}
-        <div className="mb-8 sm:mb-12">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`px-4 py-2`}
+        >
           <div className="flex items-center gap-4">
-            <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-lg">
-              <FiSettings className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
-            </div>
             <div>
-              <h1 className={`text-3xl sm:text-4xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Account Settings</h1>
-              <p className={`text-sm sm:text-base ${isDark ? 'text-slate-400' : 'text-slate-600'} mt-2`}>
+              <h1 className={`text-3xl sm:text-4xl font-bold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+                Account Settings
+              </h1>
+              <p className={`text-sm sm:text-base flex items-center gap-2 text-gray`}>
+                <FiSettings className="w-4 h-4 text-primary" />
                 Manage your profile, security, and account preferences.
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Main Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 sm:gap-8">
 
           {/* Sidebar */}
-          <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border rounded-2xl shadow-lg p-4 sm:p-6 h-fit lg:sticky lg:top-8 transition-colors`}>
+          <div className={`${isDark ? 'bg-semidark border-dark_border' : 'bg-white border-border'} border rounded-2xl shadow-property p-4 sm:p-6 h-fit lg:sticky lg:top-8`}>
             <ProfileSidebar
               user={user}
               activeTab={activeTab}
@@ -65,7 +70,7 @@ const SettingsPage = () => {
           </div>
 
           {/* Content Card */}
-          <div className={`${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'} border rounded-2xl shadow-lg p-6 sm:p-8 transition-all duration-300`}>
+          <div className={`${isDark ? 'bg-semidark border-dark_border' : 'bg-white border-border'} border rounded-2xl shadow-property p-6 sm:p-8`}>
             {renderTabContent()}
           </div>
         </div>
@@ -73,12 +78,6 @@ const SettingsPage = () => {
     </div>
   );
 };
-
-
-
-
-
-
 
 const SecurityTab = () => {
   const [show, setShow] = useState(false);
@@ -124,26 +123,26 @@ const SecurityTab = () => {
   });
 
   const inputClass = isDark
-    ? "w-full border border-slate-600 rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-slate-700 placeholder-slate-400 text-white transition focus:bg-slate-600 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 hover:border-slate-500"
-    : "w-full border border-slate-300 rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-slate-50 placeholder-slate-500 transition focus:bg-white focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 hover:border-slate-400";
+    ? "w-full border border-dark_border rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-darklight placeholder-gray text-white transition focus:bg-darklight/80 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30 hover:border-primary/50"
+    : "w-full border border-border rounded-xl px-4 sm:px-5 py-3 sm:py-3 text-sm bg-light placeholder-gray transition focus:bg-white focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 hover:border-primary/50";
 
   const errorClass = isDark
-    ? "text-red-400 text-sm mt-2 flex items-center gap-1.5 font-medium"
+    ? "text-rose-400 text-sm mt-2 flex items-center gap-1.5 font-medium"
     : "text-rose-600 text-sm mt-2 flex items-center gap-1.5 font-medium";
 
   return (
-    <div className="max-w-md space-y-6 sm:space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
       <div className="space-y-2">
         <div className="flex items-center gap-3">
-          <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${isDark ? 'bg-red-950' : 'bg-red-100'}`}>
-            <FiLock className={`h-5 w-5 ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+          <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${isDark ? 'bg-primary/20' : 'bg-primary/10'}`}>
+            <FiLock className={`h-5 w-5 text-primary`} />
           </div>
-          <h2 className={`text-xl sm:text-2xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>
+          <h2 className={`text-xl sm:text-2xl font-bold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
             Security Settings
           </h2>
         </div>
-        <p className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+        <p className={`text-sm text-gray`}>
           Keep your account secure by updating your password regularly
         </p>
       </div>
@@ -151,7 +150,7 @@ const SecurityTab = () => {
       {!show ? (
         <button
           onClick={() => setShow(true)}
-          className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 py-3.5 sm:py-4 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition duration-200"
+          className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary text-white px-6 py-3.5 sm:py-4 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition duration-200"
         >
           <FiLock className="h-5 w-5" />
           Change Password
@@ -159,11 +158,11 @@ const SecurityTab = () => {
       ) : (
         <form
           onSubmit={formik.handleSubmit}
-          className={`${isDark ? 'bg-slate-700 border-slate-600' : 'bg-gradient-to-br from-slate-50 to-slate-100 border-slate-200'} border rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6 shadow-lg`}
+          className={`${isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'} border rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6 shadow-property`}
         >
           {/* Current Password */}
           <div className="space-y-2">
-            <label className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+            <label className={`text-sm font-semibold ${isDark ? 'text-gray' : 'text-midnight_text'}`}>
               Current Password
             </label>
             <div className="relative">
@@ -176,7 +175,7 @@ const SecurityTab = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className={`absolute right-4 top-3.5 transition ${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`absolute right-4 top-3.5 transition text-gray hover:text-primary`}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
@@ -192,7 +191,7 @@ const SecurityTab = () => {
 
           {/* New Password */}
           <div className="space-y-2">
-            <label className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+            <label className={`text-sm font-semibold ${isDark ? 'text-gray' : 'text-midnight_text'}`}>
               New Password
             </label>
             <input
@@ -211,7 +210,7 @@ const SecurityTab = () => {
 
           {/* Confirm Password */}
           <div className="space-y-2">
-            <label className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
+            <label className={`text-sm font-semibold ${isDark ? 'text-gray' : 'text-midnight_text'}`}>
               Confirm Password
             </label>
             <input
@@ -229,12 +228,31 @@ const SecurityTab = () => {
               )}
           </div>
 
+          {/* Password Requirements */}
+          <div className={`p-4 rounded-xl ${isDark ? 'bg-darkmode border-dark_border' : 'bg-section border-border'} border`}>
+            <p className={`text-xs font-semibold mb-2 text-primary`}>Password Requirements:</p>
+            <ul className="space-y-1.5">
+              <li className="flex items-center gap-2 text-xs text-gray">
+                <FiCheckCircle className="h-3 w-3 text-primary" />
+                Minimum 8 characters
+              </li>
+              <li className="flex items-center gap-2 text-xs text-gray">
+                <FiCheckCircle className="h-3 w-3 text-primary" />
+                Use a mix of letters, numbers, and symbols
+              </li>
+              <li className="flex items-center gap-2 text-xs text-gray">
+                <FiCheckCircle className="h-3 w-3 text-primary" />
+                Don't use common words or patterns
+              </li>
+            </ul>
+          </div>
+
           {/* Buttons */}
-          <div className={`flex gap-3 pt-4 border-t ${isDark ? 'border-slate-600' : 'border-slate-200'}`}>
+          <div className={`flex gap-3 pt-4 border-t ${isDark ? 'border-dark_border' : 'border-border'}`}>
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 disabled:opacity-60 text-white py-3 sm:py-3.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg"
+              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary disabled:opacity-60 text-white py-3 sm:py-3.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg"
             >
               <FiSave className="h-4.5 w-4.5" />
               {isLoading ? "Updating..." : "Update Password"}
@@ -245,8 +263,8 @@ const SecurityTab = () => {
               onClick={() => setShow(false)}
               className={`flex-1 flex items-center justify-center gap-2 py-3 sm:py-3.5 rounded-xl text-sm font-semibold transition ${
                 isDark
-                  ? 'border-2 border-slate-500 hover:border-slate-400 hover:bg-slate-600 text-slate-100'
-                  : 'border-2 border-slate-300 hover:border-slate-400 hover:bg-slate-100 text-slate-700'
+                  ? 'border-2 border-dark_border hover:border-primary hover:bg-darklight text-gray hover:text-white'
+                  : 'border-2 border-border hover:border-primary hover:bg-light text-gray hover:text-midnight_text'
               }`}
             >
               <FiX className="h-4.5 w-4.5" />

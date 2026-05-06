@@ -7,11 +7,9 @@ const RelatedCourses = ({ currentCourseId }) => {
 
   if (isLoading) return null;
 
-  // Remove current course
   const filteredCourses =
     courses?.filter((c) => c._id !== currentCourseId) || [];
 
-  // Shuffle and pick 3 random courses
   const randomCourses = [...filteredCourses]
     .sort(() => 0.5 - Math.random())
     .slice(0, 3);
@@ -19,8 +17,21 @@ const RelatedCourses = ({ currentCourseId }) => {
   if (randomCourses.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8 shadow-sm mt-8">
-      <h2 className="font-bold text-2xl text-gray-900 mb-6">
+    <div className="
+      bg-white dark:bg-semidark
+      rounded-2xl
+      border border-border dark:border-dark_border
+      p-6 md:p-8
+      shadow-property
+      hover:shadow-deatail_shadow
+      transition-all duration-300
+      mt-8
+    ">
+      <h2 className="
+        font-bold text-2xl
+        text-midnight_text dark:text-white
+        mb-6
+      ">
         You might also like
       </h2>
 
@@ -29,10 +40,17 @@ const RelatedCourses = ({ currentCourseId }) => {
           <div
             key={item._id}
             onClick={() => navigate(`/dashboard/course/${item._id}`)}
-            className="group cursor-pointer transition duration-300 hover:scale-[1.02]"
+            className="
+              group cursor-pointer
+              transition-all duration-300
+              hover:scale-[1.02]
+            "
           >
             {/* Thumbnail */}
-            <div className="relative h-40 rounded-xl mb-3 overflow-hidden bg-gray-100">
+            <div className="
+              relative h-40 rounded-xl mb-3 overflow-hidden
+              bg-light dark:bg-darklight
+            ">
               {item.thumbnail ? (
                 <img
                   src={item.thumbnail}
@@ -40,28 +58,41 @@ const RelatedCourses = ({ currentCourseId }) => {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="flex items-center justify-center h-full text-gray-400">
+                <div className="
+                  flex items-center justify-center h-full
+                  text-gray
+                ">
                   No Image
                 </div>
               )}
             </div>
 
             {/* Title */}
-            <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+            <h3 className="
+              font-semibold
+              text-midnight_text dark:text-white
+              group-hover:text-primary
+              transition-colors duration-200
+            ">
               {item.name}
             </h3>
 
-            {/* Short Description */}
-            <p className="text-sm text-gray-500 line-clamp-2">
+            {/* Description */}
+            <p className="
+              text-sm text-gray
+              line-clamp-2
+            ">
               {item.shortDescription || "Explore this comprehensive course."}
             </p>
 
             {/* Price */}
             <p className="text-sm font-bold mt-1">
               {Number(item.price) === 0 ? (
-                <span className="text-green-600">Free</span>
+                <span className="text-primary">
+                  Free
+                </span>
               ) : (
-                <span className="text-blue-600">
+                <span className="text-primary">
                   ₹{item.price}
                 </span>
               )}
@@ -72,4 +103,5 @@ const RelatedCourses = ({ currentCourseId }) => {
     </div>
   );
 };
+
 export default RelatedCourses;

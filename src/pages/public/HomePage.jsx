@@ -9,12 +9,13 @@ import ProductsShowcase from "./Sections/ProductSection";
 import ServicesSection from "./Sections/Servicesection";
 import HeroCarousel from "./Sections/HeroCarousel";
 import CoursesCarouselInHome from "./Sections/CoursesCarouselInHome";
+import HeroSection from "./Sections/HeroSection";
 
 const Homepage = () => {
   return <>
     <div className="main">
     
-      <HeroCarousel/>
+      <HeroSection/>
       <ServicesSection/>
       <CoursesCarouselInHome/>
       <ProductsShowcase/>

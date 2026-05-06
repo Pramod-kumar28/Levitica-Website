@@ -46,11 +46,7 @@ const quickActions = [
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className={`rounded-xl p-6 transition-all duration-300 border shadow-lg hover:shadow-xl ${
-        isDark
-          ? 'bg-slate-800 border-slate-700 hover:shadow-slate-900/30'
-          : 'bg-white border-slate-200 hover:shadow-slate-200/50'
-      }`}
+      className={`p-6`}
     >
       
       {/* Header */}

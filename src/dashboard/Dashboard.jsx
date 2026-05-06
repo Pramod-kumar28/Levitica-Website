@@ -13,25 +13,27 @@ const DashboardLayout = () => {
 
   return (
     <ModalProvider>
-      <div className="min-h-screen bg-base-200">
-        {/* SIDEBAR — fixed floating on the left */}
+      <div className="min-h-screen dark:bg-darkmode bg-herobg/15">
+        
+        {/* SIDEBAR */}
         <Sidebar />
 
-        {/* TOPBAR — fixed at top */}
+        {/* TOPBAR */}
         <Topbar />
 
-        {/* MAIN CONTENT — scrolls under the fixed topbar */}
+        {/* MAIN CONTENT */}
         <main
           className={`
-            pt-[86px]
-            px-4 lg:px-6
-            pb-6
+            pt-[70px]
             min-h-screen
             transition-all duration-300 ease-in-out
+
+             dark:bg-darkmode
+
             ${isOpen ? 'lg:ml-64' : 'lg:ml-20'}
           `}
         >
-          <div className=" min-h-[calc(100vh-120px)]">
+          <div className="min-h-[calc(100vh-120px)]">
             <Suspense fallback={<Loader message="Loading module..." />}>
               <ScrollToTop />
               <Outlet />

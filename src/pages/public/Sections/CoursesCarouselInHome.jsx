@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const getPosition = (index, current, total) => {
   if (index === current) return "center";
@@ -9,6 +11,9 @@ const getPosition = (index, current, total) => {
 };
 
 const CoursesCarouselInHome = () => {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+
   const courses = [
     {
       id: 1,
@@ -40,16 +45,24 @@ const CoursesCarouselInHome = () => {
     },
     {
       id: 5,
-      title: "SEO Fundamentals & Advanced Strategies",
+      title: "SEO Fundamentals",
       image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-      excerpt: "Search Engine Optimization, keyword research, and ranking strategies.",
+      excerpt: "SEO, keyword research, ranking strategies.",
       link: "/trainings/digital-marketing/seo-fundamentals",
     },
   ];
 
-  const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
+  /* ✅ AOS INIT */
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      once: false,
+      easing: "ease-out-cubic",
+      offset: 80,
+    });
+  }, []);
 
+  /* AUTO SLIDE */
   useEffect(() => {
     if (paused) return;
 
@@ -61,22 +74,24 @@ const CoursesCarouselInHome = () => {
   }, [paused, courses.length]);
 
   return (
-    <section className="bg-slate-50 py-8 lg:py-12 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="py-20 bg-section dark:bg-darkmode overflow-hidden flex justify-center items-center">
+      <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto container px-4">
 
-        {/* Header */}
-        <div className="text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+        {/* HEADER */}
+        <div className="text-center mb-12" data-aos="fade-up">
+          <h2 className="text-3xl md:text-4xl font-bold text-midnight_text dark:text-white">
             Explore Our Popular Courses
           </h2>
-          <p className="mt-4 text-gray-600">
+          <p className="mt-3 text-gray">
             Enhance your skills with expert-led programs
           </p>
         </div>
 
-        {/* Carousel */}
+        {/* CAROUSEL */}
         <div
-          className="relative h-[420px] flex items-center justify-center"
+          data-aos="fade-up"
+          data-aos-delay="200"
+          className="relative h-[420px] flex items-center justify-center overflow-hidden"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
@@ -87,47 +102,38 @@ const CoursesCarouselInHome = () => {
               <div
                 key={course.id}
                 className={`
-                  absolute will-change-transform
-                  transition-all duration-700 ease-in-out
-                  ${
-                    position === "center" &&
-                    "z-20 scale-100 sm:scale-110 opacity-100"
-                  }
-                  ${
-                    position === "left" &&
-                    "z-10 -translate-x-[85%] sm:-translate-x-[120%] scale-95 opacity-60 blur-sm"
-                  }
-                  ${
-                    position === "right" &&
-                    "z-10 translate-x-[85%] sm:translate-x-[120%] scale-95 opacity-60 blur-sm"
-                  }
-                  ${
-                    position === "hidden" &&
-                    "opacity-0 pointer-events-none scale-75"
-                  }
+                  absolute transition-all duration-700 ease-in-out
+                  ${position === "center" && "z-20 scale-100 sm:scale-110 opacity-100"}
+                  ${position === "left" && "z-10 -translate-x-[70%] sm:-translate-x-[100%] scale-95 opacity-60 blur-sm"}
+                  ${position === "right" && "z-10 translate-x-[70%] sm:translate-x-[100%] scale-95 opacity-60 blur-sm"}
+                  ${position === "hidden" && "opacity-0 pointer-events-none scale-75"}
                 `}
               >
-                <div className="bg-white rounded-xl shadow-xl w-[280px] sm:w-[320px] overflow-hidden">
+                <div className="bg-white dark:bg-semidark rounded-xl shadow-property border border-lightgray w-[280px] sm:w-[320px] overflow-hidden">
+
                   <img
                     src={course.image}
                     alt={course.title}
-                    loading="lazy"
                     className="h-44 w-full object-cover"
                   />
+
                   <div className="p-6">
-                    <h3 className="font-semibold text-lg">
+                    <h3 className="font-semibold text-lg text-midnight_text dark:text-white">
                       {course.title}
                     </h3>
-                    <p className="mt-2 text-sm text-gray-600">
+
+                    <p className="mt-2 text-sm text-gray">
                       {course.excerpt}
                     </p>
+
                     <Link
                       to={course.link}
-                      className="inline-block mt-4 text-blue-600 font-medium hover:underline"
+                      className="inline-block mt-4 text-primary font-medium hover:underline"
                     >
-                      Read more →
+                      Learn more →
                     </Link>
                   </div>
+
                 </div>
               </div>
             );
@@ -135,14 +141,15 @@ const CoursesCarouselInHome = () => {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-4">
+        <div className="text-center mt-10" data-aos="fade-up" data-aos-delay="300">
           <Link
             to="/trainings"
-            className="inline-block rounded-full border border-blue-600 px-6 py-3 font-medium text-white hover:text-white bg-blue-600 hover:bg-blue-800 transition"
+            className="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-700 transition"
           >
-            View All Our Courses
+            View All Courses
           </Link>
         </div>
+
       </div>
     </section>
   );

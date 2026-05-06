@@ -1,277 +1,209 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { coursesData, allCoursesList } from '@/data/coursesData';
+import { useParams, useNavigate } from 'react-router-dom';
+import { coursesData } from '@/data/coursesData';
 
 import {
   FaCheckCircle,
+  FaChevronRight,
+  FaQuestionCircle,
   FaClock,
   FaVideo,
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEnvelope,
-  FaChevronDown,
 } from "react-icons/fa";
 
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const CourseDetails = () => {
-  const { courseId, } = useParams();
-
-  const [openIndex, setOpenIndex] = useState(null);
-
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
-
-
-
-
+  const { courseId } = useParams();
   const navigate = useNavigate();
+
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+  const [openIndex, setOpenIndex] = useState(null);
+
   useEffect(() => {
-    const fetchCourseData = () => {
-      try {
-        // Get course data based on URL parameter
-    
-        const courseKey = courseId || 'java-full-stack';
-        const courseData = coursesData[courseKey];
+    AOS.init({
+      duration: 900,
+      easing: "ease-out-cubic",
+      once: false,
+      offset: 80,
+    });
+  }, []);
 
-        if (courseData) {
-          setCourse(courseData);
-        } else {
-          // Redirect to default course if not found
+  useEffect(() => {
+    const data = coursesData[courseId || "java-full-stack"];
+    setCourse(data || null);
+    setLoading(false);
+  }, [courseId]);
 
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error loading course data:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchCourseData();
-  }, [courseId, navigate]);
-
-  const handleCourseChange = (slug) => {
-    
-
-    navigate(`/trainings/${slug}`);
+  const toggleFAQ = (i) => {
+    setOpenIndex(openIndex === i ? null : i);
   };
 
-  if (loading) {
-    return <div className="container text-center py-5">Loading course details...</div>;
-  }
+  if (loading) return <div className="text-center py-24">Loading...</div>;
+  if (!course) return <div className="text-center py-24">Course not found.</div>;
 
-  if (!course) {
-    return <div className="container text-center py-5">Course not found.</div>;
-  }
+  return (
+    <div className="bg-white pt-10">
 
-  return (<>
-    <div className="">
-      {/* Header Section */}
-      <section
-        className="hero-section gradient-overlay py-14 relative"
-        style={{
-          background: "url('/img/header-bg-5.jpg') center / cover no-repeat",
-        }}
-      >
-        <div
-          className="hero-bottom-shape-two"
-          style={{
-            background: "url('/img/hero-bottom-shape.svg') no-repeat bottom center",
-          }}
-        />
+      {/* ===== HERO (EXACT SAME AS SERVICE) ===== */}
+      <section className="relative pt-20 pb-16 bg-gradient-to-b from-white to-herobg">
+        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-12 items-center">
 
-        <div className="relative max-w-4xl mx-auto px-4 text-center py-20">
-          <h1 className="text-4xl md:text-5xl font-bold text-white">
-            {course?.title}
-          </h1>
+          <div className="col-span-8" data-aos="fade-right">
+            <h1 className="text-4xl md:text-5xl font-bold text-midnight_text">
+              {course.title}
+            </h1>
+          </div>
+
+          <div className="col-span-4 flex justify-start md:justify-center mt-6 md:mt-0" data-aos="fade-left">
+            <img
+              src={course.image}
+              className="w-20 h-20 rounded-full object-cover"
+            />
+          </div>
+
         </div>
       </section>
 
+      {/* ===== MAIN ===== */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4">
 
-      <section className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-8">
-              <img
-                src={course.image}
-                alt={course.title}
-                className="w-full h-[350px] object-cover rounded-xl shadow"
-              />
+          {/* COVER IMAGE */}
+          <div data-aos="zoom-in" className="mb-16 h-[350px] overflow-hidden rounded-2xl">
+            <img src={course.image} className="w-full h-full object-cover" />
+          </div>
 
-              <div className="mt-8">
-                <h2 className="text-2xl font-semibold mb-4">
-                  Course Overview
-                </h2>
+          <div className="flex flex-wrap -mx-4">
 
-                {course.fullDescription.map((p, i) => (
-                  <p key={i} className="text-slate-600 mb-4">
-                    {p}
-                  </p>
-                ))}
-              </div>
+            {/* LEFT CONTENT */}
+            <div className="w-full lg:w-8/12 px-4">
+              <div className="xl:pr-10">
 
-              {/* Features */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-                <img
-                  src="/img/about-1.jpg"
-                  alt=""
-                  className="rounded-xl"
-                />
+                {/* DESCRIPTION */}
+                <p className="text-lg text-gray mb-10" data-aos="fade-up">
+                  {course.fullDescription?.[0]}
+                </p>
 
-                <ul className="space-y-3">
+                {/* FEATURES → SAME AS SERVICE CARDS */}
+                <h3 className="text-2xl text-slate-900 font-semibold mb-6" data-aos="fade-up">
+                  Course Features
+                </h3>
+
+                <div className="grid md:grid-cols-2 gap-6">
                   {course.features.map((f, i) => (
-                    <li key={i} className="flex gap-3 items-start">
-                      <FaCheckCircle className="text-primary mt-1" />
-                      <span className="text-slate-700">{f}</span>
-                    </li>
+                    <div
+                      key={i}
+                      data-aos="fade-up"
+                      data-aos-delay={i * 120}
+                      className="bg-white p-6 rounded-xl shadow-property hover:shadow-deatail_shadow transition"
+                    >
+                      <div className="flex gap-3">
+                        <FaCheckCircle className="text-primary mt-1" />
+                        <span>{f}</span>
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
+
+                {/* BENEFITS STYLE (reuse structure) */}
+                <div className="grid md:grid-cols-2 gap-10 mt-14">
+
+                  <div data-aos="fade-right">
+                    <h4 className="font-semibold text-lg mb-4">Duration</h4>
+                    <div className="flex gap-2">
+                      <FaClock className="text-primary mt-1" />
+                      <span>{course.duration}</span>
+                    </div>
+                  </div>
+
+                  <div data-aos="fade-left">
+                    <h4 className="font-semibold text-lg mb-4">Mode</h4>
+                    <div className="flex gap-2">
+                      <FaVideo className="text-primary mt-1" />
+                      <span>{course.mode}</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* FAQ SAME STYLE */}
+                <h3 className="mt-16 text-slate-900 text-xl font-semibold" data-aos="fade-up">
+                  FAQs
+                </h3>
+
+                <div className="mt-6 space-y-4">
+                  {course.faqs.map((faq, i) => (
+                    <div
+                      key={i}
+                      data-aos="fade-up"
+                      className="bg-light rounded-lg"
+                    >
+                      <button
+                        onClick={() => toggleFAQ(i)}
+                        className="w-full flex items-center gap-3 p-4 text-left"
+                      >
+                        <FaQuestionCircle className="text-primary" />
+                        {faq.question}
+                      </button>
+
+                      {openIndex === i && (
+                        <div className="px-4 pb-4 text-gray">
+                          {faq.answer}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
               </div>
             </div>
 
-     
+            {/* ===== SIDEBAR (COPY OF SERVICE) ===== */}
+            <div className="w-full lg:w-4/12 px-4 mt-12 lg:mt-0">
 
-          <div className="lg:col-span-4 space-y-8">
-
-          
-              {/* All Courses List */}
-              <div className="border rounded-xl p-6">
-                <h4 className="font-semibold mb-4">The Best Courses</h4>
-
-                <ul className="space-y-2">
-                  {allCoursesList.map((c, i) => (
-                    <li key={i}>
-                      <button
-                        onClick={() => handleCourseChange(c.slug)}
-                        className={`text-left w-full py-2 text-sm ${c.title === course?.title
-                          ? "text-primary font-semibold"
-                          : "text-slate-600 hover:text-primary"
-                          }`}
-                      >
-                        {c.title}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-
-              {/* Course Enrollment Card */}
-              <div className="border rounded-xl p-6 shadow-sm">
-                <h4 className="font-semibold mb-2">Enroll Now</h4>
+              <div data-aos="fade-left" className="bg-white p-8 rounded-xl shadow-property mb-8">
+                <h3 className="text-lg text-slate-900 font-semibold mb-4">Enroll</h3>
 
                 <p className="text-3xl font-bold text-primary">
                   {course.price}
-                  <span className="text-sm text-slate-500"> only</span>
                 </p>
 
-                <div className="mt-4 space-y-2 text-slate-600">
-                  <p className="flex items-center gap-2">
-                    <FaClock /> {course.duration}
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <FaVideo /> {course.mode}
-                  </p>
-                </div>
-
-                <Link to="/sign-up">
-                  <button className="btn outline-btn w-full mt-4">
-                    Only Live Classes
-                  </button>
-                </Link>
-
-                <Link to="/sign-up">
-                  <button className="btn accent-solid-btn w-full mt-2">
-                    Enroll
-                  </button>
-                </Link>
+                <button className="btn accent-solid-btn w-full mt-4">
+                  Enroll Now
+                </button>
               </div>
 
-              {/* Need Help */}
-              <div className="border rounded-xl p-6">
-                <h4 className="font-semibold mb-3">Need Help?</h4>
+              <div data-aos="fade-left" data-aos-delay="150" className="bg-white p-8 rounded-xl shadow-property">
+                <h3 className="text-lg text-slate-900 font-semibold mb-4">Newsletter</h3>
 
-                <ul className="space-y-3 text-slate-600">
-                  <li className="flex gap-3">
-                    <FaMapMarkerAlt /> Madhapur, Hyderabad
-                  </li>
-                  <li className="flex gap-3">
-                    <FaPhoneAlt /> +91 9032503559
-                  </li>
-                  <li className="flex gap-3">
-                    <FaEnvelope /> hr@leviticatechnologies.com
-                  </li>
-                </ul>
+                <input className="w-full p-3 rounded-lg bg-light mb-3" />
+                <button className="w-full bg-primary py-3 text-white rounded-lg">
+                  Subscribe
+                </button>
+              </div>
+
+              <div data-aos="fade-left" data-aos-delay="250" className="bg-light p-6 rounded-xl mt-8">
+                <h4 className="font-semibold mb-4">Need Help?</h4>
+
+                <div className="space-y-3 text-sm text-gray">
+                  <div className="flex gap-2"><FaMapMarkerAlt /> Hyderabad</div>
+                  <div className="flex gap-2"><FaPhoneAlt /> +91 9032503559</div>
+                  <div className="flex gap-2"><FaEnvelope /> hr@levitica.com</div>
+                </div>
               </div>
 
             </div>
-          </div>
+
           </div>
 
-        <div className="max-w-4xl mx-auto my-8">
-          {course.faqs.map((faq, i) => (
-            <div
-              key={i}
-              className="border rounded-lg mb-3"
-            >
-              <button
-                onClick={() => toggleFAQ(i)}
-                className="w-full flex justify-between items-center p-4"
-              >
-                <span className="font-medium">{faq.question}</span>
-                <FaChevronDown
-                  className={`transition ${openIndex === i ? "rotate-180" : ""
-                    }`}
-                />
-              </button>
-
-              {openIndex === i && (
-                <div className="px-4 pb-4 text-slate-600">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
         </div>
-
-
-       <section className="call-to-action py-12">
-  <div className="max-w-7xl mx-auto px-4">
-    <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-
-      {/* Text */}
-      <div className="text-center md:text-left md:max-w-xl">
-        <h3 className="text-2xl md:text-3xl font-semibold mb-2">
-          Start Your Tech Career Today
-        </h3>
-        <p className="text-slate-600">
-          Join thousands of students who have transformed their careers with our courses.
-        </p>
-      </div>
-
-      {/* Button */}
-      <div className="flex justify-center md:justify-end">
-        <button className="btn secondary-solid-btn">
-          Explore All Courses
-        </button>
-      </div>
-
+      </section>
     </div>
-  </div>
-</section>
-
-      </section >
-
-
-
-
-    </div >
-
-  </>
   );
 };
 

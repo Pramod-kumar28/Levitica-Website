@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { FaLinkedinIn } from "react-icons/fa";
 
 const teamData = [
@@ -12,12 +15,26 @@ const teamData = [
 ];
 
 const TeamSection = () => {
-  return (
-    <section className="bg-slate-50 py-24">
-      <div className="max-w-6xl mx-auto px-4">
 
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-8">
+  /* ✅ AOS INIT */
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      once: false,
+      easing: "ease-out-cubic",
+      offset: 80,
+    });
+  }, []);
+
+  return (
+    <section className="bg-slate-50 py-24 flex justify-center items-center">
+      <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto container px-4">
+
+        {/* HEADER */}
+        <div
+          className="text-center max-w-2xl mx-auto mb-8"
+          data-aos="fade-up"
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
             Meet Our Lovely Founder
           </h2>
@@ -27,17 +44,19 @@ const TeamSection = () => {
           </p>
         </div>
 
-        {/* Team Cards */}
+        {/* TEAM CARD */}
         <div className="flex justify-center">
           {teamData.map((member, index) => (
             <div
               key={index}
+              data-aos="fade-up"
+              data-aos-delay={index * 120}
               className="group relative w-full sm:w-[340px]"
             >
-              {/* Card */}
+              {/* CARD */}
               <div className="bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-xl">
 
-                {/* Image */}
+                {/* IMAGE */}
                 <div className="relative">
                   <img
                     src={member.image}
@@ -45,7 +64,7 @@ const TeamSection = () => {
                     className="w-full h-[380px] object-cover"
                   />
 
-                  {/* Overlay (hover on desktop, visible on mobile) */}
+                  {/* OVERLAY */}
                   <div
                     className="
                       absolute inset-0 bg-slate-900/80
@@ -78,7 +97,7 @@ const TeamSection = () => {
                   </div>
                 </div>
 
-                {/* Footer (hidden on desktop hover, visible on mobile) */}
+                {/* FOOTER */}
                 <div className="p-5 text-center sm:group-hover:opacity-0 transition">
                   <h5 className="font-semibold text-slate-900">
                     {member.name}

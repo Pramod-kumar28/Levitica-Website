@@ -1,157 +1,161 @@
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  const location = useLocation();
+
+  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [sticky, setSticky] = useState(false);
+
+  const mobileMenuRef = useRef(null);
+
+  // Sticky effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setSticky(window.scrollY >= 80);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setNavbarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg border-b">
-      <nav className="max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between h-16">
+    <header
+      className={`fixed top-0 z-50 w-full transition-all ${
+        sticky
+          ? "shadow-lg bg-white dark:bg-semidark"
+          : "bg-transparent"
+      }`}
+    >
+      {/* MAIN CONTAINER */}
+      <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md h-20 flex items-center justify-between px-4">
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <img
-              src="/img/leviticalogo.png"
-              alt="logo"
-              className="h-20 w-auto"
-            />
+        {/* LOGO */}
+        <Link to="/" className="flex items-center">
+          <img
+            src="/img/leviticalogo.png"
+            alt="logo"
+            className="h-12 object-contain"
+          />
+        </Link>
+
+        {/* DESKTOP MENU */}
+        <nav className="hidden lg:flex items-center justify-center space-x-8">
+          <NavItem to="/" label="Home" />
+          <NavItem to="/services" label="Services" />
+          <NavItem to="/trainings" label="Trainings" />
+          <NavItem to="/about-us" label="About Us" />
+          <NavItem to="/contact-us" label="Contact Us" />
+        </nav>
+
+        {/* RIGHT BUTTONS */}
+        <div className="hidden lg:flex items-center gap-4">
+
+          {/* LOGIN */}
+          <Link
+            to="/login"
+            className="border-2 border-primary text-primary px-4 h-10 flex items-center rounded-lg hover:bg-primary hover:text-white hover:shadow-md transition duration-300"
+          >
+            Log in
           </Link>
 
-          {/* Mobile toggle */}
-          <button
-            className="lg:hidden text-gray-700"
-            onClick={() => setIsNavOpen(true)}
-            aria-label="Toggle navigation"
+          {/* SIGN UP */}
+          <Link
+            to="/sign-up"
+            className="bg-primary text-white px-4 h-10 flex items-center rounded-lg hover:bg-blue-700 transition"
           >
-            <Menu size={28} />
-          </button>
+            Sign Up
+          </Link>
 
-          {/* Desktop menu */}
-          <ul className="hidden lg:flex items-center gap-6 font-semibold">
-            <NavItem to="/">Home</NavItem>
-            <NavItem to="/services">Services</NavItem>
-            <NavItem to="/trainings">Trainings</NavItem>
-            <NavItem to="/about-us">About Us</NavItem>
-            <NavItem to="/contact-us">Contact Us</NavItem>
+          {/* DOWNLOAD */}
+          <Link
+            to="/app"
+            className="border-2 border-primary text-primary px-4 h-10 flex items-center rounded-lg hover:bg-primary hover:text-white hover:shadow-md transition duration-300"
+          >
+            Download App
+          </Link>
 
-            <li>
-              <Link to="/login">
-                <button className="btn outline-btn">Log in</button>
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/sign-up">
-                <button className="btn outline-btn">Sign Up</button>
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/app">
-                <button className="btn accent-outline-btn">
-                  Download App
-                </button>
-              </Link>
-            </li>
-          </ul>
         </div>
-      </nav>
 
-      {/* Overlay */}
-      {isNavOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 lg:hidden"
-          onClick={() => setIsNavOpen(false)}
-        />
+        {/* MOBILE TOGGLE */}
+        <button
+          onClick={() => setNavbarOpen(!navbarOpen)}
+          className="lg:hidden p-2"
+        >
+          <span className="block w-6 h-0.5 bg-black dark:bg-white"></span>
+          <span className="block w-6 h-0.5 bg-black dark:bg-white mt-1.5"></span>
+          <span className="block w-6 h-0.5 bg-black dark:bg-white mt-1.5"></span>
+        </button>
+      </div>
+
+      {/* OVERLAY */}
+      {navbarOpen && (
+        <div className="fixed inset-0 bg-black/50 z-40" />
       )}
 
-      {/* Mobile Sidebar */}
+      {/* MOBILE SIDEBAR */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-full w-72 bg-white shadow-2xl z-50 transform transition-transform duration-300 ${isNavOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        ref={mobileMenuRef}
+        className={`lg:hidden fixed top-0 right-0 h-full w-72 bg-white dark:bg-darkmode shadow-lg z-50 transform transition-transform duration-300 ${
+          navbarOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
-        {/* Sidebar Header */}
-        <div className="flex justify-end p-4 border-b">
-          <button onClick={() => setIsNavOpen(false)}>
-            <X size={28} />
-          </button>
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-lg font-bold text-midnight_text dark:text-white">
+            Menu
+          </h2>
+          <button onClick={() => setNavbarOpen(false)}>✕</button>
         </div>
 
-        {/* Sidebar Menu */}
-        <ul className="flex flex-col">
+        <div className="flex flex-col p-4 space-y-4">
+          <MobileNavItem to="/" label="Home" close={() => setNavbarOpen(false)} />
+          <MobileNavItem to="/services" label="Services" close={() => setNavbarOpen(false)} />
+          <MobileNavItem to="/trainings" label="Trainings" close={() => setNavbarOpen(false)} />
+          <MobileNavItem to="/about-us" label="About Us" close={() => setNavbarOpen(false)} />
+          <MobileNavItem to="/contact-us" label="Contact Us" close={() => setNavbarOpen(false)} />
 
-          <MobileNavItem to="/" close={() => setIsNavOpen(false)}>
-            Home
-          </MobileNavItem>
+          <hr />
 
-          <MobileNavItem to="/services" close={() => setIsNavOpen(false)}>
-            Services
-          </MobileNavItem>
-
-          <MobileNavItem to="/trainings" close={() => setIsNavOpen(false)}>
-            Trainings
-          </MobileNavItem>
-
-          <MobileNavItem to="/about-us" close={() => setIsNavOpen(false)}>
-            About Us
-          </MobileNavItem>
-
-          <MobileNavItem to="/contact-us" close={() => setIsNavOpen(false)}>
-            Contact Us
-          </MobileNavItem>
-
-          {/* Buttons */}
-
-          <MobileNavItem to="/login" close={() => setIsNavOpen(false)}>
-
-            Log in
-
-          </MobileNavItem>
-
-          <MobileNavItem to="/sign-up" close={() => setIsNavOpen(false)}>
-            Sign Up
-
-          </MobileNavItem>
-
-          <MobileNavItem to="/app" close={() => setIsNavOpen(false)}>
-
-            Download App
-
-          </MobileNavItem>
-
-        </ul>
+          <MobileNavItem to="/login" label="Log in" close={() => setNavbarOpen(false)} />
+          <MobileNavItem to="/sign-up" label="Sign Up" close={() => setNavbarOpen(false)} />
+          <MobileNavItem to="/app" label="Download App" close={() => setNavbarOpen(false)} />
+        </div>
       </div>
     </header>
   );
 };
 
-/* Desktop Nav Item */
-
-const NavItem = ({ to, children }) => (
-  <li>
-    <Link
-      to={to}
-      className="text-gray-700 hover:text-blue-600 transition"
-    >
-      {children}
-    </Link>
-  </li>
+/* DESKTOP ITEM */
+const NavItem = ({ to, label }) => (
+  <Link
+    to={to}
+    className="text-midnight_text dark:text-white hover:text-primary transition font-medium"
+  >
+    {label}
+  </Link>
 );
 
-/* Mobile Nav Item */
-
-const MobileNavItem = ({ to, children, close }) => (
-  <li className="border-b">
-    <Link
-      to={to}
-      onClick={close}
-      className="block w-full py-3 px-6 text-gray-800 hover:bg-gray-100 hover:text-blue-600 transition"
-    >
-      {children}
-    </Link>
-  </li>
+/* MOBILE ITEM */
+const MobileNavItem = ({ to, label, close }) => (
+  <Link
+    to={to}
+    onClick={close}
+    className="text-midnight_text dark:text-white hover:text-primary py-2"
+  >
+    {label}
+  </Link>
 );
 
 export default Navbar;

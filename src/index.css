@@ -1,136 +1,148 @@
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  .theme {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
-  }
 
-  :root {
-    /* 🌤️ LIGHT MODE */
+html {
+    scroll-behavior: smooth;
+}
 
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+* {
+    margin: 0%;
+    padding: 0%;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
 
-    /* 🧊 Glass card */
-    --card: 0 0% 100% / 0.6;
-    --card-foreground: 222 47% 11%;
+.custom-select {
+  appearance: none;
+  -webkit-appearance: none; /* for Safari */
+  -moz-appearance: none;    /* for Firefox */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="blue" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem; /* space for arrow */
+}
 
-    /* 🔵 Primary (blue) */
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
 
-    /* 🔹 Secondary */
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+}
 
-    /* 🌊 Accent */
-    --accent: 199 89% 48%;
-    --accent-foreground: 0 0% 100%;
 
-    /* ⚠️ States */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+@layer components {
+    body {
+        @apply text-base overflow-x-hidden font-normal;
+        -webkit-text-size-adjust: 100%;
+    }
+    html{
+        @apply overflow-x-hidden;
+    }
 
-    /* 🧱 UI */
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    .blog-details p {
+        @apply dark:!text-gray ;
+    }
+    .blog-details li {
+        @apply dark:!text-gray ;
+    }
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    textarea,
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+        @apply block outline-none text-base font-normal text-midnight_text m-0 rounded-[0.375rem] w-full placeholder:text-gray;
+    }
 
-    /* 📊 Chart colors */
-    --chart-1: 217 91% 60%;
-    --chart-2: 199 89% 48%;
-    --chart-3: 210 40% 70%;
-    --chart-4: 220 60% 50%;
-    --chart-5: 230 70% 40%;
+    h1 {
+        @apply md:text-[51px] md:leading-[1.2] text-[28px] leading-[1.2] font-bold text-midnight_text dark:text-white;
+    }
 
-    --radius: 0.75rem;
+    h2 {
+        @apply md:text-[40px] leading-[1.2] text-2xl font-bold text-midnight_text dark:text-white;
+    }
 
-    /* 📁 Sidebar */
-    --sidebar: 210 40% 96%;
-    --sidebar-foreground: 222 47% 11%;
+    h3 {
+        @apply md:text-[28px] leading-[1.2] text-lg font-bold text-white dark:text-primary;
+    }
 
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    h4 {
+        @apply text-2xl font-bold text-midnight_text dark:text-primary;
+    }
 
-    --sidebar-accent: 210 40% 92%;
-    --sidebar-accent-foreground: 222 47% 11%;
+    h5 {
+        @apply text-[22px] leading-[1.2] font-medium text-midnight_text dark:text-primary;
+    }
 
-    --sidebar-border: 214 32% 85%;
-    --sidebar-ring: 217 91% 60%;
-  }
+    .m_icon {
+        @apply inline-block h-[3.8125rem] w-[3.4375rem] bg-no-repeat bg-cover object-cover;
+    }
 
-  .dark {
-    /* 🌙 DARK MODE */
+    .box_shadow {
+        @apply shadow-[0px_3px_20px_0px_#3B4B68];
+    }
 
-    --background: 222 47% 8%;
-    --foreground: 210 40% 98%;
+    .header_shadow {
+        @apply shadow-[0_2px_20px_rgba(0, 0, 0, 0.05)];
+    }
 
-    --card: 222 47% 12% / 0.5;
-    --card-foreground: 210 40% 98%;
+    section {
+        @apply lg:py-24 py-16;
+    }
 
-    --popover: 222 47% 12%;
-    --popover-foreground: 210 40% 98%;
+    /* Default Button CSS Start */
+    .btn {
+        @apply relative border-0 z-[1] py-3 px-4 text-lg font-normal rounded-lg cursor-pointer no-underline bg-primary text-white before:content-[''] before:absolute before:-z-[1] after:content-[''] after:absolute after:-z-[1] hover:bg-blue-700
+    }
 
-    --primary: 217 91% 65%;
-    --primary-foreground: 0 0% 100%;
+    /* White Button CSS Start */
+    .btn_white {
+        @apply relative z-[1] py-[0.85rem] px-[2.3rem] text-17 font-normal rounded-[0.3125rem] cursor-pointer no-underline border-transparent border-2 bg-white text-primary before:content-[''] before:absolute before:-z-[1] after:content-[''] after:absolute after:-z-[1] hover:bg-transparent hover:border-white hover:border-2 hover:text-white
+    }
 
-    --secondary: 217 32% 20%;
-    --secondary-foreground: 210 40% 98%;
+    /* transparent Button CSS Start */
+    .btn_trans {
+        @apply relative z-[1] py-[0.8rem] px-[2.3rem] text-17 font-normal rounded-[0.3125rem] cursor-pointer no-underline border-2 border-solid border-white text-white before:content-[''] before:absolute before:-z-[1] after:content-[''] after:absolute after:-z-[1] hover:text-white hover:border-transparent hover:bg-white
+    }
+}
 
-    --accent: 199 89% 60%;
-    --accent-foreground: 0 0% 100%;
+.blog-details p, .blog-details hr {
+    @apply mb-8;
+}
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
+.blog-details strong {
+    @apply font-bold dark:text-white;
+}
 
-    --muted: 217 32% 20%;
-    --muted-foreground: 215 20% 65%;
+.blog-details ul {
+    @apply mb-8 list-inside list-disc space-y-3;
+}
 
-    --border: 217 32% 25%;
-    --input: 217 32% 25%;
-    --ring: 217 91% 65%;
+.blog-details ol {
+    @apply mb-8 list-inside list-decimal space-y-3;
+}
 
-    --chart-1: 217 91% 65%;
-    --chart-2: 199 89% 60%;
-    --chart-3: 210 40% 60%;
-    --chart-4: 220 60% 60%;
-    --chart-5: 230 70% 50%;
+.blog-details h1 {
+    @apply mb-8 text-3xl font-bold dark:text-white sm:text-4xl md:text-[40px] md:leading-[1.28];
+}
 
-    --sidebar: 222 47% 10%;
-    --sidebar-foreground: 210 40% 98%;
+.blog-details h2 {
+    @apply mb-8 text-2xl font-bold dark:text-white sm:text-3xl md:text-[35px] md:leading-[1.28];
+}
 
-    --sidebar-primary: 217 91% 65%;
-    --sidebar-primary-foreground: 0 0% 100%;
+.blog-details h3 {
+    @apply mb-6 text-2xl font-bold dark:text-white sm:text-[28px] sm:leading-[40px];
+}
 
-    --sidebar-accent: 217 32% 18%;
-    --sidebar-accent-foreground: 210 40% 98%;
+.blog-details hr {
+    @apply border-border dark:border-dark_border
+}
 
-    --sidebar-border: 217 32% 25%;
-    --sidebar-ring: 217 91% 65%;
-  }
-
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-
-  html {
-    @apply font-sans;
-  }
+.dark .custom-input{
+    background-color: red;
 }

@@ -5,7 +5,7 @@ import { logout } from '@/features/authSlice';
 import CartIcon from '@/dashboard/Student/Cart/CartIcon';
 import { FiMenu, FiChevronDown, FiLogOut, FiSun, FiMoon } from "react-icons/fi";
 import { useSidebarStore } from '@/dashboard/Sidebar/useSidebarStore';
-import { useTheme } from '@/context/ThemeContext';  
+import { useTheme } from '@/context/ThemeContext';
 
 const Topbar = () => {
   const { user } = useSelector((state) => state.auth);
@@ -18,71 +18,78 @@ const Topbar = () => {
   return (
     <header
       className={`
-    fixed top-0 right-0
-    h-[70px]
-    backdrop-blur-md
-    border-b
-    shadow-sm
-    flex items-center justify-between
-    px-4
-    z-50
-    transition-all duration-300 ease-in-out
-    ${isOpen ? 'left-64' : 'left-20'}
-    max-lg:left-0
-    ${theme === 'dark'
-      ? 'bg-slate-800/95 border-slate-700 text-white'
-      : 'bg-white/95 border-gray-200 text-slate-900'
-    }
-  `}
+        fixed top-0 left-0 w-full
+        h-[70px]
+        backdrop-blur-md
+        flex items-center justify-between
+        px-4 md:px-6
+        z-50
+        transition-all duration-300
 
+        bg-white dark:bg-darklight
+        text-midnight_text dark:text-white
+
+        border-b border-border dark:border-dark_border
+        shadow-property
+      `}
     >
       {/* LEFT */}
       <div className="flex items-center gap-3">
+
+        {/* Sidebar Toggle */}
         <button
           onClick={toggleSidebar}
-          className={`p-2 rounded transition-colors ${
-            theme === 'dark'
-              ? 'hover:bg-slate-700'
-              : 'hover:bg-gray-100'
-          }`}
+          className="
+            p-2 rounded-lg
+            transition-colors
+            hover:bg-lightgray
+            dark:hover:bg-semidark
+          "
         >
           <FiMenu size={22} />
         </button>
 
+        {/* Logo */}
         <img
           src="/img/leviticalogo.png"
           alt="Levitica Logo"
-          className="h-14 md:h-12"
+          className="h-10 md:h-11 object-contain"
         />
       </div>
 
       {/* RIGHT */}
       <div className="flex items-center gap-3">
+
         {user?.role === "student" && <CartIcon />}
 
-        {/* Theme Switcher */}
+        {/* THEME SWITCH */}
         <button
           onClick={toggleTheme}
-          className={`p-2 rounded-lg transition-colors ${
-            theme === 'dark'
-              ? 'hover:bg-slate-700'
-              : 'hover:bg-gray-100'
-          }`}
-          title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+          className="
+            p-2 rounded-lg
+            flex items-center justify-center
+            transition-all duration-200
+
+            bg-light hover:bg-lightgray
+            text-midnight_text
+
+            dark:bg-semidark dark:text-yellow-400 dark:hover:bg-darklight
+          "
+          title="Toggle Theme"
         >
-          {theme === "light" ? (
-            <FiMoon size={20} className={theme === 'dark' ? 'text-slate-400' : 'text-slate-600'} />
-          ) : (
-            <FiSun size={20} className="text-yellow-400" />
-          )}
+          {theme === "light" ? <FiMoon size={20} /> : <FiSun size={20} />}
         </button>
 
-        {/* User dropdown */}
+        {/* USER */}
         <button
           onClick={() => setOpen(!open)}
-          className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2 hover:opacity-80 transition"
         >
-          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center bg-primary text-primary-content">
+          <div className="
+            w-8 h-8 rounded-full overflow-hidden
+            flex items-center justify-center
+            bg-primary text-white
+          ">
             {user?.image ? (
               <img
                 src={user.image}
@@ -95,28 +102,37 @@ const Topbar = () => {
               </span>
             )}
           </div>
+
           <FiChevronDown size={14} />
         </button>
 
+        {/* DROPDOWN */}
         {open && (
-          <div className={`absolute top-16 right-4 border rounded-xl shadow-lg z-50 min-w-[160px] transition-colors ${
-            theme === 'dark'
-              ? 'bg-slate-700 border-slate-600'
-              : 'bg-white border-gray-200'
-          }`}>
+          <div className="
+            absolute top-16 right-4
+            min-w-[160px]
+            rounded-xl
+            border border-border dark:border-dark_border
+            bg-white dark:bg-semidark
+            shadow-deatail_shadow
+            overflow-hidden
+          ">
             <button
               onClick={() => {
                 dispatch(logout());
                 navigate("/login");
                 setOpen(false);
               }}
-              className={`flex items-center gap-2 px-5 py-3 w-full text-left rounded-xl transition-all ${
-                theme === 'dark'
-                  ? 'text-red-400 hover:bg-red-950/40'
-                  : 'text-red-600 hover:bg-red-50'
-              }`}
+              className="
+                flex items-center gap-2
+                px-5 py-3 w-full text-left
+                text-red-600 dark:text-red-400
+                hover:bg-red-50 dark:hover:bg-red-950/40
+                transition-all
+              "
             >
-              <FiLogOut size={16} /> Logout
+              <FiLogOut size={16} />
+              Logout
             </button>
           </div>
         )}
