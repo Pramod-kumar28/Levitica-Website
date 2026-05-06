@@ -158,7 +158,7 @@ const SecurityTab = () => {
       ) : (
         <form
           onSubmit={formik.handleSubmit}
-          className={`${isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'} border rounded-2xl p-6 sm:p-8 space-y-5 sm:space-y-6 shadow-property`}
+          className={` p-6 sm:p-8 space-y-5 sm:space-y-6`}
         >
           {/* Current Password */}
           <div className="space-y-2">

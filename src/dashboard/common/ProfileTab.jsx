@@ -163,12 +163,9 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
           </div>
         </div>
 
-        <form
-          onSubmit={formik.handleSubmit}
-          className={` p-6 space-y-6`}
-        >
-          {/* Avatar Section */}
-          <div className="flex flex-col sm:flex-row items-center gap-6 pb-4 border-b ${isDark ? 'border-dark_border' : 'border-border'}">
+        <form onSubmit={formik.handleSubmit} className="p-6 space-y-6">
+          {/* Avatar Section - Removed border-bottom */}
+          <div className="flex flex-col sm:flex-row items-center gap-6 pb-4">
             <div
               className={`relative w-24 h-24 rounded-full overflow-hidden cursor-pointer group ${
                 isDark ? 'bg-darkmode' : 'bg-section'
@@ -296,8 +293,8 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
             </p>
           </div>
 
-          {/* Save Button */}
-          <div className="flex justify-end pt-2 border-t ${isDark ? 'border-dark_border' : 'border-border'}">
+          {/* Save Button - Removed border-top */}
+          <div className="flex justify-end pt-2">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
