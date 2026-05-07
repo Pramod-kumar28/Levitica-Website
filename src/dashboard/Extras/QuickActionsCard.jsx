@@ -5,51 +5,79 @@ import {
   FiBook,
   FiCreditCard,
   FiUserPlus,
+  FiZap,
 } from "react-icons/fi";
-
+import { useTheme } from '@/context/ThemeContext';
 
 const QuickActionsCard = () => {
   const navigate = useNavigate();
-
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const actions = [
-    { label: "Create Batch", icon: FiBox, onClick: () => navigate("batchs") },
-    { label: "Create Course", icon: FiBook, onClick: () => navigate("courses") },
-    { label: "Payments", icon: FiCreditCard, onClick: () => navigate("payments") },
-    {
-      label: "Assign Batch",
-      icon: FiUserPlus,
-      onClick: () => navigate("students/unassigned"),
-    },
+    { label: "Create Batch", icon: FiBox, onClick: () => navigate("batchs"), color: "purple" },
+    { label: "Create Course", icon: FiBook, onClick: () => navigate("courses"), color: "blue" },
+    { label: "Payments", icon: FiCreditCard, onClick: () => navigate("payments"), color: "emerald" },
+    { label: "Assign Batch", icon: FiUserPlus, onClick: () => navigate("students/unassigned"), color: "orange" },
   ];
 
+  const getColorClasses = (color) => {
+    switch(color) {
+      case "purple":
+        return isDark 
+          ? "hover:border-purple-500/50 hover:bg-purple-500/10 hover:text-purple-400"
+          : "hover:border-purple-300 hover:bg-purple-50 hover:text-purple-700";
+      case "blue":
+        return isDark 
+          ? "hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
+          : "hover:border-primary/50 hover:bg-primary/10 hover:text-primary";
+      case "emerald":
+        return isDark 
+          ? "hover:border-emerald-500/50 hover:bg-emerald-500/10 hover:text-emerald-400"
+          : "hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-700";
+      case "orange":
+        return isDark 
+          ? "hover:border-orange-500/50 hover:bg-orange-500/10 hover:text-orange-400"
+          : "hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700";
+      default:
+        return isDark 
+          ? "hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
+          : "hover:border-primary/50 hover:bg-primary/10 hover:text-primary";
+    }
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="tw-rounded-2xl tw-border tw-border-slate-200 tw-bg-white tw-p-6 tw-shadow-sm"
-    >
-      <h3 className="tw-text-lg tw-font-semibold tw-text-slate-900 tw-mb-4">
-        Quick Actions
-      </h3>
-
-
-      <div className="tw-grid tw-grid-cols-2 tw-gap-3">
-        {actions.map((a, i) => (
-          <button
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-3">
+        {actions.map((action, i) => (
+          <motion.button
             key={i}
-            onClick={a.onClick}
-            className="tw-flex tw-items-center tw-gap-2 tw-rounded-xl tw-border tw-border-slate-200 tw-bg-slate-50 tw-p-3 tw-text-sm tw-font-medium tw-text-slate-700 hover:tw-bg-indigo-50 hover:tw-text-indigo-700 tw-transition"
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={action.onClick}
+            className={`group flex flex-col items-center gap-2 rounded-xl border p-4 text-center transition-all duration-200 ${
+              isDark
+                ? 'border-dark_border bg-darklight text-gray hover:shadow-md'
+                : 'border-border bg-light text-gray hover:shadow-md'
+            } ${getColorClasses(action.color)}`}
           >
-            <a.icon />
-            {a.label}
-          </button>
+            <div className={`p-2 rounded-lg transition-colors duration-200 ${
+              isDark
+                ? 'bg-darkmode group-hover:bg-transparent'
+                : 'bg-white group-hover:bg-transparent'
+            }`}>
+              <action.icon className={`w-5 h-5 transition-colors duration-200 ${
+                isDark ? 'text-gray group-hover:text-current' : 'text-gray group-hover:text-current'
+              }`} />
+            </div>
+            <span className="text-xs font-medium">
+              {action.label}
+            </span>
+          </motion.button>
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 };
-
 
 export default QuickActionsCard;

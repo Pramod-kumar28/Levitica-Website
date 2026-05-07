@@ -103,11 +103,10 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
       endDate: "",
     };
 
-
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 sm:p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-3 sm:p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -117,16 +116,16 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
           animate={{ scale: 1, y: 0, opacity: 1 }}
           exit={{ scale: 0.96, y: 20, opacity: 0 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className={`w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col transition-colors ${
+          className={`w-full max-w-2xl max-h-[95vh] sm:max-h-[90vh] overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col ${
             isDark
-              ? 'bg-slate-800'
+              ? 'bg-semidark'
               : 'bg-white'
           }`}
         >
           {/* Gradient Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-4 sm:p-6 flex items-start justify-between">
+          <div className="bg-gradient-to-r from-primary to-skyBlue p-4 sm:p-6 flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 sm:p-3 bg-white/20 rounded-lg backdrop-blur-sm">
+              <div className="p-2.5 sm:p-3 bg-white/20 rounded-xl backdrop-blur-sm">
                 <FiVideo className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div>
@@ -143,7 +142,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     </>
                   )}
                 </h2>
-                <p className="text-xs sm:text-sm text-blue-100 mt-0.5">
+                <p className="text-xs sm:text-sm text-white mt-0.5">
                   Configure timing, batch, and host details
                 </p>
               </div>
@@ -152,7 +151,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               onClick={onSuccess}
-              className="p-1.5 sm:p-2 rounded-lg hover:bg-white/20 transition text-white"
+              className="p-1.5 sm:p-2 rounded-xl hover:bg-white/20 transition text-white"
             >
               <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
@@ -187,11 +186,11 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
               }}
             >
               {({ errors, touched, values, setFieldValue }) => (
-                <Form className={`space-y-4 sm:space-y-5 ${isDark ? 'text-white' : ''}`}>
+                <Form className={`space-y-4 sm:space-y-5`}>
                   <FieldInput
                     isDark={isDark}
                     name="title"
-                    label={<div className="flex items-center gap-2"><FiType className="w-4 h-4" /> Class Title</div>}
+                    label={<div className="flex items-center gap-2"><FiType className="w-4 h-4 text-primary" /> Class Title</div>}
                     placeholder="e.g., Advanced JavaScript Basics"
                     errors={errors}
                     touched={touched}
@@ -201,7 +200,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     <FieldSelect
                       isDark={isDark}
                       name="recurrence"
-                      label={<div className="flex items-center gap-2"><FiRotateCw className="w-4 h-4" /> Class Type</div>}
+                      label={<div className="flex items-center gap-2"><FiRotateCw className="w-4 h-4 text-primary" /> Class Type</div>}
                       options={[
                         { value: "once", label: "One-time Class" },
                         { value: "daily", label: "Daily Recurring" },
@@ -214,7 +213,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                       isDark={isDark}
                       name="duration"
                       type="number"
-                      label={<div className="flex items-center gap-2"><FiClock className="w-4 h-4" /> Duration (min)</div>}
+                      label={<div className="flex items-center gap-2"><FiClock className="w-4 h-4 text-primary" /> Duration (min)</div>}
                       placeholder="60"
                       errors={errors}
                       touched={touched}
@@ -225,7 +224,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     isDark={isDark}
                     name="startTime"
                     type="datetime-local"
-                    label={<div className="flex items-center gap-2"><FiClock className="w-4 h-4" /> Start Time</div>}
+                    label={<div className="flex items-center gap-2"><FiClock className="w-4 h-4 text-primary" /> Start Time</div>}
                     errors={errors}
                     touched={touched}
                   />
@@ -240,7 +239,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                         isDark={isDark}
                         name="endDate"
                         type="date"
-                        label={<div className="flex items-center gap-2"><FiCalendar className="w-4 h-4" /> Recurrence End Date</div>}
+                        label={<div className="flex items-center gap-2"><FiCalendar className="w-4 h-4 text-primary" /> Recurrence End Date</div>}
                         errors={errors}
                         touched={touched}
                       />
@@ -252,17 +251,17 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     {/* Course */}
                     <div>
                       <label className={`text-sm font-semibold mb-2 flex items-center gap-2 ${
-                        isDark ? 'text-slate-300' : 'text-gray-800'
+                        isDark ? 'text-gray' : 'text-midnight_text'
                       }`}>
-                        <FiBookOpen className={`w-4 h-4 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} /> Course
+                        <FiBookOpen className="w-4 h-4 text-primary" /> Course
                       </label>
                       <Field
                         as="select"
                         name="courseId"
-                        className={`w-full rounded-lg border px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition ${
+                        className={`w-full rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-2 transition ${
                           isDark
-                            ? 'border-slate-600 bg-slate-700 text-slate-100'
-                            : 'border-gray-300 bg-white'
+                            ? 'border-dark_border bg-darklight text-white focus:border-primary focus:ring-primary/30'
+                            : 'border-border bg-light text-midnight_text focus:border-primary focus:ring-primary/20'
                         }`}
                         onChange={(e) => {
                           const value = e.target.value;
@@ -281,25 +280,25 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                         ))}
                       </Field>
                       {errors.courseId && touched.courseId && (
-                        <p className={`text-xs mt-1 ${isDark ? 'text-red-400' : 'text-red-500'}`}>{errors.courseId}</p>
+                        <p className={`text-xs mt-1 text-rose-500`}>{errors.courseId}</p>
                       )}
                     </div>
 
                     {/* Batch */}
                     <div>
                       <label className={`text-sm font-semibold mb-2 flex items-center gap-2 ${
-                        isDark ? 'text-slate-300' : 'text-gray-800'
+                        isDark ? 'text-gray' : 'text-midnight_text'
                       }`}>
-                        <FiUsers className={`w-4 h-4 ${isDark ? 'text-purple-400' : 'text-purple-600'}`} /> Batch
+                        <FiUsers className="w-4 h-4 text-purple-500" /> Batch
                       </label>
                       <Field
                         as="select"
                         name="batchId"
                         disabled={!values.courseId}
-                        className={`w-full rounded-lg border px-3 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition ${
+                        className={`w-full rounded-xl border px-3 py-2.5 text-sm focus:outline-none focus:ring-2 transition ${
                           isDark
-                            ? 'border-slate-600 bg-slate-700 text-slate-100 disabled:bg-slate-800 disabled:text-slate-500'
-                            : 'border-gray-300 bg-white disabled:bg-gray-100 disabled:cursor-not-allowed'
+                            ? 'border-dark_border bg-darklight text-white disabled:bg-darkmode disabled:text-gray focus:border-primary focus:ring-primary/30'
+                            : 'border-border bg-light text-midnight_text disabled:bg-section disabled:text-gray focus:border-primary focus:ring-primary/20'
                         }`}
                       >
                         <option value="">
@@ -312,7 +311,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                         ))}
                       </Field>
                       {errors.batchId && touched.batchId && (
-                        <p className={`text-xs mt-1 ${isDark ? 'text-red-400' : 'text-red-500'}`}>{errors.batchId}</p>
+                        <p className={`text-xs mt-1 text-rose-500`}>{errors.batchId}</p>
                       )}
                     </div>
                   </div>
@@ -321,7 +320,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     isDark={isDark}
                     name="hostEmail"
                     type="email"
-                    label={<div className="flex items-center gap-2"><FiMail className="w-4 h-4" /> Host Email</div>}
+                    label={<div className="flex items-center gap-2"><FiMail className="w-4 h-4 text-primary" /> Host Email</div>}
                     placeholder="admin@example.com"
                     errors={errors}
                     touched={touched}
@@ -332,7 +331,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-3 sm:py-4 rounded-lg sm:rounded-xl transition shadow-lg hover:shadow-xl disabled:shadow-none mt-2 sm:mt-4"
+                    className="w-full bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-3 sm:py-4 rounded-xl transition shadow-md hover:shadow-lg disabled:shadow-none mt-2 sm:mt-4"
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">
@@ -350,8 +349,6 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                       </span>
                     )}
                   </motion.button>
-
-
                 </Form>
               )}
             </Formik>
@@ -367,20 +364,20 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
 const FieldInput = ({ isDark, label, name, errors, touched, placeholder, ...props }) => (
   <div>
     <label className={`text-sm font-semibold mb-2 block ${
-      isDark ? 'text-slate-300' : 'text-gray-800'
+      isDark ? 'text-gray' : 'text-midnight_text'
     }`}>{label}</label>
     <Field 
       name={name} 
       {...props} 
       placeholder={placeholder}
-      className={`w-full rounded-lg border px-3 sm:px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition placeholder-gray-400 ${
+      className={`w-full rounded-xl border px-3 sm:px-4 py-2.5 text-sm focus:outline-none focus:ring-2 transition placeholder-gray-400 ${
         isDark
-          ? 'border-slate-600 bg-slate-700 text-slate-100 placeholder-slate-500'
-          : 'border-gray-300 bg-white'
+          ? 'border-dark_border bg-darklight text-white placeholder-gray focus:border-primary focus:ring-primary/30'
+          : 'border-border bg-light text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
       }`} 
     />
     {errors[name] && touched[name] && (
-      <p className={`text-xs mt-1.5 ${isDark ? 'text-red-400' : 'text-red-500'}`}>{errors[name]}</p>
+      <p className={`text-xs mt-1.5 text-rose-500`}>{errors[name]}</p>
     )}
   </div>
 );
@@ -388,17 +385,17 @@ const FieldInput = ({ isDark, label, name, errors, touched, placeholder, ...prop
 const FieldSelect = ({ isDark, label, name, options, errors, touched }) => (
   <div>
     <label className={`text-sm font-semibold mb-2 flex items-center gap-2 ${
-      isDark ? 'text-slate-300' : 'text-gray-800'
+      isDark ? 'text-gray' : 'text-midnight_text'
     }`}>
       {label}
     </label>
     <Field 
       as="select" 
       name={name} 
-      className={`w-full rounded-lg border px-3 sm:px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 focus:outline-none transition cursor-pointer ${
+      className={`w-full rounded-xl border px-3 sm:px-4 py-2.5 text-sm focus:outline-none focus:ring-2 transition cursor-pointer ${
         isDark
-          ? 'border-slate-600 bg-slate-700 text-slate-100'
-          : 'border-gray-300 bg-white'
+          ? 'border-dark_border bg-darklight text-white focus:border-primary focus:ring-primary/30'
+          : 'border-border bg-light text-midnight_text focus:border-primary focus:ring-primary/20'
       }`}
     >
       <option value="">Select Option</option>
@@ -409,7 +406,7 @@ const FieldSelect = ({ isDark, label, name, options, errors, touched }) => (
       ))}
     </Field>
     {errors[name] && touched[name] && (
-      <p className={`text-xs mt-1.5 ${isDark ? 'text-red-400' : 'text-red-500'}`}>{errors[name]}</p>
+      <p className={`text-xs mt-1.5 text-rose-500`}>{errors[name]}</p>
     )}
   </div>
 );

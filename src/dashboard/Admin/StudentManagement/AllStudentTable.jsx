@@ -18,9 +18,12 @@ import {
   User,
   FileSpreadsheet,
   Eye,
+  TrendingUp,
+  BarChart3,
 } from "lucide-react";
 import { MODAL_TYPES, useModal } from '@/dashboard/Admin/Modals/ModalContext';
 import { useTheme } from '@/context/ThemeContext';
+import { motion } from "framer-motion";
 
 const StudentsTable = () => {
   const { theme } = useTheme();
@@ -46,7 +49,6 @@ const StudentsTable = () => {
   const [downloadExcel, { isLoading: downloadLoading }] =
     useDownloadStudentsExcelMutation();
 
-  /* ------------------ Debounce search ------------------ */
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -55,7 +57,6 @@ const StudentsTable = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  /* ------------------ Excel download ------------------ */
   const handleDownloadExcel = async () => {
     try {
       const blob = await downloadExcel({}).unwrap();
@@ -66,377 +67,176 @@ const StudentsTable = () => {
       link.click();
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      // You can replace this with a toast notification
       alert("Failed to download Excel");
     }
   };
 
-  /* ------------------ Error ------------------ */
   if (isError) {
     return (
-      <div className="alert alert-error shadow-lg">
-        <div className="flex-1">
-          <XCircle className="stroke-current shrink-0" />
-          <div>
-            <h3 className="font-semibold">Error loading students</h3>
-            <p className="text-sm opacity-70">
-              {error?.data?.error || "Something went wrong"}
-            </p>
-          </div>
-        </div>
-        <button onClick={refetch}>
-          Retry
+      <div className={`rounded-xl p-6 text-center ${
+        isDark
+          ? 'bg-rose-500/10 border border-rose-500/20 text-rose-400'
+          : 'bg-rose-500/10 border border-rose-500/20 text-rose-600'
+      }`}>
+        <XCircle className="w-12 h-12 mx-auto mb-3" />
+        <h3 className="font-semibold mb-1">Error loading students</h3>
+        <p className="text-sm opacity-80">{error?.data?.error || "Something went wrong"}</p>
+        <button onClick={refetch} className={`mt-4 px-4 py-2 rounded-lg text-sm font-medium ${
+          isDark ? 'bg-primary text-white' : 'bg-primary text-white'
+        }`}>
+          Try Again
         </button>
       </div>
     );
   }
 
-  // Calculate stats
   const totalStudents = studentsData?.total || 0;
   const verifiedStudents = studentsData?.students?.filter(s => s.emailVerified).length || 0;
   const pendingStudents = studentsData?.students?.filter(s => !s.emailVerified).length || 0;
 
   return (
-    <div className={`space-y-4 md:space-y-6 p-2 sm:p-3 md:p-6`}>
-      {/* ================= HEADER SECTION ================= */}
-      <div className={`rounded-2xl p-6 sm:p-8 shadow-2xl border overflow-hidden relative transition-colors ${
-        isDark
-          ? 'bg-gradient-to-br from-slate-800 via-blue-800 to-indigo-900 border-blue-700/40'
-          : 'bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 border-blue-700/30'
+    <div className="space-y-6">
+
+      {/* ===== SEARCH BAR ===== */}
+      <div className={`rounded-xl p-4 shadow-property border ${
+        isDark ? 'bg-semidark border-dark_border' : 'bg-white border-border'
       }`}>
-        {/* Background decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -z-0"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl -z-0"></div>
-        
-        <div className="relative z-10">
-          <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6 mb-6 sm:mb-8`}>
-            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-              <div className={`p-2.5 sm:p-4 rounded-xl shadow-lg flex-shrink-0 ${ 
-                isDark
-                  ? 'bg-gradient-to-br from-blue-500 to-indigo-600'
-                  : 'bg-gradient-to-br from-blue-400 to-indigo-500'
-              }`}>
-                <Users className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
-              </div>
-              <div className="min-w-0">
-                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white truncate">
-                  All Students
-                </h1>
-                <p className="text-blue-100 mt-1 text-xs sm:text-sm font-medium truncate">
-                  Overview of registered students
-                </p>
-              </div>
-            </div>
-
-            <button
-              onClick={handleDownloadExcel}
-              disabled={downloadLoading || isLoading}
-              className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg flex items-center gap-2 shadow-lg hover:shadow-xl transition-all duration-300 whitespace-nowrap text-sm sm:text-base flex-shrink-0"
-            >
-              {downloadLoading ? (
-                <>
-                  <Loader2 className="animate-spin" size={18} />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <FileSpreadsheet size={18} />
-                  Export Excel
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/20 hover:border-white/40 transition-all duration-300 group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-100 text-sm font-medium">Total Students</p>
-                  <p className="text-4xl font-bold text-white mt-2">
-                    {totalStudents}
-                  </p>
-                </div>
-                <div className="p-3 bg-white/10 group-hover:bg-white/20 rounded-lg transition-all duration-300">
-                  <Users className="w-6 h-6 text-blue-300" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/20 hover:border-green-400/40 transition-all duration-300 group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-green-100 text-sm font-medium">Verified</p>
-                  <p className="text-4xl font-bold text-green-300 mt-2">
-                    {verifiedStudents}
-                  </p>
-                </div>
-                <div className="p-3 bg-green-500/20 group-hover:bg-green-500/30 rounded-lg transition-all duration-300">
-                  <CheckCircle className="w-6 h-6 text-green-300" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/20 hover:border-amber-400/40 transition-all duration-300 group">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-amber-100 text-sm font-medium">Pending</p>
-                  <p className="text-4xl font-bold text-amber-300 mt-2">
-                    {pendingStudents}
-                  </p>
-                </div>
-                <div className="p-3 bg-amber-500/20 group-hover:bg-amber-500/30 rounded-lg transition-all duration-300">
-                  <Clock className="w-6 h-6 text-amber-300" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ================= SEARCH BAR ================= */}
-      <div className={`rounded-xl shadow-md border p-3 sm:p-4 md:p-6 transition-colors ${
-        isDark
-          ? 'bg-slate-800 border-slate-700'
-          : 'bg-white border-slate-200'
-      }`}>
-        <div className="relative group">
-          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 transition-colors ${
-            isDark
-              ? 'text-slate-500 group-focus-within:text-blue-400'
-              : 'text-slate-400 group-focus-within:text-blue-500'
-          }`} />
+        <div className="relative">
+          <Search className={`absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray`} />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name, email, phone..."
-            className={`w-full pl-12 pr-12 py-2.5 sm:py-3 border rounded-lg focus:outline-none transition-all text-sm sm:text-base ${
+            placeholder="Search by name, email, or phone number..."
+            className={`w-full pl-11 pr-11 py-3 rounded-xl border focus:outline-none focus:ring-2 transition-all text-sm ${
               isDark
-                ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-500/30'
-                : 'bg-white border-slate-200 text-slate-900 placeholder-slate-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-100'
+                ? 'bg-darklight border-dark_border text-white placeholder-gray focus:border-primary focus:ring-primary/30'
+                : 'bg-light border-border text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
             }`}
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className={`absolute right-4 top-1/2 transform -translate-y-1/2 transition-colors ${
-                isDark
-                  ? 'text-slate-500 hover:text-red-400'
-                  : 'text-slate-400 hover:text-red-500'
-              }`}
+              className={`absolute right-4 top-1/2 transform -translate-y-1/2 transition-colors text-gray hover:text-rose-500`}
             >
-              <XCircle className="w-5 h-5" />
+              <XCircle className="h-4 w-4" />
             </button>
           )}
         </div>
       </div>
 
-      {/* ================= STUDENTS TABLE ================= */}
-      <div className={`rounded-xl shadow-md border overflow-hidden transition-colors ${
-        isDark
-          ? 'bg-slate-800 border-slate-700'
-          : 'bg-white border-slate-200'
+      {/* ===== STUDENTS TABLE ===== */}
+      <div className={`rounded-xl shadow-property border overflow-hidden ${
+        isDark ? 'bg-semidark border-dark_border' : 'bg-white border-border'
       }`}>
         <div className="overflow-x-auto">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <Loader2 className={`animate-spin w-12 h-12 ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
-              <p className={`mt-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Loading students...</p>
+              <Loader2 className={`animate-spin h-10 w-10 text-primary`} />
+              <p className={`mt-4 text-sm text-gray`}>Loading students...</p>
             </div>
           ) : (
             <table className="w-full">
               <thead>
-                <tr className={`border-b transition-colors ${
-                  isDark
-                    ? 'bg-slate-700 border-slate-600'
-                    : 'bg-gradient-to-r from-slate-50 to-blue-50 border-slate-200'
-                }`}>
-                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
-                    isDark
-                      ? 'text-slate-300'
-                      : 'text-slate-700'
-                  }`}>
-                    <div className="flex items-center gap-2">
-                      <User size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-                      Student Details
-                    </div>
-                  </th>
-                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
-                    isDark
-                      ? 'text-slate-300'
-                      : 'text-slate-700'
-                  }`}>
-                    <div className="flex items-center gap-2">
-                      <Mail size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-                      Email
-                    </div>
-                  </th>
-                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
-                    isDark
-                      ? 'text-slate-300'
-                      : 'text-slate-700'
-                  }`}>
-                    <div className="flex items-center gap-2">
-                      <Phone size={16} className={isDark ? 'text-blue-400' : 'text-blue-600'} />
-                      Mobile
-                    </div>
-                  </th>
-                  <th className={`text-left px-6 py-4 font-semibold transition-colors ${
-                    isDark
-                      ? 'text-slate-300'
-                      : 'text-slate-700'
+                <tr className={`border-b ${isDark ? 'border-dark_border' : 'border-border'}`}>
+                  <th className={`text-left px-6 py-4 text-xs font-semibold uppercase tracking-wide ${
+                    isDark ? 'text-gray' : 'text-gray'
+                  }`}>Student</th>
+                  <th className={`text-left px-6 py-4 text-xs font-semibold uppercase tracking-wide ${
+                    isDark ? 'text-gray' : 'text-gray'
+                  }`}>Email</th>
+                  <th className={`text-left px-6 py-4 text-xs font-semibold uppercase tracking-wide ${
+                    isDark ? 'text-gray' : 'text-gray'
+                  }`}>Phone</th>
+                  <th className={`text-left px-6 py-4 text-xs font-semibold uppercase tracking-wide ${
+                    isDark ? 'text-gray' : 'text-gray'
                   }`}>Status</th>
-                  <th className={`text-center px-6 py-4 font-semibold transition-colors ${
-                    isDark
-                      ? 'text-slate-300'
-                      : 'text-slate-700'
+                  <th className={`text-center px-6 py-4 text-xs font-semibold uppercase tracking-wide ${
+                    isDark ? 'text-gray' : 'text-gray'
                   }`}>Action</th>
                 </tr>
               </thead>
 
-              <tbody className={`divide-y transition-colors ${
-                isDark
-                  ? 'divide-slate-700'
-                  : 'divide-slate-200'
-              }`}>
+              <tbody className={`divide-y ${isDark ? 'divide-dark_border' : 'divide-border'}`}>
                 {studentsData?.students?.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className={`text-center py-16 px-6 transition-colors ${
-                      isDark
-                        ? 'bg-slate-700'
-                        : 'bg-white'
-                    }`}>
+                    <td colSpan={5} className="text-center py-16">
                       <div className="flex flex-col items-center gap-3">
-                        <div className={`p-4 rounded-full transition-colors ${
-                          isDark
-                            ? 'bg-slate-600'
-                            : 'bg-slate-100'
-                        }`}>
-                          <Users className={`w-8 h-8 ${
-                            isDark
-                              ? 'text-slate-400'
-                              : 'text-slate-400'
-                          }`} />
+                        <div className={`p-4 rounded-full ${isDark ? 'bg-darklight' : 'bg-light'}`}>
+                          <Users className={`h-8 w-8 text-gray`} />
                         </div>
-                        <p className={`font-medium transition-colors ${
-                          isDark
-                            ? 'text-slate-400'
-                            : 'text-slate-600'
-                        }`}>No students found</p>
-                        <p className="text-sm text-slate-500">
-                          Try adjusting your search criteria
-                        </p>
+                        <p className={`font-medium text-gray`}>No students found</p>
+                        <p className={`text-sm text-gray`}>Try adjusting your search criteria</p>
                       </div>
                     </td>
                   </tr>
                 ) : (
-                  studentsData.students.map((student) => (
-                    <tr
+                  studentsData.students.map((student, idx) => (
+                    <motion.tr
                       key={student._id}
-                      className={`transition-colors duration-200 group ${
-                        isDark
-                          ? 'hover:bg-slate-700/50'
-                          : 'hover:bg-blue-50/30'
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.03 }}
+                      className={`transition-colors duration-150 ${
+                        isDark ? 'hover:bg-darklight' : 'hover:bg-light'
                       }`}
                     >
-                      <td className={`px-6 py-4 transition-colors ${
-                        isDark
-                          ? 'text-slate-300'
-                          : 'text-slate-900'
-                      }`}>
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md group-hover:shadow-lg transition-shadow">
-                            {student.name?.[0]?.toUpperCase() || "U"}
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-skyBlue flex items-center justify-center text-white font-semibold shadow-md">
+                            {student.name?.[0]?.toUpperCase() || "S"}
                           </div>
                           <div>
-                            <div className={`font-semibold transition-colors ${
-                              isDark
-                                ? 'text-slate-100'
-                                : 'text-slate-900'
-                            }`}>
+                            <p className={`font-medium ${isDark ? 'text-white' : 'text-midnight_text'}`}>
                               {student.name || "Not Provided"}
-                            </div>
-                            <div className={`text-xs font-mono transition-colors ${
-                              isDark
-                                ? 'text-slate-400'
-                                : 'text-slate-500'
-                            }`}>
+                            </p>
+                            <p className={`text-xs text-gray`}>
                               ID: {student._id?.slice(-8) || "N/A"}
-                            </div>
+                            </p>
                           </div>
                         </div>
                       </td>
-                      <td className={`px-6 py-4 transition-colors ${
-                        isDark
-                          ? 'text-slate-300'
-                          : 'text-slate-700'
-                      }`}>
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <Mail size={14} className={`shrink-0 transition-colors ${
-                            isDark
-                              ? 'text-slate-500'
-                              : 'text-slate-400'
-                          }`} />
-                          <span className="text-sm break-all">{student.email}</span>
+                          <Mail className="h-3.5 w-3.5 text-gray" />
+                          <span className={`text-sm ${isDark ? 'text-gray' : 'text-gray'}`}>
+                            {student.email}
+                          </span>
                         </div>
                       </td>
-                      <td className={`px-6 py-4 transition-colors ${
-                        isDark
-                          ? 'text-slate-300'
-                          : 'text-slate-700'
-                      }`}>
+                      <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <Phone size={14} className={`shrink-0 transition-colors ${
-                            isDark
-                              ? 'text-slate-500'
-                              : 'text-slate-400'
-                          }`} />
-                          <span className="font-mono text-sm">
+                          <Phone className="h-3.5 w-3.5 text-gray" />
+                          <span className={`text-sm font-mono ${isDark ? 'text-gray' : 'text-gray'}`}>
                             {student.mobile || "—"}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4">
                         {student.emailVerified ? (
-                          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                            isDark
-                              ? 'bg-green-900/30 text-green-300'
-                              : 'bg-green-100 text-green-800'
-                          }`}>
-                            <CheckCircle size={14} />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                            <CheckCircle className="h-3 w-3" />
                             Verified
                           </span>
                         ) : (
-                          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                            isDark
-                              ? 'bg-amber-900/30 text-amber-300'
-                              : 'bg-amber-100 text-amber-800'
-                          }`}>
-                            <Clock size={14} />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                            <Clock className="h-3 w-3" />
                             Pending
                           </span>
                         )}
                       </td>
-                      <td className="text-center px-6 py-4">
+                      <td className="px-6 py-4 text-center">
                         <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            openModal(MODAL_TYPES.VIEW_STUDENT_DETAILS, {
-                              userId: student._id,
-                            });
-                          }}
-                          className={`px-4 py-2 text-white font-medium rounded-lg flex items-center gap-1.5 transition-colors inline-flex mx-auto shadow-sm hover:shadow-md ${
-                            isDark
-                              ? 'bg-blue-600 hover:bg-blue-500'
-                              : 'bg-blue-600 hover:bg-blue-700'
-                          }`}
+                          onClick={() => openModal(MODAL_TYPES.VIEW_STUDENT_DETAILS, {
+                            userId: student._id,
+                          })}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-primary/10 text-primary hover:bg-primary hover:text-white"
                         >
-                          <Eye size={14} />
+                          <Eye className="h-3.5 w-3.5" />
                           View
                         </button>
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))
                 )}
               </tbody>
@@ -445,45 +245,32 @@ const StudentsTable = () => {
         </div>
       </div>
 
-      {/* ================= PAGINATION ================= */}
+      {/* ===== PAGINATION ===== */}
       {studentsData?.totalPages > 1 && (
-        <div className={`rounded-xl shadow-md border p-4 sm:p-6 transition-colors ${
-          isDark
-            ? 'bg-slate-800 border-slate-700'
-            : 'bg-white border-slate-200'
+        <div className={`rounded-xl p-4 shadow-property border ${
+          isDark ? 'bg-semidark border-dark_border' : 'bg-white border-border'
         }`}>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className={`text-sm transition-colors ${
-              isDark
-                ? 'text-slate-400'
-                : 'text-slate-600'
-            }`}>
-              Showing <span className={`font-semibold ${
-                isDark
-                  ? 'text-slate-200'
-                  : 'text-slate-900'
-              }`}>{(currentPage - 1) * limit + 1}–{Math.min(currentPage * limit, totalStudents)}</span> of{" "}
-              <span className={`font-semibold ${
-                isDark
-                  ? 'text-slate-200'
-                  : 'text-slate-900'
-              }`}>
+            <div className={`text-sm text-gray`}>
+              Showing <span className={`font-semibold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+                {(currentPage - 1) * limit + 1}–{Math.min(currentPage * limit, totalStudents)}
+              </span> of{" "}
+              <span className={`font-semibold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
                 {totalStudents}
-              </span>{" "}
-              students
+              </span> students
             </div>
 
-            <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-end">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setCurrentPage((p) => p - 1)}
                 disabled={currentPage === 1}
-                className={`px-3 py-2 rounded-lg border font-medium flex items-center gap-1 transition-colors ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition ${
                   isDark
-                    ? 'border-slate-600 text-slate-300 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed'
-                    : 'border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                    ? 'border border-dark_border text-gray hover:bg-darklight disabled:opacity-40'
+                    : 'border border-border text-gray hover:bg-light disabled:opacity-40'
                 }`}
               >
-                <ChevronLeft size={16} />
+                <ChevronLeft className="h-4 w-4" />
                 Previous
               </button>
 
@@ -504,14 +291,12 @@ const StudentsTable = () => {
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`px-3 py-2 rounded-lg font-semibold transition-colors ${
+                      className={`w-9 h-9 rounded-lg text-sm font-semibold transition ${
                         pageNum === currentPage
-                          ? isDark
-                            ? 'bg-blue-600 text-white shadow-md hover:bg-blue-500'
-                            : 'bg-blue-600 text-white shadow-md hover:bg-blue-700'
+                          ? 'bg-primary text-white shadow-md'
                           : isDark
-                            ? 'border border-slate-600 text-slate-300 hover:bg-slate-700'
-                            : 'border border-slate-200 text-slate-700 hover:bg-slate-50'
+                            ? 'text-gray hover:bg-darklight'
+                            : 'text-gray hover:bg-light'
                       }`}
                     >
                       {pageNum}
@@ -523,14 +308,14 @@ const StudentsTable = () => {
               <button
                 onClick={() => setCurrentPage((p) => p + 1)}
                 disabled={currentPage === studentsData.totalPages}
-                className={`px-3 py-2 rounded-lg border font-medium flex items-center gap-1 transition-colors ${
+                className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-1 transition ${
                   isDark
-                    ? 'border-slate-600 text-slate-300 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed'
-                    : 'border-slate-200 text-slate-700 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed'
+                    ? 'border border-dark_border text-gray hover:bg-darklight disabled:opacity-40'
+                    : 'border border-border text-gray hover:bg-light disabled:opacity-40'
                 }`}
               >
                 Next
-                <ChevronRight size={16} />
+                <ChevronRight className="h-4 w-4" />
               </button>
             </div>
           </div>

@@ -8,8 +8,13 @@ import {
   AlertTriangle,
   Inbox,
 } from "lucide-react";
+import { useTheme } from '@/context/ThemeContext';
+import { motion } from "framer-motion";
 
 const AssignedStudents = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   const {
     data: assignedData,
     isLoading,
@@ -23,7 +28,6 @@ const AssignedStudents = () => {
 
   const results = flattenEnrollments(assignedData?.enrollments || []);
 
-  /* ------------------ Loading ------------------ */
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
@@ -32,23 +36,28 @@ const AssignedStudents = () => {
     );
   }
 
-  /* ------------------ Error ------------------ */
   if (isError) {
     return (
-      <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-xl p-6 flex items-start gap-4">
-        <div className="p-3 bg-red-100 rounded-lg">
-          <AlertTriangle className="text-red-600 w-6 h-6" />
+      <div className={`rounded-xl p-6 flex items-start gap-4 border ${
+        isDark
+          ? 'bg-rose-500/10 border-rose-500/20'
+          : 'bg-rose-500/10 border-rose-500/20'
+      }`}>
+        <div className={`p-3 rounded-lg ${
+          isDark ? 'bg-rose-500/20' : 'bg-rose-500/20'
+        }`}>
+          <AlertTriangle className={`w-6 h-6 ${isDark ? 'text-rose-400' : 'text-rose-600'}`} />
         </div>
         <div className="flex-1">
-          <h4 className="font-semibold text-red-900">
+          <h4 className={`font-semibold ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
             Failed to load assigned students
           </h4>
-          <p className="text-sm text-red-700 mt-1">
+          <p className={`text-sm mt-1 text-gray`}>
             {error?.data?.message || "Unknown error occurred"}
           </p>
           <button
             onClick={refetch}
-            className="mt-4 inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-colors"
+            className={`mt-4 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold transition bg-primary hover:bg-skyBlue text-white`}
           >
             <RefreshCcw size={16} />
             Retry
@@ -63,24 +72,36 @@ const AssignedStudents = () => {
       {/* ================= HEADER ================= */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg">
-              <Users className="text-blue-600 w-6 h-6" />
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-xl bg-gradient-to-br from-primary to-skyBlue shadow-lg`}>
+              <Users className="text-white w-5 h-5" />
             </div>
-            Assigned Students
-          </h2>
-          <p className="text-slate-600 mt-2">
+            <h2 className={`text-2xl font-bold ${
+              isDark ? 'text-white' : 'text-midnight_text'
+            }`}>
+              Assigned Students
+            </h2>
+          </div>
+          <p className={`text-sm mt-2 text-gray`}>
             Students successfully assigned to batches
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700 px-5 py-2.5 rounded-full text-sm font-bold border border-emerald-200">
+          <div className={`px-5 py-2.5 rounded-full text-sm font-bold border ${
+            isDark
+              ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'
+              : 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20'
+          }`}>
             {results.length} Assigned
           </div>
           <button
             onClick={refetch}
-            className="inline-flex items-center gap-2 border border-slate-300 rounded-lg px-4 py-2.5 hover:bg-slate-50 text-slate-700 font-semibold transition-colors"
+            className={`inline-flex items-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition border ${
+              isDark
+                ? 'border-dark_border text-gray hover:bg-darklight'
+                : 'border-border text-gray hover:bg-light'
+            }`}
           >
             <RefreshCcw size={16} />
             Refresh
@@ -90,17 +111,21 @@ const AssignedStudents = () => {
 
       {/* ================= EMPTY STATE ================= */}
       {isSuccess && results.length === 0 && (
-        <div className="bg-white border rounded-xl p-12 text-center">
-          <Inbox size={64} className="mx-auto text-gray-300" />
-          <h3 className="mt-4 text-lg font-semibold">
+        <div className={`rounded-xl p-12 text-center border ${
+          isDark
+            ? 'bg-semidark border-dark_border'
+            : 'bg-white border-border'
+        }`}>
+          <Inbox size={64} className={`mx-auto ${isDark ? 'text-gray' : 'text-gray'}`} />
+          <h3 className={`mt-4 text-lg font-semibold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
             No Assigned Students
           </h3>
-          <p className="text-gray-500 mt-1">
+          <p className={`text-gray mt-1`}>
             Students will appear here once they are assigned to batches.
           </p>
           <button
             onClick={refetch}
-            className="mt-6 inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
+            className={`mt-6 inline-flex items-center gap-2 px-6 py-2 rounded-lg transition bg-primary hover:bg-skyBlue text-white`}
           >
             <RefreshCcw size={16} />
             Check Again
@@ -110,9 +135,12 @@ const AssignedStudents = () => {
 
       {/* ================= TABLE ================= */}
       {isSuccess && results.length > 0 && (
-        <div className="bg-white border rounded-xl shadow-sm">
-
-          <div >
+        <div className={`rounded-xl border shadow-property overflow-hidden ${
+          isDark
+            ? 'bg-semidark border-dark_border'
+            : 'bg-white border-border'
+        }`}>
+          <div>
             <GenericTable
               data={results}
               showAssignControls={false}
@@ -121,7 +149,9 @@ const AssignedStudents = () => {
             />
           </div>
 
-          <div className="border-t p-4 text-sm text-gray-500">
+          <div className={`border-t p-4 text-sm text-gray ${
+            isDark ? 'border-dark_border' : 'border-border'
+          }`}>
             Showing {results.length} assigned student records
           </div>
         </div>

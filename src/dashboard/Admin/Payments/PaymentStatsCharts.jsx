@@ -1,11 +1,7 @@
 import {
-  BarChart,
-  Bar,
   PieChart,
   Pie,
   Cell,
-  XAxis,
-  YAxis,
   Tooltip,
   ResponsiveContainer,
   Legend,
@@ -13,31 +9,47 @@ import {
 
 import { useGetCombinedStatsQuery } from '@/Services/paymentServices/transactionServices';
 import { useTheme } from '@/context/ThemeContext';
+import { motion } from "framer-motion";
+import { FiActivity } from "react-icons/fi";
+import RevenueTrendChart from "@/dashboard/common/RevenueTrendChart";
 
-const COLORS = ["#3b82f6", "#10b981"];
+const COLORS = ["#2F73F2", "#10b981"];
 
 const PaymentChart = () => {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
-  const { data, isLoading } = useGetCombinedStatsQuery();
+  const { data, isLoading, error } = useGetCombinedStatsQuery();
 
   if (isLoading) {
     return (
       <div className="grid md:grid-cols-2 gap-6">
-        <div className={`shadow-lg rounded-2xl p-8 text-center ${
+        <div className={`rounded-xl shadow-property p-8 text-center border ${
           isDark
-            ? 'bg-gradient-to-br from-slate-800 to-slate-700'
-            : 'bg-gradient-to-br from-slate-50 to-slate-100'
+            ? 'bg-semidark border-dark_border'
+            : 'bg-white border-border'
         }`}>
           <div className="inline-block">
             <div className={`h-12 w-12 animate-spin rounded-full border-4 ${
               isDark
-                ? 'border-slate-600 border-t-blue-400'
-                : 'border-slate-200 border-t-blue-600'
+                ? 'border-dark_border border-t-primary'
+                : 'border-border border-t-primary'
             }`}></div>
           </div>
-          <p className={`font-medium mt-4 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Loading statistics...</p>
+          <p className={`font-medium mt-4 text-gray`}>Loading statistics...</p>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={`rounded-xl shadow-property p-8 text-center border ${
+        isDark
+          ? 'bg-semidark border-dark_border'
+          : 'bg-white border-border'
+      }`}>
+        <p className={`font-medium text-rose-500`}>Failed to load statistics</p>
+        <p className={`text-sm text-gray mt-2`}>Please try again later</p>
       </div>
     );
   }
@@ -46,49 +58,103 @@ const PaymentChart = () => {
 
   if (!stats) {
     return (
-      <div className={`shadow-lg rounded-2xl p-8 text-center border ${
+      <div className={`rounded-xl shadow-property p-8 text-center border ${
         isDark
-          ? 'bg-gradient-to-br from-slate-800 to-slate-700 border-slate-700'
-          : 'bg-gradient-to-br from-slate-50 to-slate-100 border-slate-200'
+          ? 'bg-semidark border-dark_border'
+          : 'bg-white border-border'
       }`}>
-        <p className={`font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>No statistics available</p>
+        <p className={`font-medium text-gray`}>No statistics available</p>
       </div>
     );
   }
 
-  const pieData = [
-    { name: "Course Revenue", value: stats.courseRevenue || 0 },
-    { name: "Internship Revenue", value: stats.internshipRevenue || 0 },
-  ];
+  const courseRevenue = stats.courseRevenue || stats.courseTotal || stats.course_amount || 0;
+  const internshipRevenue = stats.internshipRevenue || stats.internshipTotal || stats.internship_amount || 0;
 
-  const barData = [
-    {
-      name: "Course",
-      revenue: stats.courseRevenue || 0,
-    },
-    {
-      name: "Internship",
-      revenue: stats.internshipRevenue || 0,
-    },
-  ];
+  const pieData = [
+    { name: "Course Revenue", value: courseRevenue, color: COLORS[0] },
+    { name: "Internship Revenue", value: internshipRevenue, color: COLORS[1] },
+  ].filter(item => item.value > 0);
+
+  const totalRevenue = courseRevenue + internshipRevenue;
+
+  if (totalRevenue === 0) {
+    return (
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className={`rounded-xl shadow-property p-8 text-center border ${
+          isDark
+            ? 'bg-semidark border-dark_border'
+            : 'bg-white border-border'
+        }`}>
+          <div className="flex flex-col items-center justify-center">
+            <div className={`h-16 w-16 rounded-full flex items-center justify-center mb-4 ${
+              isDark ? 'bg-darklight' : 'bg-light'
+            }`}>
+              <FiActivity className="h-8 w-8 text-gray" />
+            </div>
+            <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-midnight_text'}`}>No Revenue Data</h3>
+            <p className={`text-sm text-gray mt-2 text-center`}>
+              No payment transactions found yet.<br />
+              Revenue data will appear here once payments are processed.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Custom label render function for PieChart
+  const renderCustomLabel = ({ name, value }) => {
+    if (value === 0) return "";
+    const percentage = totalRevenue > 0 ? Math.round((value / totalRevenue) * 100) : 0;
+    return `${percentage}%`;
+  };
 
   return (
     <div className="grid md:grid-cols-2 gap-6">
       {/* ================= Pie Chart ================= */}
-      <div className={`shadow-lg rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-shadow duration-300 border ${
-        isDark
-          ? 'bg-slate-800 border-slate-700'
-          : 'bg-white border-slate-100'
-      }`}>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className={`rounded-xl shadow-property hover:shadow-deatail_shadow transition-all duration-300 p-6 sm:p-8 border ${
+          isDark
+            ? 'bg-semidark border-dark_border'
+            : 'bg-white border-border'
+        }`}
+      >
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Revenue Split</h3>
-            <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Course vs Internship</p>
+            <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-midnight_text'}`}>Revenue Split</h3>
+            <p className={`text-sm mt-1 text-gray`}>Course vs Internship</p>
           </div>
-          <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
-            isDark ? 'bg-blue-900/40' : 'bg-blue-100'
+          <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${
+            isDark ? 'bg-primary/20' : 'bg-primary/10'
           }`}>
-            <div className="h-6 w-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500"></div>
+            <div className="h-6 w-6 rounded-full bg-gradient-to-r from-primary to-skyBlue"></div>
+          </div>
+        </div>
+
+        <div className={`mb-4 p-3 rounded-lg text-center ${
+          isDark ? 'bg-darklight' : 'bg-light'
+        }`}>
+          <p className={`text-xs text-gray`}>Total Revenue</p>
+          <p className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+            ₹{totalRevenue.toLocaleString()}
+          </p>
+          <div className="flex items-center justify-center gap-4 mt-2">
+            {courseRevenue > 0 && (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-primary"></div>
+                <span className="text-xs text-gray">Course: {Math.round((courseRevenue / totalRevenue) * 100)}%</span>
+              </div>
+            )}
+            {internshipRevenue > 0 && (
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                <span className="text-xs text-gray">Internship: {Math.round((internshipRevenue / totalRevenue) * 100)}%</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -99,84 +165,53 @@ const PaymentChart = () => {
               dataKey="value"
               nameKey="name"
               outerRadius={110}
-              label={({ name, value }) => `${name}: ₹${(value / 100000).toFixed(1)}L`}
+              label={renderCustomLabel}
               labelLine={true}
               paddingAngle={2}
             >
               {pieData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
             <Tooltip 
-              formatter={(value) => `₹${value.toLocaleString()}`}
+              formatter={(value) => [`₹${value.toLocaleString()}`, 'Revenue']}
               contentStyle={{ 
-                backgroundColor: isDark ? "#1e293b" : "#f8fafc",
-                border: isDark ? "1px solid #475569" : "1px solid #e2e8f0",
+                backgroundColor: isDark ? "#0e1624" : "#ffffff",
+                border: isDark ? "1px solid #224767" : "1px solid #6bc5f94d",
                 borderRadius: "8px",
-                color: isDark ? "#cbd5e1" : "#1e293b"
+                color: isDark ? "#ffffff" : "#102D47"
               }}
             />
             <Legend 
-              wrapperStyle={{ color: isDark ? '#cbd5e1' : '#1e293b', paddingTop: '16px' }}
+              wrapperStyle={{ color: isDark ? '#668199' : '#668199', paddingTop: '16px' }}
             />
           </PieChart>
         </ResponsiveContainer>
-      </div>
 
-      {/* ================= Bar Chart ================= */}
-      <div className={`shadow-lg rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-shadow duration-300 border ${
-        isDark
-          ? 'bg-slate-800 border-slate-700'
-          : 'bg-white border-slate-100'
-      }`}>
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-slate-900'}`}>Revenue Comparison</h3>
-            <p className={`text-sm mt-1 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>Total earnings breakdown</p>
-          </div>
-          <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
-            isDark ? 'bg-emerald-900/40' : 'bg-emerald-100'
-          }`}>
-            <div className="h-6 w-6 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-          </div>
+        <div className={`grid grid-cols-2 gap-3 mt-4 pt-4 border-t ${
+          isDark ? 'border-dark_border' : 'border-border'
+        }`}>
+          {courseRevenue > 0 && (
+            <div className={`p-2 rounded-lg text-center ${isDark ? 'bg-darklight' : 'bg-light'}`}>
+              <p className={`text-xs text-gray`}>Course Revenue</p>
+              <p className={`text-sm font-bold text-primary`}>
+                ₹{courseRevenue.toLocaleString()}
+              </p>
+            </div>
+          )}
+          {internshipRevenue > 0 && (
+            <div className={`p-2 rounded-lg text-center ${isDark ? 'bg-darklight' : 'bg-light'}`}>
+              <p className={`text-xs text-gray`}>Internship Revenue</p>
+              <p className={`text-sm font-bold text-emerald-500`}>
+                ₹{internshipRevenue.toLocaleString()}
+              </p>
+            </div>
+          )}
         </div>
+      </motion.div>
 
-        <ResponsiveContainer width="100%" height={320}>
-          <BarChart data={barData} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
-            <XAxis 
-              dataKey="name" 
-              stroke={isDark ? "#64748b" : "#94a3b8"}
-              style={{ fontSize: "14px", fontWeight: "500" }}
-            />
-            <YAxis 
-              stroke={isDark ? "#64748b" : "#94a3b8"}
-              style={{ fontSize: "14px", color: isDark ? "#94a3b8" : "#64748b" }}
-              tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`}
-            />
-            <Tooltip 
-              formatter={(value) => `₹${value.toLocaleString()}`}
-              contentStyle={{ 
-                backgroundColor: isDark ? "#1e293b" : "#f8fafc",
-                border: isDark ? "1px solid #475569" : "1px solid #e2e8f0",
-                borderRadius: "8px",
-                color: isDark ? "#cbd5e1" : "#1e293b"
-              }}
-            />
-            <Bar 
-              dataKey="revenue" 
-              fill="url(#colorGradient)" 
-              radius={[12, 12, 0, 0]}
-              maxBarSize={80}
-            />
-            <defs>
-              <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.8}/>
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.2}/>
-              </linearGradient>
-            </defs>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+      {/* ================= Revenue Trend Chart ================= */}
+      <RevenueTrendChart />
     </div>
   );
 };

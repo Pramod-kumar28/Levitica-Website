@@ -9,24 +9,23 @@ import {
 import { FiSearch, FiDownload, FiArrowUp, FiArrowDown } from "react-icons/fi";
 import { useDownloadPaymentsExcelMutation } from '@/Services/admin/studentReportsServices';
 import { useTheme } from '@/context/ThemeContext';
-
-
+import { motion } from "framer-motion";
 
 const columnHelper = createColumnHelper();
 
-// 🎨 Status Badge Styling
+// Status Badge Styling with Theme Colors
 const statusStyles = {
   light: {
-    paid: "bg-emerald-100 text-emerald-700 border border-emerald-200",
-    failed: "bg-red-100 text-red-700 border border-red-200",
-    created: "bg-amber-100 text-amber-700 border border-amber-200",
-    attempted: "bg-blue-100 text-blue-700 border border-blue-200",
+    paid: "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20",
+    failed: "bg-rose-500/10 text-rose-600 border border-rose-500/20",
+    created: "bg-amber-500/10 text-amber-600 border border-amber-500/20",
+    attempted: "bg-blue-500/10 text-blue-600 border border-blue-500/20",
   },
   dark: {
-    paid: "bg-emerald-950/40 text-emerald-300 border border-emerald-900",
-    failed: "bg-red-950/40 text-red-300 border border-red-900",
-    created: "bg-amber-950/40 text-amber-300 border border-amber-900",
-    attempted: "bg-blue-950/40 text-blue-300 border border-blue-900",
+    paid: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+    failed: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+    created: "bg-amber-500/20 text-amber-400 border border-amber-500/30",
+    attempted: "bg-blue-500/20 text-blue-400 border border-blue-500/30",
   }
 };
 
@@ -44,10 +43,7 @@ const PaymentsTable = ({ data = [] }) => {
     return [...new Set(data.map((item) => item.title).filter(Boolean))];
   }, [data]);
 
-  
   // Filtering Logic
-  
-
   const filteredData = useMemo(() => {
     return data.filter((row) => {
       const matchesStatus = statusFilter
@@ -75,33 +71,67 @@ const PaymentsTable = ({ data = [] }) => {
     () => [
       columnHelper.accessor("orderId", {
         header: "Order ID",
+        cell: (info) => (
+          <span className={`font-mono text-xs ${isDark ? 'text-gray' : 'text-gray'}`}>
+            {info.getValue()?.slice(-8) || "-"}
+          </span>
+        ),
       }),
 
       columnHelper.accessor("paymentId", {
         header: "Payment ID",
+        cell: (info) => (
+          <span className={`font-mono text-xs ${isDark ? 'text-gray' : 'text-gray'}`}>
+            {info.getValue()?.slice(-8) || "-"}
+          </span>
+        ),
       }),
 
       columnHelper.accessor("name", {
         header: "User",
+        cell: (info) => (
+          <span className={`font-medium ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+            {info.getValue() || "-"}
+          </span>
+        ),
       }),
 
       columnHelper.accessor("email", {
         header: "Email",
+        cell: (info) => (
+          <span className={`text-sm ${isDark ? 'text-gray' : 'text-gray'}`}>
+            {info.getValue() || "-"}
+          </span>
+        ),
       }),
 
       columnHelper.accessor("title", {
         header: "Course / Domain",
+        cell: (info) => (
+          <span className={`font-medium ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+            {info.getValue() || "-"}
+          </span>
+        ),
       }),
 
       columnHelper.accessor("type", {
         header: "Type",
+        cell: (info) => (
+          <span className={`inline-flex px-2 py-0.5 rounded-md text-xs font-medium ${
+            info.getValue() === "course"
+              ? isDark ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'
+              : isDark ? 'bg-purple-500/20 text-purple-400' : 'bg-purple-500/10 text-purple-600'
+          }`}>
+            {info.getValue()?.toUpperCase() || "-"}
+          </span>
+        ),
       }),
 
       columnHelper.accessor("paymentMode", {
         header: "Mode",
         cell: (info) => (
-          <span className="text-slate-700 font-semibold">
-            {info.getValue()?.toUpperCase()}
+          <span className={`text-sm font-medium ${isDark ? 'text-gray' : 'text-gray'}`}>
+            {info.getValue()?.toUpperCase() || "-"}
           </span>
         ),
       }),
@@ -109,7 +139,7 @@ const PaymentsTable = ({ data = [] }) => {
       columnHelper.accessor("appUsed", {
         header: "App Used",
         cell: (info) => (
-          <span className="text-slate-600 text-sm">
+          <span className={`text-sm ${isDark ? 'text-gray' : 'text-gray'}`}>
             {info.getValue() || "-"}
           </span>
         ),
@@ -118,7 +148,7 @@ const PaymentsTable = ({ data = [] }) => {
       columnHelper.accessor("amount", {
         header: "Amount",
         cell: (info) => (
-          <span className="font-bold text-slate-900">
+          <span className={`font-bold ${isDark ? 'text-primary' : 'text-primary'}`}>
             ₹{info.getValue()?.toLocaleString()}
           </span>
         ),
@@ -131,10 +161,9 @@ const PaymentsTable = ({ data = [] }) => {
           const style = isDark ? statusStyles.dark[value] : statusStyles.light[value];
           return (
             <span
-              className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold ${style || (isDark ? "bg-slate-700 text-slate-300" : "bg-slate-100 text-slate-600")
-                }`}
+              className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${style || (isDark ? "bg-darklight text-gray" : "bg-light text-gray")}`}
             >
-              {value?.toUpperCase()}
+              {value || "-"}
             </span>
           );
         },
@@ -143,15 +172,20 @@ const PaymentsTable = ({ data = [] }) => {
       columnHelper.accessor("createdAt", {
         header: "Date",
         cell: (info) => (
-          <span className="text-slate-600 text-sm font-medium">
-            {new Date(info.getValue()).toLocaleString("en-IN", {
+          <span className={`text-sm ${isDark ? 'text-gray' : 'text-gray'}`}>
+            {info.getValue() ? new Date(info.getValue()).toLocaleString("en-IN", {
               timeZone: "Asia/Kolkata",
-            })}
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            }) : "-"}
           </span>
         ),
       }),
     ],
-    []
+    [isDark]
   );
 
   const [downloadPaymentsExcel] = useDownloadPaymentsExcelMutation();
@@ -159,20 +193,16 @@ const PaymentsTable = ({ data = [] }) => {
   const handleDownloadExcel = async () => {
     try {
       const blob = await downloadPaymentsExcel().unwrap();
-
       const url = window.URL.createObjectURL(blob);
-
       const a = document.createElement("a");
       a.href = url;
       a.download = "payments.xlsx";
       a.click();
-
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed", err);
     }
   };
-
 
   const table = useReactTable({
     data: filteredData,
@@ -183,33 +213,28 @@ const PaymentsTable = ({ data = [] }) => {
     getSortedRowModel: getSortedRowModel(),
   });
 
-  // UI
   return (
-    <div className={`border rounded-2xl shadow-lg overflow-hidden transition-colors ${
+    <div className={`rounded-xl border shadow-property overflow-hidden ${
       isDark
-        ? 'bg-slate-800 border-slate-700'
-        : 'bg-white border-slate-200'
+        ? 'bg-semidark border-dark_border'
+        : 'bg-white border-border'
     }`}>
 
-      {/* 🔎 Filters Section */}
-      <div className={`border-b p-4 sm:p-6 transition-colors ${
-        isDark
-          ? 'border-slate-700 bg-gradient-to-r from-slate-800 to-slate-700'
-          : 'border-slate-200 bg-gradient-to-r from-slate-50 to-slate-100'
-      }`}>
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center flex-wrap">
+      {/* Filters Section */}
+      <div className={`p-4 sm:p-5 `}>
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center flex-wrap grid md:grid-cols-4">
           {/* Search Input */}
           <div className="relative flex-1 min-w-[250px]">
-            <FiSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${isDark ? 'text-slate-500' : 'text-slate-400'}`} />
+            <FiSearch className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray`} />
             <input
               type="text"
               placeholder="Search by name, email, order ID..."
               value={globalFilter}
               onChange={(e) => setGlobalFilter(e.target.value)}
-              className={`w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+              className={`w-full pl-10 pr-4 py-2 rounded-xl border text-sm focus:outline-none focus:ring-2 transition ${
                 isDark
-                  ? 'bg-slate-700 border-slate-600 text-slate-100 placeholder-slate-400'
-                  : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
+                  ? 'bg-darklight border-dark_border text-white placeholder-gray focus:border-primary focus:ring-primary/30'
+                  : 'bg-light border-border text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
               }`}
             />
           </div>
@@ -218,10 +243,10 @@ const PaymentsTable = ({ data = [] }) => {
           <select
             value={titleFilter}
             onChange={(e) => setTitleFilter(e.target.value)}
-            className={`px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+            className={`px-4 py-2 rounded-xl border text-sm focus:outline-none focus:ring-2 transition ${
               isDark
-                ? 'bg-slate-700 border-slate-600 text-slate-100'
-                : 'bg-white border-slate-300 text-slate-900'
+                ? 'bg-darklight border-dark_border text-white focus:border-primary focus:ring-primary/30'
+                : 'bg-light border-border text-midnight_text focus:border-primary focus:ring-primary/20'
             }`}
           >
             <option value="">All Courses / Internships</option>
@@ -236,10 +261,10 @@ const PaymentsTable = ({ data = [] }) => {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className={`px-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition ${
+            className={`px-4 py-2 rounded-xl border text-sm focus:outline-none focus:ring-2 transition ${
               isDark
-                ? 'bg-slate-700 border-slate-600 text-slate-100'
-                : 'bg-white border-slate-300 text-slate-900'
+                ? 'bg-darklight border-dark_border text-white focus:border-primary focus:ring-primary/30'
+                : 'bg-light border-border text-midnight_text focus:border-primary focus:ring-primary/20'
             }`}
           >
             <option value="">All Status</option>
@@ -252,10 +277,10 @@ const PaymentsTable = ({ data = [] }) => {
           {/* Download Button */}
           <button
             onClick={handleDownloadExcel}
-            className={`flex items-center gap-2 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95 ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg ${
               isDark
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:shadow-lg hover:shadow-blue-500/50'
-                : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:shadow-lg'
+                ? 'bg-primary hover:bg-skyBlue text-white'
+                : 'bg-primary hover:bg-skyBlue text-white'
             }`}
           >
             <FiDownload className="h-4 w-4" /> Download
@@ -264,123 +289,116 @@ const PaymentsTable = ({ data = [] }) => {
 
         {/* Filter Summary */}
         {(globalFilter || statusFilter || titleFilter) && (
-          <div className={`mt-3 text-xs font-medium ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+          <div className={`mt-3 text-xs font-medium text-gray`}>
             Showing {filteredData.length} of {data.length} payments
           </div>
         )}
       </div>
 
-      {/* 📋 Table */}
-    <div className={`w-full overflow-hidden rounded-xl border shadow-sm transition-colors ${
-      isDark
-        ? 'border-slate-700 bg-slate-800'
-        : 'border-slate-200 bg-white'
-    }`}>
-  
-  {/* SCROLL CONTAINER */}
-  <div className="w-full overflow-x-auto">
-    <table className="min-w-[700px] w-full text-sm">
-      
-      {/* HEADER */}
-      <thead className={`border-b sticky top-0 z-10 transition-colors ${
-        isDark
-          ? 'bg-slate-700 border-slate-600'
-          : 'bg-slate-50 border-slate-200'
-      }`}>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                onClick={header.column.getToggleSortingHandler()}
-                className={`px-4 sm:px-6 py-3 text-left font-semibold text-[11px] sm:text-xs uppercase tracking-wide cursor-pointer select-none transition ${
-                  isDark
-                    ? 'text-slate-300 hover:bg-slate-600'
-                    : 'text-slate-800 hover:bg-slate-100'
-                }`}
-              >
-                <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
+      {/* Table */}
+      <div className="w-full overflow-x-auto">
+        <table className="min-w-[800px] w-full text-sm">
+          {/* HEADER */}
+          <thead className={`border-b ${
+            isDark
+              ? 'bg-darklight border-dark_border'
+              : 'bg-light border-border'
+          }`}>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={`px-4 py-3 text-left font-semibold text-xs uppercase tracking-wide cursor-pointer select-none transition ${
+                      isDark
+                        ? 'text-gray hover:bg-darklight/80'
+                        : 'text-gray hover:bg-light/80'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 whitespace-nowrap">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
 
-                  {header.column.getCanSort() && (
-                    <span className={isDark ? 'text-slate-500' : 'text-slate-400'}>
-                      {header.column.getIsSorted() === "asc" && (
-                        <FiArrowUp className="h-3.5 w-3.5" />
+                      {header.column.getCanSort() && (
+                        <span className="text-gray">
+                          {header.column.getIsSorted() === "asc" && (
+                            <FiArrowUp className="h-3.5 w-3.5" />
+                          )}
+                          {header.column.getIsSorted() === "desc" && (
+                            <FiArrowDown className="h-3.5 w-3.5" />
+                          )}
+                        </span>
                       )}
-                      {header.column.getIsSorted() === "desc" && (
-                        <FiArrowDown className="h-3.5 w-3.5" />
-                      )}
-                    </span>
-                  )}
-                </div>
-              </th>
+                    </div>
+                  </th>
+                ))}
+              </tr>
             ))}
-          </tr>
-        ))}
-      </thead>
+          </thead>
 
-      {/* BODY */}
-      <tbody className={`divide-y ${isDark ? 'divide-slate-700' : 'divide-slate-100'}`}>
-        {table.getRowModel().rows.length === 0 ? (
-          <tr>
-            <td
-              colSpan={columns.length}
-              className={`text-center py-10 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}
-            >
-              <div className="flex flex-col items-center gap-3">
-                <div className={`h-14 w-14 rounded-full flex items-center justify-center ${
-                  isDark ? 'bg-slate-700' : 'bg-slate-100'
-                }`}>
-                  <FiSearch className={`h-6 w-6 ${isDark ? 'text-slate-500' : 'text-slate-400'}`} />
-                </div>
-                <p className={`font-medium text-sm ${isDark ? 'text-slate-300' : 'text-slate-900'}`}>No payments found</p>
-                <p className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                  Try adjusting your filters
-                </p>
-              </div>
-            </td>
-          </tr>
-        ) : (
-          table.getRowModel().rows.map((row) => (
-            <tr
-              key={row.id}
-              className={`transition ${
-                isDark
-                  ? 'hover:bg-slate-700 even:bg-slate-800/50'
-                  : 'hover:bg-slate-50 even:bg-slate-50/40'
-              }`}
-            >
-              {row.getVisibleCells().map((cell) => (
+          {/* BODY */}
+          <tbody className={`divide-y ${
+            isDark ? 'divide-dark_border' : 'divide-border'
+          }`}>
+            {table.getRowModel().rows.length === 0 ? (
+              <tr>
                 <td
-                  key={cell.id}
-                  className={`px-4 sm:px-6 py-3 align-middle whitespace-nowrap transition-colors ${
-                    isDark ? 'text-slate-300' : 'text-slate-700'
+                  colSpan={columns.length}
+                  className="text-center py-12"
+                >
+                  <div className="flex flex-col items-center gap-3">
+                    <div className={`h-14 w-14 rounded-full flex items-center justify-center ${
+                      isDark ? 'bg-darklight' : 'bg-light'
+                    }`}>
+                      <FiSearch className={`h-6 w-6 text-gray`} />
+                    </div>
+                    <p className={`font-medium text-sm ${isDark ? 'text-white' : 'text-midnight_text'}`}>No payments found</p>
+                    <p className={`text-xs text-gray`}>
+                      Try adjusting your filters
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className={`transition-colors ${
+                    isDark
+                      ? 'hover:bg-darklight'
+                      : 'hover:bg-light'
                   }`}
                 >
-                  {flexRender(
-                    cell.column.columnDef.cell ??
-                      cell.column.columnDef.accessorKey,
-                    cell.getContext()
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))
-        )}
-      </tbody>
-    </table>
-  </div>
-</div>
+                  {row.getVisibleCells().map((cell) => (
+                    <td
+                      key={cell.id}
+                      className={`px-4 py-3 align-middle whitespace-nowrap ${
+                        isDark ? 'text-gray' : 'text-gray'
+                      }`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell ??
+                          cell.column.columnDef.accessorKey,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Footer Info */}
       {filteredData.length > 0 && (
-        <div className={`px-4 sm:px-6 py-4 border-t text-xs font-medium transition-colors ${
+        <div className={`px-4 py-3 border-t text-xs font-medium ${
           isDark
-            ? 'bg-slate-800 border-slate-700 text-slate-400'
-            : 'bg-slate-50 border-slate-200 text-slate-600'
+            ? 'border-dark_border bg-darklight text-gray'
+            : 'border-border bg-light text-gray'
         }`}>
           Displaying {table.getRowModel().rows.length} of {filteredData.length} payments
         </div>

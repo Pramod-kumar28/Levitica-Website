@@ -4,14 +4,52 @@ import {
   FiUserCheck,
   FiUserX,
   FiShield,
+  FiTrendingUp,
+  FiGrid,
+  FiList,
+  FiCheckCircle,
+  FiClock,
+  FiBookOpen,
 } from "react-icons/fi";
 import { useTheme } from "@/context/ThemeContext";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useGetStudentsQuery } from '@/Services/admin/studentReportsServices';
+import {
+  useLazyGetUnassignedEnrollmentsQuery,
+} from '@/Services/admin/assignService';
+import { useCourses } from '@/hooks/useCourses';
 
 const AssignStudents = () => {
   const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  
   const matchAll = useMatch("/dashboard/admin/students");
   const matchUnassigned = useMatch("/dashboard/admin/students/unassigned");
   const matchAssigned = useMatch("/dashboard/admin/students/assigned");
+
+  // Fetch students data for stats
+  const { data: studentsData } = useGetStudentsQuery({
+    page: 1,
+    limit: 100,
+    search: "",
+  });
+
+  // Fetch unassigned students data for stats
+  const [fetchUnassigned, { data: unassignedData }] = useLazyGetUnassignedEnrollmentsQuery();
+  const { courses = [] } = useCourses();
+
+  useEffect(() => {
+    fetchUnassigned();
+  }, [fetchUnassigned]);
+
+  const totalStudents = studentsData?.total || 0;
+  const verifiedStudents = studentsData?.students?.filter(s => s.emailVerified).length || 0;
+  const pendingStudents = studentsData?.students?.filter(s => !s.emailVerified).length || 0;
+  
+  const unassignedCount = unassignedData?.enrollments?.length || 0;
+  const assignedCount = totalStudents - unassignedCount;
+  const totalCourses = courses.length;
 
   const tabs = [
     {
@@ -19,111 +57,249 @@ const AssignStudents = () => {
       label: "All Students",
       icon: FiUsers,
       active: !!matchAll,
+      description: "View all registered students",
     },
     {
       path: "unassigned",
       label: "Unassigned",
       icon: FiUserX,
       active: !!matchUnassigned,
+      description: "Students waiting for batch assignment",
     },
     {
       path: "assigned",
       label: "Assigned",
       icon: FiUserCheck,
       active: !!matchAssigned,
+      description: "Students with active batch allocation",
     },
   ];
 
-  const isDark = theme === "dark";
+  const activeTab = tabs.find(tab => tab.active);
 
   return (
-    <div className={`space-y-4 md:space-y-6 p-3 sm:p-4 md:p-8 min-h-screen transition-colors duration-300 ${
-      isDark 
-        ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900' 
-        : 'bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50'
-    }`}>
-      {/* ================= HEADER ================= */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
-        <div>
-          <div className="flex items-center gap-2 sm:gap-3 mb-2">
-            <div className={`p-2 sm:p-2.5 rounded-xl shadow-lg transition-colors ${
-              isDark
-                ? 'bg-gradient-to-br from-blue-500 to-indigo-600'
-                : 'bg-gradient-to-br from-blue-600 to-indigo-600'
-            }`}>
-              <FiUsers className="text-white" size={24} />
+    <div className={`min-h-screen ${isDark ? 'bg-darkmode' : 'bg-section'}`}>
+      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          {/* ===== HEADER SECTION ===== */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 px-2">
+                <div>
+                  <h1 className={`text-3xl sm:text-4xl font-bold tracking-tight ${
+                    isDark ? 'text-white' : 'text-midnight_text'
+                  }`}>
+                    Student Management
+                  </h1>
+                  <div className="flex items-center gap-2 mt-1">
+                    <FiUsers size={16} />
+                    <p className={`text-sm text-gray`}>
+                      Control center for student batch assignments
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r transition-colors ${
-              isDark
-                ? 'from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent'
-                : 'from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent'
-            }`}>
-              Student Management
-            </h2>
+            
+            <div className="flex items-center gap-3">
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium ${
+                isDark
+                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                  : 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20'
+              }`}>
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                System Active
+              </div>
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium ${
+                isDark
+                  ? 'bg-primary/10 text-primary border border-primary/20'
+                  : 'bg-primary/10 text-primary border border-primary/20'
+              }`}>
+                <FiShield size={16} />
+                Admin Access
+              </div>
+            </div>
           </div>
-          <p className={`text-xs sm:text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'} mt-2`}>
-            Manage students, course assignments, and batch allocation
-          </p>
-        </div>
 
-        <div className={`inline-flex items-center gap-2 text-white text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all ${
-          isDark
-            ? 'bg-gradient-to-r from-blue-500 to-indigo-600'
-            : 'bg-gradient-to-r from-blue-600 to-indigo-600'
-        }`}>
-          <FiShield size={16} />
-          Admin Panel
-        </div>
-      </div>
+          {/* ===== STATS CARDS ROW 1 - Student Stats (from StudentsTable) ===== */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Total Students Card */}
+            <div className={`rounded-xl p-4 border transition-all hover:shadow-md ${
+              isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className={`text-xs font-medium uppercase tracking-wide text-gray`}>Total Students</p>
+                  <p className={`text-3xl font-bold mt-1 ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+                    {totalStudents}
+                  </p>
+                </div>
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-primary/20' : 'bg-primary/10'}`}>
+                  <FiUsers className="h-5 w-5 text-primary" />
+                </div>
+              </div>
+            </div>
+            
+            {/* Verified Card */}
+            <div className={`rounded-xl p-4 border transition-all hover:shadow-md ${
+              isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className={`text-xs font-medium uppercase tracking-wide text-gray`}>Verified</p>
+                  <p className={`text-3xl font-bold mt-1 text-emerald-500`}>
+                    {verifiedStudents}
+                  </p>
+                </div>
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-500/10'}`}>
+                  <FiCheckCircle className="h-5 w-5 text-emerald-500" />
+                </div>
+              </div>
+            </div>
+            
+            {/* Pending Card */}
+            <div className={`rounded-xl p-4 border transition-all hover:shadow-md ${
+              isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className={`text-xs font-medium uppercase tracking-wide text-gray`}>Pending</p>
+                  <p className={`text-3xl font-bold mt-1 text-amber-500`}>
+                    {pendingStudents}
+                  </p>
+                </div>
+                <div className={`p-2 rounded-lg ${isDark ? 'bg-amber-500/20' : 'bg-amber-500/10'}`}>
+                  <FiClock className="h-5 w-5 text-amber-500" />
+                </div>
+              </div>
+            </div>
+          </div>
 
-      {/* ================= TABS ================= */}
-      <div className={`rounded-2xl border shadow-lg overflow-hidden transition-colors ${
-        isDark
-          ? 'bg-slate-800/80 backdrop-blur-md border-slate-700/40'
-          : 'bg-white/80 backdrop-blur-md border-white/40'
-      }`}>
-        <div className={`flex flex-wrap gap-1 border-b p-3 sm:p-4 md:p-6 transition-colors ${
-          isDark
-            ? 'border-slate-700 bg-gradient-to-r from-slate-800 via-slate-700/30 to-slate-800'
-            : 'border-slate-200 bg-gradient-to-r from-white via-blue-50/30 to-white'
-        }`}>
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <NavLink
-                key={tab.path}
-                to={tab.path}
-                end={tab.path === ""}
-                className={({ isActive }) =>
-                  `
-                    flex items-center gap-2
-                    px-3 sm:px-5 py-2 sm:py-2.5
-                    rounded-lg
-                    text-xs sm:text-sm font-semibold
-                    transition duration-300
-                    ${
-                      isActive
-                        ? isDark
-                          ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg hover:shadow-xl'
-                          : 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:shadow-xl'
-                        : isDark
-                        ? 'text-slate-300 hover:bg-slate-700/50 hover:text-slate-50'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                    }
-                  `
-                }
-              >
-                <Icon size={18} />
-                <span className="hidden sm:inline">{tab.label}</span>
-                <span className="sm:hidden text-xs">{tab.label.split(' ')[0]}</span>
-              </NavLink>
-            );
-          })}
-        </div>
+          {/* ===== STATS CARDS ROW 2 - Batch Assignment Stats (from UnassignedStudents) ===== */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Unassigned Students Card - Blue */}
+            <div className={`border rounded-xl p-6 transition-colors ${
+              isDark
+                ? 'bg-gradient-to-br from-blue-900/20 to-blue-800/20 border-blue-800/30'
+                : 'bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className={`text-sm font-medium ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>Unassigned</p>
+                  <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-blue-300' : 'text-blue-900'}`}>{unassignedCount}</p>
+                </div>
+                <div className={`p-3 rounded-lg ${isDark ? 'bg-blue-800/30' : 'bg-blue-200/50'}`}>
+                  <FiUserX className={`text-2xl ${isDark ? 'text-blue-400' : 'text-blue-600'}`} />
+                </div>
+              </div>
+            </div>
+            
+            {/* Assigned Students Card - Purple */}
+            <div className={`border rounded-xl p-6 transition-colors ${
+              isDark
+                ? 'bg-gradient-to-br from-purple-900/20 to-purple-800/20 border-purple-800/30'
+                : 'bg-gradient-to-br from-purple-50 to-purple-100/50 border-purple-200'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className={`text-sm font-medium ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>Assigned</p>
+                  <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-purple-300' : 'text-purple-900'}`}>{assignedCount}</p>
+                </div>
+                <div className={`p-3 rounded-lg ${isDark ? 'bg-purple-800/30' : 'bg-purple-200/50'}`}>
+                  <FiUserCheck className={`text-2xl ${isDark ? 'text-purple-400' : 'text-purple-600'}`} />
+                </div>
+              </div>
+            </div>
+            
+            {/* Active Courses Card - Emerald */}
+            <div className={`border rounded-xl p-6 transition-colors ${
+              isDark
+                ? 'bg-gradient-to-br from-emerald-900/20 to-emerald-800/20 border-emerald-800/30'
+                : 'bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200'
+            }`}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className={`text-sm font-medium ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>Total Courses</p>
+                  <p className={`text-3xl font-bold mt-2 ${isDark ? 'text-emerald-300' : 'text-emerald-900'}`}>{totalCourses}</p>
+                </div>
+                <div className={`p-3 rounded-lg ${isDark ? 'bg-emerald-800/30' : 'bg-emerald-200/50'}`}>
+                  <FiBookOpen className={`text-2xl ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`} />
+                </div>
+              </div>
+            </div>
+          </div>
 
-        {/* ================= CONTENT ================= */}
-        <div className="px-3 sm:px-6 md:px-8 py-4 sm:py-6">
-          <Outlet />
+          {/* ===== MAIN CONTENT CARD ===== */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className={``}
+          >
+            {/* Tab Navigation */}
+            <div className={`border-b ${isDark ? 'border-dark_border' : 'border-border'}`}>
+              <div className="flex items-center justify-between px-5 py-3">
+                <div className="flex items-center gap-1">
+                  {tabs.map((tab) => (
+                    <NavLink
+                      key={tab.path}
+                      to={tab.path}
+                      end={tab.path === ""}
+                      className={({ isActive }) =>
+                        `
+                          relative px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+                          ${isActive
+                            ? isDark
+                              ? 'text-white'
+                              : 'text-primary'
+                            : isDark
+                            ? 'text-gray hover:text-white'
+                            : 'text-gray hover:text-midnight_text'
+                          }
+                        `
+                      }
+                    >
+                      {({ isActive }) => (
+                        <>
+                          <div className="flex items-center gap-2">
+                            <tab.icon size={16} />
+                            <span>{tab.label}</span>
+                          </div>
+                          {isActive && (
+                            <motion.div
+                              layoutId="activeTabIndicator"
+                              className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full ${
+                                isDark ? 'bg-primary' : 'bg-primary'
+                              }`}
+                              transition={{ type: "spring", bounce: 0.2, duration: 0.4 }}
+                            />
+                          )}
+                        </>
+                      )}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Content Area */}
+            <div className="p-5">
+              <Outlet />
+            </div>
+
+            {/* Footer Note */}
+            <div className={`px-5 py-3 border-t text-xs ${isDark ? 'border-dark_border bg-darklight/20 text-gray' : 'border-border bg-light/30 text-gray'}`}>
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <span>Showing student records from the database</span>
+                <span className="flex items-center gap-1">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                  Last updated: Just now
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </div>
