@@ -125,37 +125,38 @@ const Sidebar = () => {
       {isOpen && (
         <div
           onClick={() => useSidebarStore.getState().closeSidebar()}
-          className="lg:hidden fixed inset-0 bg-black/40 z-30"
+          className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-30 transition-all duration-300"
         />
       )}
       <aside
         className={`
-    fixed
-    left-0
-    top-[70px]
-    h-[calc(100vh-70px)]
-    z-40
-    transition-all duration-300 ease-in-out
+          fixed
+          left-0
+          top-[70px]
+          h-[calc(100vh-70px)]
+          z-40
+          transition-all duration-300 ease-in-out
 
-    /* Desktop */
-    lg:translate-x-0
-    ${isOpen ? "lg:w-64" : "lg:w-20"}
+          /* Desktop */
+          lg:translate-x-0
+          ${isOpen ? "lg:w-64" : "lg:w-20"}
 
-    /* Mobile */
-    ${isOpen ? "translate-x-0" : "-translate-x-full"}
-    w-64
+          /* Mobile */
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          w-64
 
-    bg-gradient-to-b
-    ${isDark ? 'from-slate-800 to-slate-700' : 'from-blue-900 to-indigo-900'}
+          ${isDark 
+            ? 'bg-gradient-to-b from-semidark via-semidark to-darklight border-r border-dark_border text-white' 
+            : 'bg-gradient-to-b from-blue-900 to-blue-900 border-r border-border text-white'
+          }
 
-    shadow-xl
-    flex flex-col
-    overflow-hidden
-  `}
+          shadow-property
+          flex flex-col
+          overflow-hidden
+        `}
       >
-
         {/* Scrollable Navigation Area - Only this scrolls */}
-        <nav className="flex-1 overflow-y-auto p-3 space-y-2 [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-transparent" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <nav className="flex-1 overflow-y-auto p-3 space-y-1.5 [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-transparent" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           {menu.map((item) => (
             <NavLink
               key={item.path}
@@ -171,23 +172,23 @@ const Sidebar = () => {
 
                 const isCurrent = isDashboard
                   ? location.pathname === "/dashboard" ||
-                  location.pathname === "/dashboard/student" ||
-                  location.pathname === "/dashboard/admin"
+                    location.pathname === "/dashboard/student" ||
+                    location.pathname === "/dashboard/admin"
                   : isActive;
 
                 return `
-    group flex items-center gap-3
-    rounded-xl px-3 py-2.5
-    text-sm font-medium transition-all
-    ${isCurrent
+                  group flex items-center gap-3
+                  rounded-xl px-3 py-2.5
+                  text-sm font-medium transition-all duration-200
+                  ${isCurrent
                     ? isDark
-                      ? "bg-slate-600 text-white"
-                      : "bg-white/20 text-white"
+                      ? "bg-primary/20 text-primary shadow-md"
+                      : "bg-white/20 text-white shadow-md"
                     : isDark
-                      ? "text-slate-300 hover:bg-slate-700 hover:text-white"
-                      : "text-blue-100 hover:bg-white/10 hover:text-white"
+                      ? "text-gray hover:bg-darklight hover:text-white"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
                   }
-  `;
+                `;
               }}
             >
               <span className={`
@@ -195,15 +196,38 @@ const Sidebar = () => {
                 w-9 h-9
                 rounded-lg
                 shrink-0
-                ${isDark ? 'bg-slate-700 group-hover:bg-slate-600' : 'bg-white/10 group-hover:bg-white/20'}
+                transition-all duration-200
+                ${isDark 
+                  ? 'bg-darklight group-hover:bg-darklight/80' 
+                  : 'bg-white/10 group-hover:bg-white/20'
+                }
               `}>
                 {item.icon}
               </span>
 
-              {isOpen && <span>{item.label}</span>}
+              {isOpen && <span className="truncate">{item.label}</span>}
             </NavLink>
           ))}
         </nav>
+
+        {/* Footer / User Info (Optional) */}
+        {/* <div className={`p-3 border-t ${isDark ? 'border-dark_border' : 'border-white/10'}`}>
+          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${isDark ? 'bg-darklight' : 'bg-white/5'}`}>
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-skyBlue flex items-center justify-center text-white font-bold text-sm">
+              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+            </div>
+            {isOpen && (
+              <div className="flex-1 min-w-0">
+                <p className={`text-xs font-medium truncate ${isDark ? 'text-white' : 'text-white'}`}>
+                  {user?.name || "User"}
+                </p>
+                <p className={`text-xs capitalize truncate ${isDark ? 'text-gray' : 'text-white/70'}`}>
+                  {user?.role || "Role"}
+                </p>
+              </div>
+            )}
+          </div>
+        </div> */}
       </aside>
     </>
   );
