@@ -3,16 +3,16 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { logout } from '@/features/authSlice';
 
 const BASE_URL =
-  import.meta.env.VITE_ENV === "production"
+  import.meta.env.MODE === "production"
     ? import.meta.env.VITE_PROD_API_URL
     : import.meta.env.VITE_LOCAL_API_URL
 
 //  shared refresh lock
 let refreshPromise = null;
 
-export const createBaseQueryWithReauth = (baseUrl = "") => {
+export const createBaseQueryWithReauth = () => {
   const baseQuery = fetchBaseQuery({
-    baseUrl: `${BASE_URL}${baseUrl}`,
+    baseUrl: `${BASE_URL}`,
     credentials: "include",
     prepareHeaders: (headers, { endpoint }) => {
       headers.set("X-Requested-With", "XMLHttpRequest");

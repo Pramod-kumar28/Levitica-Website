@@ -17,8 +17,8 @@ const AuthBootstrap = () => {
   });
 
   useEffect(() => {
-    if (isSuccess && data?.verified && data?.user) {
-      dispatch(login({ user: data.user }));
+    if (isSuccess && data?.success && data?.data?.user) {
+      dispatch(login({ user: data.data.user }));
       dispatch(setAuthChecked(true));
     } else if (isSuccess || isError) {
       dispatch(logout());
