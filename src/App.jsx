@@ -59,6 +59,7 @@ import InternshipsDomainManagement from '@/dashboard/Admin/Internships/Internshi
 import PaymentOverview from '@/dashboard/Admin/Payments/PaymentOverview.jsx';
 import StudentEnrolledCourseDetails from '@/dashboard/Student/MyCourseDetails.jsx';
 import PromoCodeManagement from '@/dashboard/Admin/promoCodeManagement/PromoCodeManagement.jsx';
+import MentorManagement from './dashboard/Admin/Mentor/MentorManagement';
 
 /* ---------------- Layout wrappers ---------------- */
 
@@ -174,7 +175,7 @@ const AppRouter = () => {
                 <PromoCodeManagement />
               } />
 
-
+              <Route path="mentors" element={<MentorManagement />} />
               <Route path="courses" element={<CoursesManagement />} />
               <Route path="internships" element={<InternshipsDomainManagement />} />
               <Route path="zoom" element={<AdminLiveClasses />} />

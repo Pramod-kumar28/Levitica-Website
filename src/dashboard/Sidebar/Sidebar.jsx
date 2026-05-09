@@ -89,6 +89,12 @@ const Sidebar = () => {
       roles: ["admin", 'superadmin'],
     },
     {
+      label: "Mentor",
+      icon: <FaUsers size={20} />,
+      path: "/dashboard/admin/mentors",
+      roles: ["admin", 'superadmin'],
+    },
+    {
       label: "Live Classes",
       icon: <FaVideo size={20} />,
       path: "/dashboard/admin/zoom",
