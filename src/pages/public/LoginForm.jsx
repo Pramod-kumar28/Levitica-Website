@@ -25,8 +25,8 @@ const LoginForm = () => {
         }
         dispatch(
           login({
-            user: response.data.user,
-              })
+            user: response.data.data.user,
+          })
         );
 
         toast.success("Login successful!");

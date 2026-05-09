@@ -54,7 +54,7 @@ import ProtectedRoute from '@/protectedRoutes/ProtechedRoutes';
 import StudentDashboard from '@/dashboard/Student/StudentDashboard';
 import MyCourseList from '@/dashboard/Student/MyCoursesList';
 import CommonCourseDetails from '@/dashboard/common/CommonCourseDetails';
-import DashboardGate from '@/protectedRoutes/DashboardGate.jsx';
+import AuthRestore from '@/protectedRoutes/AuthRestore';
 import InternshipsDomainManagement from '@/dashboard/Admin/Internships/InternshipsManagement.jsx';
 import PaymentOverview from '@/dashboard/Admin/Payments/PaymentOverview.jsx';
 import StudentEnrolledCourseDetails from '@/dashboard/Student/MyCourseDetails.jsx';
@@ -68,10 +68,8 @@ const AppLayout = () => (
     <Navbar />
     <Outlet />
     <Footer />
-
   </>
 );
-
 
 const AuthLayout = () => (
   <>
@@ -82,7 +80,6 @@ const AuthLayout = () => (
 const NoFooterLayout = () => (
   <>
     <Navbar />
-
     <Outlet />
   </>
 );
@@ -90,65 +87,56 @@ const NoFooterLayout = () => (
 /* ---------------- Router ---------------- */
 
 const AppRouter = () => {
-
-
-
   return (
-    <Routes>
+    <>
+      <AuthRestore />
+      <Routes>
+        {/* Main public layout */}
+        <Route element={<AppLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="trainings" element={<Trainings />} />
+          <Route path="trainings/:category/:courseId?" element={<CourseDetail />} />
+          <Route path="services" element={<Services />} />
+          <Route path="services/:serviceName" element={<ServiceDetails />} />
+          <Route path="contact-us" element={<ContactUs />} />
+          <Route path="about-us" element={<AboutUs />} />
 
+          <Route path="app" element={<GetApp />} />
 
-      {/* Main public layout */}
-      <Route element={<AppLayout />}>
-        <Route index element={<HomePage />} />
-        <Route path="trainings" element={<Trainings />} />
-        <Route path="trainings/:category/:courseId?" element={<CourseDetail />} />
-        <Route path="services" element={<Services />} />
-        <Route path="services/:serviceName" element={<ServiceDetails />} />
-        <Route path="contact-us" element={<ContactUs />} />
-        <Route path="about-us" element={<AboutUs />} />
+          <Route path="privacy" element={<Privacy />} />
+          <Route path="refund" element={<Refund />} />
+          <Route path="terms" element={<Terms />} />
+          <Route path="knowledge-base" element={<KnowledgeBase />} />
+          <Route path="forums" element={<Forums />} />
+        </Route>
 
-        <Route path="app" element={<GetApp />} />
+        {/* Login / Signup (navbar only) */}
+        <Route element={<NoFooterLayout />}>
+          <Route path="login" element={<Login />} />
+          <Route path="sign-up" element={<Signup />} />
+        </Route>
 
-        <Route path="privacy" element={<Privacy />} />
-        <Route path="refund" element={<Refund />} />
-        <Route path="terms" element={<Terms />} />
-        <Route path="knowledge-base" element={<KnowledgeBase />} />
-        <Route path="forums" element={<Forums />} />
-      </Route>
+        {/* Auth-only pages */}
+        <Route element={<AuthLayout />}>
+          <Route path="password-reset" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ChangePassword />} />
+          <Route path="verify-email" element={<EmailVerification />} />
+          <Route path="internships" element={<Internship />} />
+          <Route path="internships/payment-success" element={<PaymentSuccess />} />
+        </Route>
 
-      {/* Login / Signup (navbar only) */}
-      <Route element={<NoFooterLayout />}>
-        <Route path="login" element={<Login />} />
-        <Route path="sign-up" element={<Signup />} />
-      </Route>
-
-      {/* Auth-only pages */}
-      <Route element={<AuthLayout />}>
-        <Route path="password-reset" element={<ForgotPassword />} />
-        <Route path="reset-password" element={<ChangePassword />} />
-        <Route path="verify-email" element={<EmailVerification />} />
-        <Route path="internships" element={<Internship />} />
-        <Route path="internships/payment-success" element={<PaymentSuccess />} />
-      </Route>
-
-      <Route path="dashboard" element={<DashboardGate />}>
-        <Route element={<ProtectedRoute />}>
-
+        {/* Dashboard Routes */}
+        <Route path="dashboard" element={<ProtectedRoute />}>
           <Route index element={<DashboardIndex />} />
+          
           <Route element={<ProtectedRoute allowedRoles={["student", "admin", "superadmin"]} />}>
             <Route element={<DashboardLayout />}>
               <Route path="course/:id" element={<CommonCourseDetails />} />
             </Route>
           </Route>
 
-
           {/* ================= STUDENT ================= */}
-          <Route
-            path="student"
-            element={
-              <ProtectedRoute allowedRoles={["student"]} />
-            }
-          >
+          <Route path="student" element={<ProtectedRoute allowedRoles={["student"]} />}>
             <Route element={<DashboardLayout />}>
               <Route index element={<StudentDashboard />} />
               <Route path="browsercourses" element={<CourseCatalog />} />
@@ -160,12 +148,7 @@ const AppRouter = () => {
           </Route>
 
           {/* ================= ADMIN ================= */}
-          <Route
-            path="admin"
-            element={
-              <ProtectedRoute allowedRoles={["admin", "superadmin"]} />
-            }
-          >
+          <Route path="admin" element={<ProtectedRoute allowedRoles={["admin", "superadmin"]} />}>
             <Route element={<DashboardLayout />}>
               <Route index element={<AdminDashboard />} />
               <Route path="addadmin" element={<SuperAdminPage />} />
@@ -189,10 +172,8 @@ const AppRouter = () => {
             </Route>
           </Route>
         </Route>
-      </Route>
-
-
-    </Routes>
+      </Routes>
+    </>
   );
 };
 

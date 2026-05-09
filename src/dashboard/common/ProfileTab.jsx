@@ -53,7 +53,7 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
           name: values.name,
         }).unwrap();
 
-        dispatch(login(res));
+        dispatch(login({ user: res.data.user }));
         toast.success("Profile updated successfully");
       } catch (error) {
         console.error(error);
