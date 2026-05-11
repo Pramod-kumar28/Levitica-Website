@@ -43,6 +43,16 @@ const CourseDetails = () => {
     setOpenIndex(openIndex === i ? null : i);
   };
 
+  const handleEnroll = () => {
+    // Navigate to checkout page with course details
+    navigate(`/login`);
+  };
+
+  const handleSubscribe = () => {
+    // Add newsletter subscription logic here
+    alert('Thank you for subscribing!');
+  };
+
   if (loading) return <div className="text-center py-24">Loading...</div>;
   if (!course) return <div className="text-center py-24">Course not found.</div>;
 
@@ -63,6 +73,7 @@ const CourseDetails = () => {
             <img
               src={course.image}
               className="w-20 h-20 rounded-full object-cover"
+              alt={course.title}
             />
           </div>
 
@@ -75,7 +86,7 @@ const CourseDetails = () => {
 
           {/* COVER IMAGE */}
           <div data-aos="zoom-in" className="mb-16 h-[350px] overflow-hidden rounded-2xl">
-            <img src={course.image} className="w-full h-full object-cover" />
+            <img src={course.image} className="w-full h-full object-cover" alt={course.title} />
           </div>
 
           <div className="flex flex-wrap -mx-4">
@@ -145,10 +156,10 @@ const CourseDetails = () => {
                     >
                       <button
                         onClick={() => toggleFAQ(i)}
-                        className="w-full flex items-center gap-3 p-4 text-left"
+                        className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 transition-colors"
                       >
                         <FaQuestionCircle className="text-primary" />
-                        {faq.question}
+                        <span className="font-medium">{faq.question}</span>
                       </button>
 
                       {openIndex === i && (
@@ -173,17 +184,11 @@ const CourseDetails = () => {
                   {course.price}
                 </p>
 
-                <button className="btn accent-solid-btn w-full mt-4">
+                <button 
+                  onClick={handleEnroll}
+                  className="btn accent-solid-btn w-full mt-4 bg-primary text-white py-3 rounded-lg hover:bg-primary-dark transition-colors"
+                >
                   Enroll Now
-                </button>
-              </div>
-
-              <div data-aos="fade-left" data-aos-delay="150" className="bg-white p-8 rounded-xl shadow-property">
-                <h3 className="text-lg text-slate-900 font-semibold mb-4">Newsletter</h3>
-
-                <input className="w-full p-3 rounded-lg bg-light mb-3" />
-                <button className="w-full bg-primary py-3 text-white rounded-lg">
-                  Subscribe
                 </button>
               </div>
 
@@ -191,9 +196,18 @@ const CourseDetails = () => {
                 <h4 className="font-semibold mb-4">Need Help?</h4>
 
                 <div className="space-y-3 text-sm text-gray">
-                  <div className="flex gap-2"><FaMapMarkerAlt /> Hyderabad</div>
-                  <div className="flex gap-2"><FaPhoneAlt /> +91 9032503559</div>
-                  <div className="flex gap-2"><FaEnvelope /> hr@levitica.com</div>
+                  <div className="flex gap-2 items-center">
+                    <FaMapMarkerAlt className="text-primary" /> 
+                    <span>Hyderabad, India</span>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <FaPhoneAlt className="text-primary" /> 
+                    <span>+91 9032503559</span>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <FaEnvelope className="text-primary" /> 
+                    <span>hr@levitica.com</span>
+                  </div>
                 </div>
               </div>
 

@@ -10,6 +10,7 @@
     "@fontsource-variable/geist": "^5.2.8",
     "@fullcalendar/daygrid": "^6.1.18",
     "@fullcalendar/react": "^6.1.18",
+    "@lottiefiles/dotlottie-react": "^0.19.2",
     "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/table-core": "^8.21.3",

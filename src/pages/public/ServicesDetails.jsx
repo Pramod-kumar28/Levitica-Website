@@ -162,7 +162,7 @@ const ServiceDetails = () => {
                     <h4 className="font-semibold text-lg mb-4">Industries</h4>
                     {service.industries.map((i, idx) => (
                       <div key={idx} className="flex gap-2 mb-2">
-                        <FaChevronRight className="text-primary mt-1" />
+                        <FaCheckCircle className="text-primary mt-1" />
                         <span>{i}</span>
                       </div>
                     ))}
@@ -218,20 +218,6 @@ const ServiceDetails = () => {
                   </div>
                   <div className="bg-[#3C86AD] p-3 rounded-lg flex items-center"><FaLinkedinIn size={18}/><span className="ml-1">LinkedIn</span></div>
                 </div>
-              </div>
-
-              {/* NEWSLETTER */}
-              <div data-aos="fade-left" data-aos-delay="150" className="bg-white p-8 rounded-xl shadow-property">
-                <h3 className="text-lg text-slate-900 font-semibold mb-4">Newsletter</h3>
-
-                <input
-                  placeholder="Email address"
-                  className="w-full p-3 rounded-lg bg-light dark:bg-darklight mb-3 outline-none focus:ring-2 focus:ring-primary"
-                />
-
-                <button className="w-full bg-primary py-3 text-white rounded-lg">
-                  Subscribe
-                </button>
               </div>
 
               {/* CONTACT */}

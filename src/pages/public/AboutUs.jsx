@@ -27,12 +27,11 @@ const About = () => {
       <LearningPlatform />
       <ConsultancyMarketing />
       <CoreValues />
-      <Differentiators />
+      {/* <Differentiators />
       
-      <MissionVision />
+      <MissionVision /> */}
       <CeoMessage />
-      <Timeline />
-      <IndustriesServed />
+      {/* <IndustriesServed /> */}
     
       <ConsultingCTA />
     </motion.div>

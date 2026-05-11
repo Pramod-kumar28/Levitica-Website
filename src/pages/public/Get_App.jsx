@@ -1,3 +1,11 @@
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FaArrowRight, FaDownload } from "react-icons/fa";
+
+/* ✅ AOS */
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 const AppDownloadButtons = () => {
   return (
     <section className="bg-gradient-to-br from-slate-800 to-black py-20">
@@ -60,83 +68,146 @@ const AppDownloadButtons = () => {
   );
 };
 
-
-
-
 const GetApp = () => {
+  /* ✅ INIT AOS */
+  useEffect(() => {
+    AOS.init({
+      duration: 900,
+      easing: "ease-out-cubic",
+      once: false,
+      offset: 80,
+    });
+  }, []);
+
   return (
-    <div className="">
-      {/* HERO */}
-      <section
-        className="hero-section py-28 gradient-overlay"
-        style={{ background: "url('img/header-bg-5.jpg') no-repeat center center / cover" }}
-      >
-        <div
-          className="hero-bottom-shape-two"
-          style={{ background: "url('img/hero-bottom-shape.svg') no-repeat bottom center" }}
-        />
-        <div className="backdrop-blur-sm max-w-5xl mx-auto text-center mt-20">
-          <h1 className="text-white text-2xl lg:text-4xl font-bold">
+    <div className="bg-white pt-20">
+      {/* 🔥 HERO (SAME STYLE AS TRAININGS PAGE) */}
+      <section className="py-12 bg-gradient-to-b from-white from-10% to-herobg to-90% text-center">
+        <div className="relative max-w-4xl mx-auto px-4 text-center">
+          <h1
+            data-aos="fade-up"
+            className="text-4xl md:text-5xl font-bold text-midnight_text"
+          >
             Download the Levitica Technologies Learning App
           </h1>
-          <p className="text-white mt-4 text-base lg:text-lg opacity-90">
+
+          <p
+            data-aos="fade-up"
+            data-aos-delay="100"
+            className="mt-4 text-slate-600 text-lg"
+          >
             Learn smarter, track progress faster, and stay connected anywhere.
           </p>
+
+          <div
+            data-aos="fade-up"
+            data-aos-delay="200"
+            className="mt-6 flex justify-center items-center gap-2 text-sm text-gray"
+          >
+            <Link to="/" className="hover:text-primary transition">
+              Home
+            </Link>
+            <span>›</span>
+            <span className="text-midnight_text font-medium">
+              Download App
+            </span>
+          </div>
+
+          {/* Download Button in Hero */}
+          <div
+            data-aos="fade-up"
+            data-aos-delay="300"
+            className="mt-8"
+          >
+            <a
+              href="#download-section"
+              className="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-dark transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+            >
+              <FaDownload />
+              Download Now
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* CONTENT */}
-      <section className="py-24">
+      {/* CONTENT SECTION */}
+      <section className="py-24 bg-gray-50">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 px-4">
-
           {/* Text Content */}
           <div>
-            <h2 className="text-3xl font-bold mb-6">
-              Everything You Need to Learn  In Your Pocket
+            <h2 
+              data-aos="fade-right"
+              className="text-3xl font-bold mb-6 text-gray-800"
+            >
+              Everything You Need to Learn In Your Pocket
             </h2>
 
-            <p className="text-slate-600 mb-5">
-              The Levitica Technologies mobile app is designed to give students a seamless learning experience
-              anytime, anywhere. Whether you’re commuting, taking a break, or studying at home,
-              the app ensures uninterrupted access to your courses, live sessions, assignments,
-              and performance tracking tools. No more waiting to open a laptop your entire
-              learning journey is now just one tap away.
-            </p>
+            <div className="space-y-4">
+              <p 
+                data-aos="fade-right"
+                data-aos-delay="100"
+                className="text-gray-600 leading-relaxed"
+              >
+                The Levitica Technologies mobile app is designed to give students a seamless learning experience
+                anytime, anywhere. Whether you're commuting, taking a break, or studying at home,
+                the app ensures uninterrupted access to your courses, live sessions, assignments,
+                and performance tracking tools. No more waiting to open a laptop — your entire
+                learning journey is now just one tap away.
+              </p>
 
-            <p className="text-slate-600 mb-5">
-              With real-time notifications, you’ll never miss important announcements,
-              class updates, or assignment deadlines. The app keeps you connected with
-              instructors and classmates, allowing you to participate in discussions,
-              clarify doubts instantly, and stay engaged with your learning community.
-            </p>
+              <p 
+                data-aos="fade-right"
+                data-aos-delay="200"
+                className="text-gray-600 leading-relaxed"
+              >
+                With real-time notifications, you'll never miss important announcements,
+                class updates, or assignment deadlines. The app keeps you connected with
+                instructors and classmates, allowing you to participate in discussions,
+                clarify doubts instantly, and stay engaged with your learning community.
+              </p>
 
-            <p className="text-slate-600 mb-5">
-              Our intuitive interface is built for speed and simplicity. You can easily
-              track your progress, revisit recorded sessions, download study materials,
-              and monitor your course completion milestones all in a smooth,
-              distraction-free environment optimized for mobile devices.
-            </p>
+              <p 
+                data-aos="fade-right"
+                data-aos-delay="300"
+                className="text-gray-600 leading-relaxed"
+              >
+                Our intuitive interface is built for speed and simplicity. You can easily
+                track your progress, revisit recorded sessions, download study materials,
+                and monitor your course completion milestones — all in a smooth,
+                distraction-free environment optimized for mobile devices.
+              </p>
 
-            <p className="text-slate-600">
-              Whether you are preparing for your career, upgrading your skills,
-              or mastering a new technology, the Levitica Technologies App empowers you to learn
-              consistently and efficiently. Take control of your education and
-              experience learning without limits.
-            </p>
+              <p 
+                data-aos="fade-right"
+                data-aos-delay="400"
+                className="text-gray-600 leading-relaxed"
+              >
+                Whether you are preparing for your career, upgrading your skills,
+                or mastering a new technology, the Levitica Technologies App empowers you to learn
+                consistently and efficiently. Take control of your education and
+                experience learning without limits.
+              </p>
+            </div>
           </div>
 
           {/* Image */}
-          <div className="flex justify-center items-center">
+          <div 
+            data-aos="fade-left"
+            className="flex justify-center items-center"
+          >
             <img
               src="/img/leviticamobile.png"
               alt="Levitica Technologies App Preview"
-              className="max-w-sm w-full"
+              className="max-w-sm w-full hover:scale-105 transition-transform duration-500"
             />
           </div>
         </div>
       </section>
 
-      <AppDownloadButtons />
+      {/* Download Section ID for anchor link */}
+      <div id="download-section">
+        <AppDownloadButtons />
+      </div>
     </div>
   );
 };
