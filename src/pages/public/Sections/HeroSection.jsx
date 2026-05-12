@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const HeroSection = () => {
 
@@ -16,9 +17,9 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative pt-40 pb-20 bg-gradient-to-b from-white to-herobg dark:from-darkmode dark:to-darklight overflow-hidden">
+    <section className="relative pt-20 md:pt-24 pb-20 bg-gradient-to-b from-white to-herobg dark:from-darkmode dark:to-darklight overflow-hidden">
 
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
 
         {/* LEFT CONTENT */}
         <div className="lg:col-span-3">
@@ -74,12 +75,13 @@ const HeroSection = () => {
         <div
           data-aos="fade-left"
           data-aos-delay="200"
-          className="lg:col-span-2 relative flex justify-center"
+          className="lg:col-span-2 relative flex justify-start w-full"
         >
-          <img
-            src="/img/hero-single-img-1.svg"
-            alt="hero"
-            className="w-[260px] max-w-full"
+          <DotLottieReact 
+            src="/lottie/Seo_isometric.lottie"
+            className="w-110 h-[400px]"
+            autoplay
+            loop
           />
 
           {/* Glow Effect */}

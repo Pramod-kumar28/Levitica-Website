@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import ContactUsForm from "./ContactForm";
 import { FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 const ContactUs = () => {
   return (
@@ -94,11 +95,12 @@ const ContactUs = () => {
             </div>
 
             {/* IMAGE */}
-            <div className="h-[420px]">
-              <img
-                src="https://images.unsplash.com/photo-1596550190504-8cd94a80b3bb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y29udGFjdCUyMHJlbGF0ZWQlMjBpbWFnZXN8ZW58MHx8MHx8fDA%3D"
-                alt="contact"
-                className="w-full h-full object-cover rounded-lg"
+            <div className="">
+              <DotLottieReact
+                className="w-100 h-[360px]"
+                src="/lottie/Slider.lottie"
+                loop
+                autoplay
               />
             </div>
 

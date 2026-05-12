@@ -223,14 +223,14 @@ const CoreValues = () => {
   const Icon = currentItem.icon;
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Hero Section */}
         <div className="text-center mb-16" data-aos="fade-up">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-600 text-sm mb-4">
             <FaPlayCircle className="w-3 h-3" />
-            <span>About Us</span>
+            <span>Digital Transformation</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Driving Digital
@@ -312,7 +312,7 @@ const CoreValues = () => {
                   className={`transition-all duration-300 rounded-full ${
                     currentSlide === idx 
                       ? "w-6 h-1.5 bg-blue-600" 
-                      : "w-1.5 h-1.5 bg-gray-300 hover:bg-gray-400"
+                      : "w-1.5 h-1.5 bg-blue-300 hover:bg-blue-400"
                   }`}
                 />
               ))}
@@ -329,7 +329,7 @@ const CoreValues = () => {
           </div>
           
           <div className="bg-gray-50 rounded-2xl p-6">
-            <div className="flex flex-wrap justify-center gap-2 mb-6">
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
               {industries.map((industry, idx) => (
                 <button
                   key={idx}

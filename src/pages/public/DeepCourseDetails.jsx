@@ -206,7 +206,7 @@ const CourseDetails = () => {
                   </div>
                   <div className="flex gap-2 items-center">
                     <FaEnvelope className="text-primary" /> 
-                    <span>hr@levitica.com</span>
+                    <span>hr@leviticatechnologies.com</span>
                   </div>
                 </div>
               </div>

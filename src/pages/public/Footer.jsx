@@ -23,7 +23,7 @@ const Footer = () => {
           <div>
             <h5 className="text-md font-semibold text-white mb-4 tracking-wide">Address</h5>
             <p className="text-gray leading-relaxed text-sm mb-4">
-              2nd Floor, Vittal Rao Nagar, Madhapur,<br />
+              5th Floor, S2, C9WP+P68 Techno Park, Capital Pk Rd, VIP Hills, Silicon Valley,<br />
               Hyderabad, Telangana – 500081
             </p>
             <div className="flex gap-3">

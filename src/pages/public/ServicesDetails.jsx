@@ -152,7 +152,7 @@ const ServiceDetails = () => {
                     <h4 className="font-semibold text-lg mb-4">Benefits</h4>
                     {service.benefits.map((b, i) => (
                       <div key={i} className="flex gap-2 mb-2">
-                        <FaCheckCircle className="text-primary mt-1" />
+                        <FaCheckCircle className="text-primary mt-2" size={13} />
                         <span>{b}</span>
                       </div>
                     ))}
@@ -162,7 +162,7 @@ const ServiceDetails = () => {
                     <h4 className="font-semibold text-lg mb-4">Industries</h4>
                     {service.industries.map((i, idx) => (
                       <div key={idx} className="flex gap-2 mb-2">
-                        <FaCheckCircle className="text-primary mt-1" />
+                        <FaCheckCircle className="text-primary mt-2" size={13} />
                         <span>{i}</span>
                       </div>
                     ))}
@@ -226,13 +226,13 @@ const ServiceDetails = () => {
 
                 <div className="space-y-3 text-sm text-gray">
                   <div className="flex gap-2">
-                    <FaMapMarkerAlt /> {contactInfo.address}
+                    <FaMapMarkerAlt className="mt-1"/> {contactInfo.address}
                   </div>
                   <div className="flex gap-2">
-                    <FaPhoneAlt /> {contactInfo.phone}
+                    <FaPhoneAlt className="mt-1"/> {contactInfo.phone}
                   </div>
                   <div className="flex gap-2">
-                    <FaEnvelope /> {contactInfo.email}
+                    <FaEnvelope className="mt-1"/> {contactInfo.email}
                   </div>
                 </div>
               </div>
