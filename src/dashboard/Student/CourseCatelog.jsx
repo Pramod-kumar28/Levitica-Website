@@ -165,14 +165,14 @@ const CourseCatalog = () => {
   }, [courses, searchQuery]);
 
   return (
-    <div className="min-h-screen p-6 space-y-8 lg:px-6 lg:py-6">
+    <div className="min-h-screen space-y-8 py-6 px-4">
 
       {/* HEADER */}
       <motion.div
         initial={mounted ? { opacity: 0 } : false}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className=" px-2
+        className="px-2
         "
       >
         <h1 className="text-3xl font-bold flex items-center gap-2">

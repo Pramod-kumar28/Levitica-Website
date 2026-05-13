@@ -86,11 +86,11 @@ const BatchManagement = () => {
   }
 
   return (
-    <div className={`min-h-screen p-4 sm:p-6 lg:p-5 `}>
+    <div className={`min-h-screen py-6 px-4 `}>
       <div className="max-w-7xl mx-auto space-y-6">
         
         {/* ===== Page Header ===== */}
-        <div className={`p-3`}>
+        <div className={`px-2`}>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
             <div>
               <div className="flex items-center gap-3 mb-2">

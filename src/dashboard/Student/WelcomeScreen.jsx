@@ -16,7 +16,7 @@ const WelcomeScreen = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="flex flex-col gap-3 lg:px-4 lg:py-2"
+      className="flex flex-col gap-3 px-2"
     >
 
       {/* Greeting */}

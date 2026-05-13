@@ -79,12 +79,12 @@ const AssignStudents = () => {
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-darkmode' : 'bg-section'}`}>
-      <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="py-6 px-4">
         <div className="max-w-7xl mx-auto space-y-6">
           
           {/* ===== HEADER SECTION ===== */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div className="space-y-3">
+            <div className="space-y-3 px-2">
               <div className="flex items-center gap-3 px-2">
                 <div>
                   <h1 className={`text-3xl sm:text-4xl font-bold tracking-tight ${

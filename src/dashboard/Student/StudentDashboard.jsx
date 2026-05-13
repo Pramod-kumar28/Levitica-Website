@@ -12,8 +12,8 @@ const StudentDashboard = () => {
   return (
     <div className="min-h-screen transition-all">
 
-      <div className="space-y-8 pb-16 px-4">
-        <div className="max-w-7xl mx-auto pt-5 space-y-8">
+      <div className="py-6 px-4">
+        <div className="max-w-7xl mx-auto">
 
           {/* ===== WELCOME ===== */}
           <WelcomeScreen />

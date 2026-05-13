@@ -9,11 +9,11 @@ const MentorManagement = () => {
   const isDark = theme === 'dark';
 
   return (
-    <div className={`min-h-screen p-4`}>
+    <div className={`min-h-screen py-6 px-4`}>
       <div className="max-w-7xl mx-auto space-y-6">
         
         {/* Premium Header */}
-        <div className={`p-4`}>
+        <div className={`px-2`}>
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="min-w-0">
               <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold line-clamp-2 ${

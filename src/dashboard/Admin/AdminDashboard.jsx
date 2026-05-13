@@ -109,12 +109,12 @@ const AdminDashboard = () => {
 
   return (
     <div className={`min-h-screen`}>
-      <div className="py-6 px-4 sm:px-6 lg:px-8">
+      <div className="py-6 px-4">
         <div className="max-w-7xl mx-auto space-y-8">
         
           {/* ===== HERO SECTION - NO BOX LAYOUT ===== */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <div className="space-y-2">
+            <div className="space-y-2 px-2">
               <div className="flex items-center gap-3">
                 <div>
                   <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${

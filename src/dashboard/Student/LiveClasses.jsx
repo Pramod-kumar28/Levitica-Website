@@ -139,7 +139,7 @@ const LiveClasses = () => {
   );
 
   return (
-    <div className={`min-h-screen p-4 sm:p-6 lg:px-5 lg:py-6 space-y-6 sm:space-y-8 `}>
+    <div className={`min-h-screen py-6 px-4 space-y-6 sm:space-y-8 `}>
 
       {/* ===== Page Header ===== */}
       <motion.div 

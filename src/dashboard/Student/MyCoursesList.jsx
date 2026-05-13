@@ -154,16 +154,16 @@ const MyCourseList = () => {
   const enrolledCourses = enrolledSummaryData?.data || [];
 
   return (
-    <div className={`min-h-screen p-4 sm:p-6 lg:px-5 lg:py-5 space-y-6 sm:space-y-8 `}>
+    <div className={`min-h-screen py-6 px-4 space-y-6 sm:space-y-8 `}>
 
       {/* HERO (NO GRADIENT) */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className={` px-2
+        className={` 
         `}
       >
-        <div className="">
+        <div className="px-2">
 
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-midnight_text dark:text-white flex items-center gap-2">

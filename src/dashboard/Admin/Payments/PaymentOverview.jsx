@@ -79,11 +79,11 @@ const PaymentOverview = () => {
       : internshipData?.pagination?.totalPages;
 
   return (
-    <div className={`min-h-screen p-4`}>
+    <div className={`min-h-screen py-6 px-4`}>
       <div className="max-w-7xl mx-auto space-y-6">
 
         {/* ================= Header Section ================= */}
-        <div className={`p-4`}>
+        <div className={`px-2`}>
           <div className="flex items-center gap-3">
             <div>
               <h1 className={`text-2xl sm:text-3xl font-bold ${
