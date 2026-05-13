@@ -152,7 +152,7 @@ const ServiceDetails = () => {
                     <h4 className="font-semibold text-lg mb-4">Benefits</h4>
                     {service.benefits.map((b, i) => (
                       <div key={i} className="flex gap-2 mb-2">
-                        <FaCheckCircle className="text-primary mt-1" />
+                        <FaCheckCircle className="text-primary mt-2" size={13} />
                         <span>{b}</span>
                       </div>
                     ))}
@@ -162,7 +162,7 @@ const ServiceDetails = () => {
                     <h4 className="font-semibold text-lg mb-4">Industries</h4>
                     {service.industries.map((i, idx) => (
                       <div key={idx} className="flex gap-2 mb-2">
-                        <FaChevronRight className="text-primary mt-1" />
+                        <FaCheckCircle className="text-primary mt-2" size={13} />
                         <span>{i}</span>
                       </div>
                     ))}
@@ -220,33 +220,19 @@ const ServiceDetails = () => {
                 </div>
               </div>
 
-              {/* NEWSLETTER */}
-              <div data-aos="fade-left" data-aos-delay="150" className="bg-white p-8 rounded-xl shadow-property">
-                <h3 className="text-lg text-slate-900 font-semibold mb-4">Newsletter</h3>
-
-                <input
-                  placeholder="Email address"
-                  className="w-full p-3 rounded-lg bg-light dark:bg-darklight mb-3 outline-none focus:ring-2 focus:ring-primary"
-                />
-
-                <button className="w-full bg-primary py-3 text-white rounded-lg">
-                  Subscribe
-                </button>
-              </div>
-
               {/* CONTACT */}
               <div data-aos="fade-left" data-aos-delay="250" className="bg-light dark:bg-darklight p-6 rounded-xl mt-8">
                 <h4 className="font-semibold mb-4">Need Help?</h4>
 
                 <div className="space-y-3 text-sm text-gray">
                   <div className="flex gap-2">
-                    <FaMapMarkerAlt /> {contactInfo.address}
+                    <FaMapMarkerAlt className="mt-1"/> {contactInfo.address}
                   </div>
                   <div className="flex gap-2">
-                    <FaPhoneAlt /> {contactInfo.phone}
+                    <FaPhoneAlt className="mt-1"/> {contactInfo.phone}
                   </div>
                   <div className="flex gap-2">
-                    <FaEnvelope /> {contactInfo.email}
+                    <FaEnvelope className="mt-1"/> {contactInfo.email}
                   </div>
                 </div>
               </div>

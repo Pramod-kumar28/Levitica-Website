@@ -3,6 +3,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { FaLightbulb, FaChartLine } from "react-icons/fa6";
 import AboutUsLottie from "@/pages/public/lottie/AboutUsLottie";
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const CompanyStory = () => {
 
@@ -66,8 +67,13 @@ const CompanyStory = () => {
             <div className="max-w-md md:max-w-lg w-full space-y-6">
 
               {/* Lottie Card */}
-              <div className="bg-white dark:bg-semidark rounded-lg shadow-property p-6">
-                <AboutUsLottie />
+              <div className=" w-full">
+                <DotLottieReact
+                  src="/lottie/Business_Analysis_optimized.lottie"
+                  loop
+                  autoplay
+                  style={{ width: "100%", height: "100%" }}
+                />
               </div>
 
               {/* Info Card */}

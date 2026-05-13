@@ -65,7 +65,7 @@ const LearningPlatform = () => {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan/10 text-cyan mb-4"
           >
             <FaBookOpen />
-            <span className="font-medium">Levitica Learn</span>
+            <span className="font-medium">Levitica Academy</span>
           </div>
 
           <h2

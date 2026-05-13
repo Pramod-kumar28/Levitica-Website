@@ -8,25 +8,24 @@ import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   return (
-    <footer className="bg-midnight_text text-white">
+    <footer className="bg-midnight_text dark:bg-midnight_text text-white">
 
       {/* ===== TOP SECTION ===== */}
-      <div className="container mx-auto max-w-screen-xl px-4 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 items-center">
+      <div className="container mx-auto max-w-screen-xl px-4 py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 items-start">
 
           {/* LOGO */}
-          <div className="flex items-center">
-            <img src="/img/leviticalogo.png" className="h-14 object-contain" />
+          <div className="flex justify-center lg:justify-start">
+            <img src="/img/leviticalogo.png" className="h-14 object-contain" alt="Levitica Logo" />
           </div>
 
           {/* ADDRESS */}
           <div>
-            <h4 className="text-lg text-white font-semibold mb-4">Address</h4>
-            <p className="text-gray leading-relaxed mb-4">
-              2nd Floor, Vittal Rao Nagar, Madhapur,<br />
+            <h5 className="text-md font-semibold text-white mb-4 tracking-wide">Address</h5>
+            <p className="text-gray leading-relaxed text-sm mb-4">
+              5th Floor, S2, C9WP+P68 Techno Park, Capital Pk Rd, VIP Hills, Silicon Valley,<br />
               Hyderabad, Telangana – 500081
             </p>
-
             <div className="flex gap-3">
               <Social icon={FaFacebookF} />
               <Social icon={FaXTwitter} />
@@ -37,23 +36,33 @@ const Footer = () => {
 
           {/* QUICK LINKS */}
           <div>
-            <h4 className="text-lg text-white font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-3 text-gray">
-              <li><Link to="/contact-us">Contact Support</Link></li>
-              <li><Link to="/services">Services</Link></li>
-              <li><Link to="/trainings">Trainings</Link></li>
-              <li><Link to="/about-us">About Us</Link></li>
+            <h5 className="text-md font-semibold text-white mb-4 tracking-wide">Quick Links</h5>
+            <ul className="space-y-2 text-gray text-sm">
+              <li><Link to="/contact-us" className="hover:text-primary transition">Contact Support</Link></li>
+              <li><Link to="/services" className="hover:text-primary transition">Services</Link></li>
+              <li><Link to="/trainings" className="hover:text-primary transition">Trainings</Link></li>
+              <li><Link to="/about-us" className="hover:text-primary transition">About Us</Link></li>
+            </ul>
+          </div>
+
+          {/* TERMS & CONDITIONS */}
+          <div>
+            <h5 className="text-md font-semibold text-white mb-4 tracking-wide">Terms & Conditions</h5>
+            <ul className="space-y-2 text-gray text-sm">
+              <li><Link to="/privacy" className="hover:text-primary transition">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="hover:text-primary transition">Terms of Service</Link></li>
+              <li><Link to="/refund" className="hover:text-primary transition">Refund Policy</Link></li>
             </ul>
           </div>
 
           {/* POPULAR SEARCHES */}
           <div>
-            <h4 className="text-lg text-white font-semibold mb-4">Popular Searches</h4>
-            <ul className="space-y-3 text-gray">
-              <li>Internships</li>
-              <li>Full Stack Development</li>
-              <li>AI & Machine Learning</li>
-              <li>Digital Marketing</li>
+            <h5 className="text-md font-semibold text-white mb-4 tracking-wide">Popular Searches</h5>
+            <ul className="space-y-2 text-gray text-sm">
+              <li className="hover:text-primary transition cursor-pointer">Internships</li>
+              <li className="hover:text-primary transition cursor-pointer">Full Stack Development</li>
+              <li className="hover:text-primary transition cursor-pointer">AI & Machine Learning</li>
+              <li className="hover:text-primary transition cursor-pointer">Digital Marketing</li>
             </ul>
           </div>
 
@@ -61,11 +70,11 @@ const Footer = () => {
       </div>
 
       {/* ===== MIDDLE SECTION ===== */}
-      <div className="border-t border-dark_border py-8">
-        <div className="container mx-auto max-w-screen-xl px-4 flex flex-col lg:flex-row justify-between items-center gap-6">
+      <div className="border-t border-dark_border py-6">
+        <div className="container mx-auto max-w-screen-xl px-4 flex flex-col lg:flex-row justify-between items-center gap-4">
 
-          {/* LEFT */}
-          <div className="flex flex-col md:flex-row gap-6 text-gray text-lg">
+          {/* LEFT - Contact Info */}
+          <div className="flex flex-col sm:flex-row gap-4 text-gray text-sm text-center sm:text-left">
             <p>
               <span className="text-white font-medium">Phone :</span> +91 9032503559
             </p>
@@ -74,29 +83,11 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* NEWSLETTER */}
-          <div className="flex items-center gap-3 w-full max-w-lg">
-            <span className="text-white font-semibold text-lg">
-              Newsletter
-            </span>
-
-            <div className="flex w-full">
-              <input
-                type="text"
-                placeholder="Email address"
-                className="w-full px-4 py-3 bg-white text-black focus:outline-none"
-              />
-              <button className="bg-primary px-6 py-3 hover:bg-blue-700">
-                Subscribe
-              </button>
-            </div>
-          </div>
-
         </div>
       </div>
 
       {/* ===== BOTTOM ===== */}
-      <div className="border-t border-dark_border py-4 text-center text-gray text-sm">
+      <div className="border-t border-dark_border py-4 text-center text-gray text-xs">
         © {new Date().getFullYear()} Levitica Technologies. All rights reserved.
       </div>
 
@@ -106,8 +97,8 @@ const Footer = () => {
 
 /* SOCIAL ICON */
 const Social = ({ icon: Icon }) => (
-  <div className="w-9 h-9 flex items-center justify-center rounded-md bg-white/20 hover:bg-primary transition">
-    <Icon size={14} />
+  <div className="w-8 h-8 flex items-center justify-center rounded-md bg-white/10 hover:bg-primary hover:scale-105 transition-all duration-300 cursor-pointer">
+    <Icon size={13} className="text-white" />
   </div>
 );
 

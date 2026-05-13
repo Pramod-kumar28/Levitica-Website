@@ -152,7 +152,7 @@ const MobileNavItem = ({ to, label, close }) => (
   <Link
     to={to}
     onClick={close}
-    className="text-midnight_text dark:text-white hover:text-primary py-2"
+    className="text-midnight_text dark:text-white hover:text-primary py-1"
   >
     {label}
   </Link>
