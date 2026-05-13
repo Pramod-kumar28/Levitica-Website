@@ -75,7 +75,7 @@ const AssignStudents = () => {
     },
   ];
 
-  const activeTab = tabs.find(tab => tab.active);
+  // const activeTab = tabs.find(tab => tab.active);
 
   return (
     <div className={`min-h-screen ${isDark ? 'bg-darkmode' : 'bg-section'}`}>
@@ -239,7 +239,7 @@ const AssignStudents = () => {
           >
             {/* Tab Navigation */}
             <div className={`border-b ${isDark ? 'border-dark_border' : 'border-border'}`}>
-              <div className="flex items-center justify-between px-5 py-3">
+              <div className="flex items-center justify-between px-2 py-3">
                 <div className="flex items-center gap-1">
                   {tabs.map((tab) => (
                     <NavLink
@@ -284,7 +284,7 @@ const AssignStudents = () => {
             </div>
 
             {/* Content Area */}
-            <div className="p-5">
+            <div className="p-2">
               <Outlet />
             </div>
 

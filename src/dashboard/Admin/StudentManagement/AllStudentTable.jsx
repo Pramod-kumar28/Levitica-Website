@@ -139,7 +139,7 @@ const StudentsTable = () => {
             <table className="w-full">
               <thead>
                 <tr className={`border-b ${isDark ? 'border-dark_border' : 'border-border'}`}>
-                  <th className={`text-left px-6 py-4 text-xs font-semibold uppercase tracking-wide ${
+                  <th className={`text-left px-3 py-2 text-xs font-semibold uppercase tracking-wide ${
                     isDark ? 'text-gray' : 'text-gray'
                   }`}>Student</th>
                   <th className={`text-left px-6 py-4 text-xs font-semibold uppercase tracking-wide ${
@@ -181,22 +181,16 @@ const StudentsTable = () => {
                         isDark ? 'hover:bg-darklight' : 'hover:bg-light'
                       }`}
                     >
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-2">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-skyBlue flex items-center justify-center text-white font-semibold shadow-md">
-                            {student.name?.[0]?.toUpperCase() || "S"}
-                          </div>
                           <div>
                             <p className={`font-medium ${isDark ? 'text-white' : 'text-midnight_text'}`}>
                               {student.name || "Not Provided"}
                             </p>
-                            <p className={`text-xs text-gray`}>
-                              ID: {student._id?.slice(-8) || "N/A"}
-                            </p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-2">
                         <div className="flex items-center gap-2">
                           <Mail className="h-3.5 w-3.5 text-gray" />
                           <span className={`text-sm ${isDark ? 'text-gray' : 'text-gray'}`}>
@@ -204,7 +198,7 @@ const StudentsTable = () => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-2">
                         <div className="flex items-center gap-2">
                           <Phone className="h-3.5 w-3.5 text-gray" />
                           <span className={`text-sm font-mono ${isDark ? 'text-gray' : 'text-gray'}`}>
@@ -212,7 +206,7 @@ const StudentsTable = () => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-3 py-2">
                         {student.emailVerified ? (
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                             <CheckCircle className="h-3 w-3" />
@@ -225,7 +219,7 @@ const StudentsTable = () => {
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-center">
+                      <td className="px-3 py-2 text-center">
                         <button
                           onClick={() => openModal(MODAL_TYPES.VIEW_STUDENT_DETAILS, {
                             userId: student._id,
@@ -247,7 +241,7 @@ const StudentsTable = () => {
 
       {/* ===== PAGINATION ===== */}
       {studentsData?.totalPages > 1 && (
-        <div className={`rounded-xl p-4 shadow-property border ${
+        <div className={`rounded-xl p-2 shadow-property border ${
           isDark ? 'bg-semidark border-dark_border' : 'bg-white border-border'
         }`}>
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -291,7 +285,7 @@ const StudentsTable = () => {
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`w-9 h-9 rounded-lg text-sm font-semibold transition ${
+                      className={`w-6 h-6 rounded-lg text-sm font-semibold transition ${
                         pageNum === currentPage
                           ? 'bg-primary text-white shadow-md'
                           : isDark

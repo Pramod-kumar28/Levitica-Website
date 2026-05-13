@@ -63,7 +63,7 @@ export const ModalProvider = ({ children }) => {
               className="
                 relative
                 w-full
-                max-w-xl
+                max-w-3xl
                 overflow-hidden
                 rounded-2xl
                 bg-white
