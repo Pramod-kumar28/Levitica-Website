@@ -6,6 +6,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
   const { user, isAuthenticated, authChecked } = useSelector(
     (state) => state.auth
   );
+  console.log("ProtectedRoute - auth state:", { user, isAuthenticated, authChecked });
 
   // ⛔ WAIT — auth not restored yet
   if (!authChecked) {

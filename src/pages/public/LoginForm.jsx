@@ -18,14 +18,14 @@ const LoginForm = () => {
     async (values) => {
       try {
         const response = await triggerLogin(values);
-
+console.log("Login response:", response);
         if (response.error) {
           toast.error(response.error.data?.message || "Login failed");
           return;
         }
         dispatch(
           login({
-            user: response.data.data.user,
+            user: response.data.user,
           })
         );
 

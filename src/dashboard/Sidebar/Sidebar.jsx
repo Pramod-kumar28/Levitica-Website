@@ -150,10 +150,10 @@ const Sidebar = () => {
           /* Mobile */
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           w-64
-
-          ${isDark 
-            ? 'bg-gradient-to-b from-semidark via-semidark to-darklight border-r border-dark_border text-white' 
-            : 'bg-gradient-to-b from-blue-900 to-blue-900 border-r border-border text-white'
+'bg-primary border-r border-border text-white'
+          ${isDark
+            ? 'bg-gradient-to-b from-semidark via-semidark to-darklight border-r border-dark_border text-white'
+            : 'bg-primary border-r border-border text-white'
           }
 
           shadow-property
@@ -178,13 +178,13 @@ const Sidebar = () => {
 
                 const isCurrent = isDashboard
                   ? location.pathname === "/dashboard" ||
-                    location.pathname === "/dashboard/student" ||
-                    location.pathname === "/dashboard/admin"
+                  location.pathname === "/dashboard/student" ||
+                  location.pathname === "/dashboard/admin"
                   : isActive;
 
                 return `
                   group flex items-center gap-3
-                  rounded-xl px-3 py-2.5
+                  rounded-xl px-3 py-2
                   text-sm font-medium transition-all duration-200
                   ${isCurrent
                     ? isDark
@@ -199,12 +199,12 @@ const Sidebar = () => {
             >
               <span className={`
                 flex items-center justify-center
-                w-9 h-9
+                w-8 h-8
                 rounded-lg
                 shrink-0
                 transition-all duration-200
-                ${isDark 
-                  ? 'bg-darklight group-hover:bg-darklight/80' 
+                ${isDark
+                  ? 'bg-darklight group-hover:bg-darklight/80'
                   : 'bg-white/10 group-hover:bg-white/20'
                 }
               `}>
@@ -216,24 +216,7 @@ const Sidebar = () => {
           ))}
         </nav>
 
-        {/* Footer / User Info (Optional) */}
-        {/* <div className={`p-3 border-t ${isDark ? 'border-dark_border' : 'border-white/10'}`}>
-          <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${isDark ? 'bg-darklight' : 'bg-white/5'}`}>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-skyBlue flex items-center justify-center text-white font-bold text-sm">
-              {user?.name?.charAt(0)?.toUpperCase() || "U"}
-            </div>
-            {isOpen && (
-              <div className="flex-1 min-w-0">
-                <p className={`text-xs font-medium truncate ${isDark ? 'text-white' : 'text-white'}`}>
-                  {user?.name || "User"}
-                </p>
-                <p className={`text-xs capitalize truncate ${isDark ? 'text-gray' : 'text-white/70'}`}>
-                  {user?.role || "Role"}
-                </p>
-              </div>
-            )}
-          </div>
-        </div> */}
+        
       </aside>
     </>
   );

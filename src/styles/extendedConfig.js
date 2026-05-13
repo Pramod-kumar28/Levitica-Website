@@ -48,7 +48,7 @@ export const extendedConfig = {
   },
   colors: {
     // Your existing colors
-    primary: "#2F73F2",
+    primary: "#005A9C",
     secondary: "#547593",
     midnight_text: "#102D47",
     gray: "#668199",
