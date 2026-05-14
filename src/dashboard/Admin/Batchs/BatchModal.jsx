@@ -1,7 +1,6 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
 import { motion, AnimatePresence } from "framer-motion";
 import { useBatchHandlers } from "./batchshooks";
 import { useTheme } from '@/context/ThemeContext';
@@ -10,6 +9,7 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 import { useGetCoursesQuery } from '@/Services/sharedServices/courses.Services';
+import toast from "react-hot-toast";
 
 const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
   const { theme } = useTheme();
@@ -56,7 +56,6 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
     status: Yup.string()
       .oneOf(["active", "completed", "cancelled", "inactive"])
       .required("Status is required"),
-
     completedAt: Yup.date().when("status", {
       is: "completed",
       then: (schema) =>
@@ -67,13 +66,19 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
 
   /* ================= SUBMIT ================= */
   const onSubmit = async (values, { resetForm }) => {
-    if (isEdit) {
-      await handleUpdateBatchSubmit(values);
-    } else {
-      await handleAddBatchSubmit(values);
-      resetForm();
+    try {
+      if (isEdit) {
+        await handleUpdateBatchSubmit(values);
+        toast.success("Batch updated successfully");
+      } else {
+        await handleAddBatchSubmit(values);
+        resetForm();
+        toast.success("Batch created successfully");
+      }
+      handleClose();
+    } catch (error) {
+      toast.error(error?.data?.message || `Failed to ${isEdit ? 'update' : 'create'} batch`);
     }
-    handleClose();
   };
 
   const isLoading = isEdit
@@ -84,7 +89,7 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
     <AnimatePresence mode="wait">
       <motion.div
         key="modal-backdrop"
-        className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 sm:p-4"
+        className="fixed inset-0 z-999 flex items-center justify-center bg-midnight_text/60 backdrop-blur-sm p-3 sm:p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -96,45 +101,48 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
           animate={{ scale: 1, y: 0, opacity: 1 }}
           exit={{ scale: 0.96, y: 24, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className={`w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-2xl shadow-2xl transition-colors ${
+          className={`w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-lg shadow-property transition-all duration-150 ${
             isDark
-              ? 'bg-slate-800 border border-slate-700'
-              : 'bg-white'
+              ? 'bg-semidark border border-dark_border'
+              : 'bg-white border border-border'
           }`}
         >
           {/* ================= HEADER ================= */}
-          <div className={`flex items-start justify-between border-b p-4 sm:p-6 transition-colors ${
+          <div className={`flex items-start justify-between border-b p-4 sm:p-6 transition-colors duration-150 ${
             isDark
-              ? 'border-slate-700'
-              : 'border-slate-200'
+              ? 'border-dark_border'
+              : 'border-border'
           }`}>
             <div className="flex-1 min-w-0">
-              <h2 className={`text-base sm:text-lg font-semibold transition-colors ${
+              <h2 className={`text-base sm:text-lg font-semibold transition-colors duration-150 ${
                 isDark
-                  ? 'text-slate-100'
-                  : 'text-slate-900'
+                  ? 'text-light'
+                  : 'text-midnight_text'
               }`}>
                 {isEdit ? "Edit Batch" : "Create New Batch"}
               </h2>
-              <p className={`mt-1 text-xs sm:text-sm transition-colors ${
+              <p className={`mt-1 text-xs sm:text-sm transition-colors duration-150 ${
                 isDark
-                  ? 'text-slate-400'
-                  : 'text-slate-500'
+                  ? 'text-gray'
+                  : 'text-gray'
               }`}>
                 Manage batch details and lifecycle
               </p>
             </div>
-            <button onClick={handleClose} className={`flex-shrink-0 p-2 rounded-lg transition-colors ml-2 ${
-              isDark
-                ? 'hover:bg-slate-700 text-slate-400'
-                : 'hover:bg-slate-100 text-slate-600'
-            }`}>
-              <FiX />
+            <button 
+              onClick={handleClose} 
+              className={`flex-shrink-0 p-2 rounded-lg transition-all duration-150 ml-2 ${
+                isDark
+                  ? 'hover:bg-darklight text-gray hover:text-light'
+                  : 'hover:bg-light text-gray hover:text-midnight_text'
+              }`}
+            >
+              <FiX className="text-lg" />
             </button>
           </div>
 
           {/* ================= FORM ================= */}
-          <div className={`p-3 sm:p-4 transition-colors ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
+          <div className={`p-3 sm:p-4 transition-colors duration-150 ${isDark ? 'bg-semidark' : 'bg-white'}`}>
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -144,37 +152,41 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                 <Form className="space-y-3 sm:space-y-3.5">
                   {/* Batch Name */}
                   <div>
-                    <label className={`block text-xs font-medium mb-1 transition-colors ${
+                    <label className={`block text-xs font-medium mb-1 transition-colors duration-150 ${
                       isDark
-                        ? 'text-slate-300'
-                        : 'text-slate-700'
-                    }`}>Batch Name</label>
+                        ? 'text-light'
+                        : 'text-midnight_text'
+                    }`}>
+                      Batch Name
+                    </label>
                     <Field 
                       name="batchName" 
-                      className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                      className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                         isDark
-                          ? 'bg-slate-700 border-slate-600 text-slate-100 placeholder-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20'
-                          : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                          ? 'bg-semidark border-dark_border text-light placeholder-darkgray focus:border-primary focus:ring-primary/30'
+                          : 'bg-white border-border text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
                       }`}
                     />
-                    <ErrorMessage name="batchName" component="p" className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                    <ErrorMessage name="batchName" component="p" className={`mt-1 text-xs transition-colors duration-150 ${isDark ? 'text-rose-500' : 'text-rose-600'}`} />
                   </div>
 
                   {/* Course */}
                   <div>
-                    <label className={`block text-xs font-medium mb-1 transition-colors ${
+                    <label className={`block text-xs font-medium mb-1 transition-colors duration-150 ${
                       isDark
-                        ? 'text-slate-300'
-                        : 'text-slate-700'
-                    }`}>Course</label>
+                        ? 'text-light'
+                        : 'text-midnight_text'
+                    }`}>
+                      Course
+                    </label>
                     <div className="relative">
                       <Field 
                         as="select" 
                         name="courseId" 
-                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                           isDark
-                            ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
-                            : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                            ? 'bg-semidark border-dark_border text-light focus:border-primary focus:ring-primary/30'
+                            : 'bg-white border-border text-midnight_text focus:border-primary focus:ring-primary/20'
                         }`}
                       >
                         <option value="">Select course</option>
@@ -185,40 +197,44 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                         ))}
                       </Field>
                     </div>
-                    <ErrorMessage name="courseId" component="p" className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                    <ErrorMessage name="courseId" component="p" className={`mt-1 text-xs transition-colors duration-150 ${isDark ? 'text-rose-500' : 'text-rose-600'}`} />
                   </div>
 
                   {/* Dates */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
-                      <label className={`block text-xs font-medium mb-1 transition-colors ${
+                      <label className={`block text-xs font-medium mb-1 transition-colors duration-150 ${
                         isDark
-                          ? 'text-slate-300'
-                          : 'text-slate-700'
-                      }`}>Start Date</label>
+                          ? 'text-light'
+                          : 'text-midnight_text'
+                      }`}>
+                        Start Date
+                      </label>
                       <Field 
                         type="date" 
                         name="startDate" 
-                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                           isDark
-                            ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
-                            : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                            ? 'bg-semidark border-dark_border text-light focus:border-primary focus:ring-primary/30'
+                            : 'bg-white border-border text-midnight_text focus:border-primary focus:ring-primary/20'
                         }`}
                       />
                     </div>
                     <div>
-                      <label className={`block text-xs font-medium mb-1 transition-colors ${
+                      <label className={`block text-xs font-medium mb-1 transition-colors duration-150 ${
                         isDark
-                          ? 'text-slate-300'
-                          : 'text-slate-700'
-                      }`}>End Date</label>
+                          ? 'text-light'
+                          : 'text-midnight_text'
+                      }`}>
+                        End Date
+                      </label>
                       <Field 
                         type="date" 
                         name="endDate" 
-                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                           isDark
-                            ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
-                            : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                            ? 'bg-semidark border-dark_border text-light focus:border-primary focus:ring-primary/30'
+                            : 'bg-white border-border text-midnight_text focus:border-primary focus:ring-primary/20'
                         }`}
                       />
                     </div>
@@ -226,18 +242,20 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
 
                   {/* STATUS DROPDOWN */}
                   <div>
-                    <label className={`block text-xs font-medium mb-1 transition-colors ${
+                    <label className={`block text-xs font-medium mb-1 transition-colors duration-150 ${
                       isDark
-                        ? 'text-slate-300'
-                        : 'text-slate-700'
-                    }`}>Batch Status</label>
+                        ? 'text-light'
+                        : 'text-midnight_text'
+                    }`}>
+                      Batch Status
+                    </label>
                     <Field
                       as="select"
                       name="status"
-                      className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                      className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                         isDark
-                          ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
-                          : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                          ? 'bg-semidark border-dark_border text-light focus:border-primary focus:ring-primary/30'
+                          : 'bg-white border-border text-midnight_text focus:border-primary focus:ring-primary/20'
                       }`}
                       onChange={(e) => {
                         const value = e.target.value;
@@ -258,56 +276,58 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
                     </Field>
-                    <ErrorMessage name="status" component="p" className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`} />
+                    <ErrorMessage name="status" component="p" className={`mt-1 text-xs transition-colors duration-150 ${isDark ? 'text-rose-500' : 'text-rose-600'}`} />
                   </div>
+
                   {/* COMPLETED AT (Conditional) */}
                   {values.status === "completed" && (
                     <div>
-                      <label className={`block text-xs font-medium mb-1 transition-colors ${
+                      <label className={`block text-xs font-medium mb-1 transition-colors duration-150 ${
                         isDark
-                          ? 'text-slate-300'
-                          : 'text-slate-700'
-                      }`}>Completed At</label>
+                          ? 'text-light'
+                          : 'text-midnight_text'
+                      }`}>
+                        Completed At
+                      </label>
                       <Field
                         type="date"
                         name="completedAt"
-                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-colors ${
+                        className={`w-full px-3 py-1.5 rounded-lg border text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                           isDark
-                            ? 'bg-slate-700 border-slate-600 text-slate-100 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400/20 dark-input'
-                            : 'bg-white border-slate-300 text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20'
+                            ? 'bg-semidark border-dark_border text-light focus:border-primary focus:ring-primary/30'
+                            : 'bg-white border-border text-midnight_text focus:border-primary focus:ring-primary/20'
                         }`}
                       />
                       <ErrorMessage
                         name="completedAt"
                         component="p"
-                        className={`mt-1 text-xs ${isDark ? 'text-red-400' : 'text-red-600'}`}
+                        className={`mt-1 text-xs transition-colors duration-150 ${isDark ? 'text-rose-500' : 'text-rose-600'}`}
                       />
                     </div>
                   )}
-
 
                   {/* Submit */}
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`w-full py-2 rounded-xl font-medium text-sm transition-all ${
+                    className={`w-full py-2 rounded-lg font-medium text-sm transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-md ${
                       isDark
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white disabled:opacity-60'
-                        : 'bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white disabled:opacity-60'
+                        ? 'bg-primary hover:bg-secondary text-light'
+                        : 'bg-primary hover:bg-secondary text-light'
                     }`}
                   >
                     {isLoading ? "Saving..." : isEdit ? "Update Batch" : "Create Batch"}
                   </button>
 
                   {/* Tip */}
-                  <div className={`flex gap-2 border p-2 rounded-lg transition-colors ${
+                  <div className={`flex gap-2 border p-2 rounded-lg transition-all duration-150 ${
                     isDark
-                      ? 'bg-blue-900/30 border-blue-700/50 text-blue-300'
-                      : 'bg-indigo-50 border-indigo-200 text-indigo-700'
+                      ? 'bg-primary/10 border-primary/30 text-cyan'
+                      : 'bg-primary/5 border-primary/20 text-primary'
                   }`}>
-                    <FiCheckCircle className={`flex-shrink-0 mt-0.5 ${isDark ? 'text-blue-400' : 'text-indigo-600'}`} />
+                    <FiCheckCircle className={`flex-shrink-0 mt-0.5 text-lg ${isDark ? 'text-cyan' : 'text-primary'}`} />
                     <p className="text-xs">
-                      Completed batches won’t allow new student assignments.
+                      Completed batches won't allow new student assignments.
                     </p>
                   </div>
                 </Form>

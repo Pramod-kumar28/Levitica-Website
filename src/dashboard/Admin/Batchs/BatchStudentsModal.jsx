@@ -64,60 +64,78 @@ const BatchStudentsModal = ({ batchId, handleClose }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[1200] flex items-center justify-center bg-slate-900/60"
+        className="fixed inset-0 z-999 flex items-center justify-center bg-midnight_text/60 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         <motion.div
-          className={`rounded-xl w-full max-w-4xl shadow-xl transition-colors ${
+          className={`rounded-lg w-full max-w-4xl shadow-property transition-all duration-150 ${
             isDark
-              ? 'bg-slate-800 border border-slate-700'
-              : 'bg-white'
+              ? 'bg-semidark border border-dark_border'
+              : 'bg-white border border-border'
           }`}
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         >
           {/* HEADER */}
-          <div className={`flex justify-between items-center border-b p-4 transition-colors ${
+          <div className={`flex justify-between items-center border-b p-4 transition-colors duration-150 ${
             isDark
-              ? 'border-slate-700'
-              : 'border-slate-200'
+              ? 'border-dark_border'
+              : 'border-border'
           }`}>
-            <h2 className={`font-semibold transition-colors ${
+            <h2 className={`font-semibold text-lg transition-colors duration-150 ${
               isDark
-                ? 'text-slate-100'
-                : 'text-slate-900'
-            }`}>Batch Students</h2>
-            <button onClick={handleClose} className={`p-2 rounded-lg transition-colors ${
-              isDark
-                ? 'hover:bg-slate-700 text-slate-400'
-                : 'hover:bg-slate-100 text-slate-600'
+                ? 'text-light'
+                : 'text-midnight_text'
             }`}>
-              <FiX />
+              Batch Students
+            </h2>
+            <button 
+              onClick={handleClose} 
+              className={`p-2 rounded-lg transition-all duration-150 ${
+                isDark
+                  ? 'hover:bg-darklight text-gray hover:text-light'
+                  : 'hover:bg-light text-gray hover:text-midnight_text'
+              }`}
+            >
+              <FiX className="text-lg" />
             </button>
           </div>
 
           {/* TABLE */}
-          <div className={`p-4 overflow-x-auto transition-colors ${isDark ? 'bg-slate-800' : 'bg-white'}`}>
+          <div className={`p-4 overflow-x-auto transition-colors duration-150 ${isDark ? 'bg-semidark' : 'bg-white'}`}>
             {isLoading ? (
-              <p className={`transition-colors ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Loading students…</p>
+              <div className="flex justify-center items-center py-8">
+                <div className={`text-center transition-colors duration-150 ${
+                  isDark ? 'text-light' : 'text-midnight_text'
+                }`}>
+                  Loading students...
+                </div>
+              </div>
+            ) : students.length === 0 ? (
+              <div className={`text-center py-8 transition-colors duration-150 ${
+                isDark ? 'text-gray' : 'text-gray'
+              }`}>
+                No students found in this batch
+              </div>
             ) : (
               <table className="w-full text-sm">
-                <thead className={`transition-colors ${
+                <thead className={`transition-colors duration-150 ${
                   isDark
-                    ? 'bg-slate-700'
-                    : 'bg-slate-50'
+                    ? 'bg-darklight'
+                    : 'bg-light'
                 }`}>
                   {table.getHeaderGroups().map((hg) => (
                     <tr key={hg.id}>
                       {hg.headers.map((header) => (
                         <th
                           key={header.id}
-                          className={`p-3 text-left cursor-pointer transition-colors ${
+                          className={`p-3 text-left cursor-pointer transition-all duration-150 font-semibold ${
                             isDark
-                              ? 'text-slate-200 hover:text-slate-100'
-                              : 'text-slate-900 hover:text-slate-700'
+                              ? 'text-light hover:text-primary'
+                              : 'text-midnight_text hover:text-primary'
                           }`}
                           onClick={header.column.getToggleSortingHandler()}
                         >
@@ -126,8 +144,8 @@ const BatchStudentsModal = ({ batchId, handleClose }) => {
                             header.getContext()
                           )}
                           {{
-                            asc: " 🔼",
-                            desc: " 🔽",
+                            asc: " ↑",
+                            desc: " ↓",
                           }[header.column.getIsSorted()] ?? null}
                         </th>
                       ))}
@@ -137,17 +155,23 @@ const BatchStudentsModal = ({ batchId, handleClose }) => {
 
                 <tbody>
                   {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id} className={`border-t transition-colors ${
-                      isDark
-                        ? 'border-slate-700 hover:bg-slate-700/50'
-                        : 'border-slate-200 hover:bg-slate-50'
-                    }`}>
+                    <tr 
+                      key={row.id} 
+                      className={`border-t transition-all duration-150 ${
+                        isDark
+                          ? 'border-dark_border hover:bg-darklight/50'
+                          : 'border-border hover:bg-light/50'
+                      }`}
+                    >
                       {row.getVisibleCells().map((cell) => (
-                        <td key={cell.id} className={`p-3 transition-colors ${
-                          isDark
-                            ? 'text-slate-300'
-                            : 'text-slate-700'
-                        }`}>
+                        <td 
+                          key={cell.id} 
+                          className={`p-3 transition-colors duration-150 ${
+                            isDark
+                              ? 'text-light'
+                              : 'text-midnight_text'
+                          }`}
+                        >
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
@@ -162,43 +186,45 @@ const BatchStudentsModal = ({ batchId, handleClose }) => {
           </div>
 
           {/* PAGINATION */}
-          <div className={`flex justify-between items-center border-t p-4 transition-colors ${
-            isDark
-              ? 'border-slate-700 bg-slate-800'
-              : 'border-slate-200 bg-white'
-          }`}>
-            <span className={`text-sm transition-colors ${
+          {pagination && pagination.totalPages > 1 && (
+            <div className={`flex justify-between items-center border-t p-4 transition-colors duration-150 ${
               isDark
-                ? 'text-slate-300'
-                : 'text-slate-600'
+                ? 'border-dark_border bg-semidark'
+                : 'border-border bg-white'
             }`}>
-              Page {page} of {pagination?.totalPages || 1}
-            </span>
-            <div className="flex gap-2">
-              <button
-                disabled={page === 1}
-                onClick={() => setPage((p) => p - 1)}
-                className={`px-3 py-1 rounded border transition-colors ${
-                  isDark
-                    ? 'border-slate-600 bg-slate-700 text-slate-300 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed'
-                    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed'
-                }`}
-              >
-                Prev
-              </button>
-              <button
-                disabled={page === pagination?.totalPages}
-                onClick={() => setPage((p) => p + 1)}
-                className={`px-3 py-1 rounded border transition-colors ${
-                  isDark
-                    ? 'border-slate-600 bg-slate-700 text-slate-300 hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed'
-                    : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed'
-                }`}
-              >
-                Next
-              </button>
+              <span className={`text-sm transition-colors duration-150 ${
+                isDark
+                  ? 'text-darkgray'
+                  : 'text-gray'
+              }`}>
+                Page {page} of {pagination?.totalPages || 1}
+              </span>
+              <div className="flex gap-2">
+                <button
+                  disabled={page === 1}
+                  onClick={() => setPage((p) => p - 1)}
+                  className={`px-3 py-1 rounded-lg border transition-all duration-150 text-sm font-medium ${
+                    isDark
+                      ? 'border-dark_border bg-semidark text-light hover:bg-darklight disabled:opacity-40 disabled:cursor-not-allowed'
+                      : 'border-border bg-white text-midnight_text hover:bg-light disabled:opacity-40 disabled:cursor-not-allowed'
+                  }`}
+                >
+                  Previous
+                </button>
+                <button
+                  disabled={page === pagination?.totalPages}
+                  onClick={() => setPage((p) => p + 1)}
+                  className={`px-3 py-1 rounded-lg border transition-all duration-150 text-sm font-medium ${
+                    isDark
+                      ? 'border-dark_border bg-semidark text-light hover:bg-darklight disabled:opacity-40 disabled:cursor-not-allowed'
+                      : 'border-border bg-white text-midnight_text hover:bg-light disabled:opacity-40 disabled:cursor-not-allowed'
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>

@@ -17,7 +17,7 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
       name: course.name ?? '',
       shortdescription: course.shortdescription ?? '',
       duration: course.duration ?? '',
-      price: course.price ?? '', // ✅ FIXED
+      price: course.price ?? '',
       category: course.category ?? '',
       thumbnail: course.thumbnail ?? '',
     }
@@ -45,7 +45,7 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+        className="fixed inset-0 z-999 flex items-center justify-center bg-midnight_text/60 backdrop-blur-lg p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -55,30 +55,30 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.96, opacity: 0, y: 20 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className={`w-full max-w-xl overflow-hidden rounded-2xl shadow-2xl transition-colors ${
+          className={`w-full max-w-xl overflow-hidden rounded-lg shadow-property transition-all duration-150 ${
             isDark
-              ? 'bg-slate-800 border border-slate-700'
-              : 'bg-white'
+              ? 'bg-darklight border border-dark_border'
+              : 'bg-white border border-border'
           }`}
         >
           {/* Header */}
-          <div className={`flex items-center justify-between border-b px-6 py-4 transition-colors ${
+          <div className={`flex items-center justify-between border-b px-6 py-4 transition-colors duration-150 ${
             isDark
-              ? 'border-slate-700'
-              : 'border-slate-200'
+              ? 'border-dark_border'
+              : 'border-border'
           }`}>
             <div>
-              <h2 className={`text-lg font-semibold transition-colors ${
+              <h2 className={`text-lg font-semibold transition-colors duration-150 ${
                 isDark
-                  ? 'text-slate-100'
-                  : 'text-slate-900'
+                  ? 'text-light'
+                  : 'text-midnight_text'
               }`}>
                 {isEdit ? 'Edit Course' : 'Add New Course'}
               </h2>
-              <p className={`mt-1 text-sm transition-colors ${
+              <p className={`mt-1 text-sm transition-colors duration-150 ${
                 isDark
-                  ? 'text-slate-400'
-                  : 'text-slate-500'
+                  ? 'text-gray'
+                  : 'text-gray'
               }`}>
                 {isEdit
                   ? 'Update course information'
@@ -87,10 +87,10 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
             </div>
             <button
               onClick={onSuccess}
-              className={`rounded-lg p-2 transition ${
+              className={`rounded-lg p-2 transition-all duration-150 ${
                 isDark
-                  ? 'text-slate-400 hover:bg-slate-700 hover:text-slate-200'
-                  : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                  ? 'text-gray hover:bg-darklight hover:text-light'
+                  : 'text-gray hover:bg-light hover:text-midnight_text'
               }`}
             >
               <FiX className="h-5 w-5" />
@@ -103,14 +103,13 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
               initialValues={initialValues}
               validationSchema={validationSchema}
               onSubmit={async (values, actions) => {
-
                 try {
                   await onSubmitFn(values);
                   if (!isEdit) actions.resetForm();
                   onSuccess();
                 } catch (error) {
                   console.error(`${isEdit ? 'Update' : 'Add'} failed:`, error);
-                  alert(`❌ Failed to ${isEdit ? 'update' : 'add'} course.`);
+                  toast.error(`Failed to ${isEdit ? 'update' : 'add'} course`);
                 }
               }}
             >
@@ -128,28 +127,28 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                     { name: 'category', label: 'Category', placeholder: 'Web Development' },
                   ].map(({ name, label, placeholder }) => (
                     <div key={name}>
-                      <label className={`mb-1 block text-sm font-medium transition-colors ${
+                      <label className={`mb-1 block text-sm font-medium transition-colors duration-150 ${
                         isDark
-                          ? 'text-slate-300'
-                          : 'text-slate-700'
+                          ? 'text-light'
+                          : 'text-midnight_text'
                       }`}>
                         {label}
                       </label>
                       <Field
                         name={name}
                         placeholder={placeholder}
-                        className={`w-full rounded-lg border px-3 py-2 text-sm transition focus:outline-none focus:ring-2 ${
+                        className={`w-full rounded-lg border px-3 py-2 text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                           isDark
-                            ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-indigo-400 focus:ring-indigo-500/30'
-                            : 'border-slate-300 text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-indigo-500/20'
+                            ? 'bg-semidark border-dark_border text-light placeholder-darkgray focus:border-primary focus:ring-primary/30'
+                            : 'bg-white border-border text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
                         }`}
                       />
                       <ErrorMessage
                         name={name}
                         component="p"
-                        className={`mt-1 text-xs transition-colors ${
+                        className={`mt-1 text-xs transition-colors duration-150 ${
                           isDark
-                            ? 'text-rose-400'
+                            ? 'text-rose-500'
                             : 'text-rose-600'
                         }`}
                       />
@@ -158,10 +157,10 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
 
                   {/* shortdescription */}
                   <div>
-                    <label className={`mb-1 block text-sm font-medium transition-colors ${
+                    <label className={`mb-1 block text-sm font-medium transition-colors duration-150 ${
                       isDark
-                        ? 'text-slate-300'
-                        : 'text-slate-700'
+                        ? 'text-light'
+                        : 'text-midnight_text'
                     }`}>
                       Short Description
                     </label>
@@ -170,36 +169,34 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                       name="shortdescription"
                       rows={3}
                       placeholder="Course overview..."
-                      className={`w-full rounded-lg border px-3 py-2 text-sm transition focus:outline-none focus:ring-2 ${
+                      className={`w-full rounded-lg border px-3 py-2 text-sm transition-all duration-150 focus:outline-none focus:ring-2 ${
                         isDark
-                          ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-indigo-400 focus:ring-indigo-500/30'
-                          : 'border-slate-300 text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:ring-indigo-500/20'
+                          ? 'bg-semidark border-dark_border text-light placeholder-darkgray focus:border-primary focus:ring-primary/30'
+                          : 'bg-white border-border text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
                       }`}
                     />
                     <ErrorMessage
                       name="shortdescription"
                       component="p"
-                      className={`mt-1 text-xs transition-colors ${
+                      className={`mt-1 text-xs transition-colors duration-150 ${
                         isDark
-                          ? 'text-rose-400'
+                          ? 'text-rose-500'
                           : 'text-rose-600'
                       }`}
                     />
                   </div>
 
-
-
                   {/* Submit */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`mt-4 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-70 ${
+                    className={`mt-4 flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-md ${
                       isDark
-                        ? 'bg-indigo-600 text-white hover:bg-indigo-500'
-                        : 'bg-indigo-600 text-white hover:bg-indigo-700'
+                        ? 'bg-primary text-light hover:bg-secondary'
+                        : 'bg-primary text-light hover:bg-secondary'
                     }`}
                   >
-                    <FiSave />
+                    <FiSave className="text-lg" />
                     {isSubmitting
                       ? isEdit
                         ? 'Updating...'

@@ -36,6 +36,11 @@ const ChangePassword = () => {
       return;
     }
 
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
     try {
       await resetPassword({ email, rspd, newPassword }).unwrap();
       toast.success("Password changed successfully");
@@ -46,74 +51,75 @@ const ChangePassword = () => {
   };
 
   return (
-    <section className="pt-40 pb-32 bg-light dark:bg-darkmode">
-
-      <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
-        <div className="flex justify-center items-center text-center">
+    <section className="pt-40 pb-32 bg-light dark:bg-darkmode min-h-screen flex items-center">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-center items-center">
 
           {/* CARD */}
-          <div className="max-w-lg w-full bg-white dark:bg-semidark px-8 py-14 sm:px-12 md:px-16 rounded-lg shadow-property">
+          <div className="max-w-lg w-full bg-white dark:bg-semidark px-8 py-14 sm:px-12 md:px-16 rounded-lg shadow-property transition-all duration-150">
 
             {/* LOGO */}
-            <div className="mb-10 text-center mx-auto inline-block max-w-[160px]">
-              <img src="/img/leviticalogo.png" className="mx-auto" />
+            <div className="mb-10 text-center">
+              <div className="inline-block max-w-[160px]">
+                <img src="/img/leviticalogo.png" alt="Logo" className="w-full h-auto" />
+              </div>
             </div>
 
             {/* TITLE */}
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-midnight_text dark:text-white">
+            <div className="mb-8 text-center">
+              <h2 className="text-2xl font-bold text-midnight_text dark:text-light mb-2">
                 Change Password
               </h2>
-              <p className="text-gray mt-2">
+              <p className="text-gray dark:text-darkgray">
                 Enter your new password below
               </p>
             </div>
 
             {/* FORM */}
-            <form onSubmit={handleSubmit} className="space-y-6 text-left">
+            <form onSubmit={handleSubmit} className="space-y-6">
 
               {/* NEW PASSWORD */}
               <div>
-                <label className="block text-sm font-medium mb-2 text-midnight_text dark:text-white">
+                <label className="block text-left text-sm font-medium mb-2 text-midnight_text dark:text-light">
                   New Password
                 </label>
 
                 <div className="relative">
-                  <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray" />
+                  <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray text-lg" />
 
                   <input
                     type={showPassword ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="New password"
-                    className="w-full pl-12 pr-12 py-3 rounded-md border border-border dark:border-dark_border bg-transparent text-midnight_text dark:text-white outline-none focus:border-primary"
+                    placeholder="Enter new password"
+                    className="w-full pl-10 pr-12 py-2.5 rounded-lg border border-border dark:border-dark_border bg-transparent text-midnight_text dark:text-light placeholder:text-gray dark:placeholder:text-darkgray outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-150"
                   />
 
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray hover:text-primary"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray hover:text-primary dark:hover:text-primary transition-colors duration-150"
                   >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
                   </button>
                 </div>
               </div>
 
               {/* CONFIRM PASSWORD */}
               <div>
-                <label className="block text-sm font-medium mb-2 text-midnight_text dark:text-white">
+                <label className="block text-left text-sm font-medium mb-2 text-midnight_text dark:text-light">
                   Confirm Password
                 </label>
 
                 <div className="relative">
-                  <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray" />
+                  <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray text-lg" />
 
                   <input
                     type="password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirm password"
-                    className="w-full pl-12 pr-4 py-3 rounded-md border border-border dark:border-dark_border bg-transparent text-midnight_text dark:text-white outline-none focus:border-primary"
+                    placeholder="Confirm your password"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border dark:border-dark_border bg-transparent text-midnight_text dark:text-light placeholder:text-gray dark:placeholder:text-darkgray outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-150"
                   />
                 </div>
               </div>
@@ -122,15 +128,15 @@ const ChangePassword = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition disabled:opacity-60"
+                className="w-full bg-primary hover:bg-secondary text-light font-semibold py-2.5 rounded-lg transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
               >
-                {isLoading ? "Changing..." : "Change Password"}
+                {isLoading ? "Changing Password..." : "Change Password"}
               </button>
 
               {/* LINK */}
-              <p className="text-center text-sm text-gray">
+              <p className="text-center text-sm text-gray dark:text-darkgray">
                 Remember your password?{" "}
-                <Link to="/login" className="text-primary hover:underline">
+                <Link to="/login" className="text-primary hover:text-cyan transition-colors duration-150 font-medium">
                   Log in
                 </Link>
               </p>
@@ -141,7 +147,6 @@ const ChangePassword = () => {
 
         </div>
       </div>
-
     </section>
   );
 };

@@ -90,36 +90,40 @@ const SignupForm = () => {
   };
 
   return (
-    <form onSubmit={formik.handleSubmit} className="space-y-5">
+    <form onSubmit={formik.handleSubmit} className="space-y-5 login-signup-form">
 
       {/* NAME */}
       <div>
-        <label className="text-sm font-medium">Your Name</label>
+        <label className="block text-left text-sm font-medium mb-1 text-midnight_text dark:text-light">
+          Your Name
+        </label>
         <div className="relative">
-          <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray" />
           <input
             type="text"
             name="name"
-            className="w-full pl-10 py-2 border rounded-lg"
+            className="w-full pl-10 pr-4 py-2 border border-border dark:border-dark_border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-semidark dark:text-light dark:placeholder:text-darkgray transition-all duration-150"
             placeholder="Enter your name"
             {...formik.getFieldProps("name")}
           />
         </div>
         {formik.touched.name && formik.errors.name && (
-          <p className="text-red-500 text-sm">{formik.errors.name}</p>
+          <p className="text-rose-500 dark:text-rose-500 text-sm mt-1">{formik.errors.name}</p>
         )}
       </div>
 
       {/* EMAIL + VERIFY */}
       <div>
-        <label className="text-sm font-medium">Email Address</label>
+        <label className="block text-left text-sm font-medium mb-1 text-midnight_text dark:text-light">
+          Email Address
+        </label>
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
-            <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray" />
             <input
               type="email"
               name="email"
-              className="w-full pl-10 py-2 border rounded-lg"
+              className="w-full pl-10 pr-4 py-2 border border-border dark:border-dark_border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-semidark dark:text-light dark:placeholder:text-darkgray transition-all duration-150"
               placeholder="name@email.com"
               {...formik.getFieldProps("email")}
             />
@@ -129,45 +133,61 @@ const SignupForm = () => {
             <button
               onClick={handleVerifyEmail}
               disabled={isVerifying || verifyCooldown}
-              className="text-sm text-blue-600"
+              className="px-4 py-2 text-sm font-medium text-primary hover:text-cyan border border-border dark:border-dark_border rounded-lg hover:border-primary dark:hover:border-primary transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
-              {isVerifying ? "Sending..." : verifyCooldown ? "Wait" : "Verify"}
+              {isVerifying ? "Sending..." : verifyCooldown ? "Wait 30s" : "Verify"}
             </button>
           ) : (
-            <FaCheckCircle className="text-green-500" />
+            <div className="flex items-center gap-2 px-3 py-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+              <FaCheckCircle className="text-emerald-500 dark:text-emerald-400 text-lg" />
+              <span className="text-sm text-emerald-700 dark:text-emerald-300">Verified</span>
+            </div>
           )}
         </div>
+        {formik.touched.email && formik.errors.email && (
+          <p className="text-rose-500 dark:text-rose-500 text-sm mt-1">{formik.errors.email}</p>
+        )}
       </div>
 
       {/* MOBILE + PASSWORD (only after verify) */}
       {isVerified && (
         <>
           <div>
-            <label className="text-sm font-medium">Mobile Number</label>
+            <label className="block text-left text-sm font-medium mb-1 text-midnight_text dark:text-light">
+              Mobile Number
+            </label>
             <div className="relative">
-              <FaPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <FaPhone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray" />
               <input
                 type="text"
                 name="mobile"
-                className="w-full pl-10 py-2 border rounded-lg"
+                className="w-full pl-10 pr-4 py-2 border border-border dark:border-dark_border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-semidark dark:text-light dark:placeholder:text-darkgray transition-all duration-150"
                 placeholder="10-digit mobile"
                 {...formik.getFieldProps("mobile")}
               />
             </div>
+            {formik.touched.mobile && formik.errors.mobile && (
+              <p className="text-rose-500 dark:text-rose-500 text-sm mt-1">{formik.errors.mobile}</p>
+            )}
           </div>
 
           <div>
-            <label className="text-sm font-medium">Password</label>
+            <label className="block text-left text-sm font-medium mb-1 text-midnight_text dark:text-light">
+              Password
+            </label>
             <div className="relative">
-              <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray" />
               <input
                 type="password"
                 name="password"
-                className="w-full pl-10 py-2 border rounded-lg"
+                className="w-full pl-10 pr-4 py-2 border border-border dark:border-dark_border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-semidark dark:text-light dark:placeholder:text-darkgray transition-all duration-150"
                 placeholder="Enter password"
                 {...formik.getFieldProps("password")}
               />
             </div>
+            {formik.touched.password && formik.errors.password && (
+              <p className="text-rose-500 dark:text-rose-500 text-sm mt-1">{formik.errors.password}</p>
+            )}
           </div>
         </>
       )}
@@ -176,21 +196,23 @@ const SignupForm = () => {
       <div className="flex items-center gap-2">
         <input
           type="checkbox"
+          id="terms"
           onChange={(e) => setTermsAccepted(e.target.checked)}
+          className="w-4 h-4 text-primary border-border dark:border-dark_border rounded focus:ring-primary focus:ring-2"
         />
-        <span className="text-sm">
+        <label htmlFor="terms" className="text-sm text-midnight_text dark:text-light">
           I agree to the{" "}
-          <a href="#" className="text-blue-600">
+          <a href="#" className="text-primary hover:text-cyan transition-colors duration-150">
             terms & conditions
           </a>
-        </span>
+        </label>
       </div>
 
       {/* SUBMIT */}
       <button
         type="submit"
         disabled={!termsAccepted || !isVerified || isLoading}
-        className="btn secondary-solid-btn w-full"
+        className="w-full mt-4 px-4 py-2.5 bg-primary hover:bg-secondary text-light font-medium rounded-lg transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
       >
         {isLoading ? "Signing up..." : "Sign Up"}
       </button>

@@ -18,7 +18,7 @@ const LoginForm = () => {
     async (values) => {
       try {
         const response = await triggerLogin(values);
-console.log("Login response:", response);
+        console.log("Login response:", response);
         if (response.error) {
           toast.error(response.error.data?.message || "Login failed");
           return;
@@ -52,15 +52,15 @@ console.log("Login response:", response);
 
       {/* EMAIL */}
       <div>
-        <label className="block text-sm font-medium mb-1">
+        <label className="block text-left text-sm font-medium mb-1 text-midnight_text dark:text-light">
           Email Address
         </label>
         <div className="relative">
-          <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray" />
           <input
             type="email"
             name="email"
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-border dark:border-dark_border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-semidark dark:text-light dark:placeholder:text-darkgray"
             placeholder="name@domain.com"
             value={formik.values.email}
             onChange={formik.handleChange}
@@ -68,28 +68,28 @@ console.log("Login response:", response);
           />
         </div>
         {formik.touched.email && formik.errors.email && (
-          <p className="text-red-500 text-sm">{formik.errors.email}</p>
+          <p className="text-rose-500 dark:text-rose-500 text-sm mt-1">{formik.errors.email}</p>
         )}
       </div>
 
       {/* PASSWORD */}
       <div>
         <div className="flex justify-between items-center mb-1">
-          <label className="text-sm font-medium">Password</label>
+          <label className="text-sm font-medium text-midnight_text dark:text-light">Password</label>
           <Link
             to="/password-reset"
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-primary hover:text-cyan transition-colors duration-150"
           >
             Forgot password?
           </Link>
         </div>
 
         <div className="relative">
-          <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray" />
           <input
             type={showPassword ? "text" : "password"}
             name="password"
-            className="w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-10 py-2 border border-border dark:border-dark_border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:bg-semidark dark:text-light dark:placeholder:text-darkgray"
             placeholder="Enter your password"
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -98,14 +98,14 @@ console.log("Login response:", response);
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray dark:text-darkgray hover:text-primary dark:hover:text-primary transition-colors duration-150"
           >
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </div>
 
         {formik.touched.password && formik.errors.password && (
-          <p className="text-red-500 text-sm">{formik.errors.password}</p>
+          <p className="text-rose-500 dark:text-rose-500 text-sm mt-1">{formik.errors.password}</p>
         )}
       </div>
 
@@ -113,7 +113,7 @@ console.log("Login response:", response);
       <button
         type="submit"
         disabled={isLoading}
-        className="btn secondary-solid-btn w-full mt-4"
+        className="w-full mt-4 px-4 py-2.5 bg-primary hover:bg-secondary text-light font-medium rounded-lg transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
       >
         {isLoading ? "Signing in..." : "Sign In"}
       </button>

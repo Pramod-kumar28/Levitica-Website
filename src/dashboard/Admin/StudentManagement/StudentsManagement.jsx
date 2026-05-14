@@ -125,52 +125,52 @@ const AssignStudents = () => {
           {/* ===== STATS CARDS ROW 1 - Student Stats (from StudentsTable) ===== */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Total Students Card */}
-            <div className={`rounded-xl p-4 border transition-all hover:shadow-md ${
-              isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'
+            <div className={`rounded-xl p-6 border transition-all hover:shadow-md ${
+              isDark ? 'bg-primary/20 border-dark_border' : 'bg-primary/10 border-border'
             }`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className={`text-xs font-medium uppercase tracking-wide text-gray`}>Total Students</p>
-                  <p className={`text-3xl font-bold mt-1 ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+                  <p className={`text-xs font-medium uppercase tracking-wide ${isDark ? 'text-gray' : 'text-primary'}`}>Total Students</p>
+                  <p className={`text-3xl font-bold mt-1 ${isDark ? 'text-blue-300' : 'text-primary'}`}>
                     {totalStudents}
                   </p>
                 </div>
-                <div className={`p-2 rounded-lg ${isDark ? 'bg-primary/20' : 'bg-primary/10'}`}>
-                  <FiUsers className="h-5 w-5 text-primary" />
+                <div className={`p-3 rounded-lg ${isDark ? 'bg-primary/20' : 'bg-primary/10'}`}>
+                  <FiUsers className="text-2xl text-primary" />
                 </div>
               </div>
             </div>
             
             {/* Verified Card */}
-            <div className={`rounded-xl p-4 border transition-all hover:shadow-md ${
-              isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'
+            <div className={`rounded-xl p-6 border transition-all hover:shadow-md ${
+              isDark ? 'bg-emerald-500/20 border-dark_border' : 'bg-emerald-500/10 border-border'
             }`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className={`text-xs font-medium uppercase tracking-wide text-gray`}>Verified</p>
-                  <p className={`text-3xl font-bold mt-1 text-emerald-500`}>
+                  <p className={`text-xs font-medium uppercase tracking-wide ${isDark ? 'text-emerald-400' : 'text-emerald-500'}`}>Verified</p>
+                  <p className={`text-3xl font-bold mt-1 ${isDark ? 'text-emerald-400' : 'text-emerald-700' }`}>
                     {verifiedStudents}
                   </p>
                 </div>
-                <div className={`p-2 rounded-lg ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-500/10'}`}>
-                  <FiCheckCircle className="h-5 w-5 text-emerald-500" />
+                <div className={`p-3 rounded-lg ${isDark ? 'bg-emerald-500/20' : 'bg-emerald-500/10'}`}>
+                  <FiCheckCircle className="text-2xl text-emerald-500" />
                 </div>
               </div>
             </div>
             
             {/* Pending Card */}
-            <div className={`rounded-xl p-4 border transition-all hover:shadow-md ${
-              isDark ? 'bg-darklight border-dark_border' : 'bg-light border-border'
+            <div className={`rounded-xl p-6 border transition-all hover:shadow-md ${
+              isDark ? 'bg-amber-500/20 border-dark_border' : 'bg-amber-500/10 border-border'
             }`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className={`text-xs font-medium uppercase tracking-wide text-gray`}>Pending</p>
-                  <p className={`text-3xl font-bold mt-1 text-amber-500`}>
+                  <p className={`text-xs font-medium uppercase tracking-wide ${isDark ? 'text-amber-400' : 'text-amber-500' }`}>Pending</p>
+                  <p className={`text-3xl font-bold mt-1 ${isDark ? 'text-amber-400' : 'text-amber-700' }`}>
                     {pendingStudents}
                   </p>
                 </div>
-                <div className={`p-2 rounded-lg ${isDark ? 'bg-amber-500/20' : 'bg-amber-500/10'}`}>
-                  <FiClock className="h-5 w-5 text-amber-500" />
+                <div className={`p-3 rounded-lg ${isDark ? 'bg-amber-500/20' : 'bg-amber-500/10'}`}>
+                  <FiClock className="text-2xl text-amber-500" />
                 </div>
               </div>
             </div>
