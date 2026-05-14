@@ -6,7 +6,7 @@ export const mentorManagementApi = api.injectEndpoints({
     // ✅ CREATE MENTOR
     createMentor: builder.mutation({
       query: (body) => ({
-        url: "/mentor/mentors",
+        url: "/admin/mentors",
         method: "POST",
         body,
       }),
@@ -16,7 +16,7 @@ export const mentorManagementApi = api.injectEndpoints({
     // ✅ GET ALL MENTORS
     getMentors: builder.query({
       query: () => ({
-        url: "/mentor/mentors",
+        url: "/admin/mentors",
         method: "GET",
       }),
       providesTags: (result) =>
@@ -34,7 +34,7 @@ export const mentorManagementApi = api.injectEndpoints({
     // ✅ GET SINGLE MENTOR
     getMentorById: builder.query({
       query: (id) => ({
-        url: `/mentor/mentors/${id}`,
+        url: `/admin/mentors/${id}`,
         method: "GET",
       }),
       providesTags: (result, error, id) => [
@@ -45,7 +45,7 @@ export const mentorManagementApi = api.injectEndpoints({
     // ✅ UPDATE MENTOR
     updateMentor: builder.mutation({
       query: ({ id, ...body }) => ({
-        url: `/mentor/mentors/${id}`,
+        url: `/admin/mentors/${id}`,
         method: "PUT",
         body,
       }),
@@ -75,7 +75,7 @@ export const mentorManagementApi = api.injectEndpoints({
     // ✅ DELETE MENTOR
     deleteMentor: builder.mutation({
       query: (id) => ({
-        url: `/mentor/mentors/${id}`,
+        url: `/admin/mentors/${id}`,
         method: "DELETE",
       }),
 

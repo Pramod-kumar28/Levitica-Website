@@ -20,7 +20,8 @@ export const api = createApi(
       "Internship",
       "InternshipDomain",
       "StudentReports",
-      "Promos"
+      "Promos",
+      "Mentor"
     ],
     
   })

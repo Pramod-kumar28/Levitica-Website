@@ -8,6 +8,7 @@ import InternshipsDomainModal from '@/dashboard/Admin/Internships/InternshipsDom
 import BatchStudentsModal from '@/dashboard/Admin/Batchs/BatchStudentsModal';
 import StudentDetailsModal from '@/dashboard/Student/StudentDetailsModal';
 import PromoModal from '@/dashboard/Admin/promoCodeManagement/promocodeForm';
+import MentorModal from '@/dashboard/Admin/Mentor/MentorModal';
 
 const ModalContext = createContext();
 
@@ -24,7 +25,8 @@ export const MODAL_TYPES = {
   EDIT_INTERNSHIP_DOMAIN: "EDIT_INTERNSHIP_DOMAIN",
   VIEW_BATCH_STUDENTS: "VIEW_BATCH_STUDENTS",
   VIEW_STUDENT_DETAILS: "VIEW_STUDENT_DETAILS",
-  ADD_PROMO:"ADD_PROMO"
+  ADD_PROMO:"ADD_PROMO",
+  ADD_EDIT_MENTOR: "ADD_EDIT_MENTOR"
 };
 
 export const ModalProvider = ({ children }) => {
@@ -177,6 +179,15 @@ export const ModalProvider = ({ children }) => {
                   onSuccess={closeModal}/>
                 )
               }
+
+              {/* MENTOR MODAL */}
+              {modalType === MODAL_TYPES.ADD_EDIT_MENTOR && (
+                <MentorModal
+                  onSuccess={closeModal}
+                  mode={modalProps.mode || "add"}
+                  mentor={modalProps.mentor}
+                />
+              )}
 
 
             </motion.div>
