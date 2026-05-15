@@ -126,11 +126,41 @@ const ProductsSection = () => {
       ? products
       : products.filter((p) => p.category.includes(activeTab));
 
+  // Function to determine grid classes based on number of filtered items
+  const getGridClasses = () => {
+    const itemCount = filteredProducts.length;
+    
+    if (itemCount === 0) {
+      return "grid grid-cols-1";
+    } else if (itemCount === 1) {
+      return "grid grid-cols-1 max-w-md mx-auto";
+    } else if (itemCount === 2) {
+      return "grid sm:grid-cols-2 max-w-4xl mx-auto";
+    } else if (itemCount === 4) {
+      return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
+    } else {
+      // For 3 or 5 items, use flexbox with proper centering
+      return "flex flex-wrap justify-center gap-8";
+    }
+  };
+
+  // Function to get item width classes for flex layout
+  const getItemWidthClass = () => {
+    const itemCount = filteredProducts.length;
+    
+    if (itemCount === 3) {
+      return "w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]";
+    } else if (itemCount === 5) {
+      return "w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]";
+    }
+    return "";
+  };
+
   const ProductCard = ({ product }) => {
     const Icon = product.icon;
 
     return (
-      <div className="bg-white dark:bg-darklight rounded-lg shadow-property overflow-hidden group transition">
+      <div className="bg-white dark:bg-darklight rounded-lg shadow-property overflow-hidden group transition h-full">
 
         {/* IMAGE */}
         <div className="relative overflow-hidden">
@@ -146,7 +176,7 @@ const ProductsSection = () => {
         </div>
 
         {/* CONTENT */}
-        <div className="p-6">
+        <div className="p-6 flex flex-col h-[calc(100%-250px)]">
 
           <h3 className="text-lg font-semibold text-midnight_text dark:text-white group-hover:text-primary transition">
             {product.title}
@@ -168,6 +198,9 @@ const ProductsSection = () => {
               </li>
             ))}
           </ul>
+
+          {/* PUSH CTA TO BOTTOM */}
+          <div className="flex-grow"></div>
 
           <div className="mt-5 flex justify-between items-center">
             <Link
@@ -216,16 +249,23 @@ const ProductsSection = () => {
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product, index) => (
-            <div
-              key={product.id}
-              data-aos="fade-up"
-              data-aos-delay={index * 120}
-            >
-              <ProductCard product={product} />
+        <div className={getGridClasses()}>
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product, index) => (
+              <div
+                key={product.id}
+                data-aos="fade-up"
+                data-aos-delay={index * 120}
+                className={filteredProducts.length >= 3 && filteredProducts.length !== 4 ? getItemWidthClass() : ""}
+              >
+                <ProductCard product={product} />
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-12" data-aos="fade-up">
+              <p className="text-gray text-lg">No products found in this category.</p>
             </div>
-          ))}
+          )}
         </div>
 
       </div>

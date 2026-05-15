@@ -59,7 +59,7 @@ const BatchManagement = () => {
     if (!window.confirm(`Delete "${name}" batch?`)) return;
     try {
       await deleteBatch(id).unwrap();
-      toast.success("Batch deleted");
+      // toast.success("Batch deleted");
     } catch {
       toast.error("Delete failed");
     }

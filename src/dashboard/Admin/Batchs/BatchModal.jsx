@@ -69,11 +69,9 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
     try {
       if (isEdit) {
         await handleUpdateBatchSubmit(values);
-        toast.success("Batch updated successfully");
       } else {
         await handleAddBatchSubmit(values);
         resetForm();
-        toast.success("Batch created successfully");
       }
       handleClose();
     } catch (error) {

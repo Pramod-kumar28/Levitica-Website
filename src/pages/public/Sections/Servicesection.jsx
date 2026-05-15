@@ -99,6 +99,34 @@ const ServicesSection = () => {
     });
   }, []);
 
+  // Function to determine grid column classes based on number of items
+  const getGridClasses = () => {
+    const itemCount = services.length;
+    
+    if (itemCount === 1) {
+      return "grid grid-cols-1 max-w-md mx-auto";
+    } else if (itemCount === 2) {
+      return "grid md:grid-cols-2 max-w-4xl mx-auto";
+    } else if (itemCount === 4) {
+      return "grid md:grid-cols-2 lg:grid-cols-4";
+    } else {
+      // For 3 or 5 items, use flexbox with proper centering
+      return "flex flex-wrap justify-center gap-8";
+    }
+  };
+
+  // Function to get item width classes for flex layout
+  const getItemWidthClass = () => {
+    const itemCount = services.length;
+    
+    if (itemCount === 3) {
+      return "w-full md:w-[calc(33.333%-1.5rem)] lg:w-[calc(33.333%-1.5rem)]";
+    } else if (itemCount === 5) {
+      return "w-full md:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1.5rem)]";
+    }
+    return "";
+  };
+
   return (
     <section className="py-24 bg-section dark:bg-darkmode flex justify-center items-center">
       <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto container px-4">
@@ -123,12 +151,13 @@ const ServicesSection = () => {
         </div>
 
         {/* GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className={getGridClasses()}>
           {services.map((service, index) => (
             <div
               key={service.id}
               data-aos="fade-up"
               data-aos-delay={index * 120}
+              className={services.length >= 3 && services.length !== 4 ? getItemWidthClass() : ""}
             >
               <div className="bg-white dark:bg-semidark rounded-xl shadow-property p-6 border border-lightgray hover:shadow-lg transition flex flex-col h-full">
 
