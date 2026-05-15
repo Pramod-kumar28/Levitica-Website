@@ -78,8 +78,8 @@ const ProfileSidebar = ({ user, activeTab, onTabChange, isDark: isDarkProp }) =>
                 duration-200
                 ${isActive
                   ? isDark
-                    ? "bg-indigo-600 text-white shadow-sm"
-                    : "bg-blue-600 text-white shadow-sm"
+                    ? "btn-primary shadow-sm"
+                    : "btn-primary shadow-sm"
                   : isDark
                     ? "text-slate-300 hover:bg-slate-700 hover:text-slate-100"
                     : "text-gray-600 hover:bg-gray-100 hover:text-black"
@@ -123,8 +123,8 @@ const ProfileSidebar = ({ user, activeTab, onTabChange, isDark: isDarkProp }) =>
             rounded-xl
             transition
             ${isDark
-              ? 'text-red-400 hover:bg-red-900'
-              : 'text-red-600 hover:bg-red-50'
+              ? 'btn-delete-dark'
+              : 'btn-delete'
             }
           `}
         >

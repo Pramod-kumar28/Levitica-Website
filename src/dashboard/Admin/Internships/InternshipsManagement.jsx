@@ -90,8 +90,8 @@ const InternshipsDomainManagement = () => {
               onClick={() => openModal(MODAL_TYPES.ADD_INTERNSHIP_DOMAIN)}
               className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
                 isDark
-                  ? 'bg-primary hover:bg-skyBlue text-white'
-                  : 'bg-primary hover:bg-skyBlue text-white'
+                  ? 'btn-primary'
+                  : 'btn-primary'
               }`}
             >
               <FiPlus className="h-4 w-4" /> Add New Domain
@@ -105,7 +105,7 @@ const InternshipsDomainManagement = () => {
             onClick={() => setFilter("active")}
             className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
               filter === "active"
-                ? 'bg-primary text-white shadow-md'
+                ? 'btn-primary shadow-md'
                 : isDark
                   ? 'bg-darklight text-gray hover:text-white'
                   : 'bg-light text-gray hover:text-midnight_text'
@@ -118,7 +118,7 @@ const InternshipsDomainManagement = () => {
             onClick={() => setFilter("all")}
             className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${
               filter === "all"
-                ? 'bg-primary text-white shadow-md'
+                ? 'btn-primary shadow-md'
                 : isDark
                   ? 'bg-darklight text-gray hover:text-white'
                   : 'bg-light text-gray hover:text-midnight_text'
@@ -255,8 +255,8 @@ const InternshipsDomainManagement = () => {
                           }
                           className={`p-1.5 rounded-lg transition-colors ${
                             isDark
-                              ? 'text-primary hover:bg-primary/20'
-                              : 'text-primary hover:bg-primary/10'
+                              ? 'btn-edit-dark'
+                              : 'btn-edit'
                           }`}
                           title="Edit domain"
                         >
@@ -268,8 +268,8 @@ const InternshipsDomainManagement = () => {
                           onClick={() => handleDelete(domain._id)}
                           className={`p-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                             isDark
-                              ? 'text-rose-400 hover:bg-rose-500/20'
-                              : 'text-rose-600 hover:bg-rose-500/10'
+                              ? 'btn-delete-dark'
+                              : 'btn-delete'
                           }`}
                           title="Delete domain"
                         >

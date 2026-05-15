@@ -224,7 +224,7 @@ const StudentsTable = () => {
                           onClick={() => openModal(MODAL_TYPES.VIEW_STUDENT_DETAILS, {
                             userId: student._id,
                           })}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all bg-primary/10 text-primary hover:bg-primary hover:text-white"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all btn-border"
                         >
                           <Eye className="h-3.5 w-3.5" />
                           View
@@ -287,7 +287,7 @@ const StudentsTable = () => {
                       onClick={() => setCurrentPage(pageNum)}
                       className={`w-6 h-6 rounded-lg text-sm font-semibold transition ${
                         pageNum === currentPage
-                          ? 'bg-primary text-white shadow-md'
+                          ? 'btn-primary'
                           : isDark
                             ? 'text-gray hover:bg-darklight'
                             : 'text-gray hover:bg-light'

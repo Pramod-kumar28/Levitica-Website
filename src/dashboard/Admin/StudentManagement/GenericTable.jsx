@@ -165,11 +165,7 @@ const GenericTable = ({
               <button
                 onClick={handleBulkAssign}
                 disabled={!selectedBatch || selectedRows.length === 0 || isAssigning}
-                className={`text-white px-5 py-2 rounded-lg flex items-center gap-2 font-semibold transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed ${
-                  isDark
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500'
-                    : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
-                }`}
+                className={`text-white px-5 py-2 rounded-lg flex items-center gap-2 font-semibold transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed btn btn-primary`}
               >
                 {isAssigning ? (
                   <>
@@ -186,11 +182,7 @@ const GenericTable = ({
               <button
                 onClick={() => onRemove?.(selectedRows)}
                 disabled={selectedRows.length === 0}
-                className={`px-5 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-colors ${
-                  isDark
-                    ? 'border border-red-700/40 text-red-400 hover:bg-red-900/20'
-                    : 'border border-red-300 text-red-600 hover:bg-red-50'
-                }`}
+                className={`px-5 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-colors btn btn-red-outline`}
               >
                 <FiTrash2 /> Remove
               </button>

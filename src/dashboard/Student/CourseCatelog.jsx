@@ -109,8 +109,8 @@ const CourseCard = ({ course, handleAdd, isAdded, isEnrolled }) => {
                   flex-1 flex items-center justify-center gap-1
                   py-2 rounded-lg text-sm font-medium transition
                   ${isAdded
-                        ? "bg-green-500 text-white hover:bg-green-600"
-                        : "bg-primary text-white hover:bg-blue-700"
+                        ? "btn-save"
+                        : "btn-primary"
                       }
                   `}
             >

@@ -244,7 +244,7 @@ const MentorTable = () => {
           <button
             onClick={() => setViewMode("table")}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${viewMode === "table"
-              ? 'bg-emerald-600 text-white shadow'
+              ? 'btn btn-primary shadow'
               : isDark
                 ? 'text-slate-400 hover:text-white'
                 : 'text-slate-600 hover:text-slate-900'
@@ -256,7 +256,7 @@ const MentorTable = () => {
           <button
             onClick={() => setViewMode("card")}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${viewMode === "card"
-              ? 'bg-emerald-600 text-white shadow'
+              ? 'btn btn-primary shadow'
               : isDark
                 ? 'text-slate-400 hover:text-white'
                 : 'text-slate-600 hover:text-slate-900'
@@ -452,13 +452,13 @@ const MentorTable = () => {
                     <div className="flex gap-2 pt-3 border-t border-slate-200 dark:border-slate-700">
                       <button
                         onClick={() => handleEditClick(mentor)}
-                        className={`flex-1 inline-flex items-center justify-center gap-1.5 py-2 border rounded-lg text-xs font-bold text-primary border-primary/20 hover:bg-primary/5 transition-colors`}
+                        className={`flex-1 inline-flex items-center justify-center gap-1.5 py-2 border rounded-lg text-xs font-bold btn-border transition-colors`}
                       >
                         <FiEdit2 className="h-3.5 w-3.5" /> Edit Profile
                       </button>
                       <button
                         onClick={() => handleDelete(mentor._id, mentor.name)}
-                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 border rounded-lg text-xs font-bold text-rose-500 border-rose-500/20 hover:bg-rose-500/5 transition-colors"
+                        className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 border rounded-lg text-xs font-bold btn-border-delete transition-colors"
                       >
                         <FiTrash2 className="h-3.5 w-3.5" /> Delete
                       </button>

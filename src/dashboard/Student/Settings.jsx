@@ -150,7 +150,7 @@ const SecurityTab = () => {
       {!show ? (
         <button
           onClick={() => setShow(true)}
-          className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary text-white px-6 py-3.5 sm:py-4 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition duration-200"
+          className="w-full flex items-center justify-center gap-2.5 btn-primary px-6 py-3.5 sm:py-4 rounded-xl text-sm font-semibold shadow-lg hover:shadow-xl transition duration-200"
         >
           <FiLock className="h-5 w-5" />
           Change Password
@@ -252,7 +252,7 @@ const SecurityTab = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary disabled:opacity-60 text-white py-3 sm:py-3.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg"
+              className="flex-1 flex items-center justify-center gap-2 btn-primary py-3 sm:py-3.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg"
             >
               <FiSave className="h-4.5 w-4.5" />
               {isLoading ? "Updating..." : "Update Password"}

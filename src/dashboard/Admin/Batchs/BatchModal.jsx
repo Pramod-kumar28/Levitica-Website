@@ -312,8 +312,8 @@ const BatchModal = ({ handleClose, mode = "add", batch = {} }) => {
                     disabled={isLoading}
                     className={`w-full py-2 rounded-lg font-medium text-sm transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-md ${
                       isDark
-                        ? 'bg-primary hover:bg-secondary text-light'
-                        : 'bg-primary hover:bg-secondary text-light'
+                        ? 'btn-primary'
+                        : 'btn-primary'
                     }`}
                   >
                     {isLoading ? "Saving..." : isEdit ? "Update Batch" : "Create Batch"}

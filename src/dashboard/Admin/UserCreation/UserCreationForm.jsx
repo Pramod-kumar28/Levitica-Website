@@ -101,11 +101,7 @@ const UserCreationForm = () => {
       <button
         type="submit"
         disabled={isLoading}
-        className={`w-full rounded-lg py-2.5 text-sm font-bold transition-all duration-200 ${
-          isDark
-            ? 'bg-indigo-600 hover:bg-indigo-500 text-white disabled:opacity-50 disabled:bg-indigo-900'
-            : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:opacity-60 disabled:bg-indigo-500'
-        }`}
+        className={`w-full rounded-lg py-2.5 text-sm font-bold transition-all duration-200 btn btn-primary`}
       >
         {isLoading ? "Creating…" : "Create User"}
       </button>

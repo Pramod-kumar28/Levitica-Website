@@ -3,12 +3,16 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { v4 as uuid } from "uuid";
 import { Field, FieldArray, ErrorMessage } from "formik";
+import { useTheme } from '@/context/ThemeContext';
 
 // Icons
 import { FiPlus, FiTrash2, FiAlertCircle, FiClock } from "react-icons/fi";
 import { BsGripVertical } from "react-icons/bs";
 
 const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   const {
     attributes,
     listeners,
@@ -27,10 +31,15 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`relative rounded-2xl border bg-white
+      className={`relative rounded-lg border transition-all duration-150
         ${isDragging
-          ? "border-indigo-400 shadow-xl z-10 opacity-90"
-          : "border-gray-200 shadow-sm"}
+          ? `border-primary shadow-property z-10 opacity-90 ${
+              isDark ? 'bg-semidark' : 'bg-white'
+            }`
+          : `${isDark 
+              ? 'border-dark_border bg-semidark' 
+              : 'border-border bg-white'} shadow-sm`
+        }
       `}
     >
       <div className="p-6 space-y-6">
@@ -43,11 +52,11 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
             type="button"
             {...attributes}
             {...listeners}
-            className="flex items-center justify-center
-              w-10 h-10 rounded-xl
-              bg-gray-100 text-gray-500
-              hover:bg-gray-200 hover:text-gray-700
-              cursor-grab active:cursor-grabbing"
+            className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-150 cursor-grab active:cursor-grabbing ${
+              isDark
+                ? 'bg-darklight text-cyan hover:bg-darklight/80 hover:text-light'
+                : 'bg-light text-gray hover:bg-light/80 hover:text-midnight_text'
+            }`}
           >
             <BsGripVertical className="w-5 h-5" />
           </button>
@@ -55,25 +64,31 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
           {/* Title */}
           <div className="flex-1">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center
-                w-9 h-9 rounded-xl
-                bg-indigo-100 text-indigo-600
-                font-semibold"
-              >
+              <div className={`flex items-center justify-center w-9 h-9 rounded-lg font-semibold transition-colors duration-150 ${
+                isDark
+                  ? 'bg-primary/10 text-cyan'
+                  : 'bg-primary/5 text-primary'
+              }`}>
                 {weekIndex + 1}
               </div>
 
               <Field
                 name={`curriculum.${weekIndex}.title`}
                 placeholder="Week title (e.g. Introduction to Web Development)"
-                className="input text-lg font-semibold"
+                className={`flex-1 text-lg font-semibold rounded-lg px-3 py-2 transition-all duration-150 focus:outline-none focus:ring-2 ${
+                  isDark
+                    ? 'bg-semidark border-dark_border text-light placeholder-darkgray focus:border-primary focus:ring-primary/30'
+                    : 'bg-white border-border text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
+                }`}
               />
             </div>
 
             <ErrorMessage
               name={`curriculum.${weekIndex}.title`}
               component="div"
-              className="mt-1 flex items-center gap-1 text-sm text-red-500"
+              className={`mt-1 flex items-center gap-1 text-sm transition-colors duration-150 ${
+                isDark ? 'text-rose-500' : 'text-rose-600'
+              }`}
             >
               {msg => (
                 <>
@@ -89,10 +104,11 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
             <button
               type="button"
               onClick={() => removeWeek(weekIndex)}
-              className="flex items-center justify-center
-                w-10 h-10 rounded-xl
-                bg-red-50 text-red-500
-                hover:bg-red-100"
+              className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-150 ${
+                isDark
+                  ? 'btn-delete-dark'
+                  : 'btn-delete bg-rose-500/10'
+              }`}
             >
               <FiTrash2 className="w-4 h-4" />
             </button>
@@ -103,13 +119,22 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
         <div className="ml-14 space-y-4">
 
           {/* Sessions Header */}
-          <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-            <div className="flex items-center justify-center
-              w-8 h-8 rounded-lg bg-gray-100">
-              <FiClock className="w-4 h-4 text-gray-600" />
+          <div className={`flex items-center gap-2 text-sm font-medium transition-colors duration-150 ${
+            isDark ? 'text-gray' : 'text-gray'
+          }`}>
+            <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-colors duration-150 ${
+              isDark ? 'bg-darklight' : 'bg-light'
+            }`}>
+              <FiClock className={`w-4 h-4 transition-colors duration-150 ${
+                isDark ? 'text-gray' : 'text-gray'
+              }`} />
             </div>
             <span>Sessions</span>
-            <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">
+            <span className={`text-xs px-2 py-0.5 rounded-full transition-colors duration-150 ${
+              isDark
+                ? 'bg-gray text-darkgray'
+                : 'bg-light text-gray'
+            }`}>
               {week.sessions.length}
             </span>
           </div>
@@ -121,14 +146,17 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
                 {week.sessions.map((session, sessionIndex) => (
                   <div
                     key={session.id}
-                    className="flex items-center gap-3
-                      bg-gray-50 border border-gray-200
-                      rounded-xl p-3"
+                    className={`flex items-center gap-3 rounded-lg p-3 transition-all duration-150 ${
+                      isDark
+                        ? ''
+                        : 'bg-light'
+                    }`}
                   >
-                    <div className="flex items-center justify-center
-                      w-7 h-7 rounded-full
-                      bg-gray-200 text-gray-700 text-sm"
-                    >
+                    <div className={`flex items-center justify-center w-7 h-7 rounded-full text-sm transition-colors duration-150 ${
+                      isDark
+                        ? 'bg-darklight text-gray'
+                        : 'bg-border text-gray'
+                    }`}>
                       {sessionIndex + 1}
                     </div>
 
@@ -136,12 +164,14 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
                       <Field
                         name={`curriculum.${weekIndex}.sessions.${sessionIndex}.title`}
                         placeholder={`Session ${sessionIndex + 1}`}
-                        className="input"
+                        className={`w-full px-3 py-2 transition-all duration-150  `}
                       />
                       <ErrorMessage
                         name={`curriculum.${weekIndex}.sessions.${sessionIndex}.title`}
                         component="div"
-                        className="mt-1 text-sm text-red-500"
+                        className={`mt-1 text-sm transition-colors duration-150 ${
+                          isDark ? 'text-rose-500' : 'text-rose-600'
+                        }`}
                       />
                     </div>
 
@@ -149,9 +179,11 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
                       <button
                         type="button"
                         onClick={() => remove(sessionIndex)}
-                        className="flex items-center justify-center
-                          w-9 h-9 rounded-lg
-                          bg-red-50 text-red-500 hover:bg-red-100"
+                        className={`flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-150 ${
+                          isDark
+                            ? 'bg-rose-500/10 btn-delete-dark'
+                            : 'bg-rose-50 btn-delete'
+                        }`}
                       >
                         <FiTrash2 className="w-4 h-4" />
                       </button>
@@ -163,10 +195,11 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
                 <button
                   type="button"
                   onClick={() => push({ id: uuid(), title: "" })}
-                  className="inline-flex items-center gap-2
-                    text-sm font-medium text-indigo-600
-                    hover:text-indigo-700
-                    px-3 py-2 rounded-lg hover:bg-indigo-50"
+                  className={`inline-flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg transition-all duration-150 ${
+                    isDark
+                      ? 'text-cyan hover:text-cyan hover:bg-primary/10'
+                      : 'text-primary hover:text-secondary hover:bg-primary/5'
+                  }`}
                 >
                   <FiPlus className="w-4 h-4" />
                   Add Session
@@ -179,7 +212,9 @@ const SortableWeekItem = ({ week, weekIndex, removeWeek }) => {
 
       {/* Drag Overlay */}
       {isDragging && (
-        <div className="absolute inset-0 border-2 border-dashed border-indigo-400 rounded-2xl pointer-events-none" />
+        <div className={`absolute inset-0 border-2 border-dashed rounded-lg pointer-events-none ${
+          isDark ? 'border-primary' : 'border-primary'
+        }`} />
       )}
     </div>
   );

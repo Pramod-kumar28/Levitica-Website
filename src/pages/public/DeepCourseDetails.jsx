@@ -186,7 +186,7 @@ const CourseDetails = () => {
 
                 <button 
                   onClick={handleEnroll}
-                  className="btn accent-solid-btn w-full mt-4 bg-primary text-white py-3 rounded-lg hover:bg-primary-dark transition-colors"
+                  className="btn btn-primary w-full mt-4 py-3 rounded-lg transition-colors"
                 >
                   Enroll Now
                 </button>

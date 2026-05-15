@@ -123,13 +123,13 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
           }`}
         >
           {/* Gradient Header */}
-          <div className="bg-gradient-to-r from-primary to-skyBlue p-4 sm:p-6 flex items-start justify-between">
+          <div className="p-4 sm:p-6 flex items-start justify-between border-b">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 sm:p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <FiVideo className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="p-2.5 sm:p-3 rounded-xl backdrop-blur-sm">
+                <FiVideo className={`w-5 h-5 sm:w-6 sm:h-6 ${ isDark ? 'text-primary' : 'text-primary' }` } />
               </div>
               <div>
-                <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                <h2 className="text-lg sm:text-xl text-primary font-bold flex items-center gap-2">
                   {isEditMode ? (
                     <> 
                       <FiEdit2 className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -142,7 +142,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     </>
                   )}
                 </h2>
-                <p className="text-xs sm:text-sm text-white mt-0.5">
+                <p className="text-xs sm:text-sm text-gray mt-0.5">
                   Configure timing, batch, and host details
                 </p>
               </div>
@@ -153,7 +153,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
               onClick={onSuccess}
               className="p-1.5 sm:p-2 rounded-xl hover:bg-white/20 transition text-white"
             >
-              <FiX className="w-5 h-5 sm:w-6 sm:h-6" />
+              <FiX className={`w-5 h-5 sm:w-6 sm:h-6 ${ isDark ? 'text-white' : 'text-midnight_text' }`}/>
             </motion.button>
           </div>
 
@@ -331,7 +331,7 @@ const LiveClassForm = ({ onSuccess, initialData, mode = "create" }) => {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary disabled:from-gray-400 disabled:to-gray-500 text-white font-semibold py-3 sm:py-4 rounded-xl transition shadow-md hover:shadow-lg disabled:shadow-none mt-2 sm:mt-4"
+                    className="w-full btn-primary font-semibold py-3 sm:py-4 rounded-xl transition shadow-md hover:shadow-lg disabled:shadow-none mt-2 sm:mt-4"
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">

@@ -287,8 +287,8 @@ const LiveClasses = () => {
                       {status === 'upcoming' && (
                         <span className={`text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 shadow-md whitespace-nowrap ${
                           isDark
-                            ? 'bg-amber-500/20 text-amber-400 border border-amber-500/20'
-                            : 'bg-amber-500/10 text-amber-600 border border-amber-500/20'
+                            ? 'btn-border-amber'
+                            : 'btn-border-amber'
                         }`}>
                           Upcoming
                         </span>
@@ -296,8 +296,8 @@ const LiveClasses = () => {
                       {status === 'completed' && (
                         <span className={`text-xs font-bold px-2.5 py-1 rounded-full inline-flex items-center gap-1 shadow-md whitespace-nowrap ${
                           isDark
-                            ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/20'
-                            : 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20'
+                            ? 'btn-border-save'
+                            : 'btn-border-save'
                         }`}>
                           Completed
                         </span>
@@ -386,8 +386,8 @@ const LiveClasses = () => {
                         disabled
                         className={`w-full py-2 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg border-2 ${
                           isDark
-                            ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
-                            : 'text-amber-600 bg-amber-500/10 border-amber-500/20'
+                            ? 'btn-border-amber'
+                            : 'btn-border-amber'
                         }`}
                       >
                         Starts at {formatTime(liveClass.startTime)}
@@ -397,8 +397,8 @@ const LiveClasses = () => {
                         disabled
                         className={`w-full py-2 sm:py-2.5 text-xs sm:text-sm font-semibold rounded-lg border-2 ${
                           isDark
-                            ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
-                            : 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20'
+                            ? 'btn-border-save'
+                            : 'btn-border-save'
                         }`}
                       >
                         Completed

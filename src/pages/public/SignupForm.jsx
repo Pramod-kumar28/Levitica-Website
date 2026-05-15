@@ -212,7 +212,7 @@ const SignupForm = () => {
       <button
         type="submit"
         disabled={!termsAccepted || !isVerified || isLoading}
-        className="w-full mt-4 px-4 py-2.5 bg-primary hover:bg-secondary text-light font-medium rounded-lg transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+        className="w-full mt-4 px-4 py-2.5 btn btn-primary font-medium rounded-lg transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? "Signing up..." : "Sign Up"}
       </button>

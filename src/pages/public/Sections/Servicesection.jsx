@@ -179,7 +179,7 @@ const ServicesSection = () => {
         <div className="text-center mt-16" data-aos="fade-up">
           <Link
             to="/services"
-            className="inline-flex items-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-700 transition"
+            className="inline-flex items-center px-6 py-3 btn btn-primary transition"
           >
             View All Services
           </Link>

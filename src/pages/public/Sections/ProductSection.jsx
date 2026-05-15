@@ -206,8 +206,8 @@ const ProductsSection = () => {
               onClick={() => setActiveTab(c.id)}
               className={`px-5 py-2 rounded-full text-sm font-medium transition ${
                 activeTab === c.id
-                  ? "bg-primary text-white"
-                  : "bg-white dark:bg-darklight border border-lightgray text-gray hover:border-primary"
+                  ? "btn-primary"
+                  : "btn-white border border-lightgray text-gray hover:border-primary"
               }`}
             >
               {c.name}

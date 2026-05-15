@@ -92,7 +92,7 @@ const ForgotPassword = () => {
               <button
                 type="submit"
                 disabled={isLoading || isButtonDisabled}
-                className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition disabled:opacity-60"
+                className="w-full btn btn-primary font-semibold py-3 rounded-md transition disabled:opacity-60"
               >
                 {isLoading
                   ? "Sending..."

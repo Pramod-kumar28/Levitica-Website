@@ -110,8 +110,7 @@ const CourseAdsCarousel = () => {
                     onClick={() => navigate(`/dashboard/course/${course._id}`)}
                     className="
                       mt-4 w-full py-2 rounded-lg
-                      bg-primary text-white
-                      hover:bg-blue-700 transition
+                      btn-primary
                     "
                   >
                     {isFree ? "Start Learning" : "Enroll Now"}

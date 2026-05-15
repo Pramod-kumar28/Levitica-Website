@@ -126,8 +126,7 @@ const Topbar = () => {
               className="
                 flex items-center gap-2
                 px-5 py-3 w-full text-left
-                text-red-600 dark:text-red-400
-                hover:bg-red-50 dark:hover:bg-red-950/40
+                btn-delete
                 transition-all
               "
             >

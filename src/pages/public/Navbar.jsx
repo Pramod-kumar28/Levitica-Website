@@ -66,7 +66,7 @@ const Navbar = () => {
           {/* LOGIN */}
           <Link
             to="/login"
-            className="border-2 border-primary text-primary px-4 h-10 flex items-center rounded-lg hover:bg-primary hover:text-white hover:shadow-md transition duration-300"
+            className="btn btn-white px-4 h-10 flex items-center rounded-lg transition duration-300"
           >
             Log in
           </Link>
@@ -74,7 +74,7 @@ const Navbar = () => {
           {/* SIGN UP */}
           <Link
             to="/sign-up"
-            className="bg-primary text-white px-4 h-10 flex items-center rounded-lg hover:bg-blue-700 transition"
+            className="btn btn-primary px-4 h-10 flex items-center rounded-lg transition"
           >
             Sign Up
           </Link>
@@ -82,7 +82,7 @@ const Navbar = () => {
           {/* DOWNLOAD */}
           <Link
             to="/app"
-            className="border-2 border-primary text-primary px-4 h-10 flex items-center rounded-lg hover:bg-primary hover:text-white hover:shadow-md transition duration-300"
+            className="btn btn-white px-4 h-10 flex items-center rounded-lg transition duration-300"
           >
             Download App
           </Link>

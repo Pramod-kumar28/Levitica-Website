@@ -224,8 +224,8 @@ const AdminLiveClasses = () => {
               whileTap={{ scale: 0.98 }}
               className={`flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
                 isDark
-                  ? 'bg-primary hover:bg-skyBlue text-white'
-                  : 'bg-primary hover:bg-skyBlue text-white'
+                  ? 'btn-primary'
+                  : 'btn-primary'
               }`}
               onClick={() => openModal(MODAL_TYPES.CREATE_MEETING)}>
               <FiPlus className="w-4 h-4" />
@@ -337,7 +337,7 @@ const AdminLiveClasses = () => {
               onClick={() => setActiveTab("cards")}
               className={`flex items-center gap-2 rounded-md px-3 sm:px-4 py-1.5 text-sm font-medium transition ${
                 activeTab === "cards"
-                  ? 'bg-primary text-white shadow'
+                  ? 'btn-primary shadow'
                   : isDark
                     ? 'text-gray hover:text-white'
                     : 'text-gray hover:text-midnight_text'
@@ -352,7 +352,7 @@ const AdminLiveClasses = () => {
               onClick={() => setActiveTab("table")}
               className={`flex items-center gap-2 rounded-md px-3 sm:px-4 py-1.5 text-sm font-medium transition ${
                 activeTab === "table"
-                  ? 'bg-primary text-white shadow'
+                  ? 'btn-primary shadow'
                   : isDark
                     ? 'text-gray hover:text-white'
                     : 'text-gray hover:text-midnight_text'
@@ -534,8 +534,8 @@ const CardsView = ({
                   onClick={() => handleCopy(m.zoomJoinUrl)}
                   className={`flex-1 py-2 rounded-lg border-2 text-sm font-medium transition flex items-center justify-center gap-1 ${
                     isDark
-                      ? 'border-primary/30 text-primary hover:bg-primary/20'
-                      : 'border-primary/30 text-primary hover:bg-primary/10'
+                      ? 'btn-white'
+                      : 'btn-white'
                   }`}
                   title="Copy link"
                 >
@@ -548,8 +548,8 @@ const CardsView = ({
                 onClick={() => handleEdit(m)}
                 className={`flex-1 py-2 rounded-lg border-2 text-sm font-medium transition flex items-center justify-center gap-1 ${
                   isDark
-                    ? 'border-primary/30 text-primary hover:bg-primary/20'
-                    : 'border-primary/30 text-primary hover:bg-primary/10'
+                    ? 'btn-emerald'
+                    : 'btn-emerald'
                 }`}
                 title="Edit"
               >
@@ -562,8 +562,8 @@ const CardsView = ({
                 onClick={() => handleDelete(m._id)}
                 className={`flex-1 py-2 rounded-lg border-2 text-sm font-medium transition flex items-center justify-center gap-1 disabled:opacity-50 ${
                   isDark
-                    ? 'border-rose-500/30 text-rose-400 hover:bg-rose-500/20'
-                    : 'border-rose-500/30 text-rose-600 hover:bg-rose-500/10'
+                    ? 'btn-remove'
+                    : 'btn-remove'
                 }`}
                 title="Delete"
               >

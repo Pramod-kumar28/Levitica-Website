@@ -134,11 +134,7 @@ const AdminDashboard = () => {
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg flex items-center gap-2 ${
-                  isDark
-                    ? 'bg-primary hover:bg-skyBlue text-white'
-                    : 'bg-primary hover:bg-skyBlue text-white'
-                }`}
+                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg flex items-center gap-2 btn btn-primary`}
               >
                 <FiBarChart2 className="w-4 h-4" /> 
                 <span>Generate Report</span>
@@ -146,11 +142,7 @@ const AdminDashboard = () => {
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg flex items-center gap-2 border ${
-                  isDark
-                    ? 'border-dark_border hover:border-primary text-gray hover:text-white hover:bg-darklight'
-                    : 'border-border hover:border-primary text-gray hover:text-primary hover:bg-light'
-                }`}
+                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-md hover:shadow-lg flex items-center gap-2 border btn btn-white`}
               >
                 <FiSettings className="w-4 h-4" /> 
                 <span>Settings</span>

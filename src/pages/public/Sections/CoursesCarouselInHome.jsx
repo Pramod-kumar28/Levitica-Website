@@ -144,7 +144,7 @@ const CoursesCarouselInHome = () => {
         <div className="text-center mt-10" data-aos="fade-up" data-aos-delay="300">
           <Link
             to="/trainings"
-            className="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-700 transition"
+            className="inline-block px-6 py-3 btn btn-primary transition"
           >
             View All Courses
           </Link>

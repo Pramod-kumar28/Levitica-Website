@@ -116,7 +116,7 @@ const CommonCourseDetails = () => {
     ) || 0;
 
   return (
-    <div className="">
+    <div className="px-2">
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
         
         {/* Hero Section - Two Column Layout */}
@@ -245,7 +245,7 @@ const CommonCourseDetails = () => {
                   {role === "admin" || role === "superadmin" ? (
                     <button
                       onClick={handleEdit}
-                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-skyBlue transition-colors duration-200 font-medium"
+                      className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 btn-primary rounded-xl transition-colors duration-200 font-medium"
                     >
                       <FiEdit size={18} /> Edit Course Details
                     </button>
@@ -253,7 +253,7 @@ const CommonCourseDetails = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={handleAdd}
-                        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-skyBlue transition-colors duration-200 font-medium"
+                        className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 btn-primary rounded-xl transition-colors duration-200 font-medium"
                       >
                         <FiShoppingCart size={18} /> Add to Cart
                       </button>
@@ -352,7 +352,7 @@ const CommonCourseDetails = () => {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white text-sm font-bold">
+                        <div className="w-8 h-8 btn-primary rounded-lg flex items-center justify-center text-white text-sm font-bold">
                           {w + 1}
                         </div>
                         <div>

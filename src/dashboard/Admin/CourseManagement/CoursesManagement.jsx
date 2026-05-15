@@ -49,11 +49,7 @@ const CoursesManagement = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => openModal(MODAL_TYPES.ADD_COURSE, { mode: "add" })}
-              className={`flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
-                isDark
-                  ? 'bg-primary hover:bg-skyBlue text-white'
-                  : 'bg-primary hover:bg-skyBlue text-white'
-              }`}
+              className={`flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all shadow-md hover:shadow-lg btn btn-primary`}
             >
               <FiPlus className="w-4 h-4" />
               Add Course
@@ -85,8 +81,8 @@ const CoursesManagement = () => {
               className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
                 view === "cards" 
                   ? isDark
-                    ? 'bg-primary text-white shadow'
-                    : 'bg-primary text-white shadow'
+                    ? 'btn-primary shadow'
+                    : 'btn-primary shadow'
                   : isDark
                     ? 'text-gray hover:text-white'
                     : 'text-gray hover:text-midnight_text'
@@ -101,8 +97,8 @@ const CoursesManagement = () => {
               className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
                 view === "table" 
                   ? isDark
-                    ? 'bg-primary text-white shadow'
-                    : 'bg-primary text-white shadow'
+                    ? 'btn-primary shadow'
+                    : 'btn-primary shadow'
                   : isDark
                     ? 'text-gray hover:text-white'
                     : 'text-gray hover:text-midnight_text'
@@ -234,8 +230,8 @@ const CoursesCardView = ({
                   onClick={() => onEdit(course)}
                   className={`p-1.5 rounded-lg transition ${
                     isDark
-                      ? 'hover:bg-primary/20 text-primary'
-                      : 'hover:bg-primary/10 text-primary'
+                      ? 'btn-edit-dark'
+                      : 'btn-edit'
                   }`}
                 >
                   <FiEdit className="w-4 h-4" />
@@ -247,8 +243,8 @@ const CoursesCardView = ({
                     onClick={() => navigate(`/dashboard/course/${course._id}`)}
                     className={`p-1.5 rounded-lg transition ${
                       isDark
-                        ? 'hover:bg-emerald-500/20 text-emerald-400'
-                        : 'hover:bg-emerald-500/10 text-emerald-600'
+                        ? 'btn-view-dark'
+                        : 'btn-view'
                     }`}
                   >
                     <FiEye className="w-4 h-4" />
@@ -263,8 +259,8 @@ const CoursesCardView = ({
                     }
                     className={`p-1.5 rounded-lg transition ${
                       isDark
-                        ? 'hover:bg-emerald-500/20 text-emerald-400'
-                        : 'hover:bg-emerald-500/10 text-emerald-600'
+                        ? 'btn-view-dark'
+                        : 'btn-view'
                     }`}
                   >
                     <FiPlus className="w-4 h-4" />
@@ -276,8 +272,8 @@ const CoursesCardView = ({
                   onClick={() => onDelete(course._id)}
                   className={`p-1.5 rounded-lg transition ${
                     isDark
-                      ? 'hover:bg-rose-500/20 text-rose-400'
-                      : 'hover:bg-rose-500/10 text-rose-600'
+                      ? 'btn-delete-dark'
+                      : 'btn-delete'
                   }`}
                 >
                   <FiTrash2 className="w-4 h-4" />
@@ -369,8 +365,11 @@ const CoursesTableView = ({
                 <td className={`px-5 py-4`}>
                   <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold ${
                     course.price === 0
-                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                      : 'bg-primary/10 text-primary'
+                      ? `${
+                          isDark
+                            ? 'btn-view-dark'
+                            : 'btn-view'}`
+                      : 'btn-border'
                   }`}>
                     ₹{course.price}
                   </span>
@@ -382,8 +381,8 @@ const CoursesTableView = ({
                       onClick={() => onEdit(course)}
                       className={`p-1.5 rounded-lg transition ${
                         isDark
-                          ? 'hover:bg-primary/20 text-primary'
-                          : 'hover:bg-primary/10 text-primary'
+                          ? 'btn-edit-dark'
+                          : 'btn-edit'
                       }`}
                     >
                       <FiEdit className="w-4 h-4" />
@@ -395,8 +394,8 @@ const CoursesTableView = ({
                         onClick={() => navigate(`/dashboard/course/${course._id}`)}
                         className={`p-1.5 rounded-lg transition ${
                           isDark
-                            ? 'hover:bg-emerald-500/20 text-emerald-400'
-                            : 'hover:bg-emerald-500/10 text-emerald-600'
+                            ? 'btn-view-dark'
+                            : 'btn-view'
                         }`}
                       >
                         <FiEye className="w-4 h-4" />
@@ -411,8 +410,8 @@ const CoursesTableView = ({
                         }
                         className={`p-1.5 rounded-lg transition ${
                           isDark
-                            ? 'hover:bg-emerald-500/20 text-emerald-400'
-                            : 'hover:bg-emerald-500/10 text-emerald-600'
+                            ? 'btn-view-dark'
+                            : 'btn-view'
                         }`}
                       >
                         <FiPlus className="w-4 h-4" />
@@ -424,8 +423,8 @@ const CoursesTableView = ({
                       onClick={() => onDelete(course._id)}
                       className={`p-1.5 rounded-lg transition ${
                         isDark
-                          ? 'hover:bg-rose-500/20 text-rose-400'
-                          : 'hover:bg-rose-500/10 text-rose-600'
+                          ? 'btn-delete-dark'
+                          : 'btn-delete'
                       }`}
                     >
                       <FiTrash2 className="w-4 h-4" />

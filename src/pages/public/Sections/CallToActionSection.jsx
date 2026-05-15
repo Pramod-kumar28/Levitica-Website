@@ -43,7 +43,7 @@ const ConsultingCTA = () => {
           >
             <Link
               to="/contact-us"
-              className="btn secondary-solid-btn px-6 py-2.5 text-sm md:text-base"
+              className="btn btn-primary px-6 py-2.5 text-sm md:text-base"
             >
               Contact With Us
             </Link>

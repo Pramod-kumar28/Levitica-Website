@@ -102,14 +102,14 @@ const AdminTable = () => {
                 <>
                   <button
                     onClick={handleSave}
-                    className="flex items-center gap-1 bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition"
+                    className="flex items-center gap-1 btn-border-save px-3 py-1.5 rounded-lg text-xs font-medium transition"
                   >
                     <FiCheck className="h-3.5 w-3.5" /> 
                     <span className="hidden sm:inline">Save</span>
                   </button>
                   <button
                     onClick={handleCancel}
-                    className="flex items-center gap-1 bg-gray-400 hover:bg-gray-500 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition"
+                    className="flex items-center gap-1 btn-border-cancel px-3 py-1.5 rounded-lg text-xs font-medium transition"
                   >
                     <FiX className="h-3.5 w-3.5" />
                     <span className="hidden sm:inline">Cancel</span>
@@ -119,14 +119,14 @@ const AdminTable = () => {
                 <>
                   <button
                     onClick={() => handleEditClick(row.original)}
-                    className="flex items-center gap-1 bg-primary hover:bg-skyBlue text-white px-3 py-1.5 rounded-lg text-xs font-medium transition"
+                    className="flex items-center gap-1 btn-border px-3 py-1.5 rounded-lg text-xs font-medium transition"
                   >
                     <FiEdit2 className="h-3.5 w-3.5" />
                     <span className="hidden sm:inline">Edit</span>
                   </button>
                   <button
                     onClick={() => handleDelete(row.original._id)}
-                    className="flex items-center gap-1 bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition"
+                    className="flex items-center gap-1 btn-border-delete px-3 py-1.5 rounded-lg text-xs font-medium transition"
                   >
                     <FiTrash2 className="h-3.5 w-3.5" />
                     <span className="hidden sm:inline">Delete</span>
@@ -179,7 +179,7 @@ const AdminTable = () => {
             onClick={() => setViewMode("table")}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition ${
               viewMode === "table"
-                ? 'bg-primary text-white shadow'
+                ? 'btn-primary shadow'
                 : isDark
                   ? 'text-gray hover:text-white'
                   : 'text-gray hover:text-midnight_text'
@@ -192,7 +192,7 @@ const AdminTable = () => {
             onClick={() => setViewMode("card")}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition ${
               viewMode === "card"
-                ? 'bg-primary text-white shadow'
+                ? 'btn-primary shadow'
                 : isDark
                   ? 'text-gray hover:text-white'
                   : 'text-gray hover:text-midnight_text'
@@ -329,13 +329,13 @@ const AdminTable = () => {
                       <>
                         <button
                           onClick={() => handleEditClick(admin)}
-                          className="flex-1 flex items-center justify-center gap-1 bg-primary hover:bg-skyBlue text-white px-3 py-1.5 rounded-lg text-xs font-medium transition"
+                          className="flex-1 flex items-center justify-center gap-1 btn-border px-3 py-1.5 rounded-lg text-xs font-medium transition"
                         >
                           <FiEdit2 className="h-3.5 w-3.5" /> Edit
                         </button>
                         <button
                           onClick={() => handleDelete(admin._id)}
-                          className="flex-1 flex items-center justify-center gap-1 bg-rose-500 hover:bg-rose-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition"
+                          className="flex-1 flex items-center justify-center gap-1 btn-border-delete px-3 py-1.5 rounded-lg text-xs font-medium transition"
                         >
                           <FiTrash2 className="h-3.5 w-3.5" /> Delete
                         </button>

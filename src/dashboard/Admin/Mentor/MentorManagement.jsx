@@ -30,7 +30,7 @@ const MentorManagement = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => openModal(MODAL_TYPES.ADD_EDIT_MENTOR, { mode: "add" })}
-              className="w-full sm:w-auto flex items-center bg-emerald-600 hover:bg-emerald-700 justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-md hover:shadow-lg"
+              className="w-full sm:w-auto flex items-center btn-primary justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold shadow-md hover:shadow-lg"
             >
               <FiUserPlus className="w-4 h-4" /> Add Mentor Profile
             </motion.button>

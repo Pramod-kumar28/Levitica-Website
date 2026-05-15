@@ -433,8 +433,8 @@ const MentorModal = ({ onSuccess, mode = "add", mentor = {} }) => {
                       type="button"
                       onClick={onSuccess}
                       className={`inline-flex items-center gap-2 px-4 py-2.5 border rounded-lg text-xs font-semibold transition-colors ${isDark
-                          ? "border-slate-600 text-slate-300 hover:bg-slate-700"
-                          : "border-slate-300 text-slate-700 hover:bg-slate-50"
+                          ? "btn-gray"
+                          : "btn-gray"
                         }`}
                     >
                       Cancel
@@ -442,9 +442,9 @@ const MentorModal = ({ onSuccess, mode = "add", mentor = {} }) => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold text-white transition-all shadow-md hover:shadow-lg ${isSubmitting
-                          ? "bg-slate-600 cursor-not-allowed opacity-60"
-                          : "bg-emerald-600 hover:bg-emerald-700"
+                      className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold transition-all shadow-md hover:shadow-lg ${isSubmitting
+                          ? "btn-primary"
+                          : "btn-primary"
                         }`}
                     >
                       {isSubmitting ? (

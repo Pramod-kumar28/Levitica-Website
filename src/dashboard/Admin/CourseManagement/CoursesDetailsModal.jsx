@@ -40,10 +40,9 @@ import {
   FiX,
   FiSave,
   FiAlertCircle,
- 
 } from "react-icons/fi";
 import {
-  BsArrowsMove,  // Changed from BsArrowUpDown
+  BsArrowsMove,
   BsInfoCircle
 } from "react-icons/bs";
 import { RiFileList3Line } from "react-icons/ri";
@@ -106,7 +105,7 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+        className="fixed inset-0 z-999 flex items-center justify-center bg-midnight_text/60 backdrop-blur-sm p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -116,54 +115,50 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.96, opacity: 0, y: 20 }}
           transition={{ duration: 0.25, ease: 'easeOut' }}
-          className={`w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto transition-colors ${
+          className={`w-full max-w-4xl overflow-hidden rounded-lg shadow-property max-h-[90vh] overflow-y-auto transition-all duration-150 ${
             isDark
-              ? 'bg-slate-800 border border-slate-700'
-              : 'bg-white'
+              ? 'bg-semidark border border-dark_border'
+              : 'bg-white border border-border'
           }`}
         >
           <div className="p-6 space-y-8">
-            <div className={`border-b pb-4 sticky top-0 z-20 transition-colors ${
+            <div className={`border-b pb-4 sticky top-0 z-20 transition-colors duration-150 ${
               isDark
-                ? 'border-slate-700 bg-slate-800'
-                : 'border-slate-200 bg-white'
+                ? 'border-dark_border bg-semidark'
+                : 'border-border bg-white'
             }`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg transition-colors ${
+                  <div className={`p-2 rounded-lg transition-colors duration-150 ${
                     isDark
-                      ? 'bg-indigo-900/30'
-                      : 'bg-indigo-100'
+                      ? 'bg-primary/10'
+                      : 'bg-primary/5'
                   }`}>
-                    <RiFileList3Line className={`w-6 h-6 transition-colors ${
+                    <RiFileList3Line className={`w-6 h-6 transition-colors duration-150 ${
                       isDark
-                        ? 'text-indigo-400'
-                        : 'text-indigo-600'
+                        ? 'text-primary'
+                        : 'text-primary'
                     }`} />
                   </div>
                   <div>
-                    <h2 className={`text-2xl font-bold transition-colors ${
+                    <h2 className={`text-2xl font-bold transition-colors duration-150 ${
                       isDark
-                        ? 'text-slate-100'
-                        : 'text-gray-800'
+                        ? 'text-light'
+                        : 'text-midnight_text'
                     }`}>
                       {isEdit ? "Edit Course Details" : "Create New Course"}
                     </h2>
-                    <p className={`text-sm mt-1 transition-colors ${
-                      isDark
-                        ? 'text-slate-400'
-                        : 'text-gray-500'
-                    }`}>
+                    <p className={`text-sm mt-1 transition-colors duration-150 text-gray`}>
                       {isEdit ? "Update your course information" : "Fill in all required information for your course"}
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={onSuccess}
-                  className={`p-2 rounded-lg transition-colors ${
+                  className={`p-2 rounded-lg transition-all duration-150 ${
                     isDark
-                      ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-700'
-                      : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+                      ? 'text-gray hover:text-light hover:bg-darklight'
+                      : 'text-gray hover:text-midnight_text hover:bg-light'
                   }`}
                   aria-label="Close modal"
                 >
@@ -177,7 +172,6 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
               validationSchema={CourseDetailsSchema}
               enableReinitialize
               onSubmit={async (values, { setSubmitting }) => {
-                
                 try {
                   if (isEdit) {
                     await updateDetails({ courseId, body: values }).unwrap();
@@ -192,7 +186,7 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                 }
               }}
             >
-              {({ values, isValid, isSubmitting, errors, touched, setFieldValue }) => (
+              {({ values, isValid, isSubmitting, errors, setFieldValue }) => (
                 <>
                   <CurriculumAutosaveWatcher
                     curriculum={values.curriculum}
@@ -210,30 +204,26 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                       transition={{ delay: 0.1 }}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg transition-colors ${
+                        <div className={`p-2 rounded-lg transition-colors duration-150 ${
                           isDark
-                            ? 'bg-blue-900/30'
-                            : 'bg-blue-50'
+                            ? 'bg-primary/10'
+                            : 'bg-primary/5'
                         }`}>
-                          <FiBook className={`w-5 h-5 transition-colors ${
+                          <FiBook className={`w-5 h-5 transition-colors duration-150 ${
                             isDark
-                              ? 'text-blue-400'
-                              : 'text-blue-600'
+                              ? 'text-primary'
+                              : 'text-primary'
                           }`} />
                         </div>
                         <div>
-                          <label className={`label text-lg font-semibold transition-colors ${
+                          <label className={`text-lg font-semibold transition-colors duration-150 ${
                             isDark
-                              ? 'text-slate-200'
-                              : 'text-gray-800'
+                              ? 'text-light'
+                              : 'text-midnight_text'
                           }`}>
                             Course Description
                           </label>
-                          <p className={`text-sm transition-colors ${
-                            isDark
-                              ? 'text-slate-400'
-                              : 'text-gray-500'
-                          }`}>
+                          <p className={`text-sm transition-colors duration-150 text-gray`}>
                             What will students learn in this course?
                           </p>
                         </div>
@@ -244,27 +234,23 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                           name="description"
                           rows={4}
                           placeholder="Describe the course content, teaching methods, and what makes this course unique..."
-                          className={`min-h-[120px] resize-y rounded-lg border px-3 py-2 transition focus:outline-none focus:ring-2 ${
+                          className={`min-h-[120px] resize-y rounded-lg border px-3 py-2 transition-all duration-150 focus:outline-none focus:ring-2 ${
                             isDark
-                              ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-blue-400 focus:ring-blue-500/30'
-                              : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-blue-200'
+                              ? 'bg-semidark border-dark_border text-light placeholder-darkgray focus:border-primary focus:ring-primary/30'
+                              : 'bg-white border-border text-midnight_text placeholder-gray focus:border-primary focus:ring-primary/20'
                           }`}
                         />
-                        <div className={`flex items-center gap-2 text-sm transition-colors ${
-                          isDark
-                            ? 'text-slate-400'
-                            : 'text-gray-500'
-                        }`}>
+                        <div className={`flex items-center gap-2 text-sm transition-colors duration-150 text-gray`}>
                           <BsInfoCircle className="w-4 h-4" />
                           <span>Be specific about outcomes and benefits</span>
                         </div>
                         <ErrorMessage
                           name="description"
                           component="div"
-                          className={`text-sm mt-1 flex items-center gap-1 transition-colors ${
+                          className={`text-sm mt-1 flex items-center gap-1 transition-colors duration-150 ${
                             isDark
-                              ? 'text-rose-400'
-                              : 'text-red-500'
+                              ? 'text-rose-500'
+                              : 'text-rose-600'
                           }`}
                         >
                           {msg => (
@@ -285,30 +271,26 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                       transition={{ delay: 0.15 }}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg transition-colors ${
+                        <div className={`p-2 rounded-lg transition-colors duration-150 ${
                           isDark
-                            ? 'bg-green-900/30'
-                            : 'bg-green-50'
+                            ? 'bg-emerald-500/10'
+                            : 'bg-emerald-50'
                         }`}>
-                          <FiTarget className={`w-5 h-5 transition-colors ${
+                          <FiTarget className={`w-5 h-5 transition-colors duration-150 ${
                             isDark
-                              ? 'text-green-400'
-                              : 'text-green-600'
+                              ? 'text-emerald-400'
+                              : 'text-emerald-600'
                           }`} />
                         </div>
                         <div>
-                          <label className={`label text-lg font-semibold transition-colors ${
+                          <label className={`text-lg font-semibold transition-colors duration-150 ${
                             isDark
-                              ? 'text-slate-200'
-                              : 'text-gray-800'
+                              ? 'text-light'
+                              : 'text-midnight_text'
                           }`}>
                             Learning Objectives
                           </label>
-                          <p className={`text-sm transition-colors ${
-                            isDark
-                              ? 'text-slate-400'
-                              : 'text-gray-500'
-                          }`}>
+                          <p className={`text-sm transition-colors duration-150 text-gray`}>
                             What will students be able to do after completing this course?
                           </p>
                         </div>
@@ -325,7 +307,11 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.05 }}
                               >
-                                <div className="flex items-center justify-center w-6 h-6 rounded-full bg-green-100 text-green-600 text-sm font-medium mt-2 flex-shrink-0">
+                                <div className={`flex items-center justify-center w-6 h-6 rounded-full text-sm font-medium mt-2 flex-shrink-0 ${
+                                  isDark
+                                    ? 'bg-emerald-500/20 text-emerald-400'
+                                    : 'bg-emerald-100 text-emerald-600'
+                                }`}>
                                   {index + 1}
                                 </div>
                                 <div className="flex-1">
@@ -333,14 +319,21 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                                     <Field
                                       name={`objectives.${index}`}
                                       placeholder={`Objective ${index + 1} (e.g., "Build a full-stack web application")`}
-                                      className="input pr-10 focus:border-green-500 focus:ring-2 focus:ring-green-200"
+                                      className={`w-full rounded-lg border px-3 py-2 pr-10 transition-all duration-150 focus:outline-none focus:ring-2 ${
+                                        isDark
+                                          ? 'bg-semidark border-dark_border text-light placeholder-darkgray focus:border-emerald-400 focus:ring-emerald-400/30'
+                                          : 'bg-white border-border text-midnight_text placeholder-gray focus:border-emerald-500 focus:ring-emerald-500/20'
+                                      }`}
                                     />
                                     {values.objectives.length > 1 && (
                                       <button
                                         type="button"
                                         onClick={() => remove(index)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 
-                                           text-gray-400 hover:text-red-500 hover:bg-red-50 p-1 rounded"
+                                        className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded transition-all duration-150 ${
+                                          isDark
+                                            ? 'text-gray hover:text-rose-400 hover:bg-darklight'
+                                            : 'text-gray hover:text-rose-500 hover:bg-light'
+                                        }`}
                                         aria-label="Remove objective"
                                       >
                                         <FiTrash2 className="w-4 h-4" />
@@ -350,7 +343,9 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                                   <ErrorMessage
                                     name={`objectives.${index}`}
                                     component="div"
-                                    className="text-sm text-red-500 mt-1 flex items-center gap-1"
+                                    className={`text-sm mt-1 flex items-center gap-1 transition-colors duration-150 ${
+                                      isDark ? 'text-rose-500' : 'text-rose-600'
+                                    }`}
                                   >
                                     {msg => (
                                       <>
@@ -365,9 +360,11 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                             <button
                               type="button"
                               onClick={() => push("")}
-                              className="inline-flex items-center gap-2 text-indigo-600 
-                                 hover:text-indigo-700 font-medium text-sm mt-2
-                                 p-2 hover:bg-indigo-50 rounded-lg transition-colors"
+                              className={`inline-flex items-center gap-2 font-medium text-sm mt-2 p-2 rounded-lg transition-all duration-150 ${
+                                isDark
+                                  ? 'text-cyan hover:text-cyan hover:bg-primary/10'
+                                  : 'text-primary hover:text-secondary hover:bg-primary/5'
+                              }`}
                             >
                               <FiPlus className="w-4 h-4" />
                               Add Another Objective
@@ -385,14 +382,26 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                       transition={{ delay: 0.2 }}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-purple-50 rounded-lg">
-                          <FiCheckCircle className="w-5 h-5 text-purple-600" />
+                        <div className={`p-2 rounded-lg transition-colors duration-150 ${
+                          isDark
+                            ? 'bg-purple-500/10'
+                            : 'bg-purple-50'
+                        }`}>
+                          <FiCheckCircle className={`w-5 h-5 transition-colors duration-150 ${
+                            isDark
+                              ? 'text-purple-400'
+                              : 'text-purple-600'
+                          }`} />
                         </div>
                         <div>
-                          <label className="label text-lg font-semibold text-gray-800">
+                          <label className={`text-lg font-semibold transition-colors duration-150 ${
+                            isDark
+                              ? 'text-light'
+                              : 'text-midnight_text'
+                          }`}>
                             Requirements
                           </label>
-                          <p className="text-sm text-gray-500">
+                          <p className={`text-sm transition-colors duration-150 text-gray`}>
                             What should students know or have before taking this course?
                           </p>
                         </div>
@@ -409,24 +418,35 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: index * 0.05 }}
                               >
-                                <div className="flex items-center justify-center w-5 h-5 
-                                       rounded bg-purple-100 text-purple-600 mt-2 
-                                       flex-shrink-0">
-                                  <div className="w-2 h-2 rounded-full bg-purple-600" />
+                                <div className={`flex items-center justify-center w-5 h-5 rounded mt-2 flex-shrink-0 ${
+                                  isDark
+                                    ? 'bg-purple-500/20'
+                                    : 'bg-purple-100'
+                                }`}>
+                                  <div className={`w-2 h-2 rounded-full ${
+                                    isDark ? 'bg-purple-400' : 'bg-purple-600'
+                                  }`} />
                                 </div>
                                 <div className="flex-1">
                                   <div className="relative">
                                     <Field
                                       name={`requirements.${index}`}
                                       placeholder={`Requirement ${index + 1} (e.g., "Basic knowledge of JavaScript")`}
-                                      className="input pr-10 focus:border-purple-500 focus:ring-2 focus:ring-purple-200"
+                                      className={`w-full rounded-lg border px-3 py-2 pr-10 transition-all duration-150 focus:outline-none focus:ring-2 ${
+                                        isDark
+                                          ? 'bg-semidark border-dark_border text-light placeholder-darkgray focus:border-purple-400 focus:ring-purple-400/30'
+                                          : 'bg-white border-border text-midnight_text placeholder-gray focus:border-purple-500 focus:ring-purple-500/20'
+                                      }`}
                                     />
                                     {values.requirements.length > 1 && (
                                       <button
                                         type="button"
                                         onClick={() => remove(index)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 
-                                           text-gray-400 hover:text-red-500 hover:bg-red-50 p-1 rounded"
+                                        className={`absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded transition-all duration-150 ${
+                                          isDark
+                                            ? 'text-gray hover:text-rose-400 hover:bg-darklight'
+                                            : 'text-gray hover:text-rose-500 hover:bg-light'
+                                        }`}
                                         aria-label="Remove requirement"
                                       >
                                         <FiTrash2 className="w-4 h-4" />
@@ -439,9 +459,11 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                             <button
                               type="button"
                               onClick={() => push("")}
-                              className="inline-flex items-center gap-2 text-indigo-600 
-                                 hover:text-indigo-700 font-medium text-sm mt-2
-                                 p-2 hover:bg-indigo-50 rounded-lg transition-colors"
+                              className={`inline-flex items-center gap-2 font-medium text-sm mt-2 p-2 rounded-lg transition-all duration-150 ${
+                                isDark
+                                  ? 'text-cyan hover:text-cyan hover:bg-primary/10'
+                                  : 'text-primary hover:text-secondary hover:bg-primary/5'
+                              }`}
                             >
                               <FiPlus className="w-4 h-4" />
                               Add Another Requirement
@@ -460,27 +482,49 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-orange-50 rounded-lg">
-                            <FiMenu className="w-5 h-5 text-orange-600" />
+                          <div className={`p-2 rounded-lg transition-colors duration-150 ${
+                            isDark
+                              ? 'bg-amber-500/10'
+                              : 'bg-amber-50'
+                          }`}>
+                            <FiMenu className={`w-5 h-5 transition-colors duration-150 ${
+                              isDark
+                                ? 'text-amber-400'
+                                : 'text-amber-600'
+                            }`} />
                           </div>
                           <div>
-                            <label className="label text-lg font-semibold text-gray-800">
+                            <label className={`text-lg font-semibold transition-colors duration-150 ${
+                              isDark
+                                ? 'text-light'
+                                : 'text-midnight_text'
+                            }`}>
                               Course Curriculum
                             </label>
-                            <p className="text-sm text-gray-500">
+                            <p className={`text-sm transition-colors duration-150 ${
+                              isDark
+                                ? 'text-gray'
+                                : 'text-gray'
+                            }`}>
                               Organize your course content into weeks and sessions
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2 text-sm font-medium text-gray-600">
+                        <div className={`flex items-center gap-2 text-sm font-medium ${
+                          isDark ? 'text-gray' : 'text-gray'
+                        }`}>
                           <TbArrowsSort className="w-4 h-4" />
                           <span>{values.curriculum.length} week{values.curriculum.length !== 1 ? 's' : ''}</span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-                        <BsArrowsMove className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm text-gray-600">
+                      <div className={`flex items-center gap-2 p-3 rounded-lg transition-colors duration-150 ${
+                        isDark
+                          ? 'bg-darklight text-darkgray'
+                          : 'bg-light text-gray'
+                      }`}>
+                        <BsArrowsMove className="w-4 h-4" />
+                        <span className="text-sm font-medium">
                           Drag weeks to reorder. Click and hold the grip icon to drag.
                         </span>
                       </div>
@@ -518,18 +562,24 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                                         sessions: [{ id: uuid(), title: "" }],
                                       })
                                     }
-                                    className="w-full flex items-center justify-center 
-                                       gap-3 p-6 border-2 border-dashed 
-                                       border-gray-300 rounded-xl hover:border-indigo-400 
-                                       hover:bg-indigo-50 text-gray-600 hover:text-indigo-700 
-                                       transition-all group"
+                                    className={`w-full flex items-center justify-center gap-3 p-6 border-2 border-dashed rounded-lg transition-all duration-150 ${
+                                      isDark
+                                        ? 'border-dark_border text-darkgray hover:border-primary hover:bg-primary/10 hover:text-primary'
+                                        : 'border-border text-gray hover:border-primary hover:bg-primary/5 hover:text-primary'
+                                    }`}
                                     whileHover={{ scale: 1.01 }}
                                     whileTap={{ scale: 0.99 }}
                                   >
-                                    <div className="p-2 bg-indigo-100 group-hover:bg-indigo-200 rounded-lg transition-colors">
-                                      <FiPlus className="w-5 h-5 text-indigo-600" />
+                                    <div className={`p-2 rounded-lg transition-colors duration-150 ${
+                                      isDark
+                                        ? 'bg-primary/10 group-hover:bg-primary/20'
+                                        : 'bg-primary/5 group-hover:bg-primary/10'
+                                    }`}>
+                                      <FiPlus className={`w-5 h-5 ${
+                                        isDark ? 'text-cyan' : 'text-primary'
+                                      }`} />
                                     </div>
-                                    <span className="font-medium">Add New Week</span>
+                                    <span className={`font-medium ${isDark ? 'text-cyan' : 'text-midnight_text'}`}>Add New Week</span>
                                   </motion.button>
                                 </>
                               )}
@@ -543,18 +593,28 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                     <AnimatePresence>
                       {Object.keys(errors).length > 0 && (
                         <motion.div 
-                          className="p-4 bg-red-50 border border-red-200 rounded-lg"
+                          className={`p-4 rounded-lg border transition-colors duration-150 ${
+                            isDark
+                              ? 'bg-rose-500/10 border-rose-500/30'
+                              : 'bg-rose-50 border-rose-200'
+                          }`}
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
                         >
                           <div className="flex items-start gap-3">
-                            <FiAlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                            <FiAlertCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                              isDark ? 'text-rose-400' : 'text-rose-500'
+                            }`} />
                             <div>
-                              <p className="text-sm font-medium text-red-800">
+                              <p className={`text-sm font-medium ${
+                                isDark ? 'text-rose-400' : 'text-rose-800'
+                              }`}>
                                 Please complete all required fields
                               </p>
-                              <p className="text-sm text-red-600 mt-1">
+                              <p className={`text-sm mt-1 ${
+                                isDark ? 'text-rose-500' : 'text-rose-600'
+                              }`}>
                                 Check highlighted fields above for errors
                               </p>
                             </div>
@@ -573,9 +633,7 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                       <motion.button
                         type="button"
                         onClick={onSuccess}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-lg 
-                           text-gray-700 hover:bg-gray-50 font-medium 
-                           transition-colors"
+                        className="btn-gray"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -585,11 +643,7 @@ const CourseDetailsModal = ({ courseId, initialData, onSuccess }) => {
                       <motion.button
                         type="submit"
                         disabled={!isValid || isSubmitting}
-                        className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all 
-                           ${!isValid || isSubmitting
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "bg-indigo-600 hover:bg-indigo-700 text-white"
-                          }`}
+                        className={`btn ${!isValid || isSubmitting ? 'opacity-50 cursor-not-allowed' : ''} btn-primary`}
                         whileHover={{ scale: !isValid || isSubmitting ? 1 : 1.02 }}
                         whileTap={{ scale: !isValid || isSubmitting ? 1 : 0.98 }}
                       >

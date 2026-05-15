@@ -112,8 +112,8 @@ const BatchManagement = () => {
               onClick={() => openModal(MODAL_TYPES.CREATE_BATCH)}
               className={`flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition-all shadow-md hover:shadow-lg ${
                 isDark
-                  ? 'bg-primary hover:bg-skyBlue text-white'
-                  : 'bg-primary hover:bg-skyBlue text-white'
+                  ? 'btn-primary'
+                  : 'btn-primary'
               }`}
             >
               <FiPlus className="w-4 h-4" /> Create Batch
@@ -141,7 +141,7 @@ const BatchManagement = () => {
                 }}
                 className={`px-3 sm:px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   status === tab.key
-                    ? 'bg-primary text-white shadow-md'
+                    ? 'btn-primary shadow-md'
                     : isDark
                       ? 'bg-darklight text-gray hover:text-white'
                       : 'bg-light text-gray hover:text-midnight_text'
@@ -181,7 +181,7 @@ const BatchManagement = () => {
                 onClick={() => setView(key)}
                 className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md text-sm font-medium transition-all ${
                   view === key
-                    ? 'bg-primary text-white shadow'
+                    ? 'btn-primary shadow'
                     : isDark
                       ? 'text-gray hover:text-white'
                       : 'text-gray hover:text-midnight_text'
@@ -311,7 +311,7 @@ const BatchCards = ({ batches, isDark, onEdit, onDelete, onViewStudents }) => (
         {/* FOOTER */}
         <div className={`flex items-center justify-between pt-3`}>
           <div className="flex gap-2">
-            <ActionBtn isDark={isDark} icon={FiUsers} color="primary" onClick={() => onViewStudents(batch._id)} />
+            <ActionBtn isDark={isDark} icon={FiUsers} color="emerald" onClick={() => onViewStudents(batch._id)} />
             <ActionBtn isDark={isDark} icon={FiEdit} color="primary" onClick={() => onEdit(batch)} />
             <ActionBtn isDark={isDark} icon={FiTrash2} color="danger" onClick={() => onDelete(batch._id, batch.batchName)} />
           </div>
@@ -528,12 +528,17 @@ const ActionBtn = ({ icon: Icon, onClick, color, isDark }) => {
   const getColorClasses = () => {
     if (color === "danger") {
       return isDark
-        ? 'text-rose-400 hover:bg-rose-500/20'
-        : 'text-rose-600 hover:bg-rose-500/10';
+        ? 'btn-delete-dark'
+        : 'btn-delete';
+    }
+    if (color === "emerald") {
+      return isDark
+        ? 'btn-view-dark'
+        : 'btn-view';
     }
     return isDark
-      ? 'text-primary hover:bg-primary/20'
-      : 'text-primary hover:bg-primary/10';
+      ? 'btn-edit-dark'
+      : 'btn-edit';
   };
 
   return (

@@ -114,7 +114,7 @@ const EnrolledCourseCard = ({ course, index }) => {
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
             to={`${course._id}`}
-            className="w-full flex items-center justify-center gap-2 text-sm font-semibold py-2.5 rounded-lg transition shadow-property hover:shadow-deatail_shadow bg-primary hover:bg-skyBlue text-white"
+            className="w-full flex items-center justify-center gap-2 text-sm font-semibold py-2.5 rounded-lg transition shadow-property hover:shadow-deatail_shadow btn-primary"
           >
             Go to Course
             <ArrowRight size={16} />

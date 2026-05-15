@@ -52,7 +52,7 @@ const HeroSection = () => {
           <div data-aos="fade-up" data-aos-delay="300" className="mt-8">
             <Link
               to="/contact-us"
-              className="inline-flex items-center bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition shadow-property"
+              className="inline-flex items-center btn btn-primary px-8 py-3 rounded-lg font-semibold transition shadow-property"
             >
               Get Start Now
             </Link>

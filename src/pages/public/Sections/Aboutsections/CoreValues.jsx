@@ -336,7 +336,7 @@ const CoreValues = () => {
                   onClick={() => setActiveIndustry(idx)}
                   className={`px-4 py-1.5 rounded-full transition-all text-sm ${
                     activeIndustry === idx
-                      ? "bg-blue-600 text-white shadow-md"
+                      ? "btn btn-primary shadow-md"
                       : "bg-white text-gray-600 hover:bg-gray-100"
                   }`}
                 >

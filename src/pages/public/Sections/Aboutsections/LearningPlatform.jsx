@@ -152,8 +152,7 @@ const LearningPlatform = () => {
             data-aos="fade-up"
             className="
               inline-flex items-center px-8 py-3 rounded-lg font-semibold
-              bg-primary text-white
-              hover:bg-skyBlue transition
+              btn btn-primary
               shadow-property hover:shadow-deatail_shadow
             "
           >

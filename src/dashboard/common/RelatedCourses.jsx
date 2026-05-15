@@ -186,8 +186,7 @@ const RelatedCourses = ({ currentCourseId }) => {
                   px-3 py-1.5 rounded-lg
                   text-xs font-medium
                   transition-all duration-200
-                  bg-primary/10 text-primary
-                  hover:bg-primary hover:text-white
+                  btn-border
                   group-hover:shadow-md
                 "
               >

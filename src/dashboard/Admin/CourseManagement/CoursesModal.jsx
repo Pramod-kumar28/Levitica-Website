@@ -190,11 +190,7 @@ const CourseModal = ({ onSuccess, mode = 'add', course = {} }) => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`mt-4 flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-md ${
-                      isDark
-                        ? 'bg-primary text-light hover:bg-secondary'
-                        : 'bg-primary text-light hover:bg-secondary'
-                    }`}
+                    className={`mt-4 flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50 shadow-sm hover:shadow-md btn-primary`}
                   >
                     <FiSave className="text-lg" />
                     {isSubmitting

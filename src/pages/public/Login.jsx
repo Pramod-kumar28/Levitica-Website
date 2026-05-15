@@ -44,7 +44,6 @@ const LoginPage = () => {
 
         </div>
       </div>
-
     </section>
   );
 };

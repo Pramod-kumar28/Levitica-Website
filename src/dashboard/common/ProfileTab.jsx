@@ -202,8 +202,8 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
                   onClick={triggerFileInput}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                     isDark
-                      ? 'bg-primary/20 text-primary hover:bg-primary/30'
-                      : 'bg-primary/10 text-primary hover:bg-primary/20'
+                      ? 'btn-border'
+                      : 'btn-border'
                   }`}
                 >
                   <FiCamera className="h-3.5 w-3.5" />
@@ -217,8 +217,8 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
                     disabled={isSavingImage}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                       isDark
-                        ? 'bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30'
-                        : 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20'
+                        ? 'btn-border-save'
+                        : 'btn-border-save'
                     } disabled:opacity-50`}
                   >
                     <FiSave className="h-3.5 w-3.5" />
@@ -233,8 +233,8 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
                     disabled={isDeletingImage}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition ${
                       isDark
-                        ? 'bg-rose-500/20 text-rose-400 hover:bg-rose-500/30'
-                        : 'bg-rose-500/10 text-rose-600 hover:bg-rose-500/20'
+                        ? 'btn-border-delete'
+                        : 'btn-border-delete'
                     } disabled:opacity-50`}
                   >
                     <FiTrash2 className="h-3.5 w-3.5" />
@@ -302,8 +302,8 @@ const ProfileTab = ({ user, isDark: isDarkProp }) => {
               disabled={isSavingInfo}
               className={`inline-flex items-center gap-2 px-6 py-2.5 rounded-xl disabled:opacity-50 text-white font-medium transition shadow-md hover:shadow-lg ${
                 isDark
-                  ? 'bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary'
-                  : 'bg-gradient-to-r from-primary to-skyBlue hover:from-skyBlue hover:to-primary'
+                  ? 'btn-primary'
+                  : 'btn-primary'
               }`}
             >
               <FiSave className="h-4 w-4" />

@@ -114,7 +114,7 @@ const PaymentOverview = () => {
             }}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-md hover:shadow-lg ${
               activeTab === "course"
-                ? "bg-gradient-to-r from-primary to-skyBlue text-white"
+                ? "btn-primary"
                 : isDark
                 ? "bg-darklight text-gray hover:text-white"
                 : "bg-light text-gray hover:text-midnight_text"
@@ -133,7 +133,7 @@ const PaymentOverview = () => {
             }}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-md hover:shadow-lg ${
               activeTab === "internship"
-                ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+                ? "btn-primary"
                 : isDark
                 ? "bg-darklight text-gray hover:text-white"
                 : "bg-light text-gray hover:text-midnight_text"

@@ -91,7 +91,7 @@ const ContactUsForm = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn secondary-solid-btn w-full"
+            className="btn btn-primary w-full"
           >
             {isSubmitting ? "Sending..." : "Send Message"}
           </button>
