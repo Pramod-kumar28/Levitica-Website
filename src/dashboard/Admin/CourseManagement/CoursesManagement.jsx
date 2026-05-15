@@ -27,15 +27,14 @@ const CoursesManagement = () => {
   return (
     <div className={`min-h-screen py-6 px-4`}>
       <div className="max-w-7xl mx-auto space-y-6">
-        
+
         {/* ===== Page Header ===== */}
         <div className={`px-2`}>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${
-                  isDark ? 'text-white' : 'text-midnight_text'
-                }`}>
+                <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${isDark ? 'text-white' : 'text-midnight_text'
+                  }`}>
                   Course Management
                 </h1>
               </div>
@@ -55,38 +54,46 @@ const CoursesManagement = () => {
               Add Course
             </motion.button>
           </div>
+
+          {/* 💡 Google Play Note */}
+          <div className={`mt-6 p-4 rounded-xl border ${isDark
+              ? 'bg-blue-500/10 border-blue-500/20 text-blue-400'
+              : 'bg-blue-50 border-blue-100 text-blue-700'
+            }`}>
+            <p className="text-xs sm:text-sm font-medium flex items-center gap-2">
+              <span className="flex-shrink-0 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <strong>Note:</strong> Use the <b>Google Product ID</b> generated for each course in your Google Play Console to enable mobile in-app purchases.
+            </p>
+          </div>
         </div>
 
         {/* ===== View Toggle & Stats ===== */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className={`rounded-xl px-4 py-3 border ${
-            isDark
+          <div className={`rounded-xl px-4 py-3 border ${isDark
               ? 'bg-darklight border-dark_border'
               : 'bg-light border-border'
-          }`}>
+            }`}>
             <p className={`text-sm text-gray`}>
               <span className={`font-bold text-primary`}>{courses.length}</span>
               <span> total courses</span>
             </p>
           </div>
 
-          <div className={`inline-flex rounded-lg border p-1 ${
-            isDark
+          <div className={`inline-flex rounded-lg border p-1 ${isDark
               ? 'bg-darklight border-dark_border'
               : 'bg-light border-border'
-          }`}>
+            }`}>
             <motion.button
               whileHover={{ scale: 1.02 }}
               onClick={() => setView("cards")}
-              className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
-                view === "cards" 
+              className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${view === "cards"
                   ? isDark
                     ? 'btn-primary shadow'
                     : 'btn-primary shadow'
                   : isDark
                     ? 'text-gray hover:text-white'
                     : 'text-gray hover:text-midnight_text'
-              }`}
+                }`}
             >
               <FiGrid className="w-4 h-4" />
               <span className="hidden sm:inline">Cards</span>
@@ -94,15 +101,14 @@ const CoursesManagement = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               onClick={() => setView("table")}
-              className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${
-                view === "table" 
+              className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-md text-xs sm:text-sm font-medium transition-all ${view === "table"
                   ? isDark
                     ? 'btn-primary shadow'
                     : 'btn-primary shadow'
                   : isDark
                     ? 'text-gray hover:text-white'
                     : 'text-gray hover:text-midnight_text'
-              }`}
+                }`}
             >
               <FiList className="w-4 h-4" />
               <span className="hidden sm:inline">Table</span>
@@ -170,11 +176,10 @@ const CoursesCardView = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: idx * 0.05 }}
-          className={`rounded-xl border shadow-property hover:shadow-deatail_shadow transition-all overflow-hidden ${
-            isDark
+          className={`rounded-xl border shadow-property hover:shadow-deatail_shadow transition-all overflow-hidden ${isDark
               ? 'bg-semidark border-dark_border'
               : 'bg-white border-border'
-          }`}
+            }`}
         >
           {/* Thumbnail */}
           <div className="relative h-44 bg-gradient-to-br from-primary/20 to-skyBlue/20">
@@ -190,11 +195,10 @@ const CoursesCardView = ({
               </div>
             )}
             {/* Price Badge */}
-            <div className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-bold shadow-md ${
-              course.price === 0
+            <div className={`absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-bold shadow-md ${course.price === 0
                 ? 'bg-emerald-500 text-white'
                 : 'bg-primary text-white'
-            }`}>
+              }`}>
               {course.price === 0 ? "FREE" : `₹${course.price}`}
             </div>
           </div>
@@ -203,9 +207,8 @@ const CoursesCardView = ({
           <div className="p-5">
             <div className="flex justify-between items-start gap-2 mb-2">
               <div className="flex-1">
-                <h3 className={`font-semibold text-lg line-clamp-1 ${
-                  isDark ? 'text-white' : 'text-midnight_text'
-                }`}>
+                <h3 className={`font-semibold text-lg line-clamp-1 ${isDark ? 'text-white' : 'text-midnight_text'
+                  }`}>
                   {course.name}
                 </h3>
                 <p className={`text-sm text-gray mt-0.5`}>
@@ -218,21 +221,25 @@ const CoursesCardView = ({
               {course.shortdescription || "No short description added yet"}
             </p>
 
-            <div className="flex justify-between items-center mt-4 pt-3 ">
-              <span className={`text-xs text-gray`}>
-                {course.duration}
-              </span>
+            <div className="flex justify-between items-center mt-4 pt-3 border-t border-dashed border-gray/20">
+              <div className="flex flex-col gap-1">
+                <span className={`text-[10px] uppercase font-bold text-gray/60 tracking-wider`}>
+                  Product ID
+                </span>
+                <span className={`text-[11px] font-mono ${isDark ? 'text-primary' : 'text-primary_dark'}`}>
+                  {course.googleProductId || "N/A"}
+                </span>
+              </div>
 
               {/* Actions */}
               <div className="flex gap-2">
                 <button
                   title="Edit Course"
                   onClick={() => onEdit(course)}
-                  className={`p-1.5 rounded-lg transition ${
-                    isDark
+                  className={`p-1.5 rounded-lg transition ${isDark
                       ? 'btn-edit-dark'
                       : 'btn-edit'
-                  }`}
+                    }`}
                 >
                   <FiEdit className="w-4 h-4" />
                 </button>
@@ -241,11 +248,10 @@ const CoursesCardView = ({
                   <button
                     title="View Details"
                     onClick={() => navigate(`/dashboard/course/${course._id}`)}
-                    className={`p-1.5 rounded-lg transition ${
-                      isDark
+                    className={`p-1.5 rounded-lg transition ${isDark
                         ? 'btn-view-dark'
                         : 'btn-view'
-                    }`}
+                      }`}
                   >
                     <FiEye className="w-4 h-4" />
                   </button>
@@ -257,11 +263,10 @@ const CoursesCardView = ({
                         courseId: course._id,
                       })
                     }
-                    className={`p-1.5 rounded-lg transition ${
-                      isDark
+                    className={`p-1.5 rounded-lg transition ${isDark
                         ? 'btn-view-dark'
                         : 'btn-view'
-                    }`}
+                      }`}
                   >
                     <FiPlus className="w-4 h-4" />
                   </button>
@@ -270,11 +275,10 @@ const CoursesCardView = ({
                 <button
                   title="Delete Course"
                   onClick={() => onDelete(course._id)}
-                  className={`p-1.5 rounded-lg transition ${
-                    isDark
+                  className={`p-1.5 rounded-lg transition ${isDark
                       ? 'btn-delete-dark'
                       : 'btn-delete'
-                  }`}
+                    }`}
                 >
                   <FiTrash2 className="w-4 h-4" />
                 </button>
@@ -297,41 +301,36 @@ const CoursesTableView = ({
   const { openModal } = useModal();
 
   return (
-    <div className={`rounded-xl border shadow-property overflow-hidden ${
-      isDark
+    <div className={`rounded-xl border shadow-property overflow-hidden ${isDark
         ? 'bg-semidark border-dark_border'
         : 'bg-white border-border'
-    }`}>
+      }`}>
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className={`border-b ${
-            isDark ? 'border-dark_border' : 'border-border'
-          }`}>
-            <tr className={`text-left text-sm ${
-              isDark ? 'bg-darklight' : 'bg-light'
+          <thead className={`border-b ${isDark ? 'border-dark_border' : 'border-border'
             }`}>
+            <tr className={`text-left text-sm ${isDark ? 'bg-darklight' : 'bg-light'
+              }`}>
               <th className={`px-5 py-4 font-semibold text-gray`}>Course</th>
               <th className={`px-5 py-4 font-semibold text-gray`}>Category</th>
-              <th className={`px-5 py-4 font-semibold text-gray`}>Duration</th>
+              <th className={`px-5 py-4 font-semibold text-gray`}>Product ID</th>
               <th className={`px-5 py-4 font-semibold text-gray`}>Price</th>
               <th className={`px-5 py-4 text-right font-semibold text-gray`}>Actions</th>
             </tr>
           </thead>
 
-          <tbody className={`divide-y ${
-            isDark ? 'divide-dark_border' : 'divide-border'
-          }`}>
+          <tbody className={`divide-y ${isDark ? 'divide-dark_border' : 'divide-border'
+            }`}>
             {courses.map((course, idx) => (
-              <motion.tr 
+              <motion.tr
                 key={course._id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: idx * 0.03 }}
-                className={`transition-colors ${
-                  isDark
+                className={`transition-colors ${isDark
                     ? 'hover:bg-darklight'
                     : 'hover:bg-light'
-                }`}
+                  }`}
               >
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-3">
@@ -349,9 +348,8 @@ const CoursesTableView = ({
                       )}
                     </div>
                     <div>
-                      <div className={`font-medium ${
-                        isDark ? 'text-white' : 'text-midnight_text'
-                      }`}>
+                      <div className={`font-medium ${isDark ? 'text-white' : 'text-midnight_text'
+                        }`}>
                         {course.name}
                       </div>
                       <div className={`text-xs text-gray line-clamp-1 max-w-xs`}>
@@ -361,16 +359,18 @@ const CoursesTableView = ({
                   </div>
                 </td>
                 <td className={`px-5 py-4 text-gray`}>{course.category}</td>
-                <td className={`px-5 py-4 text-gray`}>{course.duration}</td>
                 <td className={`px-5 py-4`}>
-                  <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold ${
-                    course.price === 0
-                      ? `${
-                          isDark
-                            ? 'btn-view-dark'
-                            : 'btn-view'}`
+                  <code className={`text-xs px-2 py-1 rounded bg-gray/10 font-mono ${isDark ? 'text-primary' : 'text-primary_dark'}`}>
+                    {course.googleProductId || "N/A"}
+                  </code>
+                </td>
+                <td className={`px-5 py-4`}>
+                  <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold ${course.price === 0
+                      ? `${isDark
+                        ? 'btn-view-dark'
+                        : 'btn-view'}`
                       : 'btn-border'
-                  }`}>
+                    }`}>
                     ₹{course.price}
                   </span>
                 </td>
@@ -379,11 +379,10 @@ const CoursesTableView = ({
                     <button
                       title="Edit Course"
                       onClick={() => onEdit(course)}
-                      className={`p-1.5 rounded-lg transition ${
-                        isDark
+                      className={`p-1.5 rounded-lg transition ${isDark
                           ? 'btn-edit-dark'
                           : 'btn-edit'
-                      }`}
+                        }`}
                     >
                       <FiEdit className="w-4 h-4" />
                     </button>
@@ -392,11 +391,10 @@ const CoursesTableView = ({
                       <button
                         title="View Details"
                         onClick={() => navigate(`/dashboard/course/${course._id}`)}
-                        className={`p-1.5 rounded-lg transition ${
-                          isDark
+                        className={`p-1.5 rounded-lg transition ${isDark
                             ? 'btn-view-dark'
                             : 'btn-view'
-                        }`}
+                          }`}
                       >
                         <FiEye className="w-4 h-4" />
                       </button>
@@ -408,11 +406,10 @@ const CoursesTableView = ({
                             courseId: course._id,
                           })
                         }
-                        className={`p-1.5 rounded-lg transition ${
-                          isDark
+                        className={`p-1.5 rounded-lg transition ${isDark
                             ? 'btn-view-dark'
                             : 'btn-view'
-                        }`}
+                          }`}
                       >
                         <FiPlus className="w-4 h-4" />
                       </button>
@@ -421,11 +418,10 @@ const CoursesTableView = ({
                     <button
                       title="Delete Course"
                       onClick={() => onDelete(course._id)}
-                      className={`p-1.5 rounded-lg transition ${
-                        isDark
+                      className={`p-1.5 rounded-lg transition ${isDark
                           ? 'btn-delete-dark'
                           : 'btn-delete'
-                      }`}
+                        }`}
                     >
                       <FiTrash2 className="w-4 h-4" />
                     </button>

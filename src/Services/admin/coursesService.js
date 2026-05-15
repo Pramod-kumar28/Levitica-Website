@@ -21,11 +21,17 @@ export const adminCourseApi = api.injectEndpoints({
         body: updatedData,
       }),
 
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Course", id },
+        { type: "Course", id: "LIST" },
+      ],
+
       async onQueryStarted({ id, ...updatedData }, { dispatch, queryFulfilled }) {
 
         const patchResult = dispatch(
           api.util.updateQueryData("getCourses", undefined, (draft) => {
             const course = draft.find(c => c._id === id);
+
             if (course) {
               Object.assign(course, updatedData);
             }
