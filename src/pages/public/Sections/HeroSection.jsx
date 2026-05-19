@@ -37,7 +37,7 @@ const HeroSection = () => {
             data-aos-delay="100"
             className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-midnight_text dark:text-white"
           >
-            Expert Training. Reliable Manpower. Proven Consulting
+            Scalable IT infrastructure & digital systems
           </h1>
 
           <p
@@ -45,8 +45,8 @@ const HeroSection = () => {
             data-aos-delay="200"
             className="mt-6 text-lg text-gray max-w-2xl"
           >
-            Holistically procrastinate mission-critical convergence with reliable
-            customer service. Assertively underwhelm idea-sharing for impactful solutions.
+            We architect, develop, and scale secure enterprise solutions from
+            modern web apps to cloud-native systems and AI-powered platforms.
           </p>
 
           <div data-aos="fade-up" data-aos-delay="300" className="mt-8">

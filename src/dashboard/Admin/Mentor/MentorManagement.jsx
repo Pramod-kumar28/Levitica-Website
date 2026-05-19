@@ -14,10 +14,10 @@ const MentorManagement = () => {
       <div className="max-w-7xl mx-auto space-y-6">
 
         {/* Premium Header */}
-        <div className={`p-4`}>
-          <div className="flex items-center justify-between gap-3 sm:gap-4">
+        <div className={`p-2`}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div className="min-w-0">
-              <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold line-clamp-2 ${isDark ? 'text-white' : 'text-midnight_text'
+              <h1 className={`text-2xl sm:text-3xl md:text-3xl font-bold line-clamp-2 ${isDark ? 'text-white' : 'text-midnight_text'
                 }`}>
                 Mentor Management
               </h1>

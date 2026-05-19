@@ -149,7 +149,7 @@ const LiveClasses = () => {
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-2">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-midnight_text dark:text-white mb-1">
+            <h1 className="text-3xl sm:text-3xl font-bold text-midnight_text dark:text-white mb-1">
               Live Classes
             </h1>
             <p className={`text-sm sm:text-base flex items-center gap-2 text-gray`}>

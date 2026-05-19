@@ -91,7 +91,8 @@ const ProductsSection = () => {
       category: ["education"],
       deployment: "Cloud",
       image:
-        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8b25saW5lJTIwZWR1Y2F0aW9ufGVufDB8fDB8fHww"
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8b25saW5lJTIwZWR1Y2F0aW9ufGVufDB8fDB8fHww",
+      link: "https://dvskillhub.leviticatechnologies.com/"
     },
     {
       id: 5,
@@ -135,11 +136,10 @@ const ProductsSection = () => {
     } else if (itemCount === 1) {
       return "grid grid-cols-1 max-w-md mx-auto";
     } else if (itemCount === 2) {
-      return "grid sm:grid-cols-2 max-w-4xl mx-auto";
+      return "grid sm:grid-cols-2 max-w-4xl gap-8 mx-auto";
     } else if (itemCount === 4) {
       return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
     } else {
-      // For 3 or 5 items, use flexbox with proper centering
       return "flex flex-wrap justify-center gap-8";
     }
   };
@@ -204,7 +204,7 @@ const ProductsSection = () => {
 
           <div className="mt-5 flex justify-between items-center">
             <Link
-              to={`/products/${product.title.toLowerCase().replace(/\s+/g, "-")}`}
+              to={`${product.link}`}
               className="text-primary text-sm font-medium hover:underline"
             >
               View Details →

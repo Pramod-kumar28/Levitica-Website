@@ -94,7 +94,7 @@ const BatchManagement = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className={`text-2xl sm:text-3xl md:text-4xl font-bold ${
+                <h1 className={`text-2xl sm:text-3xl md:text-3xl font-bold ${
                   isDark ? 'text-white' : 'text-midnight_text'
                 }`}>
                   Batch Management
@@ -415,7 +415,7 @@ const BatchTable = ({
         const batch = row.original;
         return (
           <div className="flex gap-2">
-            <ActionBtn isDark={isDark} icon={FiUsers} color="primary" onClick={() => onViewStudents(batch._id)} />
+            <ActionBtn isDark={isDark} icon={FiUsers} color="emerald" onClick={() => onViewStudents(batch._id)} />
             <ActionBtn isDark={isDark} icon={FiEdit} color="primary" onClick={() => onEdit(batch)} />
             <ActionBtn isDark={isDark} icon={FiTrash2} color="danger" onClick={() => onDelete(batch._id, batch.batchName)} />
           </div>

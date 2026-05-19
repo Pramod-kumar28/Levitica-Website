@@ -45,7 +45,7 @@ const Navbar = () => {
         {/* LOGO */}
         <Link to="/" className="flex items-center">
           <img
-            src="/img/leviticalogo.png"
+            src="/img/leviticalogo-removebg.png"
             alt="logo"
             className="h-12 object-contain"
           />

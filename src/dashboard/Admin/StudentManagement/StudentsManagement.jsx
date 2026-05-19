@@ -87,7 +87,7 @@ const AssignStudents = () => {
             <div className="space-y-3 px-2">
               <div className="flex items-center gap-3 px-2">
                 <div>
-                  <h1 className={`text-3xl sm:text-4xl font-bold tracking-tight ${
+                  <h1 className={`text-3xl sm:text-3xl font-bold tracking-tight ${
                     isDark ? 'text-white' : 'text-midnight_text'
                   }`}>
                     Student Management
@@ -125,7 +125,7 @@ const AssignStudents = () => {
           {/* ===== STATS CARDS ROW 1 - Student Stats (from StudentsTable) ===== */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Total Students Card */}
-            <div className={`rounded-xl p-6 border transition-all hover:shadow-md ${
+            <div className={`rounded-xl shadow-md p-6 border transition-all hover:shadow-md ${
               isDark ? 'bg-primary/20 border-dark_border' : 'bg-primary/10 border-border'
             }`}>
               <div className="flex items-center justify-between">
@@ -142,7 +142,7 @@ const AssignStudents = () => {
             </div>
             
             {/* Verified Card */}
-            <div className={`rounded-xl p-6 border transition-all hover:shadow-md ${
+            <div className={`rounded-xl shadow-md p-6 border transition-all hover:shadow-md ${
               isDark ? 'bg-emerald-500/20 border-dark_border' : 'bg-emerald-500/10 border-border'
             }`}>
               <div className="flex items-center justify-between">
@@ -159,7 +159,7 @@ const AssignStudents = () => {
             </div>
             
             {/* Pending Card */}
-            <div className={`rounded-xl p-6 border transition-all hover:shadow-md ${
+            <div className={`rounded-xl shadow-md p-6 border transition-all hover:shadow-md ${
               isDark ? 'bg-amber-500/20 border-dark_border' : 'bg-amber-500/10 border-border'
             }`}>
               <div className="flex items-center justify-between">
@@ -179,7 +179,7 @@ const AssignStudents = () => {
           {/* ===== STATS CARDS ROW 2 - Batch Assignment Stats (from UnassignedStudents) ===== */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Unassigned Students Card - Blue */}
-            <div className={`border rounded-xl p-6 transition-colors ${
+            <div className={`border shadow-md rounded-xl p-6 transition-colors ${
               isDark
                 ? 'bg-gradient-to-br from-blue-900/20 to-blue-800/20 border-blue-800/30'
                 : 'bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200'
@@ -196,7 +196,7 @@ const AssignStudents = () => {
             </div>
             
             {/* Assigned Students Card - Purple */}
-            <div className={`border rounded-xl p-6 transition-colors ${
+            <div className={`border shadow-md rounded-xl p-6 transition-colors ${
               isDark
                 ? 'bg-gradient-to-br from-purple-900/20 to-purple-800/20 border-purple-800/30'
                 : 'bg-gradient-to-br from-purple-50 to-purple-100/50 border-purple-200'
@@ -213,7 +213,7 @@ const AssignStudents = () => {
             </div>
             
             {/* Active Courses Card - Emerald */}
-            <div className={`border rounded-xl p-6 transition-colors ${
+            <div className={`border shadow-md rounded-xl p-6 transition-colors ${
               isDark
                 ? 'bg-gradient-to-br from-emerald-900/20 to-emerald-800/20 border-emerald-800/30'
                 : 'bg-gradient-to-br from-emerald-50 to-emerald-100/50 border-emerald-200'

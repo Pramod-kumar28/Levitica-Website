@@ -166,7 +166,7 @@ const MyCourseList = () => {
         <div className="px-2">
 
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-midnight_text dark:text-white flex items-center gap-2">
+            <h1 className="text-3xl sm:text-3xl font-bold text-midnight_text dark:text-white flex items-center gap-2">
               <TrendingUp className="w-8 h-8 text-primary" />
               My <span className="text-primary">Learnings</span>
             </h1>

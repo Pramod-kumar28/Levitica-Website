@@ -67,11 +67,11 @@ const ServiceDetails = () => {
     <div className="bg-white pt-10">
 
       {/* HERO */}
-      <section className="relative pt-40 pb-16 bg-gradient-to-b from-white to-herobg dark:from-darkmode dark:to-darklight">
+      <section className="relative pt-20 md:pt-36 pb-16 bg-gradient-to-b from-white to-herobg dark:from-darkmode dark:to-darklight">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-12 items-center">
 
           <div className="col-span-8" data-aos="fade-right">
-            <h1 className="text-4xl md:text-5xl font-bold text-midnight_text dark:text-white">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-midnight_text dark:text-white">
               {service.title}
             </h1>
           </div>
@@ -80,7 +80,7 @@ const ServiceDetails = () => {
             <img
               src={service.image}
               alt={service.title}
-              className="w-20 h-20 rounded-full object-cover"
+              className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover"
             />
           </div>
 
@@ -93,7 +93,7 @@ const ServiceDetails = () => {
 
           {/* COVER IMAGE */}
           <div
-            className="mb-16 h-[350px] overflow-hidden rounded-2xl"
+            className="mb-16 h-[350px] md:h-[450px] overflow-hidden rounded-2xl"
             data-aos="zoom-in"
           >
             <img
@@ -110,12 +110,12 @@ const ServiceDetails = () => {
               <div className="xl:pr-10">
 
                 {/* DESCRIPTION */}
-                <p className="text-lg text-gray mb-10" data-aos="fade-up">
+                <p className="text-base md:text-md text-gray-600 dark:text-gray-400 leading-relaxed mb-10" data-aos="fade-up">
                   {service.description}
                 </p>
 
                 {/* OFFERINGS */}
-                <h3 className="text-2xl font-semibold mb-6" data-aos="fade-up">
+                <h3 className="text-xl md:text-3xl font-bold text-midnight_text dark:text-white mb-6" data-aos="fade-up">
                   Our Service Offerings
                 </h3>
 
@@ -127,15 +127,15 @@ const ServiceDetails = () => {
                         key={index}
                         data-aos="fade-up"
                         data-aos-delay={index * 120}
-                        className="bg-white p-6 rounded-xl shadow-property hover:shadow-deatail_shadow transition"
+                        className="bg-white dark:bg-darklight p-6 rounded-xl shadow-property hover:shadow-deatail_shadow transition"
                       >
                         <div className="flex gap-4">
-                          {Icon && <Icon className="text-primary text-2xl" />}
+                          {Icon && <Icon className="text-primary text-2xl md:text-3xl flex-shrink-0 mt-1" />}
                           <div>
-                            <h5 className="font-semibold text-midnight_text">
+                            <h5 className="font-semibold text-lg md:text-xl text-midnight_text dark:text-white mb-2">
                               {type.name}
                             </h5>
-                            <p className="text-gray">
+                            <p className="text-sm md:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                               {type.description}
                             </p>
                           </div>
@@ -149,21 +149,25 @@ const ServiceDetails = () => {
                 <div className="grid md:grid-cols-2 gap-10 mt-14">
 
                   <div data-aos="fade-right">
-                    <h4 className="font-semibold text-lg mb-4">Benefits</h4>
+                    <h4 className="font-bold text-xl md:text-2xl text-midnight_text dark:text-white mb-5">
+                      Key Benefits
+                    </h4>
                     {service.benefits.map((b, i) => (
-                      <div key={i} className="flex gap-2 mb-2">
-                        <FaCheckCircle className="text-primary mt-2" size={13} />
-                        <span>{b}</span>
+                      <div key={i} className="flex gap-3 mb-3">
+                        <FaCheckCircle className="text-primary mt-1 flex-shrink-0" size={16} />
+                        <span className="text-sm md:text-base text-gray-700 dark:text-gray-300">{b}</span>
                       </div>
                     ))}
                   </div>
 
                   <div data-aos="fade-left">
-                    <h4 className="font-semibold text-lg mb-4">Industries</h4>
+                    <h4 className="font-bold text-xl md:text-2xl text-midnight_text dark:text-white mb-5">
+                      Industries We Serve
+                    </h4>
                     {service.industries.map((i, idx) => (
-                      <div key={idx} className="flex gap-2 mb-2">
-                        <FaCheckCircle className="text-primary mt-2" size={13} />
-                        <span>{i}</span>
+                      <div key={idx} className="flex gap-3 mb-3">
+                        <FaCheckCircle className="text-primary mt-1 flex-shrink-0" size={16} />
+                        <span className="text-sm md:text-base text-gray-700 dark:text-gray-300">{i}</span>
                       </div>
                     ))}
                   </div>
@@ -171,8 +175,8 @@ const ServiceDetails = () => {
                 </div>
 
                 {/* FAQ */}
-                <h3 className="mt-16 text-slate-900 text-xl font-semibold" data-aos="fade-up">
-                  FAQs
+                <h3 className="mt-16 text-2xl md:text-3xl font-bold text-midnight_text dark:text-white" data-aos="fade-up">
+                  Frequently Asked Questions
                 </h3>
 
                 <div className="mt-6 space-y-4">
@@ -181,18 +185,18 @@ const ServiceDetails = () => {
                       key={index}
                       data-aos="fade-up"
                       data-aos-delay={index * 80}
-                      className="bg-light dark:bg-darklight rounded-lg"
+                      className="bg-light dark:bg-darklight rounded-lg overflow-hidden"
                     >
                       <button
                         onClick={() => toggleFAQ(index)}
-                        className="w-full flex items-center gap-3 p-4 text-left"
+                        className="w-full flex items-center gap-3 p-4 md:p-5 text-left font-medium text-base md:text-lg text-midnight_text dark:text-white hover:bg-primary/5 transition"
                       >
-                        <FaQuestionCircle className="text-primary" />
-                        {faq.question}
+                        <FaQuestionCircle className="text-primary text-lg md:text-xl flex-shrink-0" />
+                        <span>{faq.question}</span>
                       </button>
 
                       {openIndex === index && (
-                        <div className="px-4 pb-4 text-gray">
+                        <div className="px-4 md:px-5 pb-4 md:pb-5 text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed border-t border-gray-200 dark:border-gray-700 pt-3">
                           {faq.answer}
                         </div>
                       )}
@@ -207,32 +211,46 @@ const ServiceDetails = () => {
             <div className="w-full lg:w-4/12 px-4 mt-12 lg:mt-0">
 
               {/* SHARE */}
-              <div data-aos="fade-left" className="bg-white p-8 rounded-xl shadow-property mb-8">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Share</h3>
-                <div className="flex flex-col gap-3 text-white text-sm">
-                  <div className="bg-[#526fa3] p-3 rounded-lg flex items-center"><FaFacebook size={18}/>
-                    <span className="ml-1">Facebook</span>
-                  </div>
-                  <div className="bg-[#46C4FF] p-3 rounded-lg flex items-center"><FaXTwitter size={18}/>
-                    <span className="ml-1">Twitter</span>
-                  </div>
-                  <div className="bg-[#3C86AD] p-3 rounded-lg flex items-center"><FaLinkedinIn size={18}/><span className="ml-1">LinkedIn</span></div>
+              <div data-aos="fade-left" className="bg-white dark:bg-darklight p-6 md:p-8 rounded-xl shadow-property mb-8">
+                <h3 className="text-xl md:text-2xl font-bold text-midnight_text dark:text-white mb-5">Share This Service</h3>
+                <div className="flex flex-col gap-3 text-white text-sm md:text-base">
+                  <button className="bg-[#526fa3] hover:bg-[#3b5998] p-3 rounded-lg flex items-center gap-2 transition cursor-pointer">
+                    <FaFacebook size={18}/>
+                    <span>Facebook</span>
+                  </button>
+                  <button className="bg-[#46C4FF] hover:bg-[#1DA1F2] p-3 rounded-lg flex items-center gap-2 transition cursor-pointer">
+                    <FaXTwitter size={18}/>
+                    <span>Twitter</span>
+                  </button>
+                  <button className="bg-[#3C86AD] hover:bg-[#0077B5] p-3 rounded-lg flex items-center gap-2 transition cursor-pointer">
+                    <FaLinkedinIn size={18}/>
+                    <span>LinkedIn</span>
+                  </button>
                 </div>
               </div>
 
               {/* CONTACT */}
-              <div data-aos="fade-left" data-aos-delay="250" className="bg-light dark:bg-darklight p-6 rounded-xl mt-8">
-                <h4 className="font-semibold mb-4">Need Help?</h4>
+              <div data-aos="fade-left" data-aos-delay="250" className="bg-light dark:bg-darklight p-6 md:p-8 rounded-xl">
+                <h4 className="font-bold text-xl md:text-2xl text-midnight_text dark:text-white mb-5">
+                  Need Help?
+                </h4>
 
-                <div className="space-y-3 text-sm text-gray">
-                  <div className="flex gap-2">
-                    <FaMapMarkerAlt className="mt-1"/> {contactInfo.address}
+                <div className="space-y-4 text-sm md:text-base text-gray-700 dark:text-gray-300">
+                  <div className="flex gap-3 items-start">
+                    <FaMapMarkerAlt className="mt-1 text-primary flex-shrink-0" size={18}/>
+                    <span>{contactInfo.address}</span>
                   </div>
-                  <div className="flex gap-2">
-                    <FaPhoneAlt className="mt-1"/> {contactInfo.phone}
+                  <div className="flex gap-3 items-center">
+                    <FaPhoneAlt className="text-primary flex-shrink-0" size={16}/>
+                    <a href={`tel:${contactInfo.phone}`} className="hover:text-primary transition">
+                      {contactInfo.phone}
+                    </a>
                   </div>
-                  <div className="flex gap-2">
-                    <FaEnvelope className="mt-1"/> {contactInfo.email}
+                  <div className="flex gap-3 items-center">
+                    <FaEnvelope className="text-primary flex-shrink-0" size={16}/>
+                    <a href={`mailto:${contactInfo.email}`} className="hover:text-primary transition break-all">
+                      {contactInfo.email}
+                    </a>
                   </div>
                 </div>
               </div>

@@ -45,7 +45,7 @@ const SettingsPage = () => {
         >
           <div className="flex items-center gap-4">
             <div>
-              <h1 className={`text-3xl sm:text-4xl font-bold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
+              <h1 className={`text-3xl sm:text-3xl font-bold ${isDark ? 'text-white' : 'text-midnight_text'}`}>
                 Account Settings
               </h1>
               <p className={`text-sm sm:text-base flex items-center gap-2 text-gray`}>

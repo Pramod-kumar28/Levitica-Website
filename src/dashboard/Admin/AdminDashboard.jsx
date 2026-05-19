@@ -117,7 +117,7 @@ const AdminDashboard = () => {
             <div className="space-y-2 px-2">
               <div className="flex items-center gap-3">
                 <div>
-                  <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold ${
+                  <h1 className={`text-2xl sm:text-3xl lg:text-3xl font-bold ${
                     isDark ? 'text-white' : 'text-midnight_text'
                   }`}>
                     Welcome back, {user?.name?.split(' ')[0] || 'Admin'}!

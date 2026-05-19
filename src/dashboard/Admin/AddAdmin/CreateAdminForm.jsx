@@ -1,165 +1,340 @@
-import { useState } from "react";
-import { useFormik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { FiUser, FiMail, FiLock, FiX, FiCheckCircle, FiAlertCircle, FiUserPlus } from "react-icons/fi";
-import { useTheme } from '@/context/ThemeContext';
-import { useCreateAdminMutation } from '@/Services/admin/admincreationServices';
+import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "@/context/ThemeContext";
+import {
+  useCreateAdminMutation,
+  useUpdateAdminMutation,
+} from "@/Services/admin/admincreationServices";
 
-const CreateAdminForm = () => {
+// Icons
+import {
+  FiX,
+  FiUser,
+  FiMail,
+  FiLock,
+  FiShield,
+  FiSave,
+  FiCheck,
+} from "react-icons/fi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import toast from "react-hot-toast";
+
+const AdminModal = ({ onSuccess, mode = "add", admin = {} }) => {
   const { theme } = useTheme();
-  const isDark = theme === 'dark';
-  const [alertType, setAlertType] = useState(null);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
+  const isDark = theme === "dark";
+  const isEdit = mode === "edit";
 
-  const [createAdmin, { isLoading }] = useCreateAdminMutation();
+  const [createAdmin] = useCreateAdminMutation();
+  const [updateAdmin] = useUpdateAdminMutation();
 
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      email: Yup.string()
-        .email("Invalid email format")
-        .required("Email is required"),
-      password: Yup.string()
-        .min(6, "Password must be at least 6 characters")
-        .required("Password is required"),
-    }),
-    onSubmit: async (values) => {
-      try {
-        const response = await createAdmin(values).unwrap();
-
-        setAlertType("success");
-        setAlertMessage(
-          response?.message || "Admin account created successfully!"
-        );
-        setShowAlert(true);
-        formik.resetForm();
-      } catch (error) {
-        const message =
-          error?.data?.message ||
-          error?.data?.error ||
-          "Admin creation failed. Please try again.";
-
-        setAlertType("error");
-        setAlertMessage(message);
-        setShowAlert(true);
+  // Initial values
+  const initialValues = isEdit
+    ? {
+        name: admin.name || "",
+        email: admin.email || "",
+        role: admin.role || "admin",
+        password: "", // Password is optional in edit mode
       }
-    },
+    : {
+        name: "",
+        email: "",
+        password: "",
+        role: "admin",
+      };
+
+  const validationSchema = Yup.object({
+    name: Yup.string().required("Full name is required"),
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email address is required"),
+    password: isEdit
+      ? Yup.string().min(6, "Password must be at least 6 characters")
+      : Yup.string()
+          .min(6, "Password must be at least 6 characters")
+          .required("Password is required"),
+    role: Yup.string().required("Role is required"),
   });
 
   return (
-    <div className={`rounded-2xl border shadow-lg overflow-hidden ${isDark ? 'bg-slate-800 border-slate-700' : 'border-slate-200 bg-white'}`}>
-      {/* Premium Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 sm:p-6">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg sm:rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm flex-shrink-0">
-            <FiUserPlus className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-          </div>
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-bold text-white truncate">
-              Create Admin Account
-            </h2>
-            <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm text-indigo-100 line-clamp-1">
-              Grant administrative access to a new user
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className={`p-4 sm:p-6 md:p-8 space-y-5 sm:space-y-6 ${isDark ? 'bg-slate-800' : ''}`}>
-        {/* Alert */}
-        {showAlert && (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[1100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.div
+          initial={{ scale: 0.96, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.96, opacity: 0, y: 20 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          className={`w-full max-w-2xl overflow-hidden rounded-2xl shadow-2xl transition-colors ${
+            isDark ? "bg-slate-800 border border-slate-700" : "bg-white"
+          }`}
+        >
+          {/* Header */}
           <div
-            className={`mb-4 sm:mb-6 flex items-start justify-between gap-3 sm:gap-4 rounded-lg sm:rounded-xl border p-3 sm:p-4 backdrop-blur-sm text-xs sm:text-sm ${
-              alertType === "success"
-                ? isDark ? "border-emerald-800 bg-emerald-950 text-emerald-300 shadow-md" : "border-emerald-300 bg-emerald-50 text-emerald-700 shadow-md"
-                : isDark ? "border-rose-800 bg-rose-950 text-rose-300 shadow-md" : "border-rose-300 bg-rose-50 text-rose-700 shadow-md"
+            className={`flex items-center justify-between border-b px-6 py-4 transition-colors ${
+              isDark ? "border-slate-700" : "border-slate-200"
             }`}
           >
-            <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
-              {alertType === "success" ? (
-                <FiCheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mt-0.5 flex-shrink-0" />
-              ) : (
-                <FiAlertCircle className="h-4 w-4 sm:h-5 sm:w-5 mt-0.5 flex-shrink-0" />
-              )}
-              <p className="font-medium break-words">{alertMessage}</p>
+            <div>
+              <h2
+                className={`text-lg font-bold transition-colors ${
+                  isDark ? "text-slate-100" : "text-slate-900"
+                }`}
+              >
+                {isEdit ? "Edit Admin Profile" : "Add New Admin"}
+              </h2>
+              <p
+                className={`mt-1 text-xs transition-colors ${
+                  isDark ? "text-slate-400" : "text-slate-500"
+                }`}
+              >
+                {isEdit
+                  ? "Update admin settings and permissions"
+                  : "Create a new administrator account"}
+              </p>
             </div>
             <button
-              onClick={() => setShowAlert(false)}
-              className="text-current opacity-70 hover:opacity-100 flex-shrink-0"
+              onClick={onSuccess}
+              className={`rounded-lg p-2 transition ${
+                isDark
+                  ? "text-slate-400 hover:bg-slate-700 hover:text-slate-200"
+                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+              }`}
             >
-              <FiX className="h-4 w-4 sm:h-5 sm:w-5" />
+              <FiX className="h-5 w-5" />
             </button>
           </div>
-        )}
 
-        {/* Form */}
-        <form onSubmit={formik.handleSubmit} className="space-y-4 sm:space-y-5">
-          {[
-            {
-              name: "name",
-              label: "Full Name",
-              placeholder: "Admin name",
-              icon: FiUser,
-              type: "text",
-            },
-            {
-              name: "email",
-              label: "Email Address",
-              placeholder: "admin@example.com",
-              icon: FiMail,
-              type: "email",
-            },
-            {
-              name: "password",
-              label: "Password",
-              placeholder: "Create a secure password",
-              icon: FiLock,
-              type: "password",
-            },
-          ].map(({ name, label, placeholder, icon: Icon, type }) => (
-            <div key={name}>
-              <label className={`mb-1.5 sm:mb-2 block text-xs sm:text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                {label}
-              </label>
-              <div className="relative group">
-                <Icon className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 transition group-focus-within:text-indigo-600 ${isDark ? 'text-slate-500 group-focus-within:text-indigo-400' : 'text-slate-400 group-focus-within:text-indigo-600'}`} />
-                <input
-                  type={type}
-                  name={name}
-                  placeholder={placeholder}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values[name]}
-                  className={`w-full rounded-lg sm:rounded-xl border px-9 sm:px-10 py-2 sm:py-2.5 text-xs sm:text-sm transition focus:outline-none focus:ring-2 focus:ring-indigo-500/20 ${isDark ? 'border-slate-600 bg-slate-700 text-white placeholder-slate-500 focus:bg-slate-600 focus:border-indigo-500 hover:border-slate-500' : 'border-slate-300 bg-slate-50 focus:bg-white focus:border-indigo-500 hover:border-slate-400'}`}
-                />
-              </div>
-              {formik.touched[name] && formik.errors[name] && (
-                <p className={`mt-1 text-xs ${isDark ? 'text-rose-400' : 'text-rose-600'}`}>
-                  {formik.errors[name]}
-                </p>
+          {/* Form container */}
+          <div className="max-h-[75vh] overflow-y-auto p-6">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={async (values, { setSubmitting }) => {
+                const payload = {
+                  name: values.name,
+                  email: values.email,
+                  role: values.role,
+                };
+                
+                // Only include password if provided (for edit mode)
+                if (values.password) {
+                  payload.password = values.password;
+                }
+
+                try {
+                  if (isEdit) {
+                    await updateAdmin({ id: admin._id, data: payload }).unwrap();
+                    toast.success("Admin profile updated successfully");
+                  } else {
+                    await createAdmin(payload).unwrap();
+                    toast.success("Admin profile created successfully");
+                  }
+                  onSuccess();
+                } catch (error) {
+                  console.error("Admin mutation error:", error);
+                  const errorMsg =
+                    error?.data?.message ||
+                    error?.data?.error ||
+                    "Operation failed. Please try again.";
+                  toast.error(errorMsg);
+                } finally {
+                  setSubmitting(false);
+                }
+              }}
+            >
+              {({ values, isSubmitting, setFieldValue }) => (
+                <Form className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Full Name */}
+                    <div>
+                      <label
+                        className={`mb-1 block text-xs font-medium transition-colors ${
+                          isDark ? "text-slate-300" : "text-slate-700"
+                        }`}
+                      >
+                        Full Name *
+                      </label>
+                      <div className="relative group">
+                        <FiUser
+                          className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition ${
+                            isDark
+                              ? "text-slate-500 group-focus-within:text-emerald-400"
+                              : "text-slate-400 group-focus-within:text-emerald-600"
+                          }`}
+                        />
+                        <Field
+                          name="name"
+                          placeholder="John Doe"
+                          className={`w-full rounded-lg border pl-9 pr-3 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
+                            isDark
+                              ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-emerald-500"
+                              : "border-slate-300 text-slate-900 placeholder-slate-400 focus:border-emerald-500 bg-white"
+                          }`}
+                        />
+                      </div>
+                      <ErrorMessage
+                        name="name"
+                        component="p"
+                        className="mt-1 text-xs text-rose-500"
+                      />
+                    </div>
+
+                    {/* Email Address */}
+                    <div>
+                      <label
+                        className={`mb-1 block text-xs font-medium transition-colors ${
+                          isDark ? "text-slate-300" : "text-slate-700"
+                        }`}
+                      >
+                        Email Address *
+                      </label>
+                      <div className="relative group">
+                        <FiMail
+                          className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition ${
+                            isDark
+                              ? "text-slate-500 group-focus-within:text-emerald-400"
+                              : "text-slate-400 group-focus-within:text-emerald-600"
+                          }`}
+                        />
+                        <Field
+                          name="email"
+                          type="email"
+                          placeholder="admin@example.com"
+                          className={`w-full rounded-lg border pl-9 pr-3 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
+                            isDark
+                              ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-emerald-500"
+                              : "border-slate-300 text-slate-900 placeholder-slate-400 focus:border-emerald-500 bg-white"
+                          }`}
+                        />
+                      </div>
+                      <ErrorMessage
+                        name="email"
+                        component="p"
+                        className="mt-1 text-xs text-rose-500"
+                      />
+                    </div>
+
+                    {/* Password */}
+                    <div>
+                      <label
+                        className={`mb-1 block text-xs font-medium transition-colors ${
+                          isDark ? "text-slate-300" : "text-slate-700"
+                        }`}
+                      >
+                        Password {!isEdit && "*"}
+                      </label>
+                      <div className="relative group">
+                        <FiLock
+                          className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition ${
+                            isDark
+                              ? "text-slate-500 group-focus-within:text-emerald-400"
+                              : "text-slate-400 group-focus-within:text-emerald-600"
+                          }`}
+                        />
+                        <Field
+                          name="password"
+                          type="password"
+                          placeholder={isEdit ? "Leave blank to keep current" : "Create a secure password"}
+                          className={`w-full rounded-lg border pl-9 pr-3 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
+                            isDark
+                              ? "bg-slate-700 border-slate-600 text-white placeholder-slate-400 focus:border-emerald-500"
+                              : "border-slate-300 text-slate-900 placeholder-slate-400 focus:border-emerald-500 bg-white"
+                          }`}
+                        />
+                      </div>
+                      <ErrorMessage
+                        name="password"
+                        component="p"
+                        className="mt-1 text-xs text-rose-500"
+                      />
+                    </div>
+
+                    {/* Role Selection */}
+                    <div>
+                      <label
+                        className={`mb-1 block text-xs font-medium transition-colors ${
+                          isDark ? "text-slate-300" : "text-slate-700"
+                        }`}
+                      >
+                        Role *
+                      </label>
+                      <div className="relative group">
+                        <FiShield
+                          className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 transition ${
+                            isDark
+                              ? "text-slate-500 group-focus-within:text-emerald-400"
+                              : "text-slate-400 group-focus-within:text-emerald-600"
+                          }`}
+                        />
+                        <Field
+                          as="select"
+                          name="role"
+                          className={`w-full rounded-lg border pl-9 pr-3 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-emerald-500/20 ${
+                            isDark
+                              ? "bg-slate-700 border-slate-600 text-white focus:border-emerald-500"
+                              : "border-slate-300 text-slate-900 focus:border-emerald-500 bg-white"
+                          }`}
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="superadmin">Super Admin</option>
+                        </Field>
+                      </div>
+                      <ErrorMessage
+                        name="role"
+                        component="p"
+                        className="mt-1 text-xs text-rose-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Footer Action Buttons */}
+                  <div
+                    className={`flex items-center justify-end gap-3 pt-6 border-t ${
+                      isDark ? "border-slate-700" : "border-slate-200"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={onSuccess}
+                      className={`inline-flex items-center gap-2 px-4 py-2.5 border rounded-lg text-xs font-semibold transition-colors ${
+                        isDark
+                          ? "border-slate-600 text-slate-300 hover:bg-slate-700"
+                          : "border-slate-300 text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold transition-all shadow-md hover:shadow-lg bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700`}
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <AiOutlineLoading3Quarters className="w-3.5 h-3.5 animate-spin" />
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <FiSave className="w-3.5 h-3.5" />
+                          {isEdit ? "Update Profile" : "Create Account"}
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </Form>
               )}
-            </div>
-          ))}
-
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={!formik.isValid || isLoading}
-            className="flex w-full items-center justify-center gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white transition hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none mt-2 sm:mt-3"
-          >
-            <FiUserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
-            {isLoading ? "Creating Admin..." : "Create Admin Account"}
-          </button>
-        </form>
-      </div>
-    </div>
+            </Formik>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
-export default CreateAdminForm;
+export default AdminModal;

@@ -9,6 +9,7 @@ import BatchStudentsModal from '@/dashboard/Admin/Batchs/BatchStudentsModal';
 import StudentDetailsModal from '@/dashboard/Student/StudentDetailsModal';
 import PromoModal from '@/dashboard/Admin/promoCodeManagement/promocodeForm';
 import MentorModal from '@/dashboard/Admin/Mentor/MentorModal';
+import AdminModal from '@/dashboard/Admin/AddAdmin/CreateAdminForm'; // Import AdminModal
 
 const ModalContext = createContext();
 
@@ -25,8 +26,9 @@ export const MODAL_TYPES = {
   EDIT_INTERNSHIP_DOMAIN: "EDIT_INTERNSHIP_DOMAIN",
   VIEW_BATCH_STUDENTS: "VIEW_BATCH_STUDENTS",
   VIEW_STUDENT_DETAILS: "VIEW_STUDENT_DETAILS",
-  ADD_PROMO:"ADD_PROMO",
-  ADD_EDIT_MENTOR: "ADD_EDIT_MENTOR"
+  ADD_PROMO: "ADD_PROMO",
+  ADD_EDIT_MENTOR: "ADD_EDIT_MENTOR",
+  ADD_EDIT_ADMIN: "ADD_EDIT_ADMIN" // Added admin modal type
 };
 
 export const ModalProvider = ({ children }) => {
@@ -74,7 +76,6 @@ export const ModalProvider = ({ children }) => {
             >
               {/* ================= Modal Content ================= */}
 
-
               {/* LIVE CLASSES CREATE AND EDIT */}
               {modalType === MODAL_TYPES.CREATE_MEETING && (
                 <LiveClassForm
@@ -91,6 +92,7 @@ export const ModalProvider = ({ children }) => {
                   {...modalProps}
                 />
               )}
+
               {/* COURSE MODAL FOR ADD AND EDIT */}
               {modalType === MODAL_TYPES.ADD_COURSE && (
                 <CourseModal
@@ -107,7 +109,8 @@ export const ModalProvider = ({ children }) => {
                   {...modalProps}
                 />
               )}
-              {/* BATCH  MODAL  FOR ADD AND EDIT */}
+
+              {/* BATCH MODAL FOR ADD AND EDIT */}
               {modalType === MODAL_TYPES.CREATE_BATCH && (
                 <BatchModal
                   handleClose={closeModal}
@@ -122,8 +125,8 @@ export const ModalProvider = ({ children }) => {
                   mode="edit"
                   {...modalProps}
                 />
-
               )}
+
               {/* COURSE DETAILS MODAL */}
               {modalType === MODAL_TYPES.ADD_COURSE_DETAILS && (
                 <CourseDetailsModal
@@ -139,6 +142,7 @@ export const ModalProvider = ({ children }) => {
                   onSuccess={closeModal}
                 />
               )}
+
               {/* Internships domain modal */}
               {modalType === MODAL_TYPES.ADD_INTERNSHIP_DOMAIN && (
                 <InternshipsDomainModal
@@ -155,14 +159,15 @@ export const ModalProvider = ({ children }) => {
                   domain={modalProps.domain}
                 />
               )}
+
               {/* Batch students modal */}
               {modalType === MODAL_TYPES.VIEW_BATCH_STUDENTS && (
                 <BatchStudentsModal
                   batchId={modalProps.batchId}
                   handleClose={closeModal}
                 />
-
               )}
+
               {/* view student Details */}
               {modalType === MODAL_TYPES.VIEW_STUDENT_DETAILS && (
                 <StudentDetailsModal
@@ -170,15 +175,14 @@ export const ModalProvider = ({ children }) => {
                   handleClose={closeModal}
                 />
               )}
+
               {/* Promo code modal */}
-              {
-                modalType===MODAL_TYPES.ADD_PROMO&&(
-                  <PromoModal
+              {modalType === MODAL_TYPES.ADD_PROMO && (
+                <PromoModal
                   mode="add"
-                  
-                  onSuccess={closeModal}/>
-                )
-              }
+                  onSuccess={closeModal}
+                />
+              )}
 
               {/* MENTOR MODAL */}
               {modalType === MODAL_TYPES.ADD_EDIT_MENTOR && (
@@ -189,6 +193,14 @@ export const ModalProvider = ({ children }) => {
                 />
               )}
 
+              {/* ADMIN MODAL */}
+              {modalType === MODAL_TYPES.ADD_EDIT_ADMIN && (
+                <AdminModal
+                  onSuccess={closeModal}
+                  mode={modalProps.mode || "add"}
+                  admin={modalProps.admin}
+                />
+              )}
 
             </motion.div>
           </motion.div>
