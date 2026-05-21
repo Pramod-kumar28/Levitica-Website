@@ -14,7 +14,7 @@ const CeoMessage = () => {
   }, []);
 
   return (
-    <section className="py-16 bg-gradient-to-br from-blue-50/30 to-white">
+    <section className="py-16 bg-gradient-to-br from-blue-50/30 to-white dark:from-darklight dark:to-darkmode border-b border-lightgray dark:border-dark_border/20">
       <div className="max-w-7xl mx-auto px-4">
 
         <div className="flex flex-col lg:flex-row gap-10 items-center">
@@ -29,7 +29,7 @@ const CeoMessage = () => {
               {/* glow */}
               <div className="absolute inset-0 rounded-full bg-blue-200/20 blur-2xl opacity-0 group-hover:opacity-100 transition"></div>
 
-              <div className="w-64 h-64 md:w-80 md:h-80 rounded-full border-8 border-blue-100 overflow-hidden shadow-xl relative">
+              <div className="w-64 h-64 md:w-80 md:h-80 rounded-full border-8 border-blue-100 dark:border-dark_border overflow-hidden shadow-xl relative">
                 <img
                   src="/img/cofounder.jpg"
                   alt="Medipudi Durgaprasad - CEO of Levitica"
@@ -67,16 +67,16 @@ const CeoMessage = () => {
           >
 
             <div className="mb-6">
-              <h2 className="text-2xl md:text-3xl font-semibold text-slate-900">
+              <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 dark:text-white">
                 Message From Our CEO
               </h2>
 
-              <div className="text-sm text-blue-600 mt-1">
+              <div className="text-sm text-blue-600 dark:text-cyan mt-1">
                 Medipudi Durgaprasad, CEO of Levitica
               </div>
             </div>
 
-            <div className="text-lg leading-relaxed text-slate-700 space-y-4">
+            <div className="text-lg leading-relaxed text-slate-700 dark:text-slate-300 space-y-4">
 
               <p>
                 Welcome to Levitica Technologies. We're more than just a software company — we're your
@@ -98,7 +98,7 @@ const CeoMessage = () => {
               </p>
 
               {/* Quote highlight */}
-              <p className="italic font-medium text-blue-600 border-l-4 border-blue-500 pl-4">
+              <p className="italic font-medium text-blue-600 dark:text-cyan border-l-4 border-blue-500 dark:border-cyan pl-4">
                 "Your success is our success. Let's build something extraordinary together."
               </p>
 

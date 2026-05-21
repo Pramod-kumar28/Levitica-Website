@@ -223,54 +223,54 @@ const CoreValues = () => {
   const Icon = currentItem.icon;
 
   return (
-    <section className="py-10 bg-white">
+    <section className="py-10 bg-white dark:bg-darkmode border-b border-lightgray dark:border-dark_border/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Hero Section */}
         <div className="text-center mb-16" data-aos="fade-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-600 text-sm mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 dark:border-blue-900/50 bg-blue-50 dark:bg-blue-950/20 text-blue-600 dark:text-blue-400 text-sm mb-4">
             <FaPlayCircle className="w-3 h-3" />
             <span>Digital Transformation</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-3">
             Driving Digital
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
               Transformation
             </span>
           </h1>
-          <p className="text-base text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base text-gray-600 dark:text-slate-300 max-w-2xl mx-auto">
             We combine technology, talent, and training to help businesses scale and succeed
           </p>
         </div>
 
         {/* Mission & Vision */}
         <div className="grid md:grid-cols-2 gap-6 mb-20">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl" data-aos="fade-right">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/10 dark:to-indigo-950/10 p-8 rounded-2xl border border-slate-100 dark:border-dark_border/20 shadow-sm" data-aos="fade-right">
             <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-4">
               <FaCrosshairs className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-indigo-900 mb-2">Our Mission</h3>
-            <p className="text-gray-700 leading-relaxed text-sm mb-3">
+            <h3 className="text-xl font-bold text-indigo-900 dark:text-indigo-300 mb-2">Our Mission</h3>
+            <p className="text-gray-700 dark:text-slate-300 leading-relaxed text-sm mb-3">
               To deliver high-quality, scalable, and secure technology solutions that solve real-world
               challenges, while empowering individuals through education and businesses through
               strategic consultancy.
             </p>
-            <div className="flex items-center gap-2 text-blue-600 text-xs font-medium">
+            <div className="flex items-center gap-2 text-blue-600 dark:text-cyan text-xs font-medium">
               <span>Impact-driven approach</span>
               <FaArrowRight className="w-3 h-3" />
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl" data-aos="fade-left">
+          <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/10 dark:to-pink-950/10 p-8 rounded-2xl border border-slate-100 dark:border-dark_border/20 shadow-sm" data-aos="fade-left">
             <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-4">
               <FaLightbulb className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-xl font-bold text-purple-900 mb-2">Our Vision</h3>
-            <p className="text-gray-700 leading-relaxed text-sm mb-3">
+            <h3 className="text-xl font-bold text-purple-900 dark:text-purple-300 mb-2">Our Vision</h3>
+            <p className="text-gray-700 dark:text-slate-300 leading-relaxed text-sm mb-3">
               To be the world's most trusted technology partner, empowering businesses with innovative
               solutions and creating a global community of skilled tech professionals.
             </p>
-            <div className="flex items-center gap-2 text-purple-600 text-xs font-medium">
+            <div className="flex items-center gap-2 text-purple-600 dark:text-cyan text-xs font-medium">
               <span>Global excellence</span>
               <FaArrowRight className="w-3 h-3" />
             </div>
@@ -282,8 +282,8 @@ const CoreValues = () => {
         {/* Why Choose Levitica - Auto-playing Carousel */}
         <div className="mb-20" data-aos="fade-up">
           <div className="text-center mb-8">
-            <p className="text-blue-600 font-semibold text-sm mb-1">What Makes Us Different</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Why Choose Levitica?</h2>
+            <p className="text-blue-600 dark:text-cyan font-semibold text-sm mb-1">What Makes Us Different</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Why Choose Levitica?</h2>
             <div className="w-12 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-3"></div>
           </div>
 
@@ -293,12 +293,12 @@ const CoreValues = () => {
             onMouseLeave={handleMouseLeave}
           >
             {/* Carousel Content */}
-            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 md:p-10 text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Icon className="w-8 h-8 text-blue-600" />
+            <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-semidark dark:to-semidark border border-slate-100 dark:border-dark_border/20 rounded-2xl p-8 md:p-10 text-center shadow-sm animate-fade-in">
+              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-950/30 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Icon className="w-8 h-8 text-blue-600 dark:text-cyan" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">{currentItem.title}</h3>
-              <p className="text-gray-600 text-base leading-relaxed max-w-2xl mx-auto">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">{currentItem.title}</h3>
+              <p className="text-gray-600 dark:text-slate-300 text-base leading-relaxed max-w-2xl mx-auto">
                 {currentItem.desc}
               </p>
             </div>
@@ -311,8 +311,8 @@ const CoreValues = () => {
                   onClick={() => goToSlide(idx)}
                   className={`transition-all duration-300 rounded-full ${
                     currentSlide === idx 
-                      ? "w-6 h-1.5 bg-blue-600" 
-                      : "w-1.5 h-1.5 bg-blue-300 hover:bg-blue-400"
+                      ? "w-6 h-1.5 bg-blue-600 dark:bg-cyan" 
+                      : "w-1.5 h-1.5 bg-blue-300 dark:bg-blue-900 hover:bg-blue-400 dark:hover:bg-blue-800"
                   }`}
                 />
               ))}
@@ -323,12 +323,12 @@ const CoreValues = () => {
         {/* Industries Section */}
         <div data-aos="fade-up">
           <div className="text-center mb-6">
-            <p className="text-blue-600 font-semibold text-sm mb-1">Our Expertise</p>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Industries We Serve</h2>
+            <p className="text-blue-600 dark:text-cyan font-semibold text-sm mb-1">Our Expertise</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Industries We Serve</h2>
             <div className="w-12 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto mt-3"></div>
           </div>
           
-          <div className="bg-gray-50 rounded-2xl p-6">
+          <div className="bg-gray-50 dark:bg-semidark border border-slate-100 dark:border-dark_border/20 rounded-2xl p-6 shadow-sm">
             <div className="flex flex-wrap justify-center gap-3 mb-6">
               {industries.map((industry, idx) => (
                 <button
@@ -337,7 +337,7 @@ const CoreValues = () => {
                   className={`px-4 py-1.5 rounded-full transition-all text-sm ${
                     activeIndustry === idx
                       ? "btn btn-primary shadow-md"
-                      : "bg-white text-gray-600 hover:bg-gray-100"
+                      : "bg-white dark:bg-darkmode text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-darklight border border-slate-100 dark:border-dark_border/20"
                   }`}
                 >
                   {industry.name}
@@ -354,9 +354,9 @@ const CoreValues = () => {
                 {activeIndustry === 4 && "🏭"}
                 {activeIndustry === 5 && "🚀"}
               </div>
-              <h4 className="text-lg font-bold text-gray-800 mb-1">{industries[activeIndustry]?.name}</h4>
-              <p className="text-gray-600 text-sm mb-2">{industries[activeIndustry]?.desc}</p>
-              <span className="inline-block px-2 py-0.5 bg-blue-100 text-blue-600 rounded-full text-xs font-medium">
+              <h4 className="text-lg font-bold text-gray-800 dark:text-white mb-1">{industries[activeIndustry]?.name}</h4>
+              <p className="text-gray-600 dark:text-slate-300 text-sm mb-2">{industries[activeIndustry]?.desc}</p>
+              <span className="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-950/20 text-blue-600 dark:text-cyan rounded-full text-xs font-medium">
                 {industries[activeIndustry]?.stats}
               </span>
             </div>

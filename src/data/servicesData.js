@@ -936,6 +936,6 @@ export const allServices =   [
 export const contactInfo = {
   address: "5th Floor, S2, C9WP+P68 Techno Park, Capital Pk Rd, VIP Hills, Silicon Valley, Hyderabad, Telangana – 500081",
   phone: "(+91) 9032503559",
-  email: "info@leviticatechnologies.com",
+  email: "hr@leviticatechnologies.com",
   supportHours: "24/7"
 }

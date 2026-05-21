@@ -26,9 +26,9 @@ const HeroSection = () => {
 
           <span
             data-aos="fade-up"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium mb-6 dark:text-white"
           >
-            <span className="w-2 h-2 bg-cyan rounded-full animate-pulse"></span>
+            <span className="w-2 h-2 bg-cyan text-gray-700 rounded-full animate-pulse"></span>
             People First • Enterprise Solutions
           </span>
 
@@ -77,7 +77,7 @@ const HeroSection = () => {
           data-aos-delay="200"
           className="lg:col-span-2 relative flex justify-start w-full"
         >
-          <DotLottieReact 
+          <DotLottieReact
             src="/lottie/Seo_isometric.lottie"
             className="w-110 h-[400px]"
             autoplay

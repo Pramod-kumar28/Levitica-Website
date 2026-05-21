@@ -16,7 +16,7 @@ const ConsultingCTA = () => {
   }, []);
 
   return (
-    <section className="bg-slate-100 py-12 md:py-16 flex justify-center items-center">
+    <section className="bg-slate-100 dark:bg-semidark py-12 md:py-16 flex justify-center items-center border-b border-lightgray dark:border-dark_border/20">
       <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto container px-4">
 
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
@@ -26,11 +26,11 @@ const ConsultingCTA = () => {
             data-aos="fade-right"
             className="max-w-xl text-center md:text-left"
           >
-            <h3 className="text-xl md:text-3xl font-semibold text-slate-900">
+            <h3 className="text-xl md:text-3xl font-semibold text-slate-900 dark:text-white">
               Consulting Services To Empower Your Business
             </h3>
 
-            <p className="mt-2 text-slate-600 text-sm md:text-base">
+            <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm md:text-base">
               Rapidiously engage fully tested e-commerce with progressive architectures.
             </p>
           </div>

@@ -57,14 +57,14 @@ const CourseDetails = () => {
   if (!course) return <div className="text-center py-24">Course not found.</div>;
 
   return (
-    <div className="bg-white pt-10">
+    <div className="bg-white dark:bg-darkmode pt-10">
 
       {/* ===== HERO (EXACT SAME AS SERVICE) ===== */}
-      <section className="relative pt-20 pb-16 bg-gradient-to-b from-white to-herobg">
+      <section className="relative pt-20 pb-16 bg-gradient-to-b from-white to-herobg dark:from-darkmode dark:to-darklight border-b border-lightgray dark:border-dark_border/20">
         <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-12 items-center">
 
           <div className="col-span-8" data-aos="fade-right">
-            <h1 className="text-4xl md:text-5xl font-bold text-midnight_text">
+            <h1 className="text-4xl md:text-5xl font-bold text-midnight_text dark:text-white">
               {course.title}
             </h1>
           </div>
@@ -72,7 +72,7 @@ const CourseDetails = () => {
           <div className="col-span-4 flex justify-start md:justify-center mt-6 md:mt-0" data-aos="fade-left">
             <img
               src={course.image}
-              className="w-20 h-20 rounded-full object-cover"
+              className="w-20 h-20 rounded-full object-cover border-2 border-white dark:border-dark_border"
               alt={course.title}
             />
           </div>
@@ -81,11 +81,11 @@ const CourseDetails = () => {
       </section>
 
       {/* ===== MAIN ===== */}
-      <section className="py-20">
+      <section className="py-20 bg-section dark:bg-darkmode">
         <div className="max-w-7xl mx-auto px-4">
 
           {/* COVER IMAGE */}
-          <div data-aos="zoom-in" className="mb-16 h-[350px] overflow-hidden rounded-2xl">
+          <div data-aos="zoom-in" className="mb-16 h-[350px] overflow-hidden rounded-2xl border border-lightgray dark:border-dark_border/20">
             <img src={course.image} className="w-full h-full object-cover" alt={course.title} />
           </div>
 
@@ -96,12 +96,12 @@ const CourseDetails = () => {
               <div className="xl:pr-10">
 
                 {/* DESCRIPTION */}
-                <p className="text-lg text-gray mb-10" data-aos="fade-up">
+                <p className="text-lg text-gray dark:text-slate-300 mb-10" data-aos="fade-up">
                   {course.fullDescription?.[0]}
                 </p>
 
                 {/* FEATURES → SAME AS SERVICE CARDS */}
-                <h3 className="text-2xl text-slate-900 font-semibold mb-6" data-aos="fade-up">
+                <h3 className="text-2xl text-slate-900 dark:text-white font-semibold mb-6" data-aos="fade-up">
                   Course Features
                 </h3>
 
@@ -111,11 +111,11 @@ const CourseDetails = () => {
                       key={i}
                       data-aos="fade-up"
                       data-aos-delay={i * 120}
-                      className="bg-white p-6 rounded-xl shadow-property hover:shadow-deatail_shadow transition"
+                      className="bg-white dark:bg-semidark p-6 rounded-xl border border-slate-100 dark:border-dark_border/20 shadow-property hover:shadow-deatail_shadow transition"
                     >
                       <div className="flex gap-3">
-                        <FaCheckCircle className="text-primary mt-1" />
-                        <span>{f}</span>
+                        <FaCheckCircle className="text-primary dark:text-cyan mt-1 flex-shrink-0" />
+                        <span className="text-slate-800 dark:text-slate-300">{f}</span>
                       </div>
                     </div>
                   ))}
@@ -125,25 +125,25 @@ const CourseDetails = () => {
                 <div className="grid md:grid-cols-2 gap-10 mt-14">
 
                   <div data-aos="fade-right">
-                    <h4 className="font-semibold text-lg mb-4">Duration</h4>
+                    <h4 className="font-semibold text-lg text-slate-900 dark:text-white mb-4">Duration</h4>
                     <div className="flex gap-2">
-                      <FaClock className="text-primary mt-1" />
-                      <span>{course.duration}</span>
+                      <FaClock className="text-primary dark:text-cyan mt-1 flex-shrink-0" />
+                      <span className="text-slate-700 dark:text-slate-300">{course.duration}</span>
                     </div>
                   </div>
 
                   <div data-aos="fade-left">
-                    <h4 className="font-semibold text-lg mb-4">Mode</h4>
+                    <h4 className="font-semibold text-lg text-slate-900 dark:text-white mb-4">Mode</h4>
                     <div className="flex gap-2">
-                      <FaVideo className="text-primary mt-1" />
-                      <span>{course.mode}</span>
+                      <FaVideo className="text-primary dark:text-cyan mt-1 flex-shrink-0" />
+                      <span className="text-slate-700 dark:text-slate-300">{course.mode}</span>
                     </div>
                   </div>
 
                 </div>
 
                 {/* FAQ SAME STYLE */}
-                <h3 className="mt-16 text-slate-900 text-xl font-semibold" data-aos="fade-up">
+                <h3 className="mt-16 text-slate-900 dark:text-white text-xl font-semibold" data-aos="fade-up">
                   FAQs
                 </h3>
 
@@ -152,18 +152,18 @@ const CourseDetails = () => {
                     <div
                       key={i}
                       data-aos="fade-up"
-                      className="bg-light rounded-lg"
+                      className="bg-light dark:bg-semidark rounded-lg border border-slate-100 dark:border-dark_border/20 overflow-hidden"
                     >
                       <button
                         onClick={() => toggleFAQ(i)}
-                        className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 transition-colors"
+                        className="w-full flex items-center gap-3 p-4 text-left text-slate-900 dark:text-white hover:bg-gray-50 dark:hover:bg-primary/10 transition"
                       >
-                        <FaQuestionCircle className="text-primary" />
+                        <FaQuestionCircle className="text-primary dark:text-cyan flex-shrink-0" />
                         <span className="font-medium">{faq.question}</span>
                       </button>
 
                       {openIndex === i && (
-                        <div className="px-4 pb-4 text-gray">
+                        <div className="px-4 pb-4 text-gray dark:text-slate-400 border-t border-slate-100 dark:border-gray-700 pt-3">
                           {faq.answer}
                         </div>
                       )}
@@ -177,10 +177,10 @@ const CourseDetails = () => {
             {/* ===== SIDEBAR (COPY OF SERVICE) ===== */}
             <div className="w-full lg:w-4/12 px-4 mt-12 lg:mt-0">
 
-              <div data-aos="fade-left" className="bg-white p-8 rounded-xl shadow-property mb-8">
-                <h3 className="text-lg text-slate-900 font-semibold mb-4">Enroll</h3>
+              <div data-aos="fade-left" className="bg-white dark:bg-semidark p-8 rounded-xl border border-slate-100 dark:border-dark_border/20 shadow-property mb-8">
+                <h3 className="text-lg text-slate-900 dark:text-white font-semibold mb-4">Enroll</h3>
 
-                <p className="text-3xl font-bold text-primary">
+                <p className="text-3xl font-bold text-primary dark:text-cyan">
                   {course.price}
                 </p>
 
@@ -192,21 +192,25 @@ const CourseDetails = () => {
                 </button>
               </div>
 
-              <div data-aos="fade-left" data-aos-delay="250" className="bg-light p-6 rounded-xl mt-8">
-                <h4 className="font-semibold mb-4">Need Help?</h4>
+              <div data-aos="fade-left" data-aos-delay="250" className="bg-light dark:bg-semidark p-6 rounded-xl mt-8 border border-slate-100 dark:border-dark_border/20 shadow-property">
+                <h4 className="font-semibold text-slate-900 dark:text-white mb-4">Need Help?</h4>
 
-                <div className="space-y-3 text-sm text-gray">
+                <div className="space-y-3 text-sm text-gray dark:text-slate-300">
                   <div className="flex gap-2 items-center">
-                    <FaMapMarkerAlt className="text-primary" /> 
+                    <FaMapMarkerAlt className="text-primary dark:text-cyan" /> 
                     <span>Hyderabad, India</span>
                   </div>
                   <div className="flex gap-2 items-center">
-                    <FaPhoneAlt className="text-primary" /> 
-                    <span>+91 9032503559</span>
+                    <FaPhoneAlt className="text-primary dark:text-cyan" /> 
+                    <a href="tel:+919032503559" className="hover:text-primary dark:hover:text-cyan transition">
+                      +91 9032503559
+                    </a>
                   </div>
                   <div className="flex gap-2 items-center">
-                    <FaEnvelope className="text-primary" /> 
-                    <span>hr@leviticatechnologies.com</span>
+                    <FaEnvelope className="text-primary dark:text-cyan" /> 
+                    <a href="mailto:hr@leviticatechnologies.com" className="hover:text-primary dark:hover:text-cyan transition break-all">
+                      hr@leviticatechnologies.com
+                    </a>
                   </div>
                 </div>
               </div>

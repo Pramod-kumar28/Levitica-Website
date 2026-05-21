@@ -321,24 +321,24 @@ const Footer = () => {
         <div className="bg-primary text-white">
 
           {/* ===== TOP CONTENT ===== */}
-          <div className="px-6 lg:px-10 py-10">
+          <div className="px-6 lg:px-10 py-6">
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
 
               {/* ADDRESS */}
               <div>
-                <h4 className="text-xl text-white font-semibold mb-4">
+                <h4 className="text-lg text-white font-semibold mb-2">
                   Address
                 </h4>
-                <h3 className="text-lg text-cyan font-semibold mb-1">Levitica Technologies Pvt Ltd</h3>
-                <p className="text-white text-sm leading-7 mb-5">
+                <h3 className="text-base text-cyan font-semibold mb-1">Levitica Technologies Pvt Ltd</h3>
+                <p className="text-white text-sm leading-6 mb-3">
                   5th Floor, S2, C9WP+P68 Techno Park,
                   Capital Pk Rd, VIP Hills,
                   Hyderabad, Telangana – 500081
                 </p>
 
                 {/* SOCIAL ICONS */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
 
                   <Social icon={FaFacebookF} />
                   <Social icon={FaXTwitter} />
@@ -350,16 +350,16 @@ const Footer = () => {
 
               {/* QUICK LINKS */}
               <div>
-                <h4 className="text-xl text-white font-semibold mb-4">
+                <h4 className="text-lg text-white font-semibold mb-2">
                   Quick Links
                 </h4>
 
-                <ul className="space-y-3 text-sm text-white">
+                <ul className="space-y-2 text-sm text-white">
 
                   <li>
                     <Link
                       to="/contact-us"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Contact Support
                     </Link>
@@ -368,7 +368,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/services"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Services
                     </Link>
@@ -377,7 +377,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/trainings"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Trainings
                     </Link>
@@ -386,7 +386,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/about-us"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       About Us
                     </Link>
@@ -397,16 +397,16 @@ const Footer = () => {
 
               {/* TERMS */}
               <div>
-                <h4 className="text-xl text-white font-semibold mb-4">
+                <h4 className="text-lg text-white font-semibold mb-2">
                   Terms & Conditions
                 </h4>
 
-                <ul className="space-y-3 text-sm text-white">
+                <ul className="space-y-2 text-sm text-white">
 
                   <li>
                     <Link
                       to="/privacy"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Privacy Policy
                     </Link>
@@ -415,7 +415,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/terms"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Terms of Service
                     </Link>
@@ -424,7 +424,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/refund"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Refund Policy
                     </Link>
@@ -435,16 +435,16 @@ const Footer = () => {
 
               {/* POPULAR SEARCHES */}
               <div>
-                <h4 className="text-xl text-white font-semibold mb-4">
+                <h4 className="text-lg text-white font-semibold mb-2">
                   Popular Searches
                 </h4>
 
-                <ul className="space-y-3 text-sm text-white">
+                <ul className="space-y-2 text-sm text-white">
 
                   <li>
                     <Link
                       to="/internships"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Internships
                     </Link>
@@ -453,7 +453,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/trainings/web-development/java-full-stack"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Java Full Stack
                     </Link>
@@ -462,7 +462,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/trainings/data-science"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Data Science
                     </Link>
@@ -471,7 +471,7 @@ const Footer = () => {
                   <li>
                     <Link
                       to="/trainings/web-development"
-                      className="hover:text-primary transition duration-300"
+                      className="hover:text-cyan transition duration-300"
                     >
                       Web Development
                     </Link>
@@ -485,14 +485,14 @@ const Footer = () => {
           </div>
 
           {/* ===== CONTACT BAR ===== */}
-          <div className="border-t border-dark_border px-6 lg:px-10 py-5">
+          <div className="border-t border-dark_border px-6 lg:px-10 py-3">
 
             <div className="flex flex-col sm:flex-row justify-center gap-5 text-sm text-gray">
 
               {/* PHONE */}
               <a
                 href="tel:+919032503559"
-                className="group flex items-center gap-2 hover:text-primary transition duration-300"
+                className="group flex items-center gap-2 hover:text-cyan transition duration-300"
               >
                 <span className="text-white font-semibold">
                   Phone :
@@ -506,7 +506,7 @@ const Footer = () => {
               {/* EMAIL */}
               <a
                 href="mailto:hr@leviticatechnologies.com"
-                className="group flex items-center gap-2 hover:text-primary transition duration-300"
+                className="group flex items-center gap-2 hover:text-cyan transition duration-300"
               >
                 <span className="text-white font-semibold">
                   Email :
@@ -522,7 +522,7 @@ const Footer = () => {
           </div>
 
           {/* ===== COPYRIGHT ===== */}
-          <div className="border-t border-dark_border px-6 lg:px-10 py-4 text-center text-xs text-gray">
+          <div className="border-t border-dark_border px-6 lg:px-10 py-3 text-center text-xs text-gray">
 
             © {new Date().getFullYear()} Levitica Technologies Pvt Ltd.
             All rights reserved.

@@ -53,7 +53,7 @@ const ContactUsForm = () => {
             <Field
               name="name"
               placeholder="Your Name"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border border-gray-300 dark:border-dark_border/30 rounded-lg px-4 py-2 bg-white dark:bg-semidark text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-cyan"
             />
             <ErrorMessage name="name" component="p" className="text-red-500 text-sm" />
           </div>
@@ -63,7 +63,7 @@ const ContactUsForm = () => {
               name="email"
               type="email"
               placeholder="Email Address"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border border-gray-300 dark:border-dark_border/30 rounded-lg px-4 py-2 bg-white dark:bg-semidark text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-cyan"
             />
             <ErrorMessage name="email" component="p" className="text-red-500 text-sm" />
           </div>
@@ -72,7 +72,7 @@ const ContactUsForm = () => {
             <Field
               name="mobile"
               placeholder="Mobile Number"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border border-gray-300 dark:border-dark_border/30 rounded-lg px-4 py-2 bg-white dark:bg-semidark text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-cyan"
             />
             <ErrorMessage name="mobile" component="p" className="text-red-500 text-sm" />
           </div>
@@ -83,7 +83,7 @@ const ContactUsForm = () => {
               name="message"
               rows="5"
               placeholder="Your Message"
-              className="w-full border rounded-lg px-4 py-2"
+              className="w-full border border-gray-300 dark:border-dark_border/30 rounded-lg px-4 py-2 bg-white dark:bg-semidark text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-cyan"
             />
             <ErrorMessage name="message" component="p" className="text-red-500 text-sm" />
           </div>

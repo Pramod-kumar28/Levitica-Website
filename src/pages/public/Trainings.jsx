@@ -21,16 +21,16 @@ const Trainings = () => {
 
   return (
     <>
-      <div className="bg-white pt-20">
+      <div className="bg-white dark:bg-darkmode pt-20">
 
         {/* 🔥 HERO (PROPERTY STYLE ONLY LOOK CHANGE) */}
-        <section className="py-12 bg-gradient-to-b from-white from-10% dark:from-darkmode to-herobg to-90% dark:to-darklight text-center">
+        <section className="py-12 bg-gradient-to-b from-white from-10% dark:from-darkmode to-herobg to-90% dark:to-darklight text-center border-b border-lightgray dark:border-dark_border/20">
 
           <div className="relative max-w-4xl mx-auto px-4 text-center">
 
             <h1
               data-aos="fade-up"
-              className="text-4xl md:text-5xl font-bold text-midnight_text"
+              className="text-4xl md:text-5xl font-bold text-midnight_text dark:text-white"
             >
               Our Courses
             </h1>
@@ -38,7 +38,7 @@ const Trainings = () => {
             <p
               data-aos="fade-up"
               data-aos-delay="100"
-              className="mt-4 text-slate-600"
+              className="mt-4 text-slate-600 dark:text-slate-300"
             >
               Rapidiously engage fully tested e-commerce with progressive
               architectures.
@@ -47,15 +47,15 @@ const Trainings = () => {
             <div
               data-aos="fade-up"
               data-aos-delay="200"
-              className="mt-6 flex justify-center items-center gap-2 text-sm text-gray"
+              className="mt-6 flex justify-center items-center gap-2 text-sm text-gray dark:text-slate-400"
             >
-              <Link to="/" className="hover:text-primary transition">
+              <Link to="/" className="hover:text-primary dark:hover:text-cyan transition">
                 Home
               </Link>
 
               <span>›</span>
 
-              <span className="text-midnight_text font-medium">
+              <span className="text-midnight_text dark:text-white font-medium">
                 Training
               </span>
             </div>
@@ -64,7 +64,7 @@ const Trainings = () => {
         </section>
 
         {/* Trainings Section */}
-        <section className="services-section bg-slate-50 py-24">
+        <section className="services-section bg-slate-50 dark:bg-darkmode py-24 border-b border-lightgray dark:border-dark_border/20">
           <div className="max-w-7xl mx-auto px-4">
 
             {/* Section header */}
@@ -73,7 +73,7 @@ const Trainings = () => {
 
                 <h2
                   data-aos="fade-up"
-                  className="text-3xl md:text-4xl font-bold"
+                  className="text-3xl md:text-4xl font-bold text-midnight_text dark:text-white"
                 >
                   We Provide Best Trainings
                 </h2>
@@ -81,7 +81,7 @@ const Trainings = () => {
                 <p
                   data-aos="fade-up"
                   data-aos-delay="100"
-                  className="mt-4 text-slate-600"
+                  className="mt-4 text-slate-600 dark:text-slate-300"
                 >
                   Efficiently aggregate end-to-end core competencies without
                   maintainable ideas. Dynamically foster tactical solutions
@@ -96,23 +96,23 @@ const Trainings = () => {
 
               {/* Internship Card */}
               <div className="flex" data-aos="fade-up">
-                <div className="bg-white text-center p-8 rounded-2xl shadow-sm hover:shadow-xl transition w-full">
+                <div className="bg-white dark:bg-semidark text-center p-8 rounded-2xl border border-slate-100 dark:border-dark_border/20 shadow-sm hover:shadow-xl transition w-full">
                   <img
                     src="/img/internshipcard.svg"
                     alt="Internships"
                     className="w-20 mx-auto mb-6"
                   />
-                  <h5 className="font-semibold text-lg">
+                  <h5 className="font-semibold text-lg text-midnight_text dark:text-white">
                     Internships
                   </h5>
-                  <p className="mt-3 text-slate-600">
+                  <p className="mt-3 text-slate-600 dark:text-slate-400">
                     Step into the world of innovation and growth. Our internships
                     offer hands-on experience and impactful projects tailored to
                     your passion.
                   </p>
                   <Link
                     to="/internships"
-                    className="inline-flex items-center gap-2 mt-6 text-indigo-600 font-medium hover:text-indigo-700"
+                    className="inline-flex items-center gap-2 mt-6 text-indigo-600 dark:text-cyan font-medium hover:text-indigo-700 dark:hover:underline"
                   >
                     Get More Info
                     <FaArrowRight className="text-sm" />
@@ -128,21 +128,21 @@ const Trainings = () => {
                   data-aos="fade-up"
                   data-aos-delay={index * 120}
                 >
-                  <div className="bg-white text-center p-8 rounded-2xl shadow-sm hover:shadow-xl transition w-full">
+                  <div className="bg-white dark:bg-semidark text-center p-8 rounded-2xl border border-slate-100 dark:border-dark_border/20 shadow-sm hover:shadow-xl transition w-full">
                     <img
                       src={course.img}
                       alt={course.title}
                       className="w-20 mx-auto mb-6"
                     />
-                    <h5 className="font-semibold text-lg">
+                    <h5 className="font-semibold text-lg text-midnight_text dark:text-white">
                       {course.title}
                     </h5>
-                    <p className="mt-3 text-slate-600">
+                    <p className="mt-3 text-slate-600 dark:text-slate-400">
                       {course.description}
                     </p>
                     <Link
                       to={course.path}
-                      className="inline-flex items-center gap-2 mt-6 text-indigo-600 font-medium hover:text-indigo-700"
+                      className="inline-flex items-center gap-2 mt-6 text-indigo-600 dark:text-cyan font-medium hover:text-indigo-700 dark:hover:underline"
                     >
                       Get More Info
                       <FaArrowRight className="text-sm" />

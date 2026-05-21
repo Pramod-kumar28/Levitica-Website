@@ -53,7 +53,7 @@ const Topbar = () => {
         <img
           src="/img/leviticalogo.png"
           alt="Levitica Logo"
-          className="h-10 md:h-11 object-contain"
+          className="h-10 md:h-11 object-contain rounded-md"
         />
       </div>
 

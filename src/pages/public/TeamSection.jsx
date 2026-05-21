@@ -27,7 +27,7 @@ const TeamSection = () => {
   }, []);
 
   return (
-    <section className="bg-slate-50 py-24 flex justify-center items-center">
+    <section className="bg-slate-50 dark:bg-darkmode py-24 flex justify-center items-center border-b border-lightgray dark:border-dark_border/20">
       <div className="lg:max-w-screen-xl md:max-w-screen-md mx-auto container px-4">
 
         {/* HEADER */}
@@ -35,10 +35,10 @@ const TeamSection = () => {
           className="text-center max-w-2xl mx-auto mb-8"
           data-aos="fade-up"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
             Meet Our Lovely Founder
           </h2>
-          <p className="mt-4 text-slate-600">
+          <p className="mt-4 text-slate-600 dark:text-slate-400">
             Building impactful solutions through leadership, innovation,
             and people-first thinking.
           </p>
@@ -54,7 +54,7 @@ const TeamSection = () => {
               className="group relative w-full sm:w-[340px]"
             >
               {/* CARD */}
-              <div className="bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-xl">
+              <div className="bg-white dark:bg-semidark rounded-2xl shadow-md overflow-hidden border border-slate-100 dark:border-dark_border/20 transition hover:shadow-xl">
 
                 {/* IMAGE */}
                 <div className="relative">
@@ -99,10 +99,10 @@ const TeamSection = () => {
 
                 {/* FOOTER */}
                 <div className="p-5 text-center sm:group-hover:opacity-0 transition">
-                  <h5 className="font-semibold text-slate-900">
+                  <h5 className="font-semibold text-slate-900 dark:text-white">
                     {member.name}
                   </h5>
-                  <span className="text-sm text-slate-500">
+                  <span className="text-sm text-slate-500 dark:text-slate-400">
                     {member.role}
                   </span>
 
@@ -111,7 +111,7 @@ const TeamSection = () => {
                       href={member.link}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-200 text-blue-600 hover:bg-blue-600 hover:text-white transition"
+                      className="inline-flex items-center justify-center w-9 h-9 rounded-full border border-slate-200 dark:border-slate-700 text-blue-600 hover:bg-blue-600 hover:text-white transition"
                     >
                       <FaLinkedinIn />
                     </a>

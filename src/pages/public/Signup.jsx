@@ -13,7 +13,7 @@ const SignupPage = () => {
 
             {/* LOGO */}
             <div className="mb-10 text-center mx-auto inline-block max-w-[160px]">
-              <img src="/img/leviticalogo.png" className="mx-auto" />
+              <img src="/img/leviticalogo.png" className="mx-auto rounded-xl" />
             </div>
 
             {/* TITLE */}

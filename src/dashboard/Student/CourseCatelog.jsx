@@ -92,7 +92,13 @@ const CourseCard = ({ course, handleAdd, isAdded, isEnrolled }) => {
 
         <div className="flex gap-2">
           <button
-            onClick={() => navigate(`/dashboard/course/${course._id}`)}
+            onClick={() =>
+              navigate(
+                isEnrolled
+                  ? `/dashboard/student/mycourses/${course._id}`
+                  : `/dashboard/course/${course._id}`
+              )
+            }
             className="
               flex-1 py-2 rounded-lg text-sm font-medium
               border border-border text-midnight_text hover:bg-light

@@ -16,14 +16,14 @@ const AboutHero = () => {
   }, []);
 
   return (
-    <section className="py-18 bg-gradient-to-b from-white from-10% dark:from-darkmode to-herobg to-90% dark:to-darklight text-center">
+    <section className="py-18 bg-gradient-to-b from-white from-10% dark:from-darkmode to-herobg to-90% dark:to-darklight text-center border-b border-lightgray dark:border-dark_border/20">
 
       <div className="relative max-w-5xl mx-auto px-4">
 
         {/* TITLE */}
         <h1
           data-aos="fade-up"
-          className="text-3xl md:text-5xl font-extrabold text-midnight_text tracking-tight"
+          className="text-3xl md:text-5xl font-extrabold text-midnight_text dark:text-white tracking-tight"
         >
           About Levitica Technologies
         </h1>
@@ -32,7 +32,7 @@ const AboutHero = () => {
         <p
           data-aos="fade-up"
           data-aos-delay="100"
-          className="mt-4 text-lg md:text-xl text-gray max-w-2xl mx-auto"
+          className="mt-4 text-lg md:text-xl text-gray dark:text-slate-300 max-w-2xl mx-auto"
         >
           Technology, Talent & Transformation all under one roof.
         </p>
@@ -40,15 +40,15 @@ const AboutHero = () => {
         <div
           data-aos="fade-up"
           data-aos-delay="200"
-          className="mt-6 flex justify-center items-center gap-2 text-sm text-gray"
+          className="mt-6 flex justify-center items-center gap-2 text-sm text-gray dark:text-slate-400"
         >
-          <Link to="/" className="hover:text-primary transition">
+          <Link to="/" className="hover:text-primary dark:hover:text-cyan transition">
             Home
           </Link>
 
           <span>›</span>
 
-          <span className="text-midnight_text font-medium">
+          <span className="text-midnight_text dark:text-white font-medium">
             About Us  
           </span>
         </div>

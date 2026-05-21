@@ -14,9 +14,9 @@ const About = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-white text-slate-800 pt-20"
+      className="bg-white dark:bg-darkmode text-slate-800 pt-20"
     >
-      
+
       <AboutHero />
       <CompanyStory />
       <ItServices />
@@ -24,7 +24,7 @@ const About = () => {
       <ConsultancyMarketing />
       <CoreValues />
       <CeoMessage />
-    
+
       <ConsultingCTA />
     </motion.div>
   );

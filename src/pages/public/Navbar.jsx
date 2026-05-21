@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "@/context/ThemeContext";
 
 const Navbar = () => {
   const location = useLocation();
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [sticky, setSticky] = useState(false);
@@ -33,11 +36,10 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full transition-all ${
-        sticky
-          ? "shadow-lg bg-white dark:bg-semidark"
-          : "bg-transparent"
-      }`}
+      className={`fixed top-0 z-50 w-full transition-all ${sticky
+        ? "shadow-lg bg-white dark:bg-semidark"
+        : "bg-transparent"
+        }`}
     >
       {/* MAIN CONTAINER */}
       <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md h-20 flex items-center justify-between px-4">
@@ -45,9 +47,9 @@ const Navbar = () => {
         {/* LOGO */}
         <Link to="/" className="flex items-center">
           <img
-            src="/img/leviticalogo-removebg.png"
+            src={isDarkMode ? "/img/leviticalogo.png" : "/img/leviticalogo-removebg.png"}
             alt="logo"
-            className="h-12 object-contain"
+            className="h-12 object-contain rounded-lg"
           />
         </Link>
 
@@ -108,9 +110,8 @@ const Navbar = () => {
       {/* MOBILE SIDEBAR */}
       <div
         ref={mobileMenuRef}
-        className={`lg:hidden fixed top-0 right-0 h-full w-72 bg-white dark:bg-darkmode shadow-lg z-50 transform transition-transform duration-300 ${
-          navbarOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`lg:hidden fixed top-0 right-0 h-full w-72 bg-white dark:bg-darkmode shadow-lg z-50 transform transition-transform duration-300 ${navbarOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="flex justify-between items-center p-4 border-b">
           <h2 className="text-lg font-bold text-midnight_text dark:text-white">

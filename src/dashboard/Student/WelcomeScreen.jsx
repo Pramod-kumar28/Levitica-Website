@@ -25,14 +25,7 @@ const WelcomeScreen = () => {
         text-midnight_text dark:text-white
         flex items-center gap-2
       ">
-        Hi{" "}
-        <span className="text-primary">
-          {user?.name || "Learner"}
-        </span>
-
-        <span className="inline-flex">
-          <Sparkles size={22} className="text-primary" />
-        </span>
+        Dashboard Overview
       </h1>
 
       {/* Subtext */}
